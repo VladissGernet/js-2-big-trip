@@ -22,7 +22,7 @@ function createFilterItemTemplate(value) {
   `;
 }
 
-export default class TripFilterItemView {
+export default class FilterItemView {
   constructor(itemContent) {
     this.itemContent = itemContent;
   }
