@@ -1,5 +1,5 @@
-import { render } from './render.js';
-import TripFilterView from './view/filter-view.js';
+import { render } from './utils/render.js';
+import TripFilterView from './view/filter-view/filter-view.js';
 
 const tripControls = document.querySelector('.trip-controls');
 const tripControlsFilters = tripControls.querySelector(
