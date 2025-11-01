@@ -1,10 +1,8 @@
-import { createElement } from '../../utils/create-element.js';
-
 // Используем String.raw как тег для шаблонных строк,
 // чтобы Prettier и редактор форматировали HTML внутри template literals корректно
 const html = String.raw;
 
-function createFilterItemTemplate(value) {
+export default function createFilterItemTemplate(value) {
   const lowerStr = value.toLowerCase();
   return html`
     <div class="trip-filters__filter">
@@ -20,26 +18,4 @@ function createFilterItemTemplate(value) {
       >
     </div>
   `;
-}
-
-export default class FilterItemView {
-  constructor(itemContent) {
-    this.itemContent = itemContent;
-  }
-
-  getTemplate() {
-    return createFilterItemTemplate(this.itemContent);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
 }
