@@ -1,9 +1,15 @@
-import { render } from './utils/render.js';
-import TripFilterView from './view/filter-view/filter-view.js';
+import TripFilterPresenter from './presenter/trip-filter-presenter.js';
+
+const TRIP_FILTERS = ['All', 'Past', 'Present', 'Future'];
 
 const tripControls = document.querySelector('.trip-controls');
 const tripControlsFilters = tripControls.querySelector(
   '.trip-controls__filters'
 );
 
-render(new TripFilterView(), tripControlsFilters);
+const tripFilterPresenter = new TripFilterPresenter({
+  tripFilterContainer: tripControlsFilters,
+  filters: TRIP_FILTERS,
+});
+
+tripFilterPresenter.init();
