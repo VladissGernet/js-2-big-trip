@@ -1,7 +1,9 @@
 import { createElement } from '../render.js';
+// Используем String.raw как тег для шаблонных строк,
+// чтобы Prettier и редактор форматировали HTML внутри template literals корректно
+const html = String.raw;
 
 function createTripFilteTemplate() {
-  const html = String.raw;
   return html`
     <div class="trip-controls__filters">
       <h2 class="visually-hidden">Filter events</h2>
