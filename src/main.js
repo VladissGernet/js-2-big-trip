@@ -1,6 +1,6 @@
 import TripFilterPresenter from './presenter/trip-filter-presenter.js';
 
-const TRIP_FILTERS = ['All', 'Past', 'Present', 'Future'];
+const TRIP_FILTERS = ['Everything', 'Future', 'Present', 'Past'];
 
 const tripControls = document.querySelector('.trip-controls');
 const tripControlsFilters = tripControls.querySelector(

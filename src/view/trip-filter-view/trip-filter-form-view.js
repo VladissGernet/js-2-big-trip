@@ -4,20 +4,17 @@ import { createElement } from '../../utils/create-element.js';
 // чтобы Prettier и редактор форматировали HTML внутри template literals корректно
 const html = String.raw;
 
-function createTripFilteTemplate() {
+function createTripFilteFormTemplate() {
   return html`
-    <div class="trip-controls__filters">
-      <h2 class="visually-hidden">Filter events</h2>
-      <form class="trip-filters" action="#" method="get">
-        <button class="visually-hidden" type="submit">Accept filter</button>
-      </form>
-    </div>
+    <form class="trip-filters" action="#" method="get">
+      <button class="visually-hidden" type="submit">Accept filter</button>
+    </form>
   `;
 }
 
-export default class TripFilterView {
+export default class TripFilterFormView {
   getTemplate() {
-    return createTripFilteTemplate();
+    return createTripFilteFormTemplate();
   }
 
   getElement() {

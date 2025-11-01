@@ -4,18 +4,19 @@ import { createElement } from '../../utils/create-element.js';
 // чтобы Prettier и редактор форматировали HTML внутри template literals корректно
 const html = String.raw;
 
-function createFilterItemTemplate() {
+function createFilterItemTemplate(value) {
+  const lowerStr = value.toLowerCase();
   return html`
     <div class="trip-filters__filter">
       <input
-        id="filter-everything"
+        id="filter-${lowerStr}"
         class="trip-filters__filter-input  visually-hidden"
         type="radio"
         name="trip-filter"
-        value="everything"
+        value="${lowerStr}"
       />
-      <label class="trip-filters__filter-label" for="filter-everything"
-        >Everything</label
+      <label class="trip-filters__filter-label" for="filter-${lowerStr}"
+        >${value}</label
       >
     </div>
   `;
@@ -27,7 +28,7 @@ export default class TripFilterItemView {
   }
 
   getTemplate() {
-    return createFilterItemTemplate();
+    return createFilterItemTemplate(this.itemContent);
   }
 
   getElement() {

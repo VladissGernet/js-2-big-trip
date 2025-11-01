@@ -1,10 +1,9 @@
-import TripFilterView from '../view/trip-filter-view/trip-filter-view.js';
+import TripFilterFormView from '../view/trip-filter-view/trip-filter-form-view.js';
 import TripFilterItemView from '../view/trip-filter-view/trip-filter-item-view.js';
-import { render } from '../utils/render.js';
+import { render, RenderPosition } from '../utils/render.js';
 
 export default class TripFilterPresenter {
-  tripFilterComponet = new TripFilterView();
-  tripFilterItempComponent = new TripFilterItemView();
+  tripFilterFormComponet = new TripFilterFormView();
 
   constructor({ tripFilterContainer, filters }) {
     this.container = tripFilterContainer;
@@ -12,7 +11,15 @@ export default class TripFilterPresenter {
   }
 
   init() {
-    render(this.tripFilterComponet, this.container);
-    render(this.tripFilterItempComponent, this.tripFilterComponet.getElement());
+    render(this.tripFilterFormComponet, this.container);
+    for (let i = this.filters.length - 1; i >= 0; i--) {
+      // Из-за RenderPosition.AFTERBEGIN необходимо начинать с конца.
+      const element = this.filters[i];
+      render(
+        new TripFilterItemView(element),
+        this.tripFilterFormComponet.getElement(),
+        RenderPosition.AFTERBEGIN
+      );
+    }
   }
 }
