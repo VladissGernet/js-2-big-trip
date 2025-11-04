@@ -5,7 +5,7 @@ import { createElement } from '../../utils/create-element.js';
 // чтобы Prettier и редактор форматировали HTML внутри template literals корректно
 const html = String.raw;
 
-function createFilteFormTemplate(filters) {
+function createFilterFormTemplate(filters) {
   const formItems = filters.map((element) => createFilterItemTemplate(element));
 
   return html`
@@ -22,7 +22,7 @@ export default class FilterFormView {
   }
 
   getTemplate() {
-    return createFilteFormTemplate(this.filters);
+    return createFilterFormTemplate(this.filters);
   }
 
   getElement() {
