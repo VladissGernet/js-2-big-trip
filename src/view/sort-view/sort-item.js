@@ -2,21 +2,24 @@
 // чтобы Prettier и редактор форматировали HTML внутри template literals корректно
 const html = String.raw;
 
-export default function createFilterItemTemplate({ name, isChecked }) {
+export default function createSortItemTemplate({
+  name,
+  isChecked,
+  isDisabled,
+}) {
   const lowerStr = name.toLowerCase();
   return html`
-    <div class="trip-filters__filter">
+    <div class="trip-sort__item  trip-sort__item--${lowerStr}">
       <input
-        id="filter-${lowerStr}"
-        class="trip-filters__filter-input  visually-hidden"
+        id="sort-${lowerStr}"
+        class="trip-sort__input  visually-hidden"
         type="radio"
         name="trip-filter"
-        value="${lowerStr}"
+        value="sort-${lowerStr}"
+        ${isDisabled && 'disabled'}
         ${isChecked && 'checked'}
       />
-      <label class="trip-filters__filter-label" for="filter-${lowerStr}"
-        >${name}</label
-      >
+      <label class="trip-sort__btn" for="sort-${lowerStr}">${name}</label>
     </div>
   `;
 }
