@@ -1,4 +1,4 @@
-import FilterPresenter from './presenter/trip-filter-presenter.js';
+import FilterPresenter from './presenter/filter-presenter.js';
 
 const TRIP_FILTERS = ['Everything', 'Future', 'Present', 'Past'];
 
