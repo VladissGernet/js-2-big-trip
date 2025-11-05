@@ -4,17 +4,17 @@ import ListPresenter from './presenter/list-presenter.js';
 
 const TRIP_FILTERS = [
   { name: 'Everything', isChecked: true },
-  { name: 'Future' },
-  { name: 'Present' },
-  { name: 'Past' },
+  { name: 'Future', isChecked: false },
+  { name: 'Present', isChecked: false },
+  { name: 'Past', isChecked: false },
 ];
 
 const TRIP_SORTS = [
-  { name: 'Day' },
-  { name: 'Event', isDisabled: true },
-  { name: 'Time' },
-  { name: 'Price', isChecked: true },
-  { name: 'Offers', isDisabled: true },
+  { name: 'Day', isChecked: false, isDisabled: false },
+  { name: 'Event', isChecked: false, isDisabled: true },
+  { name: 'Time', isChecked: false, isDisabled: false },
+  { name: 'Price', isChecked: true, isDisabled: false },
+  { name: 'Offers', isChecked: false, isDisabled: true },
 ];
 
 // Фильтры.
