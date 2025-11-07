@@ -2,20 +2,7 @@ import FilterPresenter from './presenter/filter-presenter.js';
 import SortPresenter from './presenter/sort-presenter.js';
 import ListPresenter from './presenter/list-presenter.js';
 
-const TRIP_FILTERS = [
-  { name: 'Everything', isChecked: true },
-  { name: 'Future', isChecked: false },
-  { name: 'Present', isChecked: false },
-  { name: 'Past', isChecked: false },
-];
-
-const TRIP_SORTS = [
-  { name: 'Day', isChecked: false, isDisabled: false },
-  { name: 'Event', isChecked: false, isDisabled: true },
-  { name: 'Time', isChecked: false, isDisabled: false },
-  { name: 'Price', isChecked: true, isDisabled: false },
-  { name: 'Offers', isChecked: false, isDisabled: true },
-];
+import { TRIP_FILTERS, TRIP_SORTS } from './const.js';
 
 // Фильтры.
 const tripControls = document.querySelector('.trip-controls');
