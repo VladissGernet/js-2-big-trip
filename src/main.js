@@ -1,6 +1,7 @@
 import FilterPresenter from './presenter/filter-presenter.js';
 import SortPresenter from './presenter/sort-presenter.js';
 import ListPresenter from './presenter/list-presenter.js';
+import TripModel from './model/trip-model.js';
 
 import { TRIP_FILTERS, TRIP_SORTS } from './const.js';
 
@@ -11,6 +12,8 @@ const tripControlsFilters = tripControls.querySelector(
 );
 // Сортировка и список.
 const tripEvents = document.querySelector('.trip-events');
+// Данные
+const tripModel = new TripModel();
 
 const filterPresenter = new FilterPresenter({
   filterContainer: tripControlsFilters,
@@ -22,7 +25,10 @@ const sortPresenter = new SortPresenter({
   sorts: TRIP_SORTS,
 });
 
-const listPresenter = new ListPresenter({ container: tripEvents });
+const listPresenter = new ListPresenter({
+  container: tripEvents,
+  tripModel: tripModel,
+});
 
 filterPresenter.init();
 sortPresenter.init();

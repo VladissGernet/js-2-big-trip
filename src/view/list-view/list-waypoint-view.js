@@ -67,8 +67,16 @@ function createFilterFormTemplate() {
 }
 
 export default class ListWaypointView {
+  constructor({ listPoints, index }) {
+    this.listPoints = listPoints;
+    this.index = index;
+  }
+
   getTemplate() {
-    return createFilterFormTemplate(this.filters);
+    // Прокинул данные
+    console.log(this.listPoints[this.index]);
+
+    return createFilterFormTemplate();
   }
 
   getElement() {

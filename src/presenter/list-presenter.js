@@ -5,19 +5,27 @@ import ListCreationFormView from '../view/list-view/list-creation-form-view.js';
 import { render } from '../utils/render.js';
 
 export default class ListPresenter {
-  constructor({ container }) {
+  list = new ListView();
+  listCreationFormView = new ListCreationFormView();
+
+  constructor({ container, tripModel }) {
     this.container = container;
+    this.tripModel = tripModel;
   }
 
   init() {
-    const list = new ListView();
-    const listCreationFormView = new ListCreationFormView();
-    render(list, this.container);
-    render(listCreationFormView, list.getElement());
+    this.listPoints = [...this.tripModel.getPoints()];
 
-    for (let index = 0; index < 3; index++) {
-      const newWayPoint = new ListWaypointView();
-      render(newWayPoint, list.getElement());
+    render(this.list, this.container);
+    render(this.listCreationFormView, this.list.getElement());
+
+    // Создание динамического списка.
+    for (let i = 0; i < this.listPoints.length; i++) {
+      const newWayPoint = new ListWaypointView({
+        listPoints: this.listPoints,
+        index: i,
+      });
+      render(newWayPoint, this.list.getElement());
     }
   }
 }
