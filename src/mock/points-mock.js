@@ -1,3 +1,5 @@
+// Отключаю eslint, так как ниже моковые данные сервера.
+/* eslint-disable */
 const pointsMock = [
   {
     id: '7c5d33c6-41d1-4d46-9fbe-29fa1209c6a8',
