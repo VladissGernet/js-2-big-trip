@@ -20,8 +20,7 @@ function createFilterFormTemplate({
   const validatedDateFrom = validateDate(dateFrom);
   const validatedDateTo = validateDate(dateTo);
 
-  const parsedDateFrom = dayjs(validatedDateFrom);
-  const parsedDateTo = dayjs(validatedDateTo);
+  // Оставляю тут, так как Prettier неверно отспупы ставит.
   const isFavoriteItem = isFavorite ? 'event__favorite-btn--active' : '';
 
   return html`
@@ -41,11 +40,11 @@ function createFilterFormTemplate({
         <div class="event__schedule">
           <p class="event__time">
             <time class="event__start-time" datetime=${validatedDateFrom}
-              >${parsedDateFrom.format('HH:mm')}</time
+              >${dayjs(validatedDateFrom).format('HH:mm')}</time
             >
             &mdash;
             <time class="event__end-time" datetime=${validatedDateTo}
-              >${parsedDateTo.format('HH:mm')}</time
+              >${dayjs(validatedDateTo).format('HH:mm')}</time
             >
           </p>
           <p class="event__duration">40M</p>
