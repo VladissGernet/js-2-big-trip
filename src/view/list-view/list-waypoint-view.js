@@ -1,10 +1,29 @@
+import dayjs from 'dayjs';
+import he from 'he';
 import { createElement } from '../../utils/create-element.js';
+import { validateDate } from '../../utils/validate-date.js';
 
 // Используем String.raw как тег для шаблонных строк,
 // чтобы Prettier и редактор форматировали HTML внутри template literals корректно
 const html = String.raw;
 
-function createFilterFormTemplate() {
+function createFilterFormTemplate({
+  basePrice,
+  dateFrom,
+  dateTo,
+  isFavorite,
+  type,
+}) {
+  // Безопасные данные
+  const safeType = he.encode(type);
+  const safeBasePrice = he.encode(String(basePrice));
+  const validatedDateFrom = validateDate(dateFrom);
+  const validatedDateTo = validateDate(dateTo);
+
+  const parsedDateFrom = dayjs(validatedDateFrom);
+  const parsedDateTo = dayjs(validatedDateTo);
+  const isFavoriteItem = isFavorite ? 'event__favorite-btn--active' : '';
+
   return html`
     <li class="trip-events__item">
       <div class="event">
@@ -14,25 +33,25 @@ function createFilterFormTemplate() {
             class="event__type-icon"
             width="42"
             height="42"
-            src="img/icons/check-in.png"
+            src="img/icons/${safeType}.png"
             alt="Event type icon"
           />
         </div>
         <h3 class="event__title">Check-in Chamonix</h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="2019-03-18T12:25"
-              >16:20</time
+            <time class="event__start-time" datetime=${validatedDateFrom}
+              >${parsedDateFrom.format('HH:mm')}</time
             >
             &mdash;
-            <time class="event__end-time" datetime="2019-03-18T13:35"
-              >17:00</time
+            <time class="event__end-time" datetime=${validatedDateTo}
+              >${parsedDateTo.format('HH:mm')}</time
             >
           </p>
           <p class="event__duration">40M</p>
         </div>
         <p class="event__price">
-          &euro;&nbsp;<span class="event__price-value">600</span>
+          &euro;&nbsp;<span class="event__price-value">${safeBasePrice}</span>
         </p>
         <h4 class="visually-hidden">Offers:</h4>
         <ul class="event__selected-offers">
@@ -42,10 +61,7 @@ function createFilterFormTemplate() {
             <span class="event__offer-price">50</span>
           </li>
         </ul>
-        <button
-          class="event__favorite-btn event__favorite-btn--active"
-          type="button"
-        >
+        <button class="event__favorite-btn ${isFavoriteItem}" type="button">
           <span class="visually-hidden">Add to favorite</span>
           <svg
             class="event__favorite-icon"
@@ -73,10 +89,7 @@ export default class ListWaypointView {
   }
 
   getTemplate() {
-    // Прокинул данные
-    console.log(this.listPoints[this.index]);
-
-    return createFilterFormTemplate();
+    return createFilterFormTemplate(this.listPoints[this.index]);
   }
 
   getElement() {

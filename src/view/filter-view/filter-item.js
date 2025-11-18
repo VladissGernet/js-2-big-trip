@@ -12,7 +12,7 @@ export default function createFilterItemTemplate({ name, isChecked }) {
         type="radio"
         name="trip-filter"
         value="${lowerStr}"
-        ${isChecked && 'checked'}
+        ${isChecked ? 'checked' : ''}
       />
       <label class="trip-filters__filter-label" for="filter-${lowerStr}"
         >${name}</label

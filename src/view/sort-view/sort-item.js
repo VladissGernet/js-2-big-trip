@@ -16,8 +16,8 @@ export default function createSortItemTemplate({
         type="radio"
         name="trip-filter"
         value="sort-${lowerStr}"
-        ${isDisabled && 'disabled'}
-        ${isChecked && 'checked'}
+        ${isDisabled ? 'disabled' : ''}
+        ${isChecked ? 'checked' : ''}
       />
       <label class="trip-sort__btn" for="sort-${lowerStr}">${name}</label>
     </div>
