@@ -8,6 +8,7 @@ import { validateDate } from '../../utils/validate-date.js';
 const html = String.raw;
 
 function createFilterFormTemplate({
+  destination,
   basePrice,
   dateFrom,
   dateTo,
@@ -20,8 +21,26 @@ function createFilterFormTemplate({
   const validatedDateFrom = validateDate(dateFrom);
   const validatedDateTo = validateDate(dateTo);
 
-  // Оставляю тут, так как Prettier неверно отспупы ставит.
+  // Оставляю тут, Prettier неверно отспупы ставит.
   const isFavoriteItem = isFavorite ? 'event__favorite-btn--active' : '';
+
+  /*
+    Сделать далее:
+
+    прокинуть сюда данные еще и с destinations
+    destination привязать к прокинутым данным из destinations-mock.js
+    получить наименование
+
+    в строчке:
+    <time class="event__date" datetime="2019-03-18">MAR 18</time>
+    привязать как нибудть к dateFrom
+
+    <p class="event__duration">40M</p>
+    расчитать длительность
+
+     <h4 class="visually-hidden">Offers:</h4>
+     добавить данные из offers-mock
+  */
 
   return html`
     <li class="trip-events__item">
