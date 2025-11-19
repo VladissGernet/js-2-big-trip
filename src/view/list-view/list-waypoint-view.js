@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import he from 'he';
 import { createElement } from '../../utils/create-element.js';
-import { validateDate } from '../../utils/validate-date.js';
 
 // Используем String.raw как тег для шаблонных строк,
 // чтобы Prettier и редактор форматировали HTML внутри template literals корректно
@@ -18,23 +17,12 @@ function createFilterFormTemplate({
   // Безопасные данные
   const safeType = he.encode(type);
   const safeBasePrice = he.encode(String(basePrice));
-  const validatedDateFrom = validateDate(dateFrom);
-  const validatedDateTo = validateDate(dateTo);
 
   // Оставляю тут, Prettier неверно отспупы ставит.
   const isFavoriteItem = isFavorite ? 'event__favorite-btn--active' : '';
-  console.log(destinationData);
 
   /*
     Сделать далее:
-
-    прокинуть сюда данные еще и с destinations
-    destination привязать к прокинутым данным из destinations-mock.js
-    получить наименование
-
-    в строчке:
-    <time class="event__date" datetime="2019-03-18">MAR 18</time>
-    привязать как нибудть к dateFrom
 
     <p class="event__duration">40M</p>
     расчитать длительность
@@ -46,7 +34,11 @@ function createFilterFormTemplate({
   return html`
     <li class="trip-events__item">
       <div class="event">
-        <time class="event__date" datetime="2019-03-18">MAR 18</time>
+        <time
+          class="event__date"
+          datetime=${dayjs(dateFrom).format('YYYY-MM-DD')}
+          >${dayjs(dateFrom).format('MMM D').toUpperCase()}</time
+        >
         <div class="event__type">
           <img
             class="event__type-icon"
@@ -56,15 +48,19 @@ function createFilterFormTemplate({
             alt="Event type icon"
           />
         </div>
-        <h3 class="event__title">Check-in Chamonix</h3>
+        <h3 class="event__title">${destinationData.name}</h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime=${validatedDateFrom}
-              >${dayjs(validatedDateFrom).format('HH:mm')}</time
+            <time
+              class="event__start-time"
+              datetime=${dayjs(dateFrom).toISOString()}
+              >${dayjs(dateFrom).format('HH:mm')}</time
             >
             &mdash;
-            <time class="event__end-time" datetime=${validatedDateTo}
-              >${dayjs(validatedDateTo).format('HH:mm')}</time
+            <time
+              class="event__end-time"
+              datetime=${dayjs(dateTo).toISOString()}
+              >${dayjs(dateTo).format('HH:mm')}</time
             >
           </p>
           <p class="event__duration">40M</p>
