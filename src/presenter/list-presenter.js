@@ -15,15 +15,27 @@ export default class ListPresenter {
 
   init() {
     this.listPoints = [...this.tripModel.getPoints()];
+    // Преобразовываю данные для оптимизированного поиска.
+    this.listDestinations = [...this.tripModel.getDestinations()].reduce(
+      (acc, { id, ...rest }) => ({
+        ...acc,
+        [id]: rest,
+      }),
+      {}
+    );
 
     render(this.list, this.container);
     render(this.listCreationFormView, this.list.getElement());
 
     // Создание динамического списка.
     for (let i = 0; i < this.listPoints.length; i++) {
+      // Получаю данные из оптимизированного объекта.
+      const destinationData =
+        this.listDestinations[this.listPoints[i].destination];
+
       const newWayPoint = new ListWaypointView({
-        listPoints: this.listPoints,
-        index: i,
+        listPoint: this.listPoints[i],
+        destination: destinationData,
       });
       render(newWayPoint, this.list.getElement());
     }

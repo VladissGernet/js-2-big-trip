@@ -101,13 +101,16 @@ function createFilterFormTemplate({
 }
 
 export default class ListWaypointView {
-  constructor({ listPoints, index }) {
-    this.listPoints = listPoints;
-    this.index = index;
+  constructor({ listPoint, destination }) {
+    this.listPoint = listPoint;
+    this.destination = destination;
   }
 
   getTemplate() {
-    return createFilterFormTemplate(this.listPoints[this.index]);
+    return createFilterFormTemplate({
+      ...this.listPoint,
+      destination: this.destination,
+    });
   }
 
   getElement() {
