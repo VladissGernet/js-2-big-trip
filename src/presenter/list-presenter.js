@@ -35,7 +35,7 @@ export default class ListPresenter {
 
       const newWayPoint = new ListWaypointView({
         listPoint: this.listPoints[i],
-        destination: destinationData,
+        destinationData: destinationData,
       });
       render(newWayPoint, this.list.getElement());
     }

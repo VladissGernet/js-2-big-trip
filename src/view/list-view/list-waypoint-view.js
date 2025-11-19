@@ -8,7 +8,7 @@ import { validateDate } from '../../utils/validate-date.js';
 const html = String.raw;
 
 function createFilterFormTemplate({
-  destination,
+  destinationData,
   basePrice,
   dateFrom,
   dateTo,
@@ -23,6 +23,7 @@ function createFilterFormTemplate({
 
   // Оставляю тут, Prettier неверно отспупы ставит.
   const isFavoriteItem = isFavorite ? 'event__favorite-btn--active' : '';
+  console.log(destinationData);
 
   /*
     Сделать далее:
@@ -101,15 +102,15 @@ function createFilterFormTemplate({
 }
 
 export default class ListWaypointView {
-  constructor({ listPoint, destination }) {
+  constructor({ listPoint, destinationData }) {
     this.listPoint = listPoint;
-    this.destination = destination;
+    this.destinationData = destinationData;
   }
 
   getTemplate() {
     return createFilterFormTemplate({
       ...this.listPoint,
-      destination: this.destination,
+      destinationData: this.destinationData,
     });
   }
 
