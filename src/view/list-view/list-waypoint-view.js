@@ -8,6 +8,7 @@ const html = String.raw;
 
 function createFilterFormTemplate({
   destinationData,
+  offerData,
   basePrice,
   dateFrom,
   dateTo,
@@ -22,11 +23,17 @@ function createFilterFormTemplate({
   const isFavoriteItem = isFavorite ? 'event__favorite-btn--active' : '';
 
   /*
+    TODO
     Сделать далее:
 
      <h4 class="visually-hidden">Offers:</h4>
      добавить данные из offers-mock
+
+    Отфильтровать только выбранные предложения.
+
   */
+
+  console.log(offerData);
 
   return html`
     <li class="trip-events__item">
@@ -95,15 +102,17 @@ function createFilterFormTemplate({
 }
 
 export default class ListWaypointView {
-  constructor({ listPoint, destinationData }) {
+  constructor({ listPoint, destinationData, offerData }) {
     this.listPoint = listPoint;
     this.destinationData = destinationData;
+    this.offerData = offerData;
   }
 
   getTemplate() {
     return createFilterFormTemplate({
       ...this.listPoint,
       destinationData: this.destinationData,
+      offerData: this.offerData,
     });
   }
 
