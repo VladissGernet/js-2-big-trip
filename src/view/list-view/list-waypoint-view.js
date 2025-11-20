@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import he from 'he';
-import { createElement } from '../../utils/create-element.js';
-import { calcTimeBetween } from '../../utils/calc-time-between.js';
+import { calcTimeBetween, createElement } from '../../utils/index.js';
 
 // Используем String.raw как тег для шаблонных строк,
 // чтобы Prettier и редактор форматировали HTML внутри template literals корректно
