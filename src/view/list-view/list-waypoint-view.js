@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import he from 'he';
 import { createElement } from '../../utils/create-element.js';
+import { calcTimeBetween } from '../../utils/calc-time-between.js';
 
 // Используем String.raw как тег для шаблонных строк,
 // чтобы Prettier и редактор форматировали HTML внутри template literals корректно
@@ -23,9 +24,6 @@ function createFilterFormTemplate({
 
   /*
     Сделать далее:
-
-    <p class="event__duration">40M</p>
-    расчитать длительность
 
      <h4 class="visually-hidden">Offers:</h4>
      добавить данные из offers-mock
@@ -63,7 +61,7 @@ function createFilterFormTemplate({
               >${dayjs(dateTo).format('HH:mm')}</time
             >
           </p>
-          <p class="event__duration">40M</p>
+          <p class="event__duration">${calcTimeBetween(dateFrom, dateTo)}</p>
         </div>
         <p class="event__price">
           &euro;&nbsp;<span class="event__price-value">${safeBasePrice}</span>
