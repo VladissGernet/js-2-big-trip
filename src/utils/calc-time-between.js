@@ -9,19 +9,22 @@ const calcTimeBetween = (from, to) => {
 
   const diffMillis = end.diff(start, 'minutes');
   const durationBetween = dayjs.duration(diffMillis, 'minutes');
-  // TODO
-  // Привалять построчно если значения не нулевые в строку и возвращать ее
 
-  if (durationBetween.hours() === 0) {
-    return `${durationBetween.format('mm')}M`;
-  }
-  if (durationBetween.days() !== 0) {
-    return `${durationBetween.format('HH')}H ${durationBetween.format('mm')}M`;
+  let result = `${durationBetween.format('mm')}M`;
+
+  if (durationBetween.hours() > 0) {
+    result = `${durationBetween.format('HH')}H ${result}`;
   }
 
-  return `${durationBetween.format('DD')}D ${durationBetween.format(
-    'HH'
-  )}H ${durationBetween.format('mm')}M`;
+  if (durationBetween.days() > 1) {
+    result = `${durationBetween.format('DD')}D ${result}`;
+  }
+
+  if (durationBetween.years() > 1) {
+    result = `${durationBetween.format('YY')}Y ${result}`;
+  }
+
+  return result;
 };
 
 export { calcTimeBetween };
