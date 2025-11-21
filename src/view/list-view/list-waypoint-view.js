@@ -6,6 +6,24 @@ import { calcTimeBetween, createElement } from '../../utils/index.js';
 // чтобы Prettier и редактор форматировали HTML внутри template literals корректно
 const html = String.raw;
 
+function createWaypointOffersTemplate(offerData) {
+  if (offerData.length === 0) {
+    return '';
+  }
+
+  return offerData
+    .map(
+      ({ title, price }) => html`
+        <li class="event__offer">
+          <span class="event__offer-title">${title}</span>
+          &plus;&euro;&nbsp;
+          <span class="event__offer-price">${price}</span>
+        </li>
+      `
+    )
+    .join(' ');
+}
+
 function createFilterFormTemplate({
   destinationData,
   offerData,
@@ -21,19 +39,6 @@ function createFilterFormTemplate({
 
   // Оставляю тут, Prettier неверно отспупы ставит.
   const isFavoriteItem = isFavorite ? 'event__favorite-btn--active' : '';
-
-  /*
-    TODO
-    Сделать далее:
-
-     <h4 class="visually-hidden">Offers:</h4>
-     добавить данные из offers-mock
-
-    Отфильтровать только выбранные предложения.
-
-  */
-
-  // console.log(offerData);
 
   return html`
     <li class="trip-events__item">
@@ -74,11 +79,7 @@ function createFilterFormTemplate({
         </p>
         <h4 class="visually-hidden">Offers:</h4>
         <ul class="event__selected-offers">
-          <li class="event__offer">
-            <span class="event__offer-title">Add breakfast</span>
-            &plus;&euro;&nbsp;
-            <span class="event__offer-price">50</span>
-          </li>
+          ${createWaypointOffersTemplate(offerData)}
         </ul>
         <button class="event__favorite-btn ${isFavoriteItem}" type="button">
           <span class="visually-hidden">Add to favorite</span>
