@@ -18,24 +18,24 @@ export default class ListPresenter {
     this.listDestinations = { ...this.tripModel.getDestinationsById() };
     this.listOffers = { ...this.tripModel.getOffersByType() };
 
-    // TODO
-    // Все преобразование данных вынести в модель.
-
     render(this.list, this.container);
     render(this.listCreationFormView, this.list.getElement());
 
     // Создание динамического списка.
     for (let i = 0; i < this.listPoints.length; i++) {
-      // Получаю данные из оптимизированного объекта.
-      const destinationData =
-        this.listDestinations[this.listPoints[i].destination];
+      const pointData = this.listPoints[i];
+      const destinationData = this.listDestinations[pointData.destination];
+      const offerTypeData = this.listOffers[pointData.type];
 
-      const offerData = this.listOffers[this.listPoints[i].type];
+      const filteredOfferData = pointData.offers.reduce((acc, offer) => {
+        acc.push(offerTypeData[offer]);
+        return acc;
+      }, []);
 
       const newWayPoint = new ListWaypointView({
-        listPoint: this.listPoints[i],
+        listPoint: pointData,
         destinationData: destinationData,
-        offerData: offerData,
+        offerData: filteredOfferData,
       });
       render(newWayPoint, this.list.getElement());
     }
