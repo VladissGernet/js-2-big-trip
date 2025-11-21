@@ -8,12 +8,32 @@ export default class TripModel {
   offers = offersMock;
   points = replaceSnakeToCamel(pointsMock);
 
-  getDestinations() {
-    return this.destinations;
+  getDestinationsById() {
+    // Преобразовываю данные для оптимизированного поиска.
+    return [...this.destinations].reduce(
+      (acc, { id, ...rest }) => ({
+        ...acc,
+        [id]: rest,
+      }),
+      {}
+    );
   }
 
-  getOffers() {
-    return this.offers;
+  getOffersByType() {
+    // Преобразовываю данные для оптимизированного поиска.
+    return [...this.offers].reduce(
+      (acc, { type, offers }) => ({
+        ...acc,
+        [type]: offers.reduce(
+          (offersResult, { id, ...rest }) => ({
+            ...offersResult,
+            [id]: rest,
+          }),
+          {}
+        ),
+      }),
+      {}
+    );
   }
 
   getPoints() {

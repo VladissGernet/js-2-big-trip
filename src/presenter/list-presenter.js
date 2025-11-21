@@ -15,30 +15,11 @@ export default class ListPresenter {
 
   init() {
     this.listPoints = [...this.tripModel.getPoints()];
+    this.listDestinations = { ...this.tripModel.getDestinationsById() };
+    this.listOffers = { ...this.tripModel.getOffersByType() };
+
     // TODO
     // Все преобразование данных вынести в модель.
-
-    // Преобразовываю данные для оптимизированного поиска.
-    this.listDestinations = [...this.tripModel.getDestinations()].reduce(
-      (acc, { id, ...rest }) => ({
-        ...acc,
-        [id]: rest,
-      }),
-      {}
-    );
-    this.listOffers = [...this.tripModel.getOffers()].reduce(
-      (acc, { type, offers }) => ({
-        ...acc,
-        [type]: offers.reduce(
-          (offersResult, { id, ...rest }) => ({
-            ...offersResult,
-            [id]: rest,
-          }),
-          {}
-        ),
-      }),
-      {}
-    );
 
     render(this.list, this.container);
     render(this.listCreationFormView, this.list.getElement());
@@ -48,7 +29,6 @@ export default class ListPresenter {
       // Получаю данные из оптимизированного объекта.
       const destinationData =
         this.listDestinations[this.listPoints[i].destination];
-      console.log(this.listPoints[i].type);
 
       const offerData = this.listOffers[this.listPoints[i].type];
 
