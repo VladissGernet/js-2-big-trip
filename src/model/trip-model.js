@@ -10,13 +10,10 @@ export default class TripModel {
 
   getDestinationsById() {
     // Преобразовываю данные для оптимизированного поиска.
-    return [...this.destinations].reduce(
-      (acc, { id, ...rest }) => ({
-        ...acc,
-        [id]: rest,
-      }),
-      {}
-    );
+    return [...this.destinations].reduce((acc, { id, ...rest }) => {
+      acc[id] = rest;
+      return acc;
+    }, {});
   }
 
   getOffersByType() {

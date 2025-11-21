@@ -33,7 +33,7 @@ function createFilterFormTemplate({
 
   */
 
-  console.log(offerData);
+  // console.log(offerData);
 
   return html`
     <li class="trip-events__item">
