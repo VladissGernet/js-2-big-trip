@@ -18,19 +18,13 @@ export default class TripModel {
 
   getOffersByType() {
     // Преобразовываю данные для оптимизированного поиска.
-    return [...this.offers].reduce(
-      (acc, { type, offers }) => ({
-        ...acc,
-        [type]: offers.reduce(
-          (offersResult, { id, ...rest }) => ({
-            ...offersResult,
-            [id]: rest,
-          }),
-          {}
-        ),
-      }),
-      {}
-    );
+    return [...this.offers].reduce((types, { type, offers }) => {
+      types[type] = offers.reduce((offersIdentifications, { id, ...rest }) => {
+        offersIdentifications[id] = rest;
+        return offersIdentifications;
+      }, {});
+      return types;
+    }, {});
   }
 
   getPoints() {

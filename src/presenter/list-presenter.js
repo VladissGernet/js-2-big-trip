@@ -18,8 +18,6 @@ export default class ListPresenter {
     this.listDestinations = { ...this.tripModel.getDestinationsById() };
     this.listOffers = { ...this.tripModel.getOffersByType() };
 
-    console.log(this.listDestinations);
-
     render(this.list, this.container);
     render(this.listCreationFormView, this.list.getElement());
 
