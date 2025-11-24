@@ -28,6 +28,13 @@ const createOffersList = (dataList) =>
     .map((offer) => createOfferTemplate(offer))
     .join('');
 
+const creatPictrueTemplate = ({ src, description }) => html`
+  <img class="event__photo" src=${src} alt=${description} />
+`;
+
+const createPicturesList = (dataList) =>
+  dataList.map((item) => creatPictrueTemplate(item)).join('');
+
 function createListCreationForm({ listPoint, destinationData, listOffers }) {
   return html`
     <li class="trip-events__item">
@@ -278,31 +285,7 @@ function createListCreationForm({ listPoint, destinationData, listOffers }) {
 
             <div class="event__photos-container">
               <div class="event__photos-tape">
-                <img
-                  class="event__photo"
-                  src="img/photos/1.jpg"
-                  alt="Event photo"
-                />
-                <img
-                  class="event__photo"
-                  src="img/photos/2.jpg"
-                  alt="Event photo"
-                />
-                <img
-                  class="event__photo"
-                  src="img/photos/3.jpg"
-                  alt="Event photo"
-                />
-                <img
-                  class="event__photo"
-                  src="img/photos/4.jpg"
-                  alt="Event photo"
-                />
-                <img
-                  class="event__photo"
-                  src="img/photos/5.jpg"
-                  alt="Event photo"
-                />
+                ${createPicturesList(destinationData.pictures)}
               </div>
             </div>
           </section>
