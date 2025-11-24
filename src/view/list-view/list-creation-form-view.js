@@ -12,11 +12,11 @@ const createOfferTemplate = ({ title, price }) => html` <div
 >
   <input
     class="event__offer-checkbox  visually-hidden"
-    id="event-offer-luggage-1"
+    id="event-offer-${title}"
     type="checkbox"
     name="event-offer-luggage"
   />
-  <label class="event__offer-label" for="event-offer-luggage-1">
+  <label class="event__offer-label" for="event-offer-${title}">
     <span class="event__offer-title">${title}</span>
     &plus;&euro;&nbsp;
     <span class="event__offer-price">${price}</span>
