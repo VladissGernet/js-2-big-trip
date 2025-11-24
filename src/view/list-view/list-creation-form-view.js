@@ -4,9 +4,6 @@ import { createElement } from '../../utils/create-element.js';
 // чтобы Prettier и редактор форматировали HTML внутри template literals корректно
 const html = String.raw;
 
-// TODO
-// Шаблонизировать
-
 const createOfferTemplate = ({ title, price }) => html` <div
   class="event__offer-selector"
 >
