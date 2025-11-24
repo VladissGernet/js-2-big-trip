@@ -2,11 +2,10 @@ import ListView from '../view/list-view/list-view.js';
 import ListWaypointView from '../view/list-view/list-waypoint-view.js';
 import ListCreationFormView from '../view/list-view/list-creation-form-view.js';
 
-import { render } from '../utils/render.js';
+import { render, RenderPosition } from '../utils/render.js';
 
 export default class ListPresenter {
   list = new ListView();
-  listCreationFormView = new ListCreationFormView();
 
   constructor({ container, tripModel }) {
     this.container = container;
@@ -19,7 +18,6 @@ export default class ListPresenter {
     this.listOffers = { ...this.tripModel.getOffersByType() };
 
     render(this.list, this.container);
-    render(this.listCreationFormView, this.list.getElement());
 
     // Создание динамического списка.
     for (let i = 0; i < this.listPoints.length; i++) {
@@ -39,5 +37,22 @@ export default class ListPresenter {
       });
       render(newWayPoint, this.list.getElement());
     }
+
+    // Добавление формы создания путевой точки.
+    // На первое время добавляю просто первую точку из исписка.
+    const firstWayPointForBegin = this.listPoints[0];
+    const firstDestinationData =
+      this.listDestinations[firstWayPointForBegin.destination];
+    const firstOffersTypeData = this.listOffers[firstWayPointForBegin.type];
+
+    render(
+      new ListCreationFormView({
+        listPoint: firstWayPointForBegin,
+        destinationData: firstDestinationData,
+        listOffers: firstOffersTypeData,
+      }),
+      this.list.getElement(),
+      RenderPosition.AFTERBEGIN
+    );
   }
 }
