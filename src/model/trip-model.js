@@ -10,7 +10,7 @@ export default class TripModel {
 
   getDestinationsById() {
     // Преобразовываю данные для оптимизированного поиска.
-    return [...this.destinations].reduce((acc, { id, ...rest }) => {
+    return structuredClone(this.destinations).reduce((acc, { id, ...rest }) => {
       acc[id] = rest;
       return acc;
     }, {});
@@ -18,7 +18,7 @@ export default class TripModel {
 
   getOffersByType() {
     // Преобразовываю данные для оптимизированного поиска.
-    return [...this.offers].reduce((types, { type, offers }) => {
+    return structuredClone(this.offers).reduce((types, { type, offers }) => {
       types[type] = offers.reduce((offersIdentifications, { id, ...rest }) => {
         offersIdentifications[id] = rest;
         return offersIdentifications;
@@ -28,6 +28,6 @@ export default class TripModel {
   }
 
   getPoints() {
-    return this.points;
+    return structuredClone(this.points);
   }
 }
