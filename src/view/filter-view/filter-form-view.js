@@ -1,5 +1,5 @@
+import AbstractView from './../../framework/view/abstract-view.js';
 import createFilterItemTemplate from './filter-item.js';
-import { createElement } from '../../utils/create-element.js';
 
 // Используем String.raw как тег для шаблонных строк,
 // чтобы Prettier и редактор форматировали HTML внутри template literals корректно
@@ -16,24 +16,13 @@ function createFilterFormTemplate(filters) {
   `;
 }
 
-export default class FilterFormView {
+export default class FilterFormView extends AbstractView {
   constructor(filters) {
+    super();
     this.filters = filters;
   }
 
-  getTemplate() {
+  get template() {
     return createFilterFormTemplate(this.filters);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }

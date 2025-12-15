@@ -1,4 +1,4 @@
-import { createElement } from '../../utils/create-element.js';
+import AbstractView from './../../framework/view/abstract-view.js';
 
 // Используем String.raw как тег для шаблонных строк,
 // чтобы Prettier и редактор форматировали HTML внутри template literals корректно
@@ -292,29 +292,19 @@ function createListCreationForm({ listPoint, destinationData, listOffers }) {
   `;
 }
 
-export default class ListCreationFormView {
+export default class ListCreationFormView extends AbstractView {
   constructor({ listPoint, destinationData, listOffers }) {
+    super();
     this.listPoint = listPoint;
     this.destinationData = destinationData;
     this.listOffers = listOffers;
   }
 
-  getTemplate() {
+  get template() {
     return createListCreationForm({
       listPoint: this.listPoint,
       destinationData: this.destinationData,
       listOffers: this.listOffers,
     });
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }

@@ -1,5 +1,5 @@
+import AbstractView from '../../framework/view/abstract-view.js';
 import createSortItemTemplate from './sort-item.js';
-import { createElement } from '../../utils/create-element.js';
 
 // Используем String.raw как тег для шаблонных строк,
 // чтобы Prettier и редактор форматировали HTML внутри template literals корректно
@@ -15,24 +15,13 @@ function createSortFormTemplate(sorts) {
   `;
 }
 
-export default class SortFormView {
+export default class SortFormView extends AbstractView {
   constructor(sorts) {
+    super();
     this.sorts = sorts;
   }
 
-  getTemplate() {
+  get template() {
     return createSortFormTemplate(this.sorts);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }

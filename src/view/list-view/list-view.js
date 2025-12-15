@@ -1,4 +1,4 @@
-import { createElement } from '../../utils/create-element.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 
 // Используем String.raw как тег для шаблонных строк,
 // чтобы Prettier и редактор форматировали HTML внутри template literals корректно
@@ -8,15 +8,8 @@ function createListViewTemplate() {
   return html`<ul class="trip-events__list"></ul>`;
 }
 
-export default class ListView {
-  getTemplate() {
+export default class ListView extends AbstractView {
+  get template() {
     return createListViewTemplate();
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
   }
 }

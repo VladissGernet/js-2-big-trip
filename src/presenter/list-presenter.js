@@ -2,7 +2,7 @@ import ListView from '../view/list-view/list-view.js';
 import ListWaypointView from '../view/list-view/list-waypoint-view.js';
 import ListCreationFormView from '../view/list-view/list-creation-form-view.js';
 
-import { render, RenderPosition } from '../utils/render.js';
+import { render, RenderPosition } from '../framework/render.js';
 
 export default class ListPresenter {
   list = new ListView();
@@ -13,9 +13,9 @@ export default class ListPresenter {
   }
 
   init() {
-    this.listPoints = [...this.tripModel.getPoints()];
-    this.listDestinations = { ...this.tripModel.getDestinationsById() };
-    this.listOffers = { ...this.tripModel.getOffersByType() };
+    this.listPoints = this.tripModel.getPoints();
+    this.listDestinations = this.tripModel.getDestinationsById();
+    this.listOffers = this.tripModel.getOffersByType();
 
     render(this.list, this.container);
 
@@ -35,7 +35,7 @@ export default class ListPresenter {
         destinationData: destinationData,
         offerData: filteredOfferData,
       });
-      render(newWayPoint, this.list.getElement());
+      render(newWayPoint, this.list.element);
     }
 
     // Добавление формы создания путевой точки.
@@ -51,7 +51,7 @@ export default class ListPresenter {
         destinationData: firstDestinationData,
         listOffers: firstOffersTypeData,
       }),
-      this.list.getElement(),
+      this.list.element,
       RenderPosition.AFTERBEGIN
     );
   }

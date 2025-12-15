@@ -1,6 +1,7 @@
+import AbstractView from '../../framework/view/abstract-view.js';
 import dayjs from 'dayjs';
 import he from 'he';
-import { calcTimeBetween, createElement } from '../../utils/index.js';
+import { calcTimeBetween } from '../../utils/index.js';
 
 // Используем String.raw как тег для шаблонных строк,
 // чтобы Prettier и редактор форматировали HTML внутри template literals корректно
@@ -102,30 +103,19 @@ function createFilterFormTemplate({
   `;
 }
 
-export default class ListWaypointView {
+export default class ListWaypointView extends AbstractView {
   constructor({ listPoint, destinationData, offerData }) {
+    super();
     this.listPoint = listPoint;
     this.destinationData = destinationData;
     this.offerData = offerData;
   }
 
-  getTemplate() {
+  get template() {
     return createFilterFormTemplate({
       ...this.listPoint,
       destinationData: this.destinationData,
       offerData: this.offerData,
     });
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }
