@@ -13,9 +13,9 @@ export default class ListPresenter {
   }
 
   init() {
-    this.listPoints = this.tripModel.getPoints();
-    this.listDestinations = this.tripModel.getDestinationsById();
-    this.listOffers = this.tripModel.getOffersByType();
+    this.listPoints = this.tripModel.listPoints;
+    this.listDestinations = this.tripModel.destinationsById;
+    this.listOffers = this.tripModel.offersByType;
 
     render(this.list, this.container);
 

@@ -8,7 +8,7 @@ export default class TripModel {
   offers = offersMock;
   points = replaceSnakeToCamel(pointsMock);
 
-  getDestinationsById() {
+  get destinationsById() {
     // Преобразовываю данные для оптимизированного поиска.
     return structuredClone(this.destinations).reduce((acc, { id, ...rest }) => {
       acc[id] = rest;
@@ -16,7 +16,7 @@ export default class TripModel {
     }, {});
   }
 
-  getOffersByType() {
+  get offersByType() {
     // Преобразовываю данные для оптимизированного поиска.
     return structuredClone(this.offers).reduce((types, { type, offers }) => {
       types[type] = offers.reduce((offersIdentifications, { id, ...rest }) => {
@@ -27,7 +27,7 @@ export default class TripModel {
     }, {});
   }
 
-  getPoints() {
+  get listPoints() {
     return structuredClone(this.points);
   }
 }
