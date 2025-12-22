@@ -10,21 +10,10 @@ import { TRIP_FILTERS, TRIP_SORTS } from './const.js';
   Добавить приватные и защищенные поля.
 */
 
-/**  Компонент размещения элементов фильтра.
- * @type {HTMLDivElement|null}
- */
 const tripControls = document.querySelector('.trip-controls');
-
-/** Контейнер для размещения элементов сортировки.
- * @type {HTMLDivElement|null|undefined}
- */
 const tripControlsFilters = tripControls?.querySelector(
   '.trip-controls__filters'
 );
-
-/** Сортировка и список.
- * @type {HTMLDivElement|null}
- */
 const tripEvents = document.querySelector('.trip-events');
 
 // Проверяем наличие необходимых DOM-элементов
