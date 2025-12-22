@@ -6,7 +6,6 @@ import { render, RenderPosition } from '../framework/render.js';
 
 export default class ListPresenter {
   list = new ListView();
-
   constructor({ container, tripModel }) {
     this.container = container;
     this.tripModel = tripModel;
@@ -22,7 +21,9 @@ export default class ListPresenter {
     // Создание динамического списка.
     for (let i = 0; i < this.listPoints.length; i++) {
       const pointData = this.listPoints[i];
+
       const destinationData = this.listDestinations[pointData.destination];
+
       const offerTypeData = this.listOffers[pointData.type];
 
       const filteredOfferData = pointData.offers.reduce((acc, offer) => {

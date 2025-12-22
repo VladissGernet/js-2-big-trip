@@ -5,21 +5,39 @@ import TripModel from './model/trip-model.js';
 
 import { TRIP_FILTERS, TRIP_SORTS } from './const.js';
 
-// Фильтры.
+/* TODO
+  Написать документацию на основе JSDoc.
+  Добавить приватные и защищенные поля.
+*/
+
+/**  Компонент размещения элементов фильтра.
+ * @type {HTMLDivElement|null}
+ */
 const tripControls = document.querySelector('.trip-controls');
-const tripControlsFilters = tripControls.querySelector(
+
+/** Контейнер для размещения элементов сортировки.
+ * @type {HTMLDivElement|null|undefined}
+ */
+const tripControlsFilters = tripControls?.querySelector(
   '.trip-controls__filters'
 );
-// Сортировка и список.
+
+/** Сортировка и список.
+ * @type {HTMLDivElement|null}
+ */
 const tripEvents = document.querySelector('.trip-events');
-// Данные
-const tripModel = new TripModel();
+
+// Проверяем наличие необходимых DOM-элементов
+if (!tripControls || !tripControlsFilters || !tripEvents) {
+  throw new Error(
+    'Не найдены необходимые DOM-элементы для инициализации приложения'
+  );
+}
 
 const filterPresenter = new FilterPresenter({
   filterContainer: tripControlsFilters,
   filters: TRIP_FILTERS,
 });
-
 const sortPresenter = new SortPresenter({
   sortContainer: tripEvents,
   sorts: TRIP_SORTS,
@@ -27,7 +45,7 @@ const sortPresenter = new SortPresenter({
 
 const listPresenter = new ListPresenter({
   container: tripEvents,
-  tripModel: tripModel,
+  tripModel: new TripModel(),
 });
 
 filterPresenter.init();
