@@ -11,19 +11,11 @@ const tripControlsFilters = tripControls?.querySelector(
 );
 const tripEvents = document.querySelector('.trip-events');
 
-// Проверяем наличие необходимых DOM-элементов
-if (!tripControls || !tripControlsFilters || !tripEvents) {
-  throw new Error(
-    'Не найдены необходимые DOM-элементы для инициализации приложения'
-  );
-}
-
 // Инициализация презентеров.
 const filterPresenter = new FilterPresenter({
   filterContainer: tripControlsFilters,
   filters: TRIP_FILTERS,
 });
-
 const sortPresenter = new SortPresenter({
   sortContainer: tripEvents,
   sorts: TRIP_SORTS,
