@@ -1,11 +1,7 @@
 import AbstractView from '../../framework/view/abstract-view.js';
 import dayjs from 'dayjs';
 import he from 'he';
-import { calcTimeBetween } from '../../utils/index.js';
-
-// Используем String.raw как тег для шаблонных строк,
-// чтобы Prettier и редактор форматировали HTML внутри template literals корректно
-const html = String.raw;
+import { calcTimeBetween, html } from '../../utils/index.js';
 
 function createWaypointOffersTemplate(offerData) {
   if (offerData.length === 0) {

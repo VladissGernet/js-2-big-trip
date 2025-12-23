@@ -1,6 +1,4 @@
-// Используем String.raw как тег для шаблонных строк,
-// чтобы Prettier и редактор форматировали HTML внутри template literals корректно
-const html = String.raw;
+import { html } from '../../utils/index.js';
 
 export default function createSortItemTemplate({
   name,

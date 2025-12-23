@@ -1,9 +1,6 @@
+import { html } from '../../utils/index.js';
 import AbstractView from './../../framework/view/abstract-view.js';
 import createFilterItemTemplate from './filter-item.js';
-
-// Используем String.raw как тег для шаблонных строк,
-// чтобы Prettier и редактор форматировали HTML внутри template literals корректно
-const html = String.raw;
 
 function createFilterFormTemplate(filters) {
   const formItems = filters.map((element) => createFilterItemTemplate(element));
@@ -17,12 +14,15 @@ function createFilterFormTemplate(filters) {
 }
 
 export default class FilterFormView extends AbstractView {
+  /** @type {Array.<Object>} Массив фильтров */
+  #filters = null;
+
   constructor(filters) {
     super();
-    this.filters = filters;
+    this.#filters = filters;
   }
 
   get template() {
-    return createFilterFormTemplate(this.filters);
+    return createFilterFormTemplate(this.#filters);
   }
 }

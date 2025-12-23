@@ -5,11 +5,6 @@ import TripModel from './model/trip-model.js';
 
 import { TRIP_FILTERS, TRIP_SORTS } from './const.js';
 
-/* TODO
-  Написать документацию на основе JSDoc.
-  Добавить приватные и защищенные поля.
-*/
-
 const tripControls = document.querySelector('.trip-controls');
 const tripControlsFilters = tripControls?.querySelector(
   '.trip-controls__filters'
@@ -23,15 +18,16 @@ if (!tripControls || !tripControlsFilters || !tripEvents) {
   );
 }
 
+// Инициализация презентеров.
 const filterPresenter = new FilterPresenter({
   filterContainer: tripControlsFilters,
   filters: TRIP_FILTERS,
 });
+
 const sortPresenter = new SortPresenter({
   sortContainer: tripEvents,
   sorts: TRIP_SORTS,
 });
-
 const listPresenter = new ListPresenter({
   container: tripEvents,
   tripModel: new TripModel(),

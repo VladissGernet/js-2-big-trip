@@ -1,8 +1,5 @@
+import { html } from '../../utils/index.js';
 import AbstractView from './../../framework/view/abstract-view.js';
-
-// Используем String.raw как тег для шаблонных строк,
-// чтобы Prettier и редактор форматировали HTML внутри template literals корректно
-const html = String.raw;
 
 const createOfferTemplate = ({ title, price }) => html` <div
   class="event__offer-selector"

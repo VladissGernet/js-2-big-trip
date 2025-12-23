@@ -1,9 +1,6 @@
+import { html } from '../../utils/index.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 import createSortItemTemplate from './sort-item.js';
-
-// Используем String.raw как тег для шаблонных строк,
-// чтобы Prettier и редактор форматировали HTML внутри template literals корректно
-const html = String.raw;
 
 function createSortFormTemplate(sorts) {
   const formItems = sorts.map((element) => createSortItemTemplate(element));
