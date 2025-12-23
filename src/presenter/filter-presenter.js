@@ -1,26 +1,11 @@
+import AbstractPresenter from './abstract-presenter.js';
 import FilterFormView from '../view/filter-view/filter-form-view.js';
-import { render } from '../framework/render.js';
 
 /**
  * Презентер фильтров. Отвечает за рендеринг компонента фильтров.
  */
-export default class FilterPresenter {
-  /** @type {HTMLDivElement} Элемент контейнера для компонента фильтров */
-  #container = null;
-
-  /** @type {Array.<Object>} Массив фильтров */
-  #filters = null;
-
+export default class FilterPresenter extends AbstractPresenter {
   constructor({ filterContainer, filters }) {
-    this.#container = filterContainer;
-    this.#filters = filters;
-  }
-
-  /**
-   * Инициализирует презентер, создает и рендерит компонент фильтров
-   */
-  init() {
-    this.filterFormComponent = new FilterFormView(this.#filters);
-    render(this.filterFormComponent, this.#container);
+    super(filterContainer, new FilterFormView(filters));
   }
 }

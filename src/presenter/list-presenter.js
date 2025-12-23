@@ -6,6 +6,7 @@ import { render, RenderPosition } from '../framework/render.js';
 
 export default class ListPresenter {
   list = new ListView();
+
   constructor({ container, tripModel }) {
     this.container = container;
     this.tripModel = tripModel;

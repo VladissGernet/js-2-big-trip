@@ -11,6 +11,13 @@ const tripControlsFilters = tripControls?.querySelector(
 );
 const tripEvents = document.querySelector('.trip-events');
 
+/* TODO
+Добавить приватные и защищенные поля
+Сделать шаблон для презенторв
+Сделать минимальную документацию
+
+*/
+
 // Инициализация презентеров.
 const filterPresenter = new FilterPresenter({
   filterContainer: tripControlsFilters,
