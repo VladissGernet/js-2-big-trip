@@ -1,3 +1,6 @@
+/**
+ * Состояние кнопок филтров по умолчанию
+ */
 const TRIP_FILTERS = [
   { name: 'Everything', isChecked: true },
   { name: 'Future', isChecked: false },
@@ -5,6 +8,9 @@ const TRIP_FILTERS = [
   { name: 'Past', isChecked: false },
 ];
 
+/**
+ * Состояние кнопок сортировки по умолчанию
+ */
 const TRIP_SORTS = [
   { name: 'Day', isChecked: false, isDisabled: false },
   { name: 'Event', isChecked: false, isDisabled: true },

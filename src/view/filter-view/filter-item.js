@@ -1,5 +1,9 @@
 import { html } from '../../utils/index.js';
 
+/**
+ * Создает разметку по данным элемента
+ * @returns {string} Разметка элемента
+ */
 export default function createFilterItemTemplate({ name, isChecked }) {
   const lowerStr = name.toLowerCase();
   return html`
