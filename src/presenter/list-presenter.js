@@ -38,6 +38,9 @@ const createList = ({
   }
 };
 
+/**
+ * Презентер списка. Отвечает за рендеринг компонента Списка.
+ */
 export default class ListPresenter {
   /**
    * @type {ListView}
