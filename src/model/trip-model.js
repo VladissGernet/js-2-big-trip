@@ -4,21 +4,35 @@ import { pointsMock } from '../mock/points-mock.js';
 import { replaceSnakeToCamel } from '../utils/replace-snake-to-camel.js';
 
 export default class TripModel {
-  destinations = destinationsMock;
-  offers = offersMock;
-  points = replaceSnakeToCamel(pointsMock);
+  /** @type {Array<Object>} Список назначений */
+  #destinations = destinationsMock;
 
+  /** @type {Array<Object>} Список предложений */
+  #offers = offersMock;
+
+  /** @type {Array<Object>} Список путевых точек */
+  #points = replaceSnakeToCamel(pointsMock);
+
+  /**
+   * @returns {Object} Назначения по ID для быстрого поиска.
+   */
   get destinationsById() {
     // Преобразовываю данные для оптимизированного поиска.
-    return structuredClone(this.destinations).reduce((acc, { id, ...rest }) => {
-      acc[id] = rest;
-      return acc;
-    }, {});
+    return structuredClone(this.#destinations).reduce(
+      (acc, { id, ...rest }) => {
+        acc[id] = rest;
+        return acc;
+      },
+      {}
+    );
   }
 
+  /**
+   * @returns {Object} Назначения по типу для быстрого поиска.
+   */
   get offersByType() {
     // Преобразовываю данные для оптимизированного поиска.
-    return structuredClone(this.offers).reduce((types, { type, offers }) => {
+    return structuredClone(this.#offers).reduce((types, { type, offers }) => {
       types[type] = offers.reduce((offersIdentifications, { id, ...rest }) => {
         offersIdentifications[id] = rest;
         return offersIdentifications;
@@ -27,7 +41,10 @@ export default class TripModel {
     }, {});
   }
 
+  /**
+   * @returns {Array<Object>} Список путевых точек
+   */
   get listPoints() {
-    return structuredClone(this.points);
+    return structuredClone(this.#points);
   }
 }
