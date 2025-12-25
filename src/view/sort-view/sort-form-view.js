@@ -16,12 +16,17 @@ function createSortFormTemplate(sorts) {
 }
 
 export default class SortFormView extends AbstractView {
+  /**
+   * @type {Array.<Object>} Массив сортировок
+   */
+  #sorts = null;
+
   constructor(sorts) {
     super();
-    this.sorts = sorts;
+    this.#sorts = sorts;
   }
 
   get template() {
-    return createSortFormTemplate(this.sorts);
+    return createSortFormTemplate(this.#sorts);
   }
 }

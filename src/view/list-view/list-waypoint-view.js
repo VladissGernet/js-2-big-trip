@@ -99,19 +99,37 @@ function createFilterFormTemplate({
   `;
 }
 
+/**
+ * Создание списка
+ */
 export default class ListWaypointView extends AbstractView {
+  /**
+   * @type {Object} Точка маршрута
+   */
+  #listPoint = null;
+
+  /**
+   * @type {Object} Данные о назначении
+   */
+  #destinationData = null;
+
+  /**
+   * @type {Object} Предложения по типу
+   */
+  #listOffers = null;
+
   constructor({ listPoint, destinationData, offerData }) {
     super();
-    this.listPoint = listPoint;
-    this.destinationData = destinationData;
-    this.offerData = offerData;
+    this.#listPoint = listPoint;
+    this.#destinationData = destinationData;
+    this.#listOffers = offerData;
   }
 
   get template() {
     return createFilterFormTemplate({
-      ...this.listPoint,
-      destinationData: this.destinationData,
-      offerData: this.offerData,
+      ...this.#listPoint,
+      destinationData: this.#destinationData,
+      offerData: this.#listOffers,
     });
   }
 }

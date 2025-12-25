@@ -289,19 +289,37 @@ function createListCreationForm({ listPoint, destinationData, listOffers }) {
   `;
 }
 
+/**
+ * Создание формы добавления точки маршрута
+ */
 export default class ListCreationFormView extends AbstractView {
+  /**
+   * @type {Object} Точка маршрута
+   */
+  #listPoint = null;
+
+  /**
+   * @type {Object} Данные о назначении
+   */
+  #destinationData = null;
+
+  /**
+   * @type {Object} Предложения по типу
+   */
+  #listOffers = null;
+
   constructor({ listPoint, destinationData, listOffers }) {
     super();
-    this.listPoint = listPoint;
-    this.destinationData = destinationData;
-    this.listOffers = listOffers;
+    this.#listPoint = listPoint;
+    this.#destinationData = destinationData;
+    this.#listOffers = listOffers;
   }
 
   get template() {
     return createListCreationForm({
-      listPoint: this.listPoint,
-      destinationData: this.destinationData,
-      listOffers: this.listOffers,
+      listPoint: this.#listPoint,
+      destinationData: this.#destinationData,
+      listOffers: this.#listOffers,
     });
   }
 }
