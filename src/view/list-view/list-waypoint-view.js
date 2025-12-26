@@ -118,11 +118,18 @@ export default class ListWaypointView extends AbstractView {
    */
   #listOffers = null;
 
-  constructor({ listPoint, destinationData, offerData }) {
+  #handleRollupClick = null;
+
+  constructor({ listPoint, destinationData, offerData, onRollupClick }) {
     super();
     this.#listPoint = listPoint;
     this.#destinationData = destinationData;
     this.#listOffers = offerData;
+    this.#handleRollupClick = onRollupClick;
+
+    this.element
+      .querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#handleRollupClick);
   }
 
   get template() {

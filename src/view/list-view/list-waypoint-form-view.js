@@ -1,5 +1,41 @@
 import { html } from '../../utils/index.js';
-import AbstractView from './../../framework/view/abstract-view.js';
+import AbstractView from '../../framework/view/abstract-view.js';
+
+/**
+ * @typedef {Object} ListPoint
+ * @property {string} id - Уникальный идентификатор бронирования (UUID).
+ * @property {number} basePrice - Базовая цена в рублях.
+ * @property {string} dateFrom - Дата и время начала (ISO 8601).
+ * @property {string} dateTo - Дата и время окончания (ISO 8601).
+ * @property {string} destination - Идентификатор пункта назначения (UUID).
+ * @property {boolean} isFavorite - Флаг избранного.
+ * @property {string[]} offers - Массив идентификаторов предложений (UUID).
+ * @property {string} type - Тип бронирования ('check-in').
+ */
+
+/**
+ * @typedef {Object} DestinationData
+ * @property {string} name - Название пункта назначения (например, "Chamonix").
+ * @property {string} description - Описание места (например, "Chamonix - in a middle of Europe").
+ * @property {Array<Picture>} pictures - Массив фотографий места.
+ */
+
+/**
+ * @typedef {Object} Picture
+ * @property {string} src - URL изображения (например, "https://24.objects.htmlacademy.pro/static/destinations/12.jpg").
+ * @property {string} description - Описание изображения.
+ */
+
+/**
+ * @typedef {Object} Offer
+ * @property {string} title - Название предложения (например, "Add breakfast").
+ * @property {number} price - Цена предложения в евро.
+ */
+
+/**
+ * @typedef {Object<string, Offer>} ListOffers
+ * @description Объект предложений по UUID. Ключи — идентификаторы предложений.
+ */
 
 const createOfferTemplate = ({ title, price }) => html` <div
   class="event__offer-selector"
@@ -22,6 +58,17 @@ const createOffersList = (dataList) =>
     .map((offer) => createOfferTemplate(offer))
     .join('');
 
+const createOffersTemplate = (data) =>
+  data !== null
+    ? html` <section class="event__section  event__section--offers">
+        <h3 class="event__section-title  event__section-title--offers">
+          Offers
+        </h3>
+
+        <div class="event__available-offers">${createOffersList(data)}</div>
+      </section>`
+    : '';
+
 const creatPictrueTemplate = ({ src, description }) => html`
   <img class="event__photo" src=${src} alt=${description} />
 `;
@@ -29,7 +76,27 @@ const creatPictrueTemplate = ({ src, description }) => html`
 const createPicturesList = (dataList) =>
   dataList.map((item) => creatPictrueTemplate(item)).join('');
 
-function createListCreationForm({ listPoint, destinationData, listOffers }) {
+const createDestinationSectionTemplate = (data) =>
+  data !== null
+    ? html` <section class="event__section  event__section--destination">
+        <h3 class="event__section-title  event__section-title--destination">
+          Destination
+        </h3>
+        <p class="event__destination-description">${data.description}</p>
+
+        <div class="event__photos-container">
+          <div class="event__photos-tape">
+            ${createPicturesList(data.pictures)}
+          </div>
+        </div>
+      </section>`
+    : '';
+
+function createListWaypointForm({
+  listPoint,
+  destinationData = null,
+  listOffers = null,
+}) {
   return html`
     <li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
@@ -259,30 +326,8 @@ function createListCreationForm({ listPoint, destinationData, listOffers }) {
           <button class="event__reset-btn" type="reset">Cancel</button>
         </header>
         <section class="event__details">
-          <section class="event__section  event__section--offers">
-            <h3 class="event__section-title  event__section-title--offers">
-              Offers
-            </h3>
-
-            <div class="event__available-offers">
-              ${createOffersList(listOffers)}
-            </div>
-          </section>
-
-          <section class="event__section  event__section--destination">
-            <h3 class="event__section-title  event__section-title--destination">
-              Destination
-            </h3>
-            <p class="event__destination-description">
-              ${destinationData.description}
-            </p>
-
-            <div class="event__photos-container">
-              <div class="event__photos-tape">
-                ${createPicturesList(destinationData.pictures)}
-              </div>
-            </div>
-          </section>
+          ${createOffersTemplate(listOffers)}
+          ${createDestinationSectionTemplate(destinationData)}
         </section>
       </form>
     </li>
@@ -292,19 +337,19 @@ function createListCreationForm({ listPoint, destinationData, listOffers }) {
 /**
  * Создание формы добавления точки маршрута
  */
-export default class ListCreationFormView extends AbstractView {
+export default class ListWaypointFormView extends AbstractView {
   /**
-   * @type {Object} Точка маршрута
+   * @type {ListPoint} Точка маршрута
    */
   #listPoint = null;
 
   /**
-   * @type {Object} Данные о назначении
+   * @type {DestinationData} Данные о назначении
    */
   #destinationData = null;
 
   /**
-   * @type {Object} Предложения по типу
+   * @type {ListOffers} Предложения по типу
    */
   #listOffers = null;
 
@@ -316,7 +361,7 @@ export default class ListCreationFormView extends AbstractView {
   }
 
   get template() {
-    return createListCreationForm({
+    return createListWaypointForm({
       listPoint: this.#listPoint,
       destinationData: this.#destinationData,
       listOffers: this.#listOffers,

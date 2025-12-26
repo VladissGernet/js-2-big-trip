@@ -1,8 +1,8 @@
 import ListView from '../view/list-view/list-view.js';
 import ListWaypointView from '../view/list-view/list-waypoint-view.js';
-import ListCreationFormView from '../view/list-view/list-creation-form-view.js';
+import ListWaypointFormView from '../view/list-view/list-waypoint-form-view.js';
 
-import { render, RenderPosition } from '../framework/render.js';
+import { render, replace, RenderPosition } from '../framework/render.js';
 
 /**
  * Создание динамического списка путевых точек
@@ -24,17 +24,47 @@ const createList = ({
 
     const offerTypeData = offersByType[pointData.type];
 
+    /* TODO
+      Проверить как выглядит форма создания и форма редактирования в шаблонах html.
+
+      Остановился на добавления обработчика на кнопку редактирования (rollup)
+      Сделать подробную документацию данных, которые принимают элементы
+      waypointForm не создается из-за неверных данных offerTypeData
+
+
+      Еще переделать форму submit , для добавления новой точки wayPoint
+    */
+
     const filteredOfferData = pointData.offers.reduce((acc, offer) => {
       acc.push(offerTypeData[offer]);
       return acc;
     }, []);
 
-    const newWayPoint = new ListWaypointView({
+    const wayPoint = new ListWaypointView({
       listPoint: pointData,
       destinationData: destinationData,
       offerData: filteredOfferData,
+      onRollupClick: (evt) => {
+        evt.preventDefault();
+        // replaceWaypointToForm();
+      },
     });
-    render(newWayPoint, element);
+
+    // const waypointForm = new ListWaypointFormView({
+    //   listPoint: pointData,
+    //   destinationData: destinationData,
+    //   offerData: offerTypeData,
+    // });
+
+    // function replaceWaypointToForm() {
+    //   replace(wayPoint, waypointForm);
+    // }
+
+    // function replaceFormToWaypoint() {
+    //   replace();
+    // }
+
+    render(wayPoint, element);
   }
 };
 
@@ -42,10 +72,7 @@ const createList = ({
  * Презентер списка. Отвечает за рендеринг компонента Списка.
  */
 export default class ListPresenter {
-  /**
-   * @type {ListView}
-   * Контейнер для списка путевых точек
-   */
+  /** @type {ListView} Контейнер для списка путевых точек */
   #listView = new ListView();
 
   /** @type {HTMLElement} Контейнер */
@@ -66,9 +93,7 @@ export default class ListPresenter {
     this.#tripModel = tripModel;
   }
 
-  /**
-   * Инициализация презентера
-   */
+  /** Инициализация презентера */
   init() {
     const { listPoints, destinationsById, offersByType } = this.#tripModel;
     render(this.#listView, this.#container);
@@ -83,13 +108,13 @@ export default class ListPresenter {
 
     // Добавление формы создания путевой точки.
     // На первое время добавляю просто первую точку из исписка.
+
     const firstWayPointForBegin = listPoints[0];
     const firstDestinationData =
       destinationsById[firstWayPointForBegin.destination];
     const firstOffersTypeData = offersByType[firstWayPointForBegin.type];
-
     render(
-      new ListCreationFormView({
+      new ListWaypointFormView({
         listPoint: firstWayPointForBegin,
         destinationData: firstDestinationData,
         listOffers: firstOffersTypeData,
