@@ -54,7 +54,7 @@ const createList = ({
     const waypointForm = new ListWaypointFormView({
       listPoint: pointData,
       destinationData: destinationData,
-      offerData: offerTypeData,
+      listOffers: offerTypeData,
     });
 
     // function replaceWaypointToForm() {
@@ -65,7 +65,7 @@ const createList = ({
     //   replace();
     // }
 
-    render(waypointForm, element);
+    render(wayPoint, element);
   }
 };
 
