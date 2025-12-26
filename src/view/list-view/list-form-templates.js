@@ -16,34 +16,35 @@ const createOfferTemplate = ({ title, price }) => html` <div
   </label>
 </div>`;
 
-const createOffersList = (dataList) =>
-  Object.values(dataList)
-    .map((offer) => createOfferTemplate(offer))
-    .join('');
+const createOffersTemplate = (data) => {
+  const offers = Object.values(data || {});
 
-const createOffersTemplate = (data) =>
-  data !== null
+  return offers.length > 0
     ? html` <section class="event__section  event__section--offers">
         <h3 class="event__section-title  event__section-title--offers">
           Offers
         </h3>
 
-        <div class="event__available-offers">${createOffersList(data)}</div>
+        <div class="event__available-offers">
+          ${offers.map(createOfferTemplate).join('')}
+        </div>
       </section>`
     : '';
+};
 
-const creatPictrueTemplate = ({ src, description }) => html`
-  <img class="event__photo" src=${src} alt=${description} />
-`;
+const createPicturesListTemplate = (dataList) => {
+  const creatPictrueTemplate = ({ src, description }) => html`
+    <img class="event__photo" src=${src} alt=${description} />
+  `;
 
-const createPicturesListTemplate = (dataList) =>
-  dataList?.length > 0
+  return dataList?.length > 0
     ? html`<div class="event__photos-container">
         <div class="event__photos-tape">
-          ${dataList.map((item) => creatPictrueTemplate(item)).join('')}
+          ${dataList.map(creatPictrueTemplate).join('')}
         </div>
       </div>`
     : '';
+};
 
 const createDestinationSectionTemplate = (data) =>
   data === null || data.description === ''
