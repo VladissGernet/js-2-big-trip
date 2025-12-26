@@ -65,7 +65,7 @@ const createList = ({
     //   replace();
     // }
 
-    render(wayPoint, element);
+    render(waypointForm, element);
   }
 };
 
