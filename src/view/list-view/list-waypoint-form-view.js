@@ -73,24 +73,26 @@ const creatPictrueTemplate = ({ src, description }) => html`
   <img class="event__photo" src=${src} alt=${description} />
 `;
 
-const createPicturesList = (dataList) =>
-  dataList.map((item) => creatPictrueTemplate(item)).join('');
+const createPicturesListTemplate = (dataList) =>
+  dataList?.length > 0
+    ? html`<div class="event__photos-container">
+        <div class="event__photos-tape">
+          ${dataList.map((item) => creatPictrueTemplate(item)).join('')}
+        </div>
+      </div>`
+    : '';
 
 const createDestinationSectionTemplate = (data) =>
-  data !== null
-    ? html` <section class="event__section  event__section--destination">
+  data === null || data.description === ''
+    ? ''
+    : html` <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">
           Destination
         </h3>
         <p class="event__destination-description">${data.description}</p>
 
-        <div class="event__photos-container">
-          <div class="event__photos-tape">
-            ${createPicturesList(data.pictures)}
-          </div>
-        </div>
-      </section>`
-    : '';
+        ${createPicturesListTemplate(data.pictures)}
+      </section>`;
 
 function createListWaypointForm({
   listPoint,

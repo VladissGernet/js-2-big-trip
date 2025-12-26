@@ -30,6 +30,7 @@ const createList = ({
       Остановился на добавления обработчика на кнопку редактирования (rollup)
       Сделать подробную документацию данных, которые принимают элементы
       waypointForm не создается из-за неверных данных offerTypeData
+      Заменить с     render(waypointForm, element); на render(wayPoint, element);
 
 
       Еще переделать форму submit , для добавления новой точки wayPoint
@@ -50,11 +51,11 @@ const createList = ({
       },
     });
 
-    // const waypointForm = new ListWaypointFormView({
-    //   listPoint: pointData,
-    //   destinationData: destinationData,
-    //   offerData: offerTypeData,
-    // });
+    const waypointForm = new ListWaypointFormView({
+      listPoint: pointData,
+      destinationData: destinationData,
+      offerData: offerTypeData,
+    });
 
     // function replaceWaypointToForm() {
     //   replace(wayPoint, waypointForm);
@@ -64,7 +65,7 @@ const createList = ({
     //   replace();
     // }
 
-    render(wayPoint, element);
+    render(waypointForm, element);
   }
 };
 
@@ -109,18 +110,18 @@ export default class ListPresenter {
     // Добавление формы создания путевой точки.
     // На первое время добавляю просто первую точку из исписка.
 
-    const firstWayPointForBegin = listPoints[0];
-    const firstDestinationData =
-      destinationsById[firstWayPointForBegin.destination];
-    const firstOffersTypeData = offersByType[firstWayPointForBegin.type];
-    render(
-      new ListWaypointFormView({
-        listPoint: firstWayPointForBegin,
-        destinationData: firstDestinationData,
-        listOffers: firstOffersTypeData,
-      }),
-      this.#listView.element,
-      RenderPosition.AFTERBEGIN
-    );
+    // const firstWayPointForBegin = listPoints[0];
+    // const firstDestinationData =
+    //   destinationsById[firstWayPointForBegin.destination];
+    // const firstOffersTypeData = offersByType[firstWayPointForBegin.type];
+    // render(
+    //   new ListWaypointFormView({
+    //     listPoint: firstWayPointForBegin,
+    //     destinationData: firstDestinationData,
+    //     listOffers: firstOffersTypeData,
+    //   }),
+    //   this.#listView.element,
+    //   RenderPosition.AFTERBEGIN
+    // );
   }
 }
