@@ -99,27 +99,8 @@ function createFilterFormTemplate({
   `;
 }
 
-/**
- * Создание списка
- */
+/** Создание списка */
 export default class ListWaypointView extends AbstractView {
-  /**
-   * @type {Object} Точка маршрута
-   */
-  #listPoint = null;
-
-  /**
-   * @type {Object} Данные о назначении
-   */
-  #destinationData = null;
-
-  /**
-   * @type {Object} Предложения по типу
-   */
-  #listOffers = null;
-
-  #handleRollupClick = null;
-
   constructor({ listPoint, destinationData, offerData, onRollupClick }) {
     super();
     this.#listPoint = listPoint;
@@ -131,6 +112,11 @@ export default class ListWaypointView extends AbstractView {
       .querySelector('.event__rollup-btn')
       .addEventListener('click', this.#handleRollupClick);
   }
+
+  #listPoint = null;
+  #destinationData = null;
+  #listOffers = null;
+  #handleRollupClick = null;
 
   get template() {
     return createFilterFormTemplate({

@@ -2,9 +2,7 @@ import { html } from '../../utils/index.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 import createSortItemTemplate from './sort-item.js';
 
-/**
- * Создание шаблона формы сортировки
- */
+/** Создание шаблона формы сортировки */
 function createSortFormTemplate(sorts) {
   const formItems = sorts.map((element) => createSortItemTemplate(element));
 
@@ -16,15 +14,12 @@ function createSortFormTemplate(sorts) {
 }
 
 export default class SortFormView extends AbstractView {
-  /**
-   * @type {Array.<Object>} Массив сортировок
-   */
-  #sorts = null;
-
   constructor(sorts) {
     super();
     this.#sorts = sorts;
   }
+
+  #sorts = null;
 
   get template() {
     return createSortFormTemplate(this.#sorts);

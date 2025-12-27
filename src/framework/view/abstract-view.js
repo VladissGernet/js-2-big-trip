@@ -7,13 +7,8 @@ const SHAKE_CLASS_NAME = 'shake';
 /** @const {number} Время анимации в миллисекундах */
 const SHAKE_ANIMATION_TIMEOUT = 600;
 
-/**
- * Абстрактный класс представления
- */
+/** Абстрактный класс представления */
 export default class AbstractView {
-  /** @type {HTMLElement|null} Элемент представления */
-  #element = null;
-
   constructor() {
     if (new.target === AbstractView) {
       throw new Error(`
@@ -21,6 +16,8 @@ export default class AbstractView {
       `);
     }
   }
+
+  #element = null;
 
   /**
    * Геттер для получения элемента

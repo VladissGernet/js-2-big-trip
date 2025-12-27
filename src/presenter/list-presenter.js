@@ -1,11 +1,9 @@
 import ListView from '../view/list-view/list-view.js';
 import ListWaypointView from '../view/list-view/list-waypoint-view.js';
 import ListWaypointFormView from '../view/list-view/list-waypoint-form-view.js';
-
 import { render, replace } from '../framework/render.js';
 
-/**
- * Модель точки маршрута (event point) для планировщика поездок.
+/** Модель точки маршрута (event point) для планировщика поездок.
  * @typedef {Object} PointData
  * @property {string} id - Уникальный идентификатор точки (UUID).
  * @property {number} basePrice - Базовая цена услуги в рублях.
@@ -17,38 +15,49 @@ import { render, replace } from '../framework/render.js';
  * @property {string} type - Тип события: 'check-in', 'taxi', 'sightseeing', 'flight' и т.д.
  */
 
-/**
- * Модель изображения пункта назначения.
+/** Модель изображения пункта назначения.
  * @typedef {Object} DestinationPicture
  * @property {string} src - URL изображения (абсолютная ссылка).
  * @property {string} description - Описание изображения для доступности (alt-текст).
  */
 
-/**
- * Модель пункта назначения (destination) для планировщика поездок.
+/** Модель пункта назначения (destination) для планировщика поездок.
  * @typedef {Object} DestinationData
  * @property {string} description - Полное описание города/места.
  * @property {string} name - Название пункта назначения.
  * @property {DestinationPicture[]} pictures - Массив изображений пункта назначения.
  */
 
-/**
- * Модель отдельного предложения/опции.
+/** Модель отдельного предложения/опции.
  * @typedef {Object} OfferTypeData
  * @property {string} title - Название предложения (на английском).
  * @property {number} price - Цена предложения в рублях.
  */
 
-/**
- * Словарь предложений по типу события.
+/** Словарь предложений по типу события.
  * Ключ — UUID предложения, значение — данные предложения.
  * @typedef {Object<string, OfferTypeData>} OffersByTypeData
  */
 
-/**
- * Создание DOM-элемента путевой точки.
+/** Модель данных поездки.
+ * @typedef {Object} TripModel
+ * @property {PointData[]} listPoints - Список путевых точек
+ * @property {Object<string, DestinationData>} destinationsById - Назначения по ID
+ * @property {Object<string, ListOffers>} offersByType - Предложения по типу
+ */
+
+/** Конфигурация презентера списка.
+ * @typedef {Object} PresenterConfig
+ * @property {HTMLElement} container - Контейнер для рендера
+ * @property {TripModel} tripModel - Модель данных поездки
+ */
+
+/** Объект предложений по UUID. Ключи — идентификаторы предложений.
+ * @typedef {Object<string, OfferTypeData>} ListOffers
+ */
+
+/** Создание DOM-элемента путевой точки.
  * Связывает данные PointData, DestinationData и offerTypeData в готовый компонент.
- *
  * @param {Object} params - Параметры создания точки
  * @param {PointData} params.pointData - Данные точки маршрута (id, price, dates, type)
  * @param {DestinationData} params.destinationData - Данные пункта назначения (name, pictures)
@@ -108,11 +117,12 @@ const createWayPoint = ({
 };
 
 /**
- * Создание динамического списка путевых точек
- * @param {Array<Object>} listPoints Массив из объектов с данными путевых точек
- * @param {Object<id, Object>} destinationsById Объект с данными о назначениях по ID
- * @param {Object<id, Object>} offersByType Объект с данными о предложениях по типу
- * @param {HTMLUlElement} element Контейнер для списка путевых точек
+ * Создание динамического списка путевых точек.
+ * @param {Object} params - Параметры для создания списка
+ * @param {PointData[]} params.listPoints - Массив данных точек маршрута
+ * @param {Object<string, DestinationData>} params.destinationsById - Назначения по ID
+ * @param {Object<string, OffersByTypeData>} params.offersByType - Предложения по типу
+ * @param {HTMLUListElement} params.element - Контейнер списка
  */
 const createList = ({
   listPoints,
@@ -130,30 +140,19 @@ const createList = ({
   }
 };
 
-/**
- * Презентер списка. Отвечает за рендеринг компонента Списка.
- */
+/** Презентер списка. Отвечает за рендеринг компонента Списка. */
 export default class ListPresenter {
-  /** @type {ListView} Контейнер для списка путевых точек */
-  #listView = new ListView();
-
-  /** @type {HTMLElement} Контейнер */
-  #container = null;
-
   /**
-   * @typedef {Object} TripModel
-   * @property {Array} listPoints - Список путевых точек
-   * @property {Object} destinationsById - Назначения по ID
-   * @property {Object} offersByType - Предложения по типу
+   * @param {PresenterConfig} config - Конфигурация презентера
    */
-
-  /** @type {TripModel} Модель поездки */
-  #tripModel = null;
-
   constructor({ container, tripModel }) {
     this.#container = container;
     this.#tripModel = tripModel;
   }
+
+  #listView = new ListView();
+  #container = null;
+  #tripModel = null;
 
   /** Инициализация презентера */
   init() {
@@ -167,22 +166,5 @@ export default class ListPresenter {
       offersByType: offersByType,
       element: this.#listView.element,
     });
-
-    // Добавление формы создания путевой точки.
-    // На первое время добавляю просто первую точку из исписка.
-
-    // const firstWayPointForBegin = listPoints[0];
-    // const firstDestinationData =
-    //   destinationsById[firstWayPointForBegin.destination];
-    // const firstOffersTypeData = offersByType[firstWayPointForBegin.type];
-    // render(
-    //   new ListWaypointFormView({
-    //     listPoint: firstWayPointForBegin,
-    //     destinationData: firstDestinationData,
-    //     listOffers: firstOffersTypeData,
-    //   }),
-    //   this.#listView.element,
-    //   RenderPosition.AFTERBEGIN
-    // );
   }
 }

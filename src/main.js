@@ -13,11 +13,11 @@ const tripEvents = document.querySelector('.trip-events');
 
 // Инициализация презентеров.
 const filterPresenter = new FilterPresenter({
-  filterContainer: tripControlsFilters,
+  container: tripControlsFilters,
   filters: TRIP_FILTERS,
 });
 const sortPresenter = new SortPresenter({
-  sortContainer: tripEvents,
+  container: tripEvents,
   sorts: TRIP_SORTS,
 });
 const listPresenter = new ListPresenter({

@@ -1,15 +1,11 @@
 import { render } from '../framework/render.js';
 
-/**
- * Абстрактный класс presenter
- */
+/** Абстрактный класс presenter */
 export default class AbstractPresenter {
-  /** @type {HTMLElement} Контейнер */
-  #container = null;
-
-  /** @type {HTMLDivElement} View компонет контейнера */
-  #viewComponent = null;
-
+  /**
+   * @param {HTMLElement} container Место, куда будет вствляться view компонент
+   * @param {HTMLElement} viewComponent Принимаемый view компонент
+   */
   constructor(container, viewComponent) {
     if (new.target === AbstractPresenter) {
       throw new Error(`
@@ -20,9 +16,10 @@ export default class AbstractPresenter {
     this.#viewComponent = viewComponent;
   }
 
-  /**
-   * Инициализация презентера
-   */
+  #container = null;
+  #viewComponent = null;
+
+  /** Инициализация презентера */
   init() {
     render(this.#viewComponent, this.#container);
   }

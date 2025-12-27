@@ -1,7 +1,6 @@
 import { html } from '../../utils/index.js';
 
-/**
- * Создает разметку по данным элемента
+/** Создает разметку по данным элемента
  * @returns {string} Разметка элемента
  */
 export default function createFilterItemTemplate({ name, isChecked }) {
