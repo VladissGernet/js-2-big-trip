@@ -73,12 +73,14 @@ const createWayPoint = ({
   element,
 }) => {
   /* TODO
-      Проверить как выглядит форма создания и форма редактирования в шаблонах html.
-
       Остановился на добавления обработчика на кнопку редактирования (rollup)
       Сделать подробную документацию данных, которые принимают элементы
       waypointForm не создается из-за неверных данных offerTypeData
       Заменить с     render(waypointForm, element); на render(wayPoint, element);
+      Обратить внимание на кнопку редактирования, где есть стрелка вверх закрытия!
+      В формах есть наличие и отсутсвие стрелочки вверх, а такаже есть кнопки delete и пр.
+
+      Добавил закрытие на rollup close
 
 
       Еще переделать форму submit , для добавления новой точки wayPoint
@@ -93,25 +95,40 @@ const createWayPoint = ({
     listPoint: pointData,
     destinationData: destinationData,
     listOffers: offerTypeData,
+    isEditForm: true,
   });
+
+  const onCloseRollupBtnClick = (evt) => {
+    evt.preventDefault();
+    replaceFormToWaypoint();
+  };
+
+  waypointForm.element
+    .querySelector('.event__rollup-btn')
+    .addEventListener('click', onCloseRollupBtnClick);
 
   const wayPoint = new ListWaypointView({
     listPoint: pointData,
     destinationData: destinationData,
     offerData: filteredOfferData,
-    onRollupClick: (evt) => {
-      evt.preventDefault();
-      replaceWaypointToForm();
-    },
   });
+
+  const onOpenRollupBtnClick = (evt) => {
+    evt.preventDefault();
+    replaceWaypointToForm();
+  };
+
+  wayPoint.element
+    .querySelector('.event__rollup-btn')
+    .addEventListener('click', onOpenRollupBtnClick);
 
   function replaceWaypointToForm() {
     replace(waypointForm, wayPoint);
   }
 
-  // function replaceFormToWaypoint(waypointForm, wayPoint) {
-  //   replace();
-  // }
+  function replaceFormToWaypoint() {
+    replace(wayPoint, waypointForm);
+  }
 
   render(wayPoint, element);
 };

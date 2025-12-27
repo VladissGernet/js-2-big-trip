@@ -59,10 +59,18 @@ const createDestinationSectionTemplate = (data) =>
         ${createPicturesListTemplate(data.pictures)}
       </section>`;
 
+const closeEditFormButton = (isEditForm) =>
+  isEditForm
+    ? html` <button class="event__rollup-btn" type="button">
+        <span class="visually-hidden">Open event</span>
+      </button>`
+    : '';
+
 const createListWaypointFormTemplate = ({
   listPoint,
   destinationData = null,
   listOffers = null,
+  isEditForm,
 }) => {
   const dateFrom = dayjs(listPoint.dateFrom).format('DD/MM/YY HH:mm');
   const dateTo = dayjs(listPoint.dateTo).format('DD/MM/YY HH:mm');
@@ -286,14 +294,17 @@ const createListWaypointFormTemplate = ({
               id="event-price-1"
               type="text"
               name="event-price"
-              value=""
+              value="${listPoint.basePrice}"
             />
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">
             Save
           </button>
-          <button class="event__reset-btn" type="reset">Cancel</button>
+          <button class="event__reset-btn" type="reset">
+            ${isEditForm ? 'Delete' : 'Cancel'}
+          </button>
+          ${closeEditFormButton(isEditForm)}
         </header>
         <section class="event__details">
           ${createOffersTemplate(listOffers)}

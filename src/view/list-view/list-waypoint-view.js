@@ -101,22 +101,16 @@ function createFilterFormTemplate({
 
 /** Создание списка */
 export default class ListWaypointView extends AbstractView {
-  constructor({ listPoint, destinationData, offerData, onRollupClick }) {
+  constructor({ listPoint, destinationData, offerData }) {
     super();
     this.#listPoint = listPoint;
     this.#destinationData = destinationData;
     this.#listOffers = offerData;
-    this.#handleRollupClick = onRollupClick;
-
-    this.element
-      .querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#handleRollupClick);
   }
 
   #listPoint = null;
   #destinationData = null;
   #listOffers = null;
-  #handleRollupClick = null;
 
   get template() {
     return createFilterFormTemplate({
