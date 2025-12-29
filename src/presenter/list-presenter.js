@@ -160,21 +160,23 @@ export default class ListPresenter {
     this.#tripModel = tripModel;
   }
 
-  #listView = new ListView();
   #container;
   #tripModel;
+
+  /** Публичный доступ для управления списком */
+  listView = new ListView();
 
   /** Инициализация презентера */
   init() {
     const { listPoints, destinationsById, offersByType } = this.#tripModel;
-    render(this.#listView, this.#container);
+    render(this.listView, this.#container);
 
     // Создание динамического списка.
     createList({
       listPoints: listPoints,
       destinationsById: destinationsById,
       offersByType: offersByType,
-      element: this.#listView.element,
+      element: this.listView.element,
     });
   }
 }

@@ -17,6 +17,11 @@ export default class PageMainPresenter {
 
   #container;
 
+  /** Доступ к компоненту списка
+   * @type {HTMLUlistElement} - элемент разметки
+   */
+  listView = null;
+
   init() {
     const main = new PageMainView();
     const tripEvents = new TripEventsView();
@@ -35,5 +40,7 @@ export default class PageMainPresenter {
 
     sortPresenter.init();
     listPresenter.init();
+
+    this.listView = listPresenter.listView.element;
   }
 }
