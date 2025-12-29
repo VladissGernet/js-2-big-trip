@@ -26,6 +26,9 @@ export default class PageHeaderPresenter {
     });
     const tripMain = new TripMainView();
     const tripControls = new TripControlsView();
+    const eventAddBtn = new BtnView(
+      'trip-main__event-add-btn btn btn--big btn--yellow'
+    );
 
     render(pageHeader, this.#container);
     render(tripMain, pageHeader.container);
@@ -38,9 +41,10 @@ export default class PageHeaderPresenter {
     });
     filterPresenter.init();
 
-    render(
-      new BtnView('trip-main__event-add-btn btn btn--big btn--yellow'),
-      tripMain.element
-    );
+    render(eventAddBtn, tripMain.element);
+    eventAddBtn.element.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      console.log('click');
+    });
   }
 }

@@ -23,7 +23,7 @@ export default class PageHeaderView extends AbstractView {
     this.#containerClassName = containerClassName;
   }
 
-  #containerClassName = '';
+  #containerClassName;
 
   get template() {
     return createPageHeaderTemplate(this.#containerClassName);

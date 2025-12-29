@@ -13,7 +13,7 @@ export default class BtnView extends AbstractView {
     this.#className = className;
   }
 
-  #className = '';
+  #className;
 
   get template() {
     return btnTemplate(this.#className);

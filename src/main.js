@@ -3,15 +3,12 @@ import SortPresenter from './presenter/sort-presenter.js';
 import ListPresenter from './presenter/list-presenter.js';
 import TripModel from './model/trip-model.js';
 
-import { TRIP_FILTERS, TRIP_SORTS } from './const.js';
+import { TRIP_SORTS } from './const.js';
 
 const pageBody = document.querySelector('.page-body');
 
 // const tripControls = document.querySelector('.trip-controls');
 
-// const tripControlsFilters = tripControls?.querySelector(
-//   '.trip-controls__filters'
-// );
 // const tripEvents = document.querySelector('.trip-events');
 
 // Инициализация презентеров.
@@ -30,7 +27,6 @@ const pageHeaderPresenter = new PageHeaderPresenter({
 
 pageHeaderPresenter.init();
 
-// filterPresenter.init();
 // sortPresenter.init();
 // listPresenter.init();
 
