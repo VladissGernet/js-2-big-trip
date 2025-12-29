@@ -11,10 +11,10 @@ export default class ListWaypointFormView extends AbstractView {
     this.#isEditForm = isEditForm;
   }
 
-  #listPoint = null;
-  #destinationData = null;
-  #listOffers = null;
-  #isEditForm = false;
+  #listPoint;
+  #destinationData;
+  #listOffers;
+  #isEditForm;
 
   get template() {
     return createListWaypointFormTemplate({

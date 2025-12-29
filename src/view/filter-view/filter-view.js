@@ -3,10 +3,7 @@ import AbstractView from '../../framework/view/abstract-view.js';
 import createFilterItemTemplate from './filter-item.js';
 
 function createFilterTemplate(filters) {
-  /** Создает разметку компонентов фильтра.
-   * @type {string[]} formItems - Массив HTML-разметок элементов фильтра
-   */
-  const formItems = filters.map((element) => createFilterItemTemplate(element));
+  const formItems = filters.map(createFilterItemTemplate);
 
   return html`
     <form class="trip-filters" action="#" method="get">
@@ -22,7 +19,7 @@ export default class FilterView extends AbstractView {
     this.#filters = filters;
   }
 
-  #filters = null;
+  #filters;
 
   get template() {
     return createFilterTemplate(this.#filters);

@@ -15,7 +15,7 @@ export default class PageMainPresenter {
     this.#container = container;
   }
 
-  #container = null;
+  #container;
 
   init() {
     const main = new PageMainView();

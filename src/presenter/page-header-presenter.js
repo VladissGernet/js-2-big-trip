@@ -21,7 +21,7 @@ export default class PageHeaderPresenter {
     this.#container = container;
   }
 
-  #container = null;
+  #container;
 
   init() {
     const pageHeader = new PageHeaderView();

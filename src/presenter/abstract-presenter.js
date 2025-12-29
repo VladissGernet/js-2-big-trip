@@ -16,8 +16,8 @@ export default class AbstractPresenter {
     this.#viewComponent = viewComponent;
   }
 
-  #container = null;
-  #viewComponent = null;
+  #container;
+  #viewComponent;
 
   /** Инициализация презентера */
   init() {

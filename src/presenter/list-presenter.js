@@ -161,8 +161,8 @@ export default class ListPresenter {
   }
 
   #listView = new ListView();
-  #container = null;
-  #tripModel = null;
+  #container;
+  #tripModel;
 
   /** Инициализация презентера */
   init() {

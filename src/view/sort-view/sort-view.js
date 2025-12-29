@@ -2,9 +2,8 @@ import { html } from '../../utils/index.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 import createSortItemTemplate from './sort-item.js';
 
-/** Создание шаблона формы сортировки */
 function createSortTemplate(sorts) {
-  const formItems = sorts.map((element) => createSortItemTemplate(element));
+  const formItems = sorts.map(createSortItemTemplate);
 
   return html`
     <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
@@ -19,7 +18,7 @@ export default class SortView extends AbstractView {
     this.#sorts = sorts;
   }
 
-  #sorts = null;
+  #sorts;
 
   get template() {
     return createSortTemplate(this.#sorts);

@@ -99,7 +99,6 @@ function createWaypointTemplate({
   `;
 }
 
-/** Создание списка */
 export default class ListWaypointView extends AbstractView {
   constructor({ listPoint, destinationData, offerData }) {
     super();
@@ -108,9 +107,9 @@ export default class ListWaypointView extends AbstractView {
     this.#listOffers = offerData;
   }
 
-  #listPoint = null;
-  #destinationData = null;
-  #listOffers = null;
+  #listPoint;
+  #destinationData;
+  #listOffers;
 
   get template() {
     return createWaypointTemplate({
