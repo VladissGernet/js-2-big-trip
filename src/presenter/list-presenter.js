@@ -74,11 +74,6 @@ const createWayPoint = ({
   offerTypeData,
   element,
 }) => {
-  /* TODO
-      Остановился на добавления обработчика на кнопку редактирования (rollup)
-      Еще переделать форму submit , для добавления новой точки wayPoint
-    */
-
   const filteredOfferData = pointData.offers.reduce((acc, offer) => {
     acc.push(offerTypeData[offer]);
     return acc;
