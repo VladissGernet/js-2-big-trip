@@ -21,9 +21,7 @@ export default class PageHeaderPresenter {
   #container = null;
 
   init() {
-    const pageHeader = new PageHeaderView({
-      containerClassName: 'page-body__container page-header__container',
-    });
+    const pageHeader = new PageHeaderView();
     const tripMain = new TripMainView();
     const tripControls = new TripControlsView();
     const eventAddBtn = new BtnView(

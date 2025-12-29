@@ -1,10 +1,10 @@
 import { html } from '../../utils/index.js';
 import AbstractView from './../../framework/view/abstract-view.js';
 
-function createPageHeaderTemplate(containerClassName) {
+function createPageHeaderTemplate() {
   return html`
     <header class="page-header">
-      <div class="${containerClassName || 'page-header__container'}">
+      <div class="page-body__container page-header__container">
         <img
           class="page-header__logo"
           src="img/logo.png"
@@ -18,15 +18,12 @@ function createPageHeaderTemplate(containerClassName) {
 }
 
 export default class PageHeaderView extends AbstractView {
-  constructor({ containerClassName }) {
+  constructor() {
     super();
-    this.#containerClassName = containerClassName;
   }
 
-  #containerClassName;
-
   get template() {
-    return createPageHeaderTemplate(this.#containerClassName);
+    return createPageHeaderTemplate();
   }
 
   get container() {
