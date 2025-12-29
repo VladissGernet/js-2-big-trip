@@ -1,8 +1,11 @@
-import PageHeaderView from '../view/page-header-view/page-header-view.js';
-import TripMainView from '../view/trip-main-view/trip-main-view.js';
-import TripControlsView from '../view/trip-controls-view/trip-controls-view.js';
+import {
+  PageHeaderView,
+  TripMainView,
+  TripControlsView,
+  BtnView,
+} from '../view/index.js';
+
 import FilterPresenter from './filter-presenter.js';
-import BtnView from '../view/btn-view/btn-view.js';
 import { TRIP_FILTERS } from '../const.js';
 import { render } from '../framework/render.js';
 

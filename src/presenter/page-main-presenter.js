@@ -1,6 +1,5 @@
 import { render } from '../framework/render.js';
-import PageMainView from '../view/page-main-view/page-main-view.js';
-import TripEvents from '../view/trip-events-view/trip-events-view.js';
+import { PageMainView, TripEventsView } from '../view/index.js';
 import SortPresenter from '../presenter/sort-presenter.js';
 import ListPresenter from '../presenter/list-presenter.js';
 import TripModel from '../model/trip-model.js';
@@ -20,7 +19,7 @@ export default class PageMainPresenter {
 
   init() {
     const main = new PageMainView();
-    const tripEvents = new TripEvents();
+    const tripEvents = new TripEventsView();
 
     render(main, this.#container);
     render(tripEvents, main.container);

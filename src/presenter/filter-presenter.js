@@ -1,5 +1,5 @@
 import AbstractPresenter from './abstract-presenter.js';
-import FilterFormView from '../view/filter-view/filter-form-view.js';
+import { FilterView } from '../view/index.js';
 
 /** Конфигурация презентера списка.
  * @typedef {Object} PresenterConfig
@@ -17,6 +17,6 @@ import FilterFormView from '../view/filter-view/filter-form-view.js';
 export default class FilterPresenter extends AbstractPresenter {
   /** @param {PresenterConfig} config */
   constructor({ container, filters }) {
-    super(container, new FilterFormView(filters));
+    super(container, new FilterView(filters));
   }
 }

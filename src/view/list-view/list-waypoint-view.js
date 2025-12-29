@@ -21,7 +21,7 @@ function createWaypointOffersTemplate(offerData) {
     .join(' ');
 }
 
-function createFilterFormTemplate({
+function createWaypointTemplate({
   destinationData,
   offerData,
   basePrice,
@@ -113,7 +113,7 @@ export default class ListWaypointView extends AbstractView {
   #listOffers = null;
 
   get template() {
-    return createFilterFormTemplate({
+    return createWaypointTemplate({
       ...this.#listPoint,
       destinationData: this.#destinationData,
       offerData: this.#listOffers,

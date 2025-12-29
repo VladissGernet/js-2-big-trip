@@ -1,8 +1,8 @@
 import { html } from '../../utils/index.js';
-import AbstractView from './../../framework/view/abstract-view.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 import createFilterItemTemplate from './filter-item.js';
 
-function createFilterFormTemplate(filters) {
+function createFilterTemplate(filters) {
   /** Создает разметку компонентов фильтра.
    * @type {string[]} formItems - Массив HTML-разметок элементов фильтра
    */
@@ -16,7 +16,7 @@ function createFilterFormTemplate(filters) {
   `;
 }
 
-export default class FilterFormView extends AbstractView {
+export default class FilterView extends AbstractView {
   constructor(filters) {
     super();
     this.#filters = filters;
@@ -25,6 +25,6 @@ export default class FilterFormView extends AbstractView {
   #filters = null;
 
   get template() {
-    return createFilterFormTemplate(this.#filters);
+    return createFilterTemplate(this.#filters);
   }
 }

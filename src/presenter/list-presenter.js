@@ -1,6 +1,8 @@
-import ListView from '../view/list-view/list-view.js';
-import ListWaypointView from '../view/list-view/list-waypoint-view.js';
-import ListWaypointFormView from '../view/list-view/list-waypoint-form-view.js';
+import {
+  ListView,
+  ListWaypointView,
+  ListWaypointFormView,
+} from '../view/index.js';
 import { render, replace } from '../framework/render.js';
 
 /** Модель точки маршрута (event point) для планировщика поездок.
