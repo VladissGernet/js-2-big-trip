@@ -8,7 +8,14 @@ const pageHeaderPresenter = new PageHeaderPresenter({
 });
 const pageMainPresenter = new PageMainPresenter(pageBody);
 
+// Редер списка на основе данных с сервера.
 pageHeaderPresenter.init();
 pageMainPresenter.init();
 
 console.log(pageMainPresenter.listView);
+console.log(pageHeaderPresenter.eventAddBtn);
+
+// this.eventAddBtn.element.addEventListener('click', (evt) => {
+//   evt.preventDefault();
+//   console.log('click');
+// });

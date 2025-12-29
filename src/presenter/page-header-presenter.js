@@ -23,11 +23,17 @@ export default class PageHeaderPresenter {
 
   #container;
 
+  /**
+   * @type {HTMLButtonElement} Кнопка добавления новой строчки в списке.
+   */
+  eventAddBtn = null;
+
   init() {
     const pageHeader = new PageHeaderView();
     const tripMain = new TripMainView();
     const tripControls = new TripControlsView();
-    const eventAddBtn = new BtnView(
+
+    this.eventAddBtn = new BtnView(
       'trip-main__event-add-btn btn btn--big btn--yellow'
     );
 
@@ -42,10 +48,6 @@ export default class PageHeaderPresenter {
     });
     filterPresenter.init();
 
-    render(eventAddBtn, tripMain.element);
-    eventAddBtn.element.addEventListener('click', (evt) => {
-      evt.preventDefault();
-      console.log('click');
-    });
+    render(this.eventAddBtn, tripMain.element);
   }
 }

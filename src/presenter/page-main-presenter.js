@@ -41,6 +41,6 @@ export default class PageMainPresenter {
     sortPresenter.init();
     listPresenter.init();
 
-    this.listView = listPresenter.listView.element;
+    this.listView = listPresenter.listView;
   }
 }
