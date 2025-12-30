@@ -7,8 +7,11 @@ export default class TripModel {
   /** @type {Array<Object>} Список назначений */
   #destinations = destinationsMock;
 
-  /** @type {Array<Object>} Список предложений */
-  #offers = offersMock;
+  /** Список предложений
+   * @type {Array<Object>}
+   * Публичный для отрисовки списка типов в форме создания\редактирования точки.
+   */
+  offers = offersMock;
 
   /** @type {Array<Object>} Список путевых точек */
   #points = replaceSnakeToCamel(pointsMock);
@@ -32,7 +35,7 @@ export default class TripModel {
    */
   get offersByType() {
     // Преобразовываю данные для оптимизированного поиска.
-    return structuredClone(this.#offers).reduce((types, { type, offers }) => {
+    return structuredClone(this.offers).reduce((types, { type, offers }) => {
       types[type] = offers.reduce((offersIdentifications, { id, ...rest }) => {
         offersIdentifications[id] = rest;
         return offersIdentifications;

@@ -54,7 +54,7 @@ function createWaypointTemplate({
             alt="Event type icon"
           />
         </div>
-        <h3 class="event__title">${destinationData.name}</h3>
+        <h3 class="event__title">${destinationData?.name || ''}</h3>
         <div class="event__schedule">
           <p class="event__time">
             <time

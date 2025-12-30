@@ -66,11 +66,45 @@ const closeEditFormButton = (isEditForm) =>
       </button>`
     : '';
 
+const createTypeList = (offers) => {
+  const listItems = offers.reduce(
+    (finalHTML, item) =>
+      finalHTML +
+      html`
+        <div class="event__type-item">
+          <input
+            id="event-type-${item.type}-1"
+            class="event__type-input  visually-hidden"
+            type="radio"
+            name="event-type"
+            value="${item.type}"
+          />
+          <label
+            class="event__type-label  event__type-label--${item.type}"
+            for="event-type-${item.type}-1"
+            >${item.type[0].toUpperCase() + item.type.slice(1)}</label
+          >
+        </div>
+      `,
+    ''
+  );
+
+  return html`
+    <div class="event__type-list">
+      <fieldset class="event__type-group">
+        <legend class="visually-hidden">Event type</legend>
+        ${listItems}
+      </fieldset>
+    </div>
+  `;
+};
+
 const createListWaypointFormTemplate = ({
-  listPoint,
+  listPoint = null,
   destinationData = null,
   listOffers = null,
   isEditForm,
+  model,
 }) => {
   const dateFrom = dayjs(listPoint.dateFrom).format('DD/MM/YY HH:mm');
   const dateTo = dayjs(listPoint.dateTo).format('DD/MM/YY HH:mm');
@@ -98,148 +132,7 @@ const createListWaypointFormTemplate = ({
               id="event-type-toggle-1"
               type="checkbox"
             />
-
-            <div class="event__type-list">
-              <fieldset class="event__type-group">
-                <legend class="visually-hidden">Event type</legend>
-
-                <div class="event__type-item">
-                  <input
-                    id="event-type-taxi-1"
-                    class="event__type-input  visually-hidden"
-                    type="radio"
-                    name="event-type"
-                    value="taxi"
-                  />
-                  <label
-                    class="event__type-label  event__type-label--taxi"
-                    for="event-type-taxi-1"
-                    >Taxi</label
-                  >
-                </div>
-
-                <div class="event__type-item">
-                  <input
-                    id="event-type-bus-1"
-                    class="event__type-input  visually-hidden"
-                    type="radio"
-                    name="event-type"
-                    value="bus"
-                  />
-                  <label
-                    class="event__type-label  event__type-label--bus"
-                    for="event-type-bus-1"
-                    >Bus</label
-                  >
-                </div>
-
-                <div class="event__type-item">
-                  <input
-                    id="event-type-train-1"
-                    class="event__type-input  visually-hidden"
-                    type="radio"
-                    name="event-type"
-                    value="train"
-                  />
-                  <label
-                    class="event__type-label  event__type-label--train"
-                    for="event-type-train-1"
-                    >Train</label
-                  >
-                </div>
-
-                <div class="event__type-item">
-                  <input
-                    id="event-type-ship-1"
-                    class="event__type-input  visually-hidden"
-                    type="radio"
-                    name="event-type"
-                    value="ship"
-                  />
-                  <label
-                    class="event__type-label  event__type-label--ship"
-                    for="event-type-ship-1"
-                    >Ship</label
-                  >
-                </div>
-
-                <div class="event__type-item">
-                  <input
-                    id="event-type-drive-1"
-                    class="event__type-input  visually-hidden"
-                    type="radio"
-                    name="event-type"
-                    value="drive"
-                  />
-                  <label
-                    class="event__type-label  event__type-label--drive"
-                    for="event-type-drive-1"
-                    >Drive</label
-                  >
-                </div>
-
-                <div class="event__type-item">
-                  <input
-                    id="event-type-flight-1"
-                    class="event__type-input  visually-hidden"
-                    type="radio"
-                    name="event-type"
-                    value="flight"
-                    checked
-                  />
-                  <label
-                    class="event__type-label  event__type-label--flight"
-                    for="event-type-flight-1"
-                    >Flight</label
-                  >
-                </div>
-
-                <div class="event__type-item">
-                  <input
-                    id="event-type-check-in-1"
-                    class="event__type-input  visually-hidden"
-                    type="radio"
-                    name="event-type"
-                    value="check-in"
-                  />
-                  <label
-                    class="event__type-label  event__type-label--check-in"
-                    for="event-type-check-in-1"
-                    >Check-in</label
-                  >
-                </div>
-
-                <div class="event__type-item">
-                  <input
-                    id="event-type-sightseeing-1"
-                    class="event__type-input  visually-hidden"
-                    type="radio"
-                    name="event-type"
-                    value="sightseeing"
-                  />
-                  <label
-                    class="event__type-label  event__type-label--sightseeing"
-                    for="event-type-sightseeing-1"
-                    >Sightseeing</label
-                  >
-                </div>
-
-                <div class="event__type-item">
-                  <input
-                    id="event-type-restaurant-1"
-                    class="event__type-input  visually-hidden"
-                    type="radio"
-                    name="event-type"
-                    value="restaurant"
-                  />
-                  <label
-                    class="event__type-label  event__type-label--restaurant"
-                    for="event-type-restaurant-1"
-                    >Restaurant</label
-                  >
-                </div>
-              </fieldset>
-            </div>
+            ${createTypeList(model.offers)}
           </div>
 
           <div class="event__field-group  event__field-group--destination">
@@ -254,7 +147,7 @@ const createListWaypointFormTemplate = ({
               id="event-destination-1"
               type="text"
               name="event-destination"
-              value=${destinationData.name}
+              value="${destinationData?.name || ''}"
               list="destination-list-1"
             />
             <datalist id="destination-list-1">

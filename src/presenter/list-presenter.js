@@ -65,15 +65,17 @@ import { render, replace } from '../framework/render.js';
  * @param {DestinationData} params.destinationData - Данные пункта назначения (name, pictures)
  * @param {OfferTypeData} params.offerTypeData - Данные типов предложений для точки
  * @param {HTMLUListElement} params.element - Контейнер для рендера компонента
+ * @param {Array<Object>} params.modelOffers - Данные предложений по типу
  *
  * @returns {HTMLElement} Созданный DOM-элемент путевой точки
  */
-const createWayPoint = ({
-  pointData,
-  destinationData,
-  offerTypeData,
-  element,
-}) => {
+const createWayPoint = ({ model, pointIndex, element }) => {
+  const { listPoints, destinationsById, offersByType } = model;
+
+  const pointData = listPoints[pointIndex];
+  const destinationData = destinationsById[pointData.destination];
+  const offerTypeData = offersByType[pointData.type];
+
   const filteredOfferData = pointData.offers.reduce((acc, offer) => {
     acc.push(offerTypeData[offer]);
     return acc;
@@ -84,6 +86,7 @@ const createWayPoint = ({
     destinationData: destinationData,
     listOffers: offerTypeData,
     isEditForm: true,
+    model: model,
   });
 
   const onCloseRollupBtnClick = (evt) => {
@@ -128,19 +131,15 @@ const createWayPoint = ({
  * @param {Object<string, DestinationData>} params.destinationsById - Назначения по ID
  * @param {Object<string, OffersByTypeData>} params.offersByType - Предложения по типу
  * @param {HTMLUListElement} params.element - Контейнер списка
+ * @param {HTMLUListElement} params.element - Контейнер списка
+ * @param {Array<Object>} params.modelOffers - Данные предложений по типу
  */
-const createList = ({
-  listPoints,
-  destinationsById,
-  offersByType,
-  element,
-}) => {
-  for (let i = 0; i < listPoints.length; i++) {
+const createList = ({ element, model }) => {
+  for (let i = 0; i < model.listPoints.length; i++) {
     createWayPoint({
-      pointData: listPoints[i],
-      destinationData: destinationsById[listPoints[i].destination],
-      offerTypeData: offersByType[listPoints[i].type],
+      pointIndex: i,
       element: element,
+      model: model,
     });
   }
 };
@@ -163,14 +162,11 @@ export default class ListPresenter {
 
   /** Инициализация презентера */
   init() {
-    const { listPoints, destinationsById, offersByType } = this.#tripModel;
     render(this.listView, this.#container);
 
     // Создание динамического списка.
     createList({
-      listPoints: listPoints,
-      destinationsById: destinationsById,
-      offersByType: offersByType,
+      model: this.#tripModel,
       element: this.listView.element,
     });
   }
