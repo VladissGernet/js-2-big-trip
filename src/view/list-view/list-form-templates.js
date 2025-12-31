@@ -106,8 +106,13 @@ const createListWaypointFormTemplate = ({
   isEditForm,
   model,
 }) => {
-  const dateFrom = dayjs(listPoint.dateFrom).format('DD/MM/YY HH:mm');
-  const dateTo = dayjs(listPoint.dateTo).format('DD/MM/YY HH:mm');
+  /**@param {string} date - ISO 8601 дата */
+  const formatDate = (date) =>
+    !date ? '' : dayjs(date).format('DD/MM/YY HH:mm');
+
+  const dateFrom = formatDate(listPoint?.dateFrom);
+  const dateTo = formatDate(listPoint?.dateTo);
+  const iconType = listPoint?.type || model?.offers[0]?.type || '';
 
   return html`
     <li class="trip-events__item">
@@ -123,7 +128,7 @@ const createListWaypointFormTemplate = ({
                 class="event__type-icon"
                 width="17"
                 height="17"
-                src="img/icons/${listPoint.type}.png"
+                src="${iconType === '' ? '' : `img/icons/${iconType}.png`}"
                 alt="Event type icon"
               />
             </label>
@@ -132,7 +137,7 @@ const createListWaypointFormTemplate = ({
               id="event-type-toggle-1"
               type="checkbox"
             />
-            ${createTypeList(model.offers)}
+            ${model?.offers ? createTypeList(model.offers) : ''}
           </div>
 
           <div class="event__field-group  event__field-group--destination">
@@ -140,7 +145,7 @@ const createListWaypointFormTemplate = ({
               class="event__label  event__type-output"
               for="event-destination-1"
             >
-              ${listPoint.type}
+              ${iconType}
             </label>
             <input
               class="event__input  event__input--destination"
@@ -187,7 +192,7 @@ const createListWaypointFormTemplate = ({
               id="event-price-1"
               type="text"
               name="event-price"
-              value="${listPoint.basePrice}"
+              value="${listPoint?.basePrice || ''}"
             />
           </div>
 
