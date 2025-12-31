@@ -72,6 +72,10 @@ import { render, replace } from '../framework/render.js';
 const createWayPoint = ({ model, pointIndex, element }) => {
   const { listPoints, destinationsById, offersByType } = model;
 
+  /* TODO
+      Добавить закрытие формы по ESC и кнопке, а также можно реализовать удаление
+  */
+
   const pointData = listPoints[pointIndex];
   const destinationData = destinationsById[pointData.destination];
   const offerTypeData = offersByType[pointData.type];

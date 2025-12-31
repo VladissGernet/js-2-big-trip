@@ -20,22 +20,49 @@ const pageMainPresenter = new PageMainPresenter({
 pageHeaderPresenter.init();
 pageMainPresenter.init();
 
-/* TODO
-  Добавить закрытие по нажатию ESC
-*/
-
 pageHeaderPresenter.eventAddBtn.element.addEventListener('click', (evt) => {
   evt.preventDefault();
-
-  const newwWypointForm = new ListWaypointFormView({
+  const newWaypointForm = new ListWaypointFormView({
     destinationData: model.destinationsById[model.listPoints[0].destination],
     listOffers: model.offersByType[model.listPoints[0].type],
     isEditForm: false,
     model: model,
   });
+
+  const resetButton =
+    newWaypointForm.element.querySelector('.event__reset-btn');
+
+  let escKeyDownHandler = null;
+  let resetButtonHandler = null;
+
+  const closeForm = () => {
+    document.removeEventListener('keydown', escKeyDownHandler);
+    resetButton.removeEventListener('click', resetButtonHandler);
+    newWaypointForm.element.remove();
+    pageHeaderPresenter.eventAddBtn.element.disabled = false;
+  };
+
+  escKeyDownHandler = (e) => {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeForm();
+    }
+  };
+
+  resetButtonHandler = (e) => {
+    e.preventDefault();
+    closeForm();
+  };
+
+  pageHeaderPresenter.eventAddBtn.element.disabled = true;
+
+  resetButton.addEventListener('click', resetButtonHandler);
+
   render(
-    newwWypointForm,
+    newWaypointForm,
     pageMainPresenter.listView.element,
     RenderPosition.AFTERBEGIN
   );
+
+  document.addEventListener('keydown', escKeyDownHandler);
 });
