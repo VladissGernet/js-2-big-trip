@@ -71,11 +71,6 @@ import { render, replace } from '../framework/render.js';
  */
 const createWayPoint = ({ model, pointIndex, element }) => {
   const { listPoints, destinationsById, offersByType } = model;
-
-  /* TODO
-      Добавить закрытие формы по ESC и кнопке, а также можно реализовать удаление
-  */
-
   const pointData = listPoints[pointIndex];
   const destinationData = destinationsById[pointData.destination];
   const offerTypeData = offersByType[pointData.type];
@@ -85,6 +80,13 @@ const createWayPoint = ({ model, pointIndex, element }) => {
     return acc;
   }, []);
 
+  // Создание формы и путевой точки
+  const wayPoint = new ListWaypointView({
+    listPoint: pointData,
+    destinationData: destinationData,
+    offerData: filteredOfferData,
+  });
+
   const waypointForm = new ListWaypointFormView({
     listPoint: pointData,
     destinationData: destinationData,
@@ -93,12 +95,7 @@ const createWayPoint = ({ model, pointIndex, element }) => {
     model: model,
   });
 
-  const wayPoint = new ListWaypointView({
-    listPoint: pointData,
-    destinationData: destinationData,
-    offerData: filteredOfferData,
-  });
-
+  // Закрытие по нажатию ESC
   const escKeyDownHandler = (e) => {
     if (e.key === 'Escape') {
       e.preventDefault();
@@ -106,17 +103,21 @@ const createWayPoint = ({ model, pointIndex, element }) => {
       document.removeEventListener('keydown', escKeyDownHandler);
     }
   };
-  const onCloseRollupBtnClick = (evt) => {
-    evt.preventDefault();
-    replaceFormToWaypoint();
-  };
 
+  // Открытие по нажатию Rollup
   const onOpenRollupBtnClick = (evt) => {
     evt.preventDefault();
     replaceWaypointToForm();
     document.addEventListener('keydown', escKeyDownHandler);
   };
 
+  // Закрытие по нажатию Rollup в форме
+  const onCloseRollupBtnClick = (evt) => {
+    evt.preventDefault();
+    replaceFormToWaypoint();
+  };
+
+  // Дабвление обработчиков событий
   waypointForm.element
     .querySelector('.event__rollup-btn')
     .addEventListener('click', onCloseRollupBtnClick);
@@ -124,6 +125,15 @@ const createWayPoint = ({ model, pointIndex, element }) => {
   wayPoint.element
     .querySelector('.event__rollup-btn')
     .addEventListener('click', onOpenRollupBtnClick);
+
+  // Удаление текущей WayPoint из списка
+  waypointForm.element
+    .querySelector('.event__reset-btn')
+    .addEventListener('click', (e) => {
+      e.preventDefault();
+      waypointForm.element.remove();
+      wayPoint.element.remove();
+    });
 
   function replaceWaypointToForm() {
     replace(waypointForm, wayPoint);
