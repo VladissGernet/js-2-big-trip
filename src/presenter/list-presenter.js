@@ -93,25 +93,33 @@ const createWayPoint = ({ model, pointIndex, element }) => {
     model: model,
   });
 
-  const onCloseRollupBtnClick = (evt) => {
-    evt.preventDefault();
-    replaceFormToWaypoint();
-  };
-
-  waypointForm.element
-    .querySelector('.event__rollup-btn')
-    .addEventListener('click', onCloseRollupBtnClick);
-
   const wayPoint = new ListWaypointView({
     listPoint: pointData,
     destinationData: destinationData,
     offerData: filteredOfferData,
   });
 
+  const escKeyDownHandler = (e) => {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      replaceFormToWaypoint();
+      document.removeEventListener('keydown', escKeyDownHandler);
+    }
+  };
+  const onCloseRollupBtnClick = (evt) => {
+    evt.preventDefault();
+    replaceFormToWaypoint();
+  };
+
   const onOpenRollupBtnClick = (evt) => {
     evt.preventDefault();
     replaceWaypointToForm();
+    document.addEventListener('keydown', escKeyDownHandler);
   };
+
+  waypointForm.element
+    .querySelector('.event__rollup-btn')
+    .addEventListener('click', onCloseRollupBtnClick);
 
   wayPoint.element
     .querySelector('.event__rollup-btn')
