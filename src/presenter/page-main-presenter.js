@@ -24,7 +24,7 @@ export default class PageMainPresenter {
   #model;
   #container;
 
-  /** Доступ к компоненту списка
+  /** Публичный доступ для управления списком
    * @type {HTMLUlistElement} - элемент разметки
    */
   listView;

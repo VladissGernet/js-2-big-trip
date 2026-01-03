@@ -146,8 +146,7 @@ const createWayPoint = ({ model, pointIndex, element }) => {
   render(wayPoint, element);
 };
 
-/**
- * Создание динамического списка путевых точек.
+/** Создание динамического списка путевых точек.
  * @param {Object} params - Параметры для создания списка
  * @param {PointData[]} params.listPoints - Массив данных точек маршрута
  * @param {Object<string, DestinationData>} params.destinationsById - Назначения по ID
