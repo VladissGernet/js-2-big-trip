@@ -1,4 +1,4 @@
-import AbstractPresenter from './abstract-presenter.js';
+import { render } from '../framework/render.js';
 import { SortView } from '../view/index.js';
 
 /** Конфигурация презентера Сортировки.
@@ -15,8 +15,17 @@ import { SortView } from '../view/index.js';
  */
 
 /** Презентер сортировки. Отвечает за рендеринг компонента сортирвки. */
-export default class SortPresenter extends AbstractPresenter {
+export default class SortPresenter {
+  #container;
+  #sorts;
+
+  /** @param {PresenterConfig} */
   constructor({ container, sorts }) {
-    super(container, new SortView(sorts));
+    this.#container = container;
+    this.#sorts = sorts;
+  }
+
+  init() {
+    render(new SortView(this.#sorts), this.#container);
   }
 }
