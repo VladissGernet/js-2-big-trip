@@ -1,5 +1,9 @@
 import { render } from '../framework/render.js';
-import { PageMainView, TripEventsView } from '../view/index.js';
+import {
+  PageMainView,
+  TripEventsEmptyView,
+  TripEventsView,
+} from '../view/index.js';
 import SortPresenter from '../presenter/sort-presenter.js';
 import ListPresenter from '../presenter/list-presenter.js';
 
@@ -47,27 +51,34 @@ export default class PageMainPresenter {
     * Present — 'There are no present events now';
     * Future — 'There are no future events now'.
 
-
-    0. Убрать абстрактный презентер.
-    1. Нужно прокинуть текущее значение выбранного фильтра.
-    2. Проверить наличие данных и при отсутсвии показать нужное сообщение.
-    3. реализовать добавление нового события.
+    2. реализовать добавление нового события.
   */
 
-    console.log(headerPresenter);
+    // Получение текущего значения фильтра
+    // console.log(
+    //   headerPresenter.querySelector('input[name="trip-filter"]:checked').value
+    // );
 
-    const sortPresenter = new SortPresenter({
-      container: tripEvents.element,
-      sorts: TRIP_SORTS,
-    });
-    const listPresenter = new ListPresenter({
-      container: tripEvents.element,
-      tripModel: this.#model,
-    });
+    if (this.#model.listPoints.length !== 0) {
+      const sortPresenter = new SortPresenter({
+        container: tripEvents.element,
+        sorts: TRIP_SORTS,
+      });
+      const listPresenter = new ListPresenter({
+        container: tripEvents.element,
+        tripModel: this.#model,
+      });
 
-    sortPresenter.init();
-    listPresenter.init();
+      sortPresenter.init();
+      listPresenter.init();
 
-    this.listView = listPresenter.listView;
+      this.listView = listPresenter.listView;
+    } else {
+      // Если список пустой, то возвращает сообщение о предложении создания новой путевой точки.
+      const checkedFilter = headerPresenter.querySelector(
+        'input[name="trip-filter"]:checked'
+      ).value;
+      render(new TripEventsEmptyView(checkedFilter), tripEvents.element);
+    }
   }
 }

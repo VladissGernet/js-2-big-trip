@@ -7,5 +7,6 @@ export { default as PageHeaderView } from './page-header-view/page-header-view.j
 export { default as PageMainView } from './page-main-view/page-main-view.js';
 export { default as SortView } from './sort-view/sort-view.js';
 export { default as TripControlsView } from './trip-controls-view/trip-controls-view.js';
+export { default as TripEventsEmptyView } from './trip-events-view/trip-events-empty-view-.js';
 export { default as TripEventsView } from './trip-events-view/trip-events-view.js';
 export { default as TripMainView } from './trip-main-view/trip-main-view.js';

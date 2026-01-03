@@ -1,6 +1,4 @@
-/**
- * Состояние кнопок филтров по умолчанию
- */
+/** Состояние кнопок филтров по умолчанию */
 const TRIP_FILTERS = [
   { name: 'Everything', isChecked: true },
   { name: 'Future', isChecked: false },
@@ -8,9 +6,15 @@ const TRIP_FILTERS = [
   { name: 'Past', isChecked: false },
 ];
 
-/**
- * Состояние кнопок сортировки по умолчанию
- */
+/** Набор сообщений в зависимости от значения фильтра */
+const NO_EVENTS_MESSAGES = {
+  everything: 'Click New Event to create your first point',
+  past: 'There are no past events now',
+  present: 'There are no present events now',
+  future: 'There are no future events now',
+};
+
+/** Состояние кнопок сортировки по умолчанию */
 const TRIP_SORTS = [
   { name: 'Day', isChecked: false, isDisabled: false },
   { name: 'Event', isChecked: false, isDisabled: true },
@@ -19,4 +23,4 @@ const TRIP_SORTS = [
   { name: 'Offers', isChecked: false, isDisabled: true },
 ];
 
-export { TRIP_FILTERS, TRIP_SORTS };
+export { TRIP_FILTERS, TRIP_SORTS, NO_EVENTS_MESSAGES };
