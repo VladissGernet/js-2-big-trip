@@ -29,12 +29,31 @@ export default class PageMainPresenter {
    */
   listView = null;
 
-  init() {
+  init(headerPresenter) {
     const main = new PageMainView();
     const tripEvents = new TripEventsView();
 
     render(main, this.#container);
     render(tripEvents, main.container);
+
+    /* TODO
+    Реализовать экран сообщения с приглашением добавить первую точку маршрута.
+    Сообщение должно появляться вместо списка точек маршрута. Разметку
+    сообщения вы найдёте в директории /markup.
+
+      Значение отображаемого текста зависит от выбранного фильтра:
+    * Everthing – 'Click New Event to create your first point'
+    * Past — 'There are no past events now';
+    * Present — 'There are no present events now';
+    * Future — 'There are no future events now'.
+
+
+    1. Нужно прокинуть текущее значение выбранного фильтра.
+    2. Проверить наличие данных и при отсутсвии показать нужное сообщение.
+    3. реализовать добавление нового события.
+  */
+
+    console.log(headerPresenter);
 
     const sortPresenter = new SortPresenter({
       container: tripEvents.element,

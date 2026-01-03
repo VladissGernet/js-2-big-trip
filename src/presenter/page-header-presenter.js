@@ -28,11 +28,16 @@ export default class PageHeaderPresenter {
    */
   eventAddBtn = null;
 
+  /**
+   * @type {HTMLDivElement} Кнопка добавления новой строчки в списке.
+   */
+  tripControls = null;
+
   init() {
     const pageHeader = new PageHeaderView();
     const tripMain = new TripMainView();
-    const tripControls = new TripControlsView();
 
+    this.tripControls = new TripControlsView();
     this.eventAddBtn = new BtnView(
       'trip-main__event-add-btn btn btn--big btn--yellow'
     );
@@ -41,9 +46,9 @@ export default class PageHeaderPresenter {
     render(tripMain, pageHeader.container);
 
     // Рендер списка контролов фильтрации
-    render(tripControls, tripMain.element);
+    render(this.tripControls, tripMain.element);
     const filterPresenter = new FilterPresenter({
-      container: tripControls.filtersContainer,
+      container: this.tripControls.filtersContainer,
       filters: TRIP_FILTERS,
     });
     filterPresenter.init();
