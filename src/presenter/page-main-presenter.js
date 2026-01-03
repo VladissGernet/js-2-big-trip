@@ -27,7 +27,7 @@ export default class PageMainPresenter {
   /** Доступ к компоненту списка
    * @type {HTMLUlistElement} - элемент разметки
    */
-  listView = null;
+  listView;
 
   init(headerPresenter) {
     const main = new PageMainView();
@@ -48,6 +48,7 @@ export default class PageMainPresenter {
     * Future — 'There are no future events now'.
 
 
+    0. Убрать абстрактный презентер.
     1. Нужно прокинуть текущее значение выбранного фильтра.
     2. Проверить наличие данных и при отсутсвии показать нужное сообщение.
     3. реализовать добавление нового события.

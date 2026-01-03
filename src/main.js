@@ -18,7 +18,7 @@ const pageMainPresenter = new PageMainPresenter({
 
 // Редер списка на основе данных с сервера.
 pageHeaderPresenter.init();
-pageMainPresenter.init(pageHeaderPresenter.tripControls.filtersContainer);
+pageMainPresenter.init(pageHeaderPresenter.filterControls);
 
 // Создание формы добавления новой путевой точки.
 pageHeaderPresenter.eventAddBtn.element.addEventListener('click', (evt) => {

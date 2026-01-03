@@ -1,5 +1,5 @@
-import AbstractPresenter from './abstract-presenter.js';
 import { FilterView } from '../view/index.js';
+import { render } from '../framework/render.js';
 
 /** Конфигурация презентера списка.
  * @typedef {Object} PresenterConfig
@@ -14,9 +14,21 @@ import { FilterView } from '../view/index.js';
  */
 
 /** Презентер фильтров. Отвечает за рендеринг компонента фильтров. */
-export default class FilterPresenter extends AbstractPresenter {
+export default class FilterPresenter {
+  #container;
+  #filters;
+
+  filterComponent;
+
   /** @param {PresenterConfig} config */
   constructor({ container, filters }) {
-    super(container, new FilterView(filters));
+    this.#container = container;
+    this.#filters = filters;
+  }
+
+  init() {
+    this.filterComponent = new FilterView(this.#filters);
+
+    render(this.filterComponent, this.#container);
   }
 }
