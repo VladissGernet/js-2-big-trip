@@ -167,9 +167,7 @@ const createList = ({ element, model }) => {
 
 /** Презентер списка. Отвечает за рендеринг компонента Списка. */
 export default class ListPresenter {
-  /**
-   * @param {PresenterConfig} config - Конфигурация презентера
-   */
+  /** @param {PresenterConfig} config - Конфигурация презентера */
   constructor({ container, tripModel }) {
     this.#container = container;
     this.#tripModel = tripModel;

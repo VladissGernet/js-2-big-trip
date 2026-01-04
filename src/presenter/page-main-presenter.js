@@ -29,43 +29,34 @@ export default class PageMainPresenter {
   #container;
 
   /** Публичный доступ для управления списком
-   * @type {HTMLUlistElement} - элемент разметки
+   * @type {HTMLUlistElement} - Элемент разметки
    */
   listView;
 
+  /** Публичный доступ к элементу секции.
+   * @type {HTMLElement} - Элемент разметки section.
+   */
+  tripEvents;
+
+  /** Публичный доступ к сообщению о том, что список пустой
+   * @type {HTMLParagraphElement} - Элемент текста разметки.
+   */
+  tripEventsEmpty = null;
+
   init(headerPresenter) {
     const main = new PageMainView();
-    const tripEvents = new TripEventsView();
+    this.tripEvents = new TripEventsView();
 
     render(main, this.#container);
-    render(tripEvents, main.container);
-
-    /* TODO
-    Реализовать экран сообщения с приглашением добавить первую точку маршрута.
-    Сообщение должно появляться вместо списка точек маршрута. Разметку
-    сообщения вы найдёте в директории /markup.
-
-      Значение отображаемого текста зависит от выбранного фильтра:
-    * Everthing – 'Click New Event to create your first point'
-    * Past — 'There are no past events now';
-    * Present — 'There are no present events now';
-    * Future — 'There are no future events now'.
-
-    2. реализовать добавление нового события.
-  */
-
-    // Получение текущего значения фильтра
-    // console.log(
-    //   headerPresenter.querySelector('input[name="trip-filter"]:checked').value
-    // );
+    render(this.tripEvents, main.container);
 
     if (this.#model.listPoints.length !== 0) {
       const sortPresenter = new SortPresenter({
-        container: tripEvents.element,
+        container: this.tripEvents.element,
         sorts: TRIP_SORTS,
       });
       const listPresenter = new ListPresenter({
-        container: tripEvents.element,
+        container: this.tripEvents.element,
         tripModel: this.#model,
       });
 
@@ -78,7 +69,8 @@ export default class PageMainPresenter {
       const checkedFilter = headerPresenter.querySelector(
         'input[name="trip-filter"]:checked'
       ).value;
-      render(new TripEventsEmptyView(checkedFilter), tripEvents.element);
+      this.tripEventsEmpty = new TripEventsEmptyView(checkedFilter);
+      render(this.tripEventsEmpty, this.tripEvents.element);
     }
   }
 }

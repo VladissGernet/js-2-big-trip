@@ -48,8 +48,6 @@ export default class TripModel {
    * @returns {Array<Object>} Список путевых точек
    */
   get listPoints() {
-    /* TODO На время разработки имитирую пустой список */
-    return [];
-    // return structuredClone(this.#points);
+    return structuredClone(this.#points);
   }
 }
