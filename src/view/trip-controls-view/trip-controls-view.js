@@ -12,10 +12,6 @@ function tripControlsViewTemplate() {
 }
 
 export default class TripControlsView extends AbstractView {
-  constructor() {
-    super();
-  }
-
   get template() {
     return tripControlsViewTemplate();
   }

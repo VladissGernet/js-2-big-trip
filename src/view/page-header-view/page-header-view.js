@@ -18,10 +18,6 @@ function createPageHeaderTemplate() {
 }
 
 export default class PageHeaderView extends AbstractView {
-  constructor() {
-    super();
-  }
-
   get template() {
     return createPageHeaderTemplate();
   }

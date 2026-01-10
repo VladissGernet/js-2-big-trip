@@ -10,10 +10,6 @@ function createPageMainTemplate() {
 }
 
 export default class PageMainView extends AbstractView {
-  constructor() {
-    super();
-  }
-
   get template() {
     return createPageMainTemplate();
   }
