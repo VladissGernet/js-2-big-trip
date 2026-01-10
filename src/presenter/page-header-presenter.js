@@ -9,6 +9,8 @@ import FilterPresenter from './filter-presenter.js';
 import { TRIP_FILTERS } from '../const.js';
 import { render } from '../framework/render.js';
 
+// TODO остановился на рефакторинге тут
+
 /** Конфиг принимаемый презентором
  * @typedef {Object} PresenterConfig
  * @property {HTMLDivElement} container - Контейнер для рендера

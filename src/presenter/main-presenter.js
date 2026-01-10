@@ -12,6 +12,10 @@ export default class MainPresenter {
   #pageBody;
   #model;
 
+  #pageHeaderPresenter;
+  #pageMainPresenter;
+  #newEventBtnPresenter;
+
   /** @param {PresenterConfig} */
   constructor({ model, pageBody }) {
     this.#pageBody = pageBody;
@@ -19,27 +23,36 @@ export default class MainPresenter {
   }
 
   init() {
-    const pageHeaderPresenter = new PageHeaderPresenter({
+    this.#initHeader();
+    this.#initPageMain();
+    this.#initNewEventBtn();
+  }
+
+  // TODO погружаюсь в page header для рефакторинга
+  #initHeader() {
+    this.#pageHeaderPresenter = new PageHeaderPresenter({
       container: this.#pageBody,
     });
-    const pageMainPresenter = new PageMainPresenter({
+    this.#pageHeaderPresenter.init();
+  }
+
+  #initPageMain() {
+    this.#pageMainPresenter = new PageMainPresenter({
       container: this.#pageBody,
       model: this.#model,
     });
+    this.#pageMainPresenter.init(this.#pageHeaderPresenter.filterControls);
+  }
 
-    // Редер списка на основе данных с сервера.
-    pageHeaderPresenter.init();
-    pageMainPresenter.init(pageHeaderPresenter.filterControls);
-
-    // Создание формы добавления новой путевой точки.
-    const newEventBtnPresenter = new NewEventBtnPresenter({
-      btnElement: pageHeaderPresenter.eventAddBtn.element,
+  #initNewEventBtn() {
+    this.#newEventBtnPresenter = new NewEventBtnPresenter({
+      btnElement: this.#pageHeaderPresenter.eventAddBtn.element,
       model: this.#model,
-      tripEventsEmpty: pageMainPresenter.tripEventsEmpty,
-      listView: pageMainPresenter.listView,
-      filterControls: pageHeaderPresenter.filterControls,
-      tripEvents: pageMainPresenter.tripEvents,
+      tripEventsEmpty: this.#pageMainPresenter.tripEventsEmpty,
+      listView: this.#pageMainPresenter.listView,
+      filterControls: this.#pageHeaderPresenter.filterControls,
+      tripEvents: this.#pageMainPresenter.tripEvents,
     });
-    newEventBtnPresenter.init();
+    this.#newEventBtnPresenter.init();
   }
 }
