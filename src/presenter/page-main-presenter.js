@@ -17,9 +17,7 @@ import { TRIP_SORTS } from '../const.js';
 
 /** Презентер основного содержимого страницы */
 export default class PageMainPresenter {
-  /**
-   * @param {PresenterConfig}
-   */
+  /** @param {PresenterConfig} */
   constructor({ container: container, model: model }) {
     this.#container = container;
     this.#model = model;
