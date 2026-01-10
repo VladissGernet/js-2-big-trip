@@ -17,12 +17,6 @@ import { TRIP_SORTS } from '../const.js';
 
 /** Презентер основного содержимого страницы */
 export default class PageMainPresenter {
-  /** @param {PresenterConfig} */
-  constructor({ container: container, model: model }) {
-    this.#container = container;
-    this.#model = model;
-  }
-
   #model;
   #container;
 
@@ -40,6 +34,12 @@ export default class PageMainPresenter {
    * @type {HTMLParagraphElement} - Элемент текста разметки.
    */
   tripEventsEmpty = null;
+
+  /** @param {PresenterConfig} */
+  constructor({ container: container, model: model }) {
+    this.#container = container;
+    this.#model = model;
+  }
 
   init(headerPresenter) {
     const main = new PageMainView();

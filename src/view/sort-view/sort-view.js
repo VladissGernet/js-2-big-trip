@@ -13,12 +13,12 @@ function createSortTemplate(sorts) {
 }
 
 export default class SortView extends AbstractView {
+  #sorts;
+
   constructor(sorts) {
     super();
     this.#sorts = sorts;
   }
-
-  #sorts;
 
   get template() {
     return createSortTemplate(this.#sorts);

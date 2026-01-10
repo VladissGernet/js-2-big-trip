@@ -8,12 +8,12 @@ function createBtnTemplate(className) {
 }
 
 export default class BtnView extends AbstractView {
+  #className;
+
   constructor(className) {
     super();
     this.#className = className;
   }
-
-  #className;
 
   get template() {
     return createBtnTemplate(this.#className);

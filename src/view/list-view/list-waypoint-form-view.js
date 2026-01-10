@@ -3,6 +3,12 @@ import AbstractView from '../../framework/view/abstract-view.js';
 
 /** Создание формы добавления точки маршрута */
 export default class ListWaypointFormView extends AbstractView {
+  #listPoint;
+  #destinationData;
+  #listOffers;
+  #isEditForm;
+  #model;
+
   constructor({ listPoint, destinationData, listOffers, isEditForm, model }) {
     super();
     this.#listPoint = listPoint;
@@ -11,12 +17,6 @@ export default class ListWaypointFormView extends AbstractView {
     this.#isEditForm = isEditForm;
     this.#model = model;
   }
-
-  #listPoint;
-  #destinationData;
-  #listOffers;
-  #isEditForm;
-  #model;
 
   get template() {
     return createListWaypointFormTemplate({

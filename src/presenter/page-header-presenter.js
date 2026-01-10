@@ -16,22 +16,18 @@ import { render } from '../framework/render.js';
 
 /** Презентер header страницы */
 export default class PageHeaderPresenter {
+  #container;
+
+  /** @type {HTMLButtonElement} Кнопка добавления новой строчки в списке. */
+  eventAddBtn;
+
+  /** @type {HTMLDivElement} Контейнер копок фильтров. */
+  filterControls;
+
   /** @param {PresenterConfig} config */
   constructor({ container }) {
     this.#container = container;
   }
-
-  #container;
-
-  /**
-   * @type {HTMLButtonElement} Кнопка добавления новой строчки в списке.
-   */
-  eventAddBtn;
-
-  /**
-   * @type {HTMLDivElement} Контейнер копок фильтров.
-   */
-  filterControls;
 
   init() {
     const pageHeader = new PageHeaderView();

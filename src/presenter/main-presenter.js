@@ -10,13 +10,12 @@ import NewEventBtnPresenter from './new-event-btn-presenter.js';
 
 export default class MainPresenter {
   #pageBody;
-
-  model;
+  #model;
 
   /** @param {PresenterConfig} */
   constructor({ model, pageBody }) {
     this.#pageBody = pageBody;
-    this.model = model;
+    this.#model = model;
   }
 
   init() {
@@ -25,7 +24,7 @@ export default class MainPresenter {
     });
     const pageMainPresenter = new PageMainPresenter({
       container: this.#pageBody,
-      model: this.model,
+      model: this.#model,
     });
 
     // Редер списка на основе данных с сервера.
@@ -35,7 +34,7 @@ export default class MainPresenter {
     // Создание формы добавления новой путевой точки.
     const newEventBtnPresenter = new NewEventBtnPresenter({
       btnElement: pageHeaderPresenter.eventAddBtn.element,
-      model: this.model,
+      model: this.#model,
       tripEventsEmpty: pageMainPresenter.tripEventsEmpty,
       listView: pageMainPresenter.listView,
       filterControls: pageHeaderPresenter.filterControls,

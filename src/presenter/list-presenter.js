@@ -5,6 +5,17 @@ import {
 } from '../view/index.js';
 import { render, replace } from '../framework/render.js';
 
+/* TODO
+Да, можно и нужно перенести createWayPoint и createList как приватные методы в класс — это значительно улучшит архитектуру MVP.
+
+Проблемы текущего кода
+Функции вне класса нарушают инкапсуляцию — знают о #tripModel, listView, но не имеют доступа к состоянию презентера
+
+Дублирование логики — обработчики ESC/rollup создаются заново для каждой точки вместо переиспользования
+
+Непонятная ответственность — где логика рендера: в презентере или в утилитах?
+*/
+
 /** Модель точки маршрута (event point) для планировщика поездок.
  * @typedef {Object} PointData
  * @property {string} id - Уникальный идентификатор точки (UUID).
@@ -167,17 +178,17 @@ const createList = ({ element, model }) => {
 
 /** Презентер списка. Отвечает за рендеринг компонента Списка. */
 export default class ListPresenter {
-  /** @param {PresenterConfig} config - Конфигурация презентера */
-  constructor({ container, tripModel }) {
-    this.#container = container;
-    this.#tripModel = tripModel;
-  }
-
   #container;
   #tripModel;
 
   /** Публичный доступ для управления списком */
   listView = new ListView();
+
+  /** @param {PresenterConfig} config - Конфигурация презентера */
+  constructor({ container, tripModel }) {
+    this.#container = container;
+    this.#tripModel = tripModel;
+  }
 
   /** Инициализация презентера */
   init() {

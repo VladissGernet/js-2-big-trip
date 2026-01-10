@@ -16,9 +16,7 @@ export default class TripModel {
   /** @type {Array<Object>} Список путевых точек */
   #points = replaceSnakeToCamel(pointsMock);
 
-  /**
-   * @returns {Object} Назначения по ID для быстрого поиска.
-   */
+  /** @returns {Object} Назначения по ID для быстрого поиска. */
   get destinationsById() {
     // Преобразовываю данные для оптимизированного поиска.
     return structuredClone(this.#destinations).reduce(
@@ -30,9 +28,7 @@ export default class TripModel {
     );
   }
 
-  /**
-   * @returns {Object} Назначения по типу для быстрого поиска.
-   */
+  /** @returns {Object} Назначения по типу для быстрого поиска. */
   get offersByType() {
     // Преобразовываю данные для оптимизированного поиска.
     return structuredClone(this.offers).reduce((types, { type, offers }) => {
@@ -44,9 +40,7 @@ export default class TripModel {
     }, {});
   }
 
-  /**
-   * @returns {Array<Object>} Список путевых точек
-   */
+  /** @returns {Array<Object>} Список путевых точек */
   get listPoints() {
     return structuredClone(this.#points);
   }

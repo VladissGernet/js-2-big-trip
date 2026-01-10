@@ -11,8 +11,7 @@ export default class ApiService {
     this._authorization = authorization;
   }
 
-  /**
-   * Метод для отправки запроса к серверу
+  /** Метод для отправки запроса к серверу
    * @param {Object} config Объект с настройками
    * @param {string} config.url Адрес относительно сервера
    * @param {string} [config.method] Метод запроса
