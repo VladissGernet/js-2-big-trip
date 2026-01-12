@@ -9,8 +9,6 @@ import FilterPresenter from './filter-presenter.js';
 import { TRIP_FILTERS } from '../const.js';
 import { render } from '../framework/render.js';
 
-// TODO остановился на рефакторинге тут
-
 /** Конфиг принимаемый презентором
  * @typedef {Object} PresenterConfig
  * @property {HTMLDivElement} container - Контейнер для рендера
@@ -19,12 +17,21 @@ import { render } from '../framework/render.js';
 /** Презентер header страницы */
 export default class PageHeaderPresenter {
   #container;
+  #pageHeader = new PageHeaderView();
+  #tripMain = new TripMainView();
+  #tripControls = new TripControlsView();
 
-  /** @type {HTMLButtonElement} Кнопка добавления новой строчки в списке. */
-  eventAddBtn;
+  /** Публичный доступ получения кнопки добавления формы в список внутри main.
+   * @type {HTMLButtonElement} Кнопка добавления новой строчки в списке.
+   */
+  eventAddBtn = new BtnView(
+    'trip-main__event-add-btn btn btn--big btn--yellow'
+  );
 
-  /** @type {HTMLDivElement} Контейнер копок фильтров. */
-  filterControls;
+  /** Публичный доступ контролов фильтрации списка внутри main.
+   *  @type {HTMLDivElement} Контейнер копок фильтров.
+   */
+  filterControls = null;
 
   /** @param {PresenterConfig} config */
   constructor({ container }) {
@@ -32,27 +39,35 @@ export default class PageHeaderPresenter {
   }
 
   init() {
-    const pageHeader = new PageHeaderView();
-    const tripMain = new TripMainView();
-    const tripControls = new TripControlsView();
+    this.#renderHeader();
+  }
 
-    this.eventAddBtn = new BtnView(
-      'trip-main__event-add-btn btn btn--big btn--yellow'
-    );
+  #renderHeader() {
+    render(this.#pageHeader, this.#container);
+    this.#renderTripMain();
+  }
 
-    render(pageHeader, this.#container);
-    render(tripMain, pageHeader.container);
+  #renderTripMain() {
+    render(this.#tripMain, this.#pageHeader.container);
+    this.#renderTripControls();
+    this.#renderEventAddBtn();
+  }
 
-    // Рендер списка контролов фильтрации
-    render(tripControls, tripMain.element);
+  #renderTripControls() {
+    render(this.#tripControls, this.#tripMain.element);
+    this.#renderFilters();
+  }
+
+  #renderFilters() {
     const filterPresenter = new FilterPresenter({
-      container: tripControls.filtersContainer,
+      container: this.#tripControls.filtersContainer,
       filters: TRIP_FILTERS,
     });
-
     filterPresenter.init();
     this.filterControls = filterPresenter.filterComponent.element;
+  }
 
-    render(this.eventAddBtn, tripMain.element);
+  #renderEventAddBtn() {
+    render(this.eventAddBtn, this.#tripMain.element);
   }
 }

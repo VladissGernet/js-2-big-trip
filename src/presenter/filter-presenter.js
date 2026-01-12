@@ -18,7 +18,8 @@ export default class FilterPresenter {
   #container;
   #filters;
 
-  filterComponent;
+  /** Публичный доступ к комоненту фильтра */
+  filterComponent = null;
 
   /** @param {PresenterConfig} config */
   constructor({ container, filters }) {
@@ -27,8 +28,11 @@ export default class FilterPresenter {
   }
 
   init() {
-    this.filterComponent = new FilterView(this.#filters);
+    this.#renderFilterComponent();
+  }
 
+  #renderFilterComponent() {
+    this.filterComponent = new FilterView(this.#filters);
     render(this.filterComponent, this.#container);
   }
 }

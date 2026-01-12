@@ -28,7 +28,6 @@ export default class MainPresenter {
     this.#initNewEventBtn();
   }
 
-  // TODO погружаюсь в page header для рефакторинга
   #initHeader() {
     this.#pageHeaderPresenter = new PageHeaderPresenter({
       container: this.#pageBody,
@@ -36,6 +35,7 @@ export default class MainPresenter {
     this.#pageHeaderPresenter.init();
   }
 
+  // TODO погружаюсь в PageMainPresenter для рефакторинга
   #initPageMain() {
     this.#pageMainPresenter = new PageMainPresenter({
       container: this.#pageBody,
