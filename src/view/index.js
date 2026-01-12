@@ -3,7 +3,7 @@ export { default as FilterView } from './filter-view/filter-view.js';
 export { default as ListView } from './list-view/list-view.js';
 export { default as ListWaypointFormView } from './list-view/list-waypoint-form-view.js';
 export { default as ListWaypointView } from './list-view/list-waypoint-view.js';
-export { default as PageHeaderView } from './page-header-view/page-header-view.js';
+export { default as HeaderView } from './header-view/header-view.js';
 export { default as PageMainView } from './page-main-view/page-main-view.js';
 export { default as SortView } from './sort-view/sort-view.js';
 export { default as TripControlsView } from './trip-controls-view/trip-controls-view.js';

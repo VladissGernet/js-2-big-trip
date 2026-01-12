@@ -19,16 +19,18 @@ import { TRIP_SORTS } from '../const.js';
 export default class PageMainPresenter {
   #model;
   #container;
+  #main = new PageMainView();
+
+  /** Публичный доступ к элементу секции с основынм списком событий.
+   * @type {HTMLElement} - Элемент разметки section.
+   * @description Публично для определения заполненности основного списка событий.
+   */
+  tripEvents = new TripEventsView();
 
   /** Публичный доступ для управления списком
    * @type {HTMLUlistElement} - Элемент разметки
    */
-  listView;
-
-  /** Публичный доступ к элементу секции.
-   * @type {HTMLElement} - Элемент разметки section.
-   */
-  tripEvents;
+  listView = null;
 
   /** Публичный доступ к сообщению о том, что список пустой
    * @type {HTMLParagraphElement} - Элемент текста разметки.
@@ -41,12 +43,14 @@ export default class PageMainPresenter {
     this.#model = model;
   }
 
-  init(headerPresenter) {
-    const main = new PageMainView();
-    this.tripEvents = new TripEventsView();
+  init(headerFilterControls) {
+    this.#renderMain(headerFilterControls);
+  }
 
-    render(main, this.#container);
-    render(this.tripEvents, main.container);
+  #renderMain(headerFilterControls) {
+    // TODO Остановился здесь
+    render(this.#main, this.#container);
+    render(this.tripEvents, this.#main.container);
 
     if (this.#model.listPoints.length !== 0) {
       const sortPresenter = new SortPresenter({
@@ -64,7 +68,7 @@ export default class PageMainPresenter {
       this.listView = listPresenter.listView;
     } else {
       // Если список пустой, то возвращает сообщение о предложении создания новой путевой точки.
-      const checkedFilter = headerPresenter.querySelector(
+      const checkedFilter = headerFilterControls.querySelector(
         'input[name="trip-filter"]:checked'
       ).value;
       this.tripEventsEmpty = new TripEventsEmptyView(checkedFilter);

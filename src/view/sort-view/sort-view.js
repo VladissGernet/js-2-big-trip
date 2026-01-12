@@ -6,7 +6,7 @@ function createSortTemplate(sorts) {
   const formItems = sorts.map(createSortItemTemplate);
 
   return html`
-    <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
+    <form class="trip-events__trip-sort trip-sort" action="#" method="get">
       ${formItems.join('')}
     </form>
   `;

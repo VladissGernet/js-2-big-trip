@@ -1,4 +1,4 @@
-import PageHeaderPresenter from './page-header-presenter.js';
+import HeaderPresenter from './header-presenter.js';
 import PageMainPresenter from './page-main-presenter.js';
 import NewEventBtnPresenter from './new-event-btn-presenter.js';
 
@@ -12,7 +12,7 @@ export default class MainPresenter {
   #pageBody;
   #model;
 
-  #pageHeaderPresenter;
+  #headerPresenter;
   #pageMainPresenter;
   #newEventBtnPresenter;
 
@@ -29,10 +29,10 @@ export default class MainPresenter {
   }
 
   #initHeader() {
-    this.#pageHeaderPresenter = new PageHeaderPresenter({
+    this.#headerPresenter = new HeaderPresenter({
       container: this.#pageBody,
     });
-    this.#pageHeaderPresenter.init();
+    this.#headerPresenter.init();
   }
 
   // TODO погружаюсь в PageMainPresenter для рефакторинга
@@ -41,16 +41,16 @@ export default class MainPresenter {
       container: this.#pageBody,
       model: this.#model,
     });
-    this.#pageMainPresenter.init(this.#pageHeaderPresenter.filterControls);
+    this.#pageMainPresenter.init(this.#headerPresenter.filterControls);
   }
 
   #initNewEventBtn() {
     this.#newEventBtnPresenter = new NewEventBtnPresenter({
-      btnElement: this.#pageHeaderPresenter.eventAddBtn.element,
+      btnElement: this.#headerPresenter.eventAddBtn.element,
       model: this.#model,
       tripEventsEmpty: this.#pageMainPresenter.tripEventsEmpty,
       listView: this.#pageMainPresenter.listView,
-      filterControls: this.#pageHeaderPresenter.filterControls,
+      filterControls: this.#headerPresenter.filterControls,
       tripEvents: this.#pageMainPresenter.tripEvents,
     });
     this.#newEventBtnPresenter.init();

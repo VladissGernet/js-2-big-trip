@@ -1,5 +1,5 @@
 import {
-  PageHeaderView,
+  HeaderView,
   TripMainView,
   TripControlsView,
   BtnView,
@@ -15,9 +15,9 @@ import { render } from '../framework/render.js';
  */
 
 /** Презентер header страницы */
-export default class PageHeaderPresenter {
+export default class HeaderPresenter {
   #container;
-  #pageHeader = new PageHeaderView();
+  #pageHeader = new HeaderView();
   #tripMain = new TripMainView();
   #tripControls = new TripControlsView();
 

@@ -1,7 +1,7 @@
 import { html } from '../../utils/index.js';
-import AbstractView from './../../framework/view/abstract-view.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 
-function createPageHeaderTemplate() {
+function createHeaderTemplate() {
   return html`
     <header class="page-header">
       <div class="page-body__container page-header__container">
@@ -17,9 +17,9 @@ function createPageHeaderTemplate() {
   `;
 }
 
-export default class PageHeaderView extends AbstractView {
+export default class HeaderView extends AbstractView {
   get template() {
-    return createPageHeaderTemplate();
+    return createHeaderTemplate();
   }
 
   get container() {
