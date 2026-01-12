@@ -21,9 +21,9 @@ export default class PageMainPresenter {
   #container;
   #main = new PageMainView();
 
-  /** Публичный доступ к элементу секции с основынм списком событий.
+  /** Секция с основынм списком событий.
    * @type {HTMLElement} - Элемент разметки section.
-   * @description Публично для определения заполненности основного списка событий.
+   * @description Публично для обновления статуса заполненности списка событий.
    */
   tripEvents = new TripEventsView();
 
@@ -32,7 +32,7 @@ export default class PageMainPresenter {
    */
   listView = null;
 
-  /** Публичный доступ к сообщению о том, что список пустой
+  /** Публичный доступ к сообщению о пустоте списка
    * @type {HTMLParagraphElement} - Элемент текста разметки.
    */
   tripEventsEmpty = null;
@@ -48,31 +48,44 @@ export default class PageMainPresenter {
   }
 
   #renderMain(headerFilterControls) {
-    // TODO Остановился здесь
     render(this.#main, this.#container);
+    this.#renderEventsSection(headerFilterControls);
+  }
+
+  #renderEventsSection(headerFilterControls) {
     render(this.tripEvents, this.#main.container);
 
     if (this.#model.listPoints.length !== 0) {
-      const sortPresenter = new SortPresenter({
-        container: this.tripEvents.element,
-        sorts: TRIP_SORTS,
-      });
-      const listPresenter = new ListPresenter({
-        container: this.tripEvents.element,
-        tripModel: this.#model,
-      });
-
-      sortPresenter.init();
-      listPresenter.init();
-
-      this.listView = listPresenter.listView;
+      this.#renderEvents();
     } else {
-      // Если список пустой, то возвращает сообщение о предложении создания новой путевой точки.
-      const checkedFilter = headerFilterControls.querySelector(
-        'input[name="trip-filter"]:checked'
-      ).value;
-      this.tripEventsEmpty = new TripEventsEmptyView(checkedFilter);
-      render(this.tripEventsEmpty, this.tripEvents.element);
+      this.#renderEmptyMessage(headerFilterControls);
     }
+  }
+
+  #renderEvents() {
+    const sortPresenter = new SortPresenter({
+      container: this.tripEvents.element,
+      sorts: TRIP_SORTS,
+    });
+    // TODO Погружаюсь далее в SortPresenter
+    const listPresenter = new ListPresenter({
+      container: this.tripEvents.element,
+      tripModel: this.#model,
+    });
+
+    sortPresenter.init();
+    listPresenter.init();
+
+    this.listView = listPresenter.listView;
+  }
+
+  #renderEmptyMessage(headerFilterControls) {
+    // Если список пустой, то возвращает сообщение о предложении создания
+    // новой путевой точки.
+    const checkedFilter = headerFilterControls.querySelector(
+      'input[name="trip-filter"]:checked'
+    ).value;
+    this.tripEventsEmpty = new TripEventsEmptyView(checkedFilter);
+    render(this.tripEventsEmpty, this.tripEvents.element);
   }
 }

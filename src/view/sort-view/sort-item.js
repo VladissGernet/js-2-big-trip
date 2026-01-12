@@ -7,10 +7,10 @@ export default function createSortItemTemplate({
 }) {
   const lowerStr = name.toLowerCase();
   return html`
-    <div class="trip-sort__item  trip-sort__item--${lowerStr}">
+    <div class="trip-sort__item trip-sort__item--${lowerStr}">
       <input
         id="sort-${lowerStr}"
-        class="trip-sort__input  visually-hidden"
+        class="trip-sort__input visually-hidden"
         type="radio"
         name="trip-filter"
         value="sort-${lowerStr}"

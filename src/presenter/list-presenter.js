@@ -5,7 +5,7 @@ import {
 } from '../view/index.js';
 import { render, replace } from '../framework/render.js';
 
-/* TODO
+/* TODO Остноавился здесь
 Да, можно и нужно перенести createWayPoint и createList как приватные методы в класс — это значительно улучшит архитектуру MVP.
 
 Проблемы текущего кода

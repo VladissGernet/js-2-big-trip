@@ -14,7 +14,7 @@ import { SortView } from '../view/index.js';
  * @property {boolean} isDisabled - Статус активности сортировки (true/false).
  */
 
-/** Презентер сортировки. Отвечает за рендеринг компонента сортирвки. */
+/** Презентер сортировки. Отвечает за рендеринг компонента сортирвки списка событйи. */
 export default class SortPresenter {
   #container;
   #sorts;
@@ -26,6 +26,10 @@ export default class SortPresenter {
   }
 
   init() {
+    this.#renderSort();
+  }
+
+  #renderSort() {
     render(new SortView(this.#sorts), this.#container);
   }
 }
