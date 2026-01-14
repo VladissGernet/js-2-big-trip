@@ -1,8 +1,8 @@
-import { createListWaypointFormTemplate } from './list-form-templates.js';
+import { createListPointFormTemplate } from './list-form-templates.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 
 /** Создание формы добавления точки маршрута */
-export default class ListWaypointFormView extends AbstractView {
+export default class ListPointFormView extends AbstractView {
   #listPoint;
   #destinationData;
   #listOffers;
@@ -19,7 +19,7 @@ export default class ListWaypointFormView extends AbstractView {
   }
 
   get template() {
-    return createListWaypointFormTemplate({
+    return createListPointFormTemplate({
       listPoint: this.#listPoint,
       destinationData: this.#destinationData,
       listOffers: this.#listOffers,

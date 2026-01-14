@@ -1,5 +1,5 @@
 import {
-  ListWaypointFormView,
+  ListPointFormView,
   ListView,
   TripEventsEmptyView,
 } from '../view/index.js';
@@ -43,7 +43,7 @@ export default class NewEventBtnPresenter {
   init() {
     this.#btnElement.addEventListener('click', (evt) => {
       evt.preventDefault();
-      const newWaypointForm = new ListWaypointFormView({
+      const newWaypointForm = new ListPointFormView({
         isEditForm: false,
         model: this.#model,
       });

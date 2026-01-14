@@ -67,7 +67,6 @@ export default class PageMainPresenter {
       container: this.tripEvents.element,
       sorts: TRIP_SORTS,
     });
-    // TODO Погружаюсь далее в SortPresenter
     const listPresenter = new ListPresenter({
       container: this.tripEvents.element,
       tripModel: this.#model,

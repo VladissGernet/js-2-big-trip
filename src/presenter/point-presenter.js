@@ -1,0 +1,127 @@
+import { ListPointView, ListPointFormView } from '../view/index.js';
+import { render, replace, remove } from '../framework/render.js';
+
+/** Конфигурация презентера путевой точки.
+ * @typedef {Object} PointConfig
+ * @property {PointData} point - Данные точки маршрута.
+ * @property {TripModel} model - Модель данных поездки.
+ * @property {HTMLUListElement} listElement - Элемент списка для вставки точки.
+ */
+
+/** Модель точки маршрута (event point) для планировщика поездок.
+ * @typedef {Object} PointData
+ * @property {string} id - Уникальный идентификатор точки (UUID).
+ * @property {number} basePrice - Базовая цена услуги в рублях.
+ * @property {string} dateFrom - Дата и время начала события в формате ISO 8601 (UTC).
+ * @property {string} dateTo - Дата и время окончания события в формате ISO 8601 (UTC).
+ * @property {string} destination - Идентификатор пункта назначения (UUID).
+ * @property {boolean} isFavorite - Флаг избранного события.
+ * @property {string[]} offers - Массив идентификаторов доступных предложений/опций (UUID).
+ * @property {string} type - Тип события: 'check-in', 'taxi', 'sightseeing', 'flight' и т.д.
+ */
+
+/** Модель данных поездки.
+ * @typedef {Object} TripModel
+ * @property {Object<string, DestinationData>} destinationsById - Назначения по ID
+ * @property {Object<string, ListOffers>} offersByType - Предложения по типу
+ */
+
+export default class PointPresenter {
+  #point;
+  #model;
+  #listElement;
+  #pointComponent = null;
+  #pointFormComponent = null;
+
+  /** @param {PointConfig} config - Конфигурация презентера */
+  constructor({ point, model, listElement }) {
+    this.#point = point;
+    this.#model = model;
+    this.#listElement = listElement;
+  }
+
+  init() {
+    const { destinationsById, offersByType } = this.#model;
+    const destinationData = destinationsById[this.#point.destination];
+    const offerTypeData = offersByType[this.#point.type];
+
+    const filteredOfferData = this.#point.offers.reduce((acc, offer) => {
+      acc.push(offerTypeData[offer]);
+      return acc;
+    }, []);
+
+    this.#pointComponent = new ListPointView({
+      listPoint: this.#point,
+      destinationData: destinationData,
+      offerData: filteredOfferData,
+    });
+
+    this.#pointFormComponent = new ListPointFormView({
+      listPoint: this.#point,
+      destinationData: destinationData,
+      listOffers: offerTypeData,
+      isEditForm: true,
+      model: this.#model,
+    });
+
+    this.#addEventListeners();
+
+    this.#renderPoint();
+  }
+
+  #renderPoint() {
+    render(this.#pointComponent, this.#listElement);
+  }
+
+  #replacePointToForm() {
+    replace(this.#pointFormComponent, this.#pointComponent);
+  }
+
+  #replaceFormToPoint() {
+    replace(this.#pointComponent, this.#pointFormComponent);
+  }
+
+  /** Дабвление обработчиков событий */
+  #addEventListeners() {
+    this.#pointFormComponent.element
+      .querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#onCloseRollupBtnClick);
+
+    this.#pointComponent.element
+      .querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#onOpenRollupBtnClick);
+
+    this.#pointFormComponent.element
+      .querySelector('.event__reset-btn')
+      .addEventListener('click', this.#onDeleteBtnClick);
+  }
+
+  /** Открытие по нажатию Rollup */
+  #onOpenRollupBtnClick = (evt) => {
+    evt.preventDefault();
+    this.#replacePointToForm();
+    document.addEventListener('keydown', this.#escKeyDownHandler);
+  };
+
+  /** Закрытие по нажатию Rollup в форме */
+  #onCloseRollupBtnClick = (evt) => {
+    evt.preventDefault();
+    this.#replaceFormToPoint();
+  };
+
+  /** Закрытие по нажатию ESC */
+  #escKeyDownHandler = (evt) => {
+    if (evt.key === 'Escape') {
+      evt.preventDefault();
+      this.#replaceFormToPoint();
+      document.removeEventListener('keydown', this.#escKeyDownHandler);
+    }
+  };
+
+  /** Удаление текущей Point из списка */
+  #onDeleteBtnClick = (evt) => {
+    evt.preventDefault();
+    remove(this.#pointFormComponent);
+    remove(this.#pointComponent);
+  };
+}

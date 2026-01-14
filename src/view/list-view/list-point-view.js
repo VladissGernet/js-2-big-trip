@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import he from 'he';
 import { calcTimeBetween, html } from '../../utils/index.js';
 
-function createWaypointOffersTemplate(offerData) {
+function createPointOffersTemplate(offerData) {
   if (offerData.length === 0) {
     return '';
   }
@@ -21,7 +21,7 @@ function createWaypointOffersTemplate(offerData) {
     .join(' ');
 }
 
-function createWaypointTemplate({
+function createPointTemplate({
   destinationData,
   offerData,
   basePrice,
@@ -76,7 +76,7 @@ function createWaypointTemplate({
         </p>
         <h4 class="visually-hidden">Offers:</h4>
         <ul class="event__selected-offers">
-          ${createWaypointOffersTemplate(offerData)}
+          ${createPointOffersTemplate(offerData)}
         </ul>
         <button class="event__favorite-btn ${isFavoriteItem}" type="button">
           <span class="visually-hidden">Add to favorite</span>
@@ -99,7 +99,7 @@ function createWaypointTemplate({
   `;
 }
 
-export default class ListWaypointView extends AbstractView {
+export default class ListPointView extends AbstractView {
   #listPoint;
   #destinationData;
   #listOffers;
@@ -112,7 +112,7 @@ export default class ListWaypointView extends AbstractView {
   }
 
   get template() {
-    return createWaypointTemplate({
+    return createPointTemplate({
       ...this.#listPoint,
       destinationData: this.#destinationData,
       offerData: this.#listOffers,

@@ -99,7 +99,7 @@ const createTypeList = (offers) => {
   `;
 };
 
-const createListWaypointFormTemplate = ({
+const createListPointFormTemplate = ({
   listPoint = null,
   destinationData = null,
   listOffers = null,
@@ -213,4 +213,4 @@ const createListWaypointFormTemplate = ({
   `;
 };
 
-export { createListWaypointFormTemplate };
+export { createListPointFormTemplate };

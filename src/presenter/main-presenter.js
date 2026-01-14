@@ -35,7 +35,6 @@ export default class MainPresenter {
     this.#headerPresenter.init();
   }
 
-  // TODO погружаюсь в PageMainPresenter для рефакторинга
   #initPageMain() {
     this.#pageMainPresenter = new PageMainPresenter({
       container: this.#pageBody,
@@ -44,7 +43,9 @@ export default class MainPresenter {
     this.#pageMainPresenter.init(this.#headerPresenter.filterControls);
   }
 
+  // TODO Остановился на этом моменте по прокидыванию данной кнопки по созданию новой точки
   #initNewEventBtn() {
+    // Прокинуть эту кнопку в header презентр и далее обновить лисенер
     this.#newEventBtnPresenter = new NewEventBtnPresenter({
       btnElement: this.#headerPresenter.eventAddBtn.element,
       model: this.#model,

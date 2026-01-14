@@ -1,8 +1,8 @@
 export { default as BtnView } from './btn-view/btn-view.js';
 export { default as FilterView } from './filter-view/filter-view.js';
 export { default as ListView } from './list-view/list-view.js';
-export { default as ListWaypointFormView } from './list-view/list-waypoint-form-view.js';
-export { default as ListWaypointView } from './list-view/list-waypoint-view.js';
+export { default as ListPointFormView } from './list-view/list-point-form-view.js';
+export { default as ListPointView } from './list-view/list-point-view.js';
 export { default as HeaderView } from './header-view/header-view.js';
 export { default as PageMainView } from './page-main-view/page-main-view.js';
 export { default as SortView } from './sort-view/sort-view.js';
