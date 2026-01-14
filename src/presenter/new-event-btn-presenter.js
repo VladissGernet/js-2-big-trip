@@ -22,6 +22,7 @@ export default class NewEventBtnPresenter {
   #filterControls;
   #model;
   #newList;
+  #newWaypointForm;
 
   /** @param {PresenterConfig} config - Конфигурация презентера */
   constructor({
@@ -54,65 +55,64 @@ export default class NewEventBtnPresenter {
     this.#btnElement.addEventListener('click', this.#onBtnClick);
   }
 
-  // TODO остановился на рефакторинге здесь
   #onBtnClick = (evt) => {
     evt.preventDefault();
 
-    const newWaypointForm = new ListPointFormView({
+    this.#newWaypointForm = new ListPointFormView({
       isEditForm: false,
       model: this.#model,
     });
 
-    const resetButton =
-      newWaypointForm.element.querySelector('.event__reset-btn');
-
-    let escKeyDownHandler = null;
-    let resetButtonHandler = null;
-
-    const closeForm = () => {
-      document.removeEventListener('keydown', escKeyDownHandler);
-      resetButton.removeEventListener('click', resetButtonHandler);
-      remove(newWaypointForm);
-      this.#btnElement.disabled = false;
-
-      if (this.#model.listPoints.length === 0) {
-        const selectedFilter = this.#filterControls.querySelector(
-          'input[name="trip-filter"]:checked'
-        ).value;
-        this.#tripEventsEmpty = new TripEventsEmptyView(selectedFilter);
-        render(this.#tripEventsEmpty, this.#tripEvents.element);
-      }
-    };
-
-    escKeyDownHandler = (e) => {
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        closeForm();
-      }
-    };
-
-    resetButtonHandler = (e) => {
-      e.preventDefault();
-      closeForm();
-    };
-
     this.#btnElement.disabled = true;
 
-    resetButton.addEventListener('click', resetButtonHandler);
+    this.#newWaypointForm.resetButton.addEventListener(
+      'click',
+      this.#resetButtonHandler
+    );
 
     if (this.#model.listPoints.length === 0) {
       remove(this.#tripEventsEmpty);
       this.#newList = new ListView();
       render(this.#newList, this.#tripEvents.element);
-      render(newWaypointForm, this.#newList.element);
+      render(this.#newWaypointForm, this.#newList.element);
     } else {
       render(
-        newWaypointForm,
+        this.#newWaypointForm,
         this.#listView.element,
         RenderPosition.AFTERBEGIN
       );
     }
 
-    document.addEventListener('keydown', escKeyDownHandler);
+    document.addEventListener('keydown', this.#escKeyDownHandler);
+  };
+
+  #closeForm() {
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+    this.#newWaypointForm.resetButton.removeEventListener(
+      'click',
+      this.#resetButtonHandler
+    );
+    remove(this.#newWaypointForm);
+    this.#btnElement.disabled = false;
+
+    if (this.#model.listPoints.length === 0) {
+      const selectedFilter = this.#filterControls.querySelector(
+        'input[name="trip-filter"]:checked'
+      ).value;
+      this.#tripEventsEmpty = new TripEventsEmptyView(selectedFilter);
+      render(this.#tripEventsEmpty, this.#tripEvents.element);
+    }
+  }
+
+  #escKeyDownHandler = (evt) => {
+    if (evt.key === 'Escape') {
+      evt.preventDefault();
+      this.#closeForm();
+    }
+  };
+
+  #resetButtonHandler = (evt) => {
+    evt.preventDefault();
+    this.#closeForm();
   };
 }

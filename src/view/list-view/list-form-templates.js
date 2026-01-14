@@ -120,7 +120,7 @@ const createListPointFormTemplate = ({
         <header class="event__header">
           <div class="event__type-wrapper">
             <label
-              class="event__type  event__type-btn"
+              class="event__type event__type-btn"
               for="event-type-toggle-1"
             >
               <span class="visually-hidden">Choose event type</span>
@@ -133,22 +133,22 @@ const createListPointFormTemplate = ({
               />
             </label>
             <input
-              class="event__type-toggle  visually-hidden"
+              class="event__type-toggle visually-hidden"
               id="event-type-toggle-1"
               type="checkbox"
             />
             ${model?.offers ? createTypeList(model.offers) : ''}
           </div>
 
-          <div class="event__field-group  event__field-group--destination">
+          <div class="event__field-group event__field-group--destination">
             <label
-              class="event__label  event__type-output"
+              class="event__label event__type-output"
               for="event-destination-1"
             >
               ${iconType}
             </label>
             <input
-              class="event__input  event__input--destination"
+              class="event__input event__input--destination"
               id="event-destination-1"
               type="text"
               name="event-destination"
@@ -162,10 +162,10 @@ const createListPointFormTemplate = ({
             </datalist>
           </div>
 
-          <div class="event__field-group  event__field-group--time">
+          <div class="event__field-group event__field-group--time">
             <label class="visually-hidden" for="event-start-time-1">From</label>
             <input
-              class="event__input  event__input--time"
+              class="event__input event__input--time"
               id="event-start-time-1"
               type="text"
               name="event-start-time"
@@ -174,7 +174,7 @@ const createListPointFormTemplate = ({
             &mdash;
             <label class="visually-hidden" for="event-end-time-1">To</label>
             <input
-              class="event__input  event__input--time"
+              class="event__input event__input--time"
               id="event-end-time-1"
               type="text"
               name="event-end-time"
@@ -182,13 +182,13 @@ const createListPointFormTemplate = ({
             />
           </div>
 
-          <div class="event__field-group  event__field-group--price">
+          <div class="event__field-group event__field-group--price">
             <label class="event__label" for="event-price-1">
               <span class="visually-hidden">Price</span>
               &euro;
             </label>
             <input
-              class="event__input  event__input--price"
+              class="event__input event__input--price"
               id="event-price-1"
               type="text"
               name="event-price"
@@ -196,7 +196,7 @@ const createListPointFormTemplate = ({
             />
           </div>
 
-          <button class="event__save-btn  btn  btn--blue" type="submit">
+          <button class="event__save-btn btn btn--blue" type="submit">
             Save
           </button>
           <button class="event__reset-btn" type="reset">
