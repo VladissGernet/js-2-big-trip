@@ -1,6 +1,5 @@
 import HeaderPresenter from './header-presenter.js';
 import PageMainPresenter from './page-main-presenter.js';
-import NewEventBtnPresenter from './new-event-btn-presenter.js';
 
 /** Конфигурация презентера.
  * @typedef {Object} PresenterConfig
@@ -14,7 +13,6 @@ export default class MainPresenter {
 
   #headerPresenter;
   #pageMainPresenter;
-  #newEventBtnPresenter;
 
   /** @param {PresenterConfig} */
   constructor({ model, pageBody }) {
@@ -25,12 +23,13 @@ export default class MainPresenter {
   init() {
     this.#initHeader();
     this.#initPageMain();
-    this.#initNewEventBtn();
+    this.#connectPageMainComponents();
   }
 
   #initHeader() {
     this.#headerPresenter = new HeaderPresenter({
       container: this.#pageBody,
+      model: this.#model,
     });
     this.#headerPresenter.init();
   }
@@ -43,17 +42,12 @@ export default class MainPresenter {
     this.#pageMainPresenter.init(this.#headerPresenter.filterControls);
   }
 
-  // TODO Остановился на этом моменте по прокидыванию данной кнопки по созданию новой точки
-  #initNewEventBtn() {
-    // Прокинуть эту кнопку в header презентр и далее обновить лисенер
-    this.#newEventBtnPresenter = new NewEventBtnPresenter({
-      btnElement: this.#headerPresenter.eventAddBtn.element,
-      model: this.#model,
+  /** Связывает компоненты PageMain с кнопкой создания новой точки маршурта в header. */
+  #connectPageMainComponents() {
+    this.#headerPresenter.connectPageMainComponents({
       tripEventsEmpty: this.#pageMainPresenter.tripEventsEmpty,
       listView: this.#pageMainPresenter.listView,
-      filterControls: this.#headerPresenter.filterControls,
       tripEvents: this.#pageMainPresenter.tripEvents,
     });
-    this.#newEventBtnPresenter.init();
   }
 }

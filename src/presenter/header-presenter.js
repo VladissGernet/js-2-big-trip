@@ -4,6 +4,7 @@ import {
   TripControlsView,
   BtnView,
 } from '../view/index.js';
+import NewEventBtnPresenter from './new-event-btn-presenter.js';
 
 import FilterPresenter from './filter-presenter.js';
 import { TRIP_FILTERS } from '../const.js';
@@ -12,19 +13,20 @@ import { render } from '../framework/render.js';
 /** Конфиг принимаемый презентором
  * @typedef {Object} PresenterConfig
  * @property {HTMLDivElement} container - Контейнер для рендера
+ * @property {Model} model - Данные модели для рендера страницы
  */
 
 /** Презентер header страницы */
 export default class HeaderPresenter {
   #container;
+  #model;
+  #newEventBtnPresenter;
   #pageHeader = new HeaderView();
   #tripMain = new TripMainView();
   #tripControls = new TripControlsView();
 
-  /** Публичный доступ получения кнопки добавления формы в список внутри main.
-   * @type {HTMLButtonElement} Кнопка добавления новой строчки в списке.
-   */
-  eventAddBtn = new BtnView(
+  /** @type {HTMLButtonElement} Кнопка добавления новой строчки в списке. */
+  #newEventBtn = new BtnView(
     'trip-main__event-add-btn btn btn--big btn--yellow'
   );
 
@@ -34,8 +36,9 @@ export default class HeaderPresenter {
   filterControls = null;
 
   /** @param {PresenterConfig} config */
-  constructor({ container }) {
+  constructor({ container, model }) {
     this.#container = container;
+    this.#model = model;
   }
 
   init() {
@@ -50,7 +53,7 @@ export default class HeaderPresenter {
   #renderTripMain() {
     render(this.#tripMain, this.#pageHeader.container);
     this.#renderTripControls();
-    this.#renderEventAddBtn();
+    this.#renderNewEventBtn();
   }
 
   #renderTripControls() {
@@ -67,7 +70,17 @@ export default class HeaderPresenter {
     this.filterControls = filterPresenter.filterComponent.element;
   }
 
-  #renderEventAddBtn() {
-    render(this.eventAddBtn, this.#tripMain.element);
+  #renderNewEventBtn() {
+    this.#newEventBtnPresenter = new NewEventBtnPresenter({
+      btnElement: this.#newEventBtn.element,
+      model: this.#model,
+      filterControls: this.filterControls,
+    });
+    this.#newEventBtnPresenter.init();
+    render(this.#newEventBtn, this.#tripMain.element);
+  }
+
+  connectPageMainComponents(components) {
+    this.#newEventBtnPresenter.connectPageMainComponents(components);
   }
 }
