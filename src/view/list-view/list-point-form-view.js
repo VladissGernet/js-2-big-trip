@@ -18,8 +18,12 @@ export default class ListPointFormView extends AbstractView {
     this.#model = model;
   }
 
-  get resetButton() {
+  get resetBtn() {
     return this.element.querySelector('.event__reset-btn');
+  }
+
+  get rollupBtn() {
+    return this.element.querySelector('.event__rollup-btn');
   }
 
   get template() {

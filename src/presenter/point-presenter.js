@@ -83,17 +83,20 @@ export default class PointPresenter {
 
   /** Дабвление обработчиков событий */
   #addEventListeners() {
-    this.#pointFormComponent.element
-      .querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#onCloseRollupBtnClick);
+    this.#pointFormComponent.rollupBtn.addEventListener(
+      'click',
+      this.#onCloseRollupBtnClick
+    );
 
-    this.#pointComponent.element
-      .querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#onOpenRollupBtnClick);
+    this.#pointComponent.rollupBtn.addEventListener(
+      'click',
+      this.#onOpenRollupBtnClick
+    );
 
-    this.#pointFormComponent.element
-      .querySelector('.event__reset-btn')
-      .addEventListener('click', this.#onDeleteBtnClick);
+    this.#pointFormComponent.resetBtn.addEventListener(
+      'click',
+      this.#onDeleteBtnClick
+    );
   }
 
   /** Открытие по нажатию Rollup */

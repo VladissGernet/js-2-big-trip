@@ -59,7 +59,7 @@ const createDestinationSectionTemplate = (data) =>
         ${createPicturesListTemplate(data.pictures)}
       </section>`;
 
-const closeEditFormButton = (isEditForm) =>
+const closeEditFormBtn = (isEditForm) =>
   isEditForm
     ? html` <button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>
@@ -202,7 +202,7 @@ const createListPointFormTemplate = ({
           <button class="event__reset-btn" type="reset">
             ${isEditForm ? 'Delete' : 'Cancel'}
           </button>
-          ${closeEditFormButton(isEditForm)}
+          ${closeEditFormBtn(isEditForm)}
         </header>
         <section class="event__details">
           ${createOffersTemplate(listOffers)}

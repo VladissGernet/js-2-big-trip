@@ -111,6 +111,10 @@ export default class ListPointView extends AbstractView {
     this.#listOffers = offerData;
   }
 
+  get rollupBtn() {
+    return this.element.querySelector('.event__rollup-btn');
+  }
+
   get template() {
     return createPointTemplate({
       ...this.#listPoint,

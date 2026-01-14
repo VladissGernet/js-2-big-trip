@@ -65,9 +65,9 @@ export default class NewEventBtnPresenter {
 
     this.#btnElement.disabled = true;
 
-    this.#newWaypointForm.resetButton.addEventListener(
+    this.#newWaypointForm.resetBtn.addEventListener(
       'click',
-      this.#resetButtonHandler
+      this.#resetBtnHandler
     );
 
     if (this.#model.listPoints.length === 0) {
@@ -88,9 +88,9 @@ export default class NewEventBtnPresenter {
 
   #closeForm() {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
-    this.#newWaypointForm.resetButton.removeEventListener(
+    this.#newWaypointForm.resetBtn.removeEventListener(
       'click',
-      this.#resetButtonHandler
+      this.#resetBtnHandler
     );
     remove(this.#newWaypointForm);
     this.#btnElement.disabled = false;
@@ -111,7 +111,7 @@ export default class NewEventBtnPresenter {
     }
   };
 
-  #resetButtonHandler = (evt) => {
+  #resetBtnHandler = (evt) => {
     evt.preventDefault();
     this.#closeForm();
   };
