@@ -10,34 +10,32 @@ export default class TripModel {
   /** @type {Array<Object>} Список назначений */
   #destinations = destinationsMock;
 
-  /** Список предложений
-   * @type {Array<Object>}
-   * Публичный для отрисовки списка типов в форме создания\редактирования точки.
-   */
-  offers = offersMock;
+  /** @type {Array<Object>} Список предложений */
+  #offers = offersMock;
 
-  /** @returns {Object} Назначения по ID для быстрого поиска. */
+  get offersReadOnly() {
+    return Object.freeze(structuredClone(this.#offers));
+  }
+
+  /** @returns {Map<string, Object>}  Назначения по ID для быстрого поиска. */
   get destinationsById() {
     // Преобразовываю данные для оптимизированного поиска.
-    return structuredClone(this.#destinations).reduce(
-      (acc, { id, ...rest }) => {
-        acc[id] = rest;
-        return acc;
-      },
-      {}
+    return this.#destinations.reduce(
+      (result, { id, ...rest }) => result.set(id, rest),
+      new Map()
     );
   }
 
-  /** @returns {Object} Назначения по типу для быстрого поиска. */
+  /** @returns {Map<string, Offer[]>}  Назначения по типу для быстрого поиска. */
   get offersByType() {
     // Преобразовываю данные для оптимизированного поиска.
-    return structuredClone(this.offers).reduce((types, { type, offers }) => {
-      types[type] = offers.reduce((offersIdentifications, { id, ...rest }) => {
-        offersIdentifications[id] = rest;
-        return offersIdentifications;
-      }, {});
-      return types;
-    }, {});
+    return this.#offers.reduce((result, { type, offers }) => {
+      const offersMap = offers.reduce(
+        (acc, { id, ...rest }) => acc.set(id, rest),
+        new Map()
+      );
+      return result.set(type, offersMap);
+    }, new Map());
   }
 
   /** @returns {Array<Object>} Список путевых точек */

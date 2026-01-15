@@ -112,7 +112,8 @@ const createListPointFormTemplate = ({
 
   const dateFrom = formatDate(listPoint?.dateFrom);
   const dateTo = formatDate(listPoint?.dateTo);
-  const iconType = listPoint?.type || model?.offers[0]?.type || '';
+
+  const iconType = listPoint?.type || model?.offersReadOnly[0]?.type || '';
 
   return html`
     <li class="trip-events__item">
@@ -137,7 +138,7 @@ const createListPointFormTemplate = ({
               id="event-type-toggle-1"
               type="checkbox"
             />
-            ${model?.offers ? createTypeList(model.offers) : ''}
+            ${model?.offersReadOnly ? createTypeList(model.offersReadOnly) : ''}
           </div>
 
           <div class="event__field-group event__field-group--destination">

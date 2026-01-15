@@ -115,6 +115,10 @@ export default class ListPointView extends AbstractView {
     return this.element.querySelector('.event__rollup-btn');
   }
 
+  get favoriteBtn() {
+    return this.element.querySelector('.event__favorite-btn');
+  }
+
   get template() {
     return createPointTemplate({
       ...this.#listPoint,

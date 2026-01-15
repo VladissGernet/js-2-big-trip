@@ -42,13 +42,12 @@ export default class PointPresenter {
 
   init() {
     const { destinationsById, offersByType } = this.#model;
-    const destinationData = destinationsById[this.#point.destination];
-    const offerTypeData = offersByType[this.#point.type];
+    const destinationData = destinationsById.get(this.#point.destination);
+    const offerTypeData = offersByType.get(this.#point.type);
 
-    const filteredOfferData = this.#point.offers.reduce((acc, offer) => {
-      acc.push(offerTypeData[offer]);
-      return acc;
-    }, []);
+    const filteredOfferData = this.#point.offers.map((offer) =>
+      offerTypeData.get(offer)
+    );
 
     this.#pointComponent = new ListPointView({
       listPoint: this.#point,
@@ -65,7 +64,6 @@ export default class PointPresenter {
     });
 
     this.#addEventListeners();
-
     this.#renderPoint();
   }
 
@@ -81,7 +79,7 @@ export default class PointPresenter {
     replace(this.#pointComponent, this.#pointFormComponent);
   }
 
-  /** Дабвление обработчиков событий */
+  /** Дабвление обработчиков событий. */
   #addEventListeners() {
     this.#pointFormComponent.rollupBtn.addEventListener(
       'click',
@@ -97,22 +95,27 @@ export default class PointPresenter {
       'click',
       this.#onDeleteBtnClick
     );
+
+    this.#pointComponent.favoriteBtn.addEventListener(
+      'click',
+      this.#onFavoriteBtnClick
+    );
   }
 
-  /** Открытие по нажатию Rollup */
+  /** Открытие по нажатию Rollup. */
   #onOpenRollupBtnClick = (evt) => {
     evt.preventDefault();
     this.#replacePointToForm();
     document.addEventListener('keydown', this.#escKeyDownHandler);
   };
 
-  /** Закрытие по нажатию Rollup в форме */
+  /** Закрытие по нажатию Rollup в форме. */
   #onCloseRollupBtnClick = (evt) => {
     evt.preventDefault();
     this.#replaceFormToPoint();
   };
 
-  /** Закрытие по нажатию ESC */
+  /** Закрытие по нажатию ESC. */
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
@@ -121,10 +124,26 @@ export default class PointPresenter {
     }
   };
 
-  /** Удаление текущей Point из списка */
+  /** Удаление текущей Point из списка. */
   #onDeleteBtnClick = (evt) => {
     evt.preventDefault();
     remove(this.#pointFormComponent);
     remove(this.#pointComponent);
+  };
+
+  /** Обработчик добавления в избранное. */
+  #onFavoriteBtnClick = (evt) => {
+    evt.preventDefault();
+    evt.currentTarget.classList.toggle('event__favorite-btn--active');
+
+    console.log(this.#point);
+    console.log(this.#model.destinationsById);
+
+    // TODO Остновился здесь на
+    // В презентере маршрута опишите метод изменения данных.
+    // Задача метода — обновить моки и вызвать обновление конкретной точки маршрута.
+    // 2. Преобразовать данные в Map
+    // 3. Добавить в обработичк обновление данных в Map
+    // 4. Перерисовать элемент.
   };
 }

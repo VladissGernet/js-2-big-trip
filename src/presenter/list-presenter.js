@@ -40,6 +40,7 @@ export default class ListPresenter {
   }
 
   #createPoint({ point, model, listElement }) {
-    new PointPresenter({ point, model, listElement }).init();
+    const pointPresenter = new PointPresenter({ point, model, listElement });
+    pointPresenter.init();
   }
 }
