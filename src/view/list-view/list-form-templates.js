@@ -99,13 +99,13 @@ const createTypeList = (offers) => {
   `;
 };
 
-const createListPointFormTemplate = ({
-  listPoint = null,
-  destinationData = null,
-  listOffers = null,
-  isEditForm,
-  model,
-}) => {
+const createListPointFormTemplate = ({ pointData = {}, isEditForm, model }) => {
+  const {
+    listPoint = null,
+    destinationData = null,
+    listOffers = null,
+  } = pointData;
+
   /**@param {string} date - ISO 8601 дата */
   const formatDate = (date) =>
     !date ? '' : dayjs(date).format('DD/MM/YY HH:mm');

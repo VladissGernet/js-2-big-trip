@@ -8,7 +8,7 @@ const mainPresenter = new MainPresenter({ model: model, pageBody: pageBody });
 mainPresenter.init();
 
 /* TODO
-повторить про call, apply, bind , контекст
+-----------------------------
 Частичный датабиндинг
 
   Реализуем обработку кликов на кнопке «Favorite» (звёздочка). Обработчики должны изменять данные точки маршрута —

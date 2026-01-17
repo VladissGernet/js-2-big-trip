@@ -49,6 +49,12 @@ export default class PointPresenter {
       offerTypeData.get(offer)
     );
 
+    const pointData = {
+      listPoint: this.#point,
+      destinationData: destinationData,
+      listOffers: offerTypeData,
+    };
+
     this.#pointComponent = new ListPointView({
       listPoint: this.#point,
       destinationData: destinationData,
@@ -56,9 +62,7 @@ export default class PointPresenter {
     });
 
     this.#pointFormComponent = new ListPointFormView({
-      listPoint: this.#point,
-      destinationData: destinationData,
-      listOffers: offerTypeData,
+      pointData: pointData,
       isEditForm: true,
       model: this.#model,
     });
@@ -136,13 +140,13 @@ export default class PointPresenter {
     evt.preventDefault();
     evt.currentTarget.classList.toggle('event__favorite-btn--active');
 
-    console.log(this.#point);
-    console.log(this.#model.destinationsById);
+    // console.log(this.#point);
+    // console.log(this.#model.destinationsById);
 
     // TODO Остновился здесь на
+
     // В презентере маршрута опишите метод изменения данных.
     // Задача метода — обновить моки и вызвать обновление конкретной точки маршрута.
-    // 2. Преобразовать данные в Map
     // 3. Добавить в обработичк обновление данных в Map
     // 4. Перерисовать элемент.
   };
