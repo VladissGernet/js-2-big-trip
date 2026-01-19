@@ -7,17 +7,20 @@ function createPointOffersTemplate(offerData) {
   if (offerData.length === 0) {
     return '';
   }
-
   return offerData
-    .map(
-      ({ title, price }) => html`
+    .map(({ title, price, isSelected }) => {
+      if (!isSelected) {
+        return '';
+      }
+
+      return html`
         <li class="event__offer">
           <span class="event__offer-title">${title}</span>
           &plus;&euro;&nbsp;
           <span class="event__offer-price">${price}</span>
         </li>
-      `
-    )
+      `;
+    })
     .join(' ');
 }
 

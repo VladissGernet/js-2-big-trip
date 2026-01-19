@@ -1,36 +1,32 @@
 import { html } from '../../utils/index.js';
 import dayjs from 'dayjs';
 
-const createOfferTemplate = ({ title, price }) => html` <div
-  class="event__offer-selector"
->
-  <input
-    class="event__offer-checkbox  visually-hidden"
-    id="event-offer-${title}"
-    type="checkbox"
-    name="event-offer-luggage"
-  />
-  <label class="event__offer-label" for="event-offer-${title}">
-    <span class="event__offer-title">${title}</span>
-    &plus;&euro;&nbsp;
-    <span class="event__offer-price">${price}</span>
-  </label>
-</div>`;
+const createOfferTemplate = ({ title, price, isSelected }) =>
+  html`<div class="event__offer-selector">
+    <input
+      class="event__offer-checkbox  visually-hidden"
+      id="event-offer-${title}"
+      type="checkbox"
+      name="event-offer-luggage"
+      ${isSelected ? 'checked' : ''}
+    />
+    <label class="event__offer-label" for="event-offer-${title}">
+      <span class="event__offer-title">${title}</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">${price}</span>
+    </label>
+  </div>`;
 
-const createOffersTemplate = (data) => {
-  const offers = Object.values(data || {});
+const createOffersTemplate = (offers) => {
+  if (!offers?.length) {
+    return '';
+  }
 
-  return offers.length > 0
-    ? html` <section class="event__section  event__section--offers">
-        <h3 class="event__section-title  event__section-title--offers">
-          Offers
-        </h3>
-
-        <div class="event__available-offers">
-          ${offers.map(createOfferTemplate).join('')}
-        </div>
-      </section>`
-    : '';
+  const result = offers.map((item) => createOfferTemplate(item)).join('');
+  return html` <section class="event__section  event__section--offers">
+    <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+    <div class="event__available-offers">${result}</div>
+  </section>`;
 };
 
 const createPicturesListTemplate = (dataList) => {
@@ -86,7 +82,7 @@ const createTypeList = (offers) => {
           >
         </div>
       `,
-    ''
+    '',
   );
 
   return html`

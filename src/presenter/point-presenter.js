@@ -45,20 +45,21 @@ export default class PointPresenter {
     const destinationData = destinationsById.get(this.#point.destination);
     const offerTypeData = offersByType.get(this.#point.type);
 
-    const filteredOfferData = this.#point.offers.map((offer) =>
-      offerTypeData.get(offer)
+    const transformedOfferTypeData = this.#transformOfferTypeData(
+      offerTypeData,
+      this.#point.offers,
     );
 
     const pointData = {
       listPoint: this.#point,
       destinationData: destinationData,
-      listOffers: offerTypeData,
+      listOffers: transformedOfferTypeData,
     };
 
     this.#pointComponent = new ListPointView({
       listPoint: this.#point,
       destinationData: destinationData,
-      offerData: filteredOfferData,
+      offerData: transformedOfferTypeData,
     });
 
     this.#pointFormComponent = new ListPointFormView({
@@ -69,6 +70,17 @@ export default class PointPresenter {
 
     this.#addEventListeners();
     this.#renderPoint();
+  }
+
+  #transformOfferTypeData(offerTypeData, currentPointOffers) {
+    if (offerTypeData === 0 || currentPointOffers.length === 0) {
+      return [];
+    }
+    const selectedIds = new Set(currentPointOffers);
+    return Array.from(offerTypeData, ([id, data]) => ({
+      ...data,
+      isSelected: selectedIds.has(id),
+    }));
   }
 
   #renderPoint() {
@@ -87,22 +99,22 @@ export default class PointPresenter {
   #addEventListeners() {
     this.#pointFormComponent.rollupBtn.addEventListener(
       'click',
-      this.#onCloseRollupBtnClick
+      this.#onCloseRollupBtnClick,
     );
 
     this.#pointComponent.rollupBtn.addEventListener(
       'click',
-      this.#onOpenRollupBtnClick
+      this.#onOpenRollupBtnClick,
     );
 
     this.#pointFormComponent.resetBtn.addEventListener(
       'click',
-      this.#onDeleteBtnClick
+      this.#onDeleteBtnClick,
     );
 
     this.#pointComponent.favoriteBtn.addEventListener(
       'click',
-      this.#onFavoriteBtnClick
+      this.#onFavoriteBtnClick,
     );
   }
 
