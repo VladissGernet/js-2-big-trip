@@ -60,6 +60,8 @@ export default class PointPresenter {
       listPoint: this.#point,
       destinationData: destinationData,
       offerData: transformedOfferTypeData,
+      onRollupClick: this.#handleRollupClick,
+      onFavoriteClick: this.#handleFavoriteClick,
     });
 
     this.#pointFormComponent = new ListPointFormView({
@@ -97,16 +99,6 @@ export default class PointPresenter {
 
   /** Дабвление обработчиков событий. */
   #addEventListeners() {
-    this.#pointComponent.rollupBtn.addEventListener(
-      'click',
-      this.#onOpenRollupBtnClick,
-    );
-
-    this.#pointComponent.favoriteBtn.addEventListener(
-      'click',
-      this.#onFavoriteBtnClick,
-    );
-
     this.#pointFormComponent.rollupBtn.addEventListener(
       'click',
       this.#onCloseRollupBtnClick,
@@ -119,8 +111,7 @@ export default class PointPresenter {
   }
 
   /** Открытие по нажатию Rollup. */
-  #onOpenRollupBtnClick = (evt) => {
-    evt.preventDefault();
+  #handleRollupClick = () => {
     this.#replacePointToForm();
     document.addEventListener('keydown', this.#escKeyDownHandler);
   };
@@ -148,15 +139,11 @@ export default class PointPresenter {
   };
 
   /** Обработчик добавления в избранное. */
-  #onFavoriteBtnClick = (evt) => {
-    evt.preventDefault();
-    evt.currentTarget.classList.toggle('event__favorite-btn--active');
-
+  #handleFavoriteClick = () => {
+    // evt.currentTarget.classList.toggle('event__favorite-btn--active');
     // console.log(this.#point);
     // console.log(this.#model.destinationsById);
-
     // TODO Остновился здесь на
-
     // В презентере маршрута опишите метод изменения данных.
     // Задача метода — обновить моки и вызвать обновление конкретной точки маршрута.
     // 3. Добавить в обработичк обновление данных в Map
