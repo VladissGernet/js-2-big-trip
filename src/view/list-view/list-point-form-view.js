@@ -6,20 +6,18 @@ export default class ListPointFormView extends AbstractView {
   #pointData;
   #isEditForm;
   #model;
+  #handleRollupClick = null;
+  #handleResetClick = null;
 
-  constructor({ pointData, isEditForm, model }) {
+  constructor({ pointData, isEditForm, model, onRollupClick, onResetClick }) {
     super();
     this.#pointData = pointData;
     this.#isEditForm = isEditForm;
     this.#model = model;
-  }
+    this.#handleRollupClick = onRollupClick;
+    this.#handleResetClick = onResetClick;
 
-  get resetBtn() {
-    return this.element.querySelector('.event__reset-btn');
-  }
-
-  get rollupBtn() {
-    return this.element.querySelector('.event__rollup-btn');
+    this.#addEventListeners();
   }
 
   get template() {
@@ -28,5 +26,40 @@ export default class ListPointFormView extends AbstractView {
       isEditForm: this.#isEditForm,
       model: this.#model,
     });
+  }
+
+  #rollupClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleRollupClick();
+  };
+
+  #resetClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#removeEvenetListeners();
+    this.#handleResetClick();
+  };
+
+  #addEventListeners() {
+    this.element
+      .querySelector('.event__reset-btn')
+      .addEventListener('click', this.#resetClickHandler);
+
+    if (this.#handleRollupClick) {
+      this.element
+        .querySelector('.event__rollup-btn')
+        .addEventListener('click', this.#rollupClickHandler);
+    }
+  }
+
+  #removeEvenetListeners() {
+    if (this.#handleRollupClick) {
+      this.element
+        .querySelector('.event__rollup-btn')
+        .removeEventListener('click', this.#rollupClickHandler);
+    }
+
+    this.element
+      .querySelector('.event__reset-btn')
+      .removeEventListener('click', this.#resetClickHandler);
   }
 }

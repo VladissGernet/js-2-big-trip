@@ -57,18 +57,13 @@ export default class NewEventBtnPresenter {
 
   #onBtnClick = (evt) => {
     evt.preventDefault();
-
     this.#newWaypointForm = new ListPointFormView({
       isEditForm: false,
       model: this.#model,
+      onResetClick: this.#handleResetBtn,
     });
 
     this.#btnElement.disabled = true;
-
-    this.#newWaypointForm.resetBtn.addEventListener(
-      'click',
-      this.#resetBtnHandler
-    );
 
     if (this.#model.listPoints.length === 0) {
       remove(this.#tripEventsEmpty);
@@ -79,7 +74,7 @@ export default class NewEventBtnPresenter {
       render(
         this.#newWaypointForm,
         this.#listView.element,
-        RenderPosition.AFTERBEGIN
+        RenderPosition.AFTERBEGIN,
       );
     }
 
@@ -88,20 +83,19 @@ export default class NewEventBtnPresenter {
 
   #closeForm() {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
-    this.#newWaypointForm.resetBtn.removeEventListener(
-      'click',
-      this.#resetBtnHandler
-    );
     remove(this.#newWaypointForm);
     this.#btnElement.disabled = false;
-
     if (this.#model.listPoints.length === 0) {
-      const selectedFilter = this.#filterControls.querySelector(
-        'input[name="trip-filter"]:checked'
-      ).value;
-      this.#tripEventsEmpty = new TripEventsEmptyView(selectedFilter);
-      render(this.#tripEventsEmpty, this.#tripEvents.element);
+      this.#renderEmptyMessage();
     }
+  }
+
+  #renderEmptyMessage() {
+    const selectedFilter = this.#filterControls.querySelector(
+      'input[name="trip-filter"]:checked',
+    ).value;
+    this.#tripEventsEmpty = new TripEventsEmptyView(selectedFilter);
+    render(this.#tripEventsEmpty, this.#tripEvents.element);
   }
 
   #escKeyDownHandler = (evt) => {
@@ -111,8 +105,7 @@ export default class NewEventBtnPresenter {
     }
   };
 
-  #resetBtnHandler = (evt) => {
-    evt.preventDefault();
+  #handleResetBtn = () => {
     this.#closeForm();
   };
 }

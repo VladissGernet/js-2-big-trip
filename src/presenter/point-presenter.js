@@ -60,7 +60,7 @@ export default class PointPresenter {
       listPoint: this.#point,
       destinationData: destinationData,
       offerData: transformedOfferTypeData,
-      onRollupClick: this.#handleRollupClick,
+      onRollupClick: this.#handleOpenRollupClick,
       onFavoriteClick: this.#handleFavoriteClick,
     });
 
@@ -68,9 +68,10 @@ export default class PointPresenter {
       pointData: pointData,
       isEditForm: true,
       model: this.#model,
+      onRollupClick: this.#handleCloseRollupClick,
+      onResetClick: this.#handleDeleteClick,
     });
 
-    this.#addEventListeners();
     this.#renderPoint();
   }
 
@@ -97,28 +98,14 @@ export default class PointPresenter {
     replace(this.#pointComponent, this.#pointFormComponent);
   }
 
-  /** Дабвление обработчиков событий. */
-  #addEventListeners() {
-    this.#pointFormComponent.rollupBtn.addEventListener(
-      'click',
-      this.#onCloseRollupBtnClick,
-    );
-
-    this.#pointFormComponent.resetBtn.addEventListener(
-      'click',
-      this.#onDeleteBtnClick,
-    );
-  }
-
   /** Открытие по нажатию Rollup. */
-  #handleRollupClick = () => {
+  #handleOpenRollupClick = () => {
     this.#replacePointToForm();
     document.addEventListener('keydown', this.#escKeyDownHandler);
   };
 
   /** Закрытие по нажатию Rollup в форме. */
-  #onCloseRollupBtnClick = (evt) => {
-    evt.preventDefault();
+  #handleCloseRollupClick = () => {
     this.#replaceFormToPoint();
   };
 
@@ -132,8 +119,8 @@ export default class PointPresenter {
   };
 
   /** Удаление текущей Point из списка. */
-  #onDeleteBtnClick = (evt) => {
-    evt.preventDefault();
+  #handleDeleteClick = () => {
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
     remove(this.#pointFormComponent);
     remove(this.#pointComponent);
   };
