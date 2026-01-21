@@ -123,12 +123,7 @@ export default class ListPointView extends AbstractView {
     this.#handleRollupCLick = onRollupClick;
     this.#handleFavoriteClick = onFavoriteClick;
 
-    this.element
-      .querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#rollupClickHandler);
-    this.element
-      .querySelector('.event__favorite-btn')
-      .addEventListener('click', this.#favoriteClickHandler);
+    this.#addEventListeners();
   }
 
   get template() {
@@ -137,6 +132,15 @@ export default class ListPointView extends AbstractView {
       destinationData: this.#destinationData,
       offerData: this.#listOffers,
     });
+  }
+
+  removeEventListeners() {
+    this.element
+      .querySelector('.event__rollup-btn')
+      .removeEventListener('click', this.#rollupClickHandler);
+    this.element
+      .querySelector('.event__favorite-btn')
+      .removeEventListener('click', this.#favoriteClickHandler);
   }
 
   #rollupClickHandler = (evt) => {
@@ -148,4 +152,13 @@ export default class ListPointView extends AbstractView {
     evt.preventDefault();
     this.#handleFavoriteClick();
   };
+
+  #addEventListeners() {
+    this.element
+      .querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#rollupClickHandler);
+    this.element
+      .querySelector('.event__favorite-btn')
+      .addEventListener('click', this.#favoriteClickHandler);
+  }
 }

@@ -28,6 +28,18 @@ export default class ListPointFormView extends AbstractView {
     });
   }
 
+  removeEventListeners() {
+    if (this.#handleRollupClick) {
+      this.element
+        .querySelector('.event__rollup-btn')
+        .removeEventListener('click', this.#rollupClickHandler);
+    }
+
+    this.element
+      .querySelector('.event__reset-btn')
+      .removeEventListener('click', this.#resetClickHandler);
+  }
+
   #rollupClickHandler = (evt) => {
     evt.preventDefault();
     this.#handleRollupClick();
@@ -35,7 +47,7 @@ export default class ListPointFormView extends AbstractView {
 
   #resetClickHandler = (evt) => {
     evt.preventDefault();
-    this.#removeEvenetListeners();
+    this.removeEventListeners();
     this.#handleResetClick();
   };
 
@@ -49,17 +61,5 @@ export default class ListPointFormView extends AbstractView {
         .querySelector('.event__rollup-btn')
         .addEventListener('click', this.#rollupClickHandler);
     }
-  }
-
-  #removeEvenetListeners() {
-    if (this.#handleRollupClick) {
-      this.element
-        .querySelector('.event__rollup-btn')
-        .removeEventListener('click', this.#rollupClickHandler);
-    }
-
-    this.element
-      .querySelector('.event__reset-btn')
-      .removeEventListener('click', this.#resetClickHandler);
   }
 }

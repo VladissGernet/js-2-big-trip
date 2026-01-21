@@ -41,6 +41,10 @@ export default class PointPresenter {
   }
 
   init() {
+    this.#renderPoint();
+  }
+
+  get #data() {
     const { destinationsById, offersByType } = this.#model;
     const destinationData = destinationsById.get(this.#point.destination);
     const offerTypeData = offersByType.get(this.#point.type);
@@ -50,29 +54,10 @@ export default class PointPresenter {
       this.#point.offers,
     );
 
-    const pointData = {
-      listPoint: this.#point,
+    return {
       destinationData: destinationData,
-      listOffers: transformedOfferTypeData,
+      transformedOfferTypeData: transformedOfferTypeData,
     };
-
-    this.#pointComponent = new ListPointView({
-      listPoint: this.#point,
-      destinationData: destinationData,
-      offerData: transformedOfferTypeData,
-      onRollupClick: this.#handleOpenRollupClick,
-      onFavoriteClick: this.#handleFavoriteClick,
-    });
-
-    this.#pointFormComponent = new ListPointFormView({
-      pointData: pointData,
-      isEditForm: true,
-      model: this.#model,
-      onRollupClick: this.#handleCloseRollupClick,
-      onResetClick: this.#handleDeleteClick,
-    });
-
-    this.#renderPoint();
   }
 
   #transformOfferTypeData(offerTypeData, currentPointOffers) {
@@ -87,15 +72,56 @@ export default class PointPresenter {
   }
 
   #renderPoint() {
+    this.#createPointComponent();
     render(this.#pointComponent, this.#listElement);
   }
 
+  #createPointComponent() {
+    const { destinationData, transformedOfferTypeData } = this.#data;
+
+    this.#pointComponent = new ListPointView({
+      listPoint: this.#point,
+      destinationData: destinationData,
+      offerData: transformedOfferTypeData,
+      onRollupClick: this.#handleOpenRollupClick,
+      onFavoriteClick: this.#handleFavoriteClick,
+    });
+  }
+
+  #createFormComponent() {
+    const { destinationData, transformedOfferTypeData } = this.#data;
+
+    const pointData = {
+      listPoint: this.#point,
+      destinationData: destinationData,
+      listOffers: transformedOfferTypeData,
+    };
+
+    this.#pointFormComponent = new ListPointFormView({
+      pointData: pointData,
+      isEditForm: true,
+      model: this.#model,
+      onRollupClick: this.#handleCloseRollupClick,
+      onResetClick: this.#handleDeleteClick,
+    });
+  }
+
   #replacePointToForm() {
+    this.#createFormComponent();
+
     replace(this.#pointFormComponent, this.#pointComponent);
+
+    this.#pointComponent.removeEventListeners();
+    this.#pointComponent = null;
   }
 
   #replaceFormToPoint() {
+    this.#createPointComponent();
+
     replace(this.#pointComponent, this.#pointFormComponent);
+
+    this.#pointFormComponent.removeEventListeners();
+    this.#pointFormComponent = null;
   }
 
   /** Открытие по нажатию Rollup. */
@@ -107,6 +133,7 @@ export default class PointPresenter {
   /** Закрытие по нажатию Rollup в форме. */
   #handleCloseRollupClick = () => {
     this.#replaceFormToPoint();
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
   /** Закрытие по нажатию ESC. */
