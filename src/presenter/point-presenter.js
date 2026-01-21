@@ -116,6 +116,8 @@ export default class PointPresenter {
   }
 
   #replaceFormToPoint() {
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+
     this.#createPointComponent();
 
     replace(this.#pointComponent, this.#pointFormComponent);
@@ -133,7 +135,6 @@ export default class PointPresenter {
   /** Закрытие по нажатию Rollup в форме. */
   #handleCloseRollupClick = () => {
     this.#replaceFormToPoint();
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
   /** Закрытие по нажатию ESC. */
@@ -141,7 +142,6 @@ export default class PointPresenter {
     if (evt.key === 'Escape') {
       evt.preventDefault();
       this.#replaceFormToPoint();
-      document.removeEventListener('keydown', this.#escKeyDownHandler);
     }
   };
 
