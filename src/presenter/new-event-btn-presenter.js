@@ -2,20 +2,21 @@ import {
   ListPointFormView,
   ListView,
   TripEventsEmptyView,
+  BtnView,
 } from '../view/index.js';
 import { render, RenderPosition, remove } from '../framework/render.js';
 
 /** Конфиг презентера обработчика событйи на кнопку создания новго события.
  * @typedef {Object} PresenterConfig - Параметры для создания обработчика
- * @property {HTMLButtonElement} btnElement - Элемент кнопки на страницы.
  * @property {Object} model - Модель данных поездки
+ * @property {HTMLFormElement} filterControls - Элеменет контролов фильтра.
+ * @property {HTMLDivElement} containerElement - Элемент для рендера кнопки.
  * @property {Object} tripEventsEmpty - Компонент сообщения об отсутсвии путевых точек.
  * @property {Object} listView - Компонент списка путевых точек.
- * @property {HTMLFormElement} filterControls - Элеменет контролов фильтра.
  * @property {HTMLElement} tripEvents - Компонент секции главной страницы.
  */
 export default class NewEventBtnPresenter {
-  #btnElement;
+  #containerElement;
   #tripEvents;
   #tripEventsEmpty;
   #listView;
@@ -23,50 +24,53 @@ export default class NewEventBtnPresenter {
   #model;
   #newList;
   #newWaypointForm;
+  #newEventBtn = null;
 
   /** @param {PresenterConfig} config - Конфигурация презентера */
   constructor({
-    btnElement: btnElement,
-    model: model,
-    filterControls: filterControls,
-    tripEventsEmpty: tripEventsEmpty = null,
-    listView: listView = null,
-    tripEvents: tripEvents = null,
+    model,
+    filterControls,
+    containerElement,
+    tripEventsEmpty = null,
+    listView = null,
+    tripEvents = null,
   }) {
-    this.#btnElement = btnElement;
     this.#model = model;
     this.#filterControls = filterControls;
+    this.#containerElement = containerElement;
     this.#tripEventsEmpty = tripEventsEmpty;
     this.#listView = listView;
     this.#tripEvents = tripEvents;
   }
 
   init() {
-    this.#addEventListener();
+    this.#newEventBtn = new BtnView({
+      className: 'trip-main__event-add-btn btn btn--big btn--yellow',
+      onClick: this.#handleBtnClick,
+    });
+
+    render(this.#newEventBtn, this.#containerElement);
   }
 
+  /** Подключает компоненты из main после его редера */
   connectPageMainComponents({ tripEventsEmpty, listView, tripEvents }) {
     this.#tripEventsEmpty = tripEventsEmpty;
     this.#listView = listView;
     this.#tripEvents = tripEvents;
   }
 
-  #addEventListener() {
-    this.#btnElement.addEventListener('click', this.#onBtnClick);
-  }
-
-  #onBtnClick = (evt) => {
-    evt.preventDefault();
+  #handleBtnClick = () => {
     this.#newWaypointForm = new ListPointFormView({
       isEditForm: false,
       model: this.#model,
       onResetClick: this.#handleResetBtn,
     });
 
-    this.#btnElement.disabled = true;
+    this.#newEventBtn.element.disabled = true;
 
     if (this.#model.listPoints.length === 0) {
       remove(this.#tripEventsEmpty);
+      this.#tripEventsEmpty = null;
       this.#newList = new ListView();
       render(this.#newList, this.#tripEvents.element);
       render(this.#newWaypointForm, this.#newList.element);
@@ -84,7 +88,8 @@ export default class NewEventBtnPresenter {
   #closeForm() {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     remove(this.#newWaypointForm);
-    this.#btnElement.disabled = false;
+    this.#newWaypointForm = null;
+    this.#newEventBtn.element.disabled = false;
     if (this.#model.listPoints.length === 0) {
       this.#renderEmptyMessage();
     }
@@ -94,6 +99,7 @@ export default class NewEventBtnPresenter {
     const selectedFilter = this.#filterControls.querySelector(
       'input[name="trip-filter"]:checked',
     ).value;
+    this.#newList = null;
     this.#tripEventsEmpty = new TripEventsEmptyView(selectedFilter);
     render(this.#tripEventsEmpty, this.#tripEvents.element);
   }

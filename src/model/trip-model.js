@@ -22,7 +22,7 @@ export default class TripModel {
     // Преобразовываю данные для оптимизированного поиска.
     return this.#destinations.reduce(
       (result, { id, ...rest }) => result.set(id, rest),
-      new Map()
+      new Map(),
     );
   }
 
@@ -32,7 +32,7 @@ export default class TripModel {
     return this.#offers.reduce((result, { type, offers }) => {
       const offersMap = offers.reduce(
         (acc, { id, ...rest }) => acc.set(id, rest),
-        new Map()
+        new Map(),
       );
       return result.set(type, offersMap);
     }, new Map());

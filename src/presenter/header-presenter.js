@@ -1,9 +1,4 @@
-import {
-  HeaderView,
-  TripMainView,
-  TripControlsView,
-  BtnView,
-} from '../view/index.js';
+import { HeaderView, TripMainView, TripControlsView } from '../view/index.js';
 import NewEventBtnPresenter from './new-event-btn-presenter.js';
 
 import FilterPresenter from './filter-presenter.js';
@@ -24,11 +19,6 @@ export default class HeaderPresenter {
   #pageHeader = new HeaderView();
   #tripMain = new TripMainView();
   #tripControls = new TripControlsView();
-
-  /** @type {HTMLButtonElement} Кнопка добавления новой строчки в списке. */
-  #newEventBtn = new BtnView(
-    'trip-main__event-add-btn btn btn--big btn--yellow'
-  );
 
   /** Публичный доступ контролов фильтрации списка внутри main.
    *  @type {HTMLDivElement} Контейнер копок фильтров.
@@ -72,12 +62,11 @@ export default class HeaderPresenter {
 
   #renderNewEventBtn() {
     this.#newEventBtnPresenter = new NewEventBtnPresenter({
-      btnElement: this.#newEventBtn.element,
       model: this.#model,
       filterControls: this.filterControls,
+      containerElement: this.#tripMain.element,
     });
     this.#newEventBtnPresenter.init();
-    render(this.#newEventBtn, this.#tripMain.element);
   }
 
   connectPageMainComponents(components) {

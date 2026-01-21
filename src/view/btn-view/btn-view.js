@@ -9,13 +9,22 @@ function createBtnTemplate(className) {
 
 export default class BtnView extends AbstractView {
   #className;
+  #handleClick = null;
 
-  constructor(className) {
+  constructor({ className, onClick }) {
     super();
     this.#className = className;
+    this.#handleClick = onClick;
+
+    this.element.addEventListener('click', this.#clickHandler);
   }
 
   get template() {
     return createBtnTemplate(this.#className);
   }
+
+  #clickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleClick();
+  };
 }
