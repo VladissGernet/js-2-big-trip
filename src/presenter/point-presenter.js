@@ -147,6 +147,8 @@ export default class PointPresenter {
 
   /** Удаление текущей Point из списка. */
   #handleDeleteClick = () => {
+    // TODO Решить баг, кодгда на странице удалены все точки, должна отрисовываться пустая страничка
+    // Для этого надо удаление связать с данными из модели, а также удалять презентер со всеми его обработчиками.
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     remove(this.#pointFormComponent);
     remove(this.#pointComponent);
