@@ -61,13 +61,13 @@ export default class PointPresenter {
   }
 
   #transformOfferTypeData(offerTypeData, currentPointOffers) {
-    if (offerTypeData === 0 || currentPointOffers.length === 0) {
+    if (offerTypeData === 0 || currentPointOffers.size === 0) {
       return [];
     }
-    const selectedIds = new Set(currentPointOffers);
+
     return Array.from(offerTypeData, ([id, data]) => ({
       ...data,
-      isSelected: selectedIds.has(id),
+      isSelected: currentPointOffers.has(id),
     }));
   }
 

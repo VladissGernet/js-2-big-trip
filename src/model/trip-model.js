@@ -13,7 +13,6 @@ export default class TripModel {
     if (!this.#offersReadOnly) {
       this.#offersReadOnly = Object.freeze(structuredClone(offersMock));
     }
-
     return this.#offersReadOnly;
   }
 
@@ -29,7 +28,7 @@ export default class TripModel {
     return this.#destinations;
   }
 
-  /** @returns {Map<string, Offer[]>}  Назначения по типу для быстрого поиска. */
+  /** @returns {Map<string, Map<string, Object>}  Назначения по типу для быстрого поиска. */
   get offersByType() {
     if (!this.#offers) {
       // Преобразовываю данные для оптимизированного поиска.
@@ -48,6 +47,10 @@ export default class TripModel {
   get listPoints() {
     if (!this.#points) {
       this.#points = replaceSnakeToCamel(pointsMock);
+      this.#points = this.#points.map(({ offers, ...rest }) => ({
+        ...rest,
+        offers: new Set(offers),
+      }));
     }
     return this.#points;
   }
