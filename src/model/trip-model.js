@@ -4,42 +4,51 @@ import { pointsMock } from '../mock/points-mock.js';
 import { replaceSnakeToCamel } from '../utils/replace-snake-to-camel.js';
 
 export default class TripModel {
-  /** @type {Array<Object>} Список путевых точек */
-  #points = replaceSnakeToCamel(pointsMock);
-
-  /** @type {Array<Object>} Список назначений */
-  #destinations = destinationsMock;
-
-  /** @type {Array<Object>} Список предложений */
-  #offers = offersMock;
+  #points = null;
+  #destinations = null;
+  #offers = null;
+  #offersReadOnly = null;
 
   get offersReadOnly() {
-    return Object.freeze(structuredClone(this.#offers));
+    if (!this.#offersReadOnly) {
+      this.#offersReadOnly = Object.freeze(structuredClone(offersMock));
+    }
+
+    return this.#offersReadOnly;
   }
 
   /** @returns {Map<string, Object>}  Назначения по ID для быстрого поиска. */
   get destinationsById() {
-    // Преобразовываю данные для оптимизированного поиска.
-    return this.#destinations.reduce(
-      (result, { id, ...rest }) => result.set(id, rest),
-      new Map(),
-    );
+    if (!this.#destinations) {
+      // Преобразовываю данные для оптимизированного поиска.
+      this.#destinations = destinationsMock.reduce(
+        (result, { id, ...rest }) => result.set(id, rest),
+        new Map(),
+      );
+    }
+    return this.#destinations;
   }
 
   /** @returns {Map<string, Offer[]>}  Назначения по типу для быстрого поиска. */
   get offersByType() {
-    // Преобразовываю данные для оптимизированного поиска.
-    return this.#offers.reduce((result, { type, offers }) => {
-      const offersMap = offers.reduce(
-        (acc, { id, ...rest }) => acc.set(id, rest),
-        new Map(),
-      );
-      return result.set(type, offersMap);
-    }, new Map());
+    if (!this.#offers) {
+      // Преобразовываю данные для оптимизированного поиска.
+      this.#offers = offersMock.reduce((result, { type, offers }) => {
+        const offersMap = offers.reduce(
+          (acc, { id, ...rest }) => acc.set(id, rest),
+          new Map(),
+        );
+        return result.set(type, offersMap);
+      }, new Map());
+    }
+    return this.#offers;
   }
 
   /** @returns {Array<Object>} Список путевых точек */
   get listPoints() {
-    return structuredClone(this.#points);
+    if (!this.#points) {
+      this.#points = replaceSnakeToCamel(pointsMock);
+    }
+    return this.#points;
   }
 }
