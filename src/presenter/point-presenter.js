@@ -1,4 +1,8 @@
-import { ListPointView, ListPointFormView } from '../view/index.js';
+import {
+  ListPointView,
+  ListPointFormView,
+  TripEventsEmptyView,
+} from '../view/index.js';
 import { render, replace, remove } from '../framework/render.js';
 
 /** Конфигурация презентера путевой точки.
@@ -30,14 +34,16 @@ export default class PointPresenter {
   #point;
   #model;
   #listElement;
+  #tripEventsElement;
   #pointComponent = null;
   #pointFormComponent = null;
 
   /** @param {PointConfig} config - Конфигурация презентера */
-  constructor({ point, model, listElement }) {
+  constructor({ point, model, listElement, tripEventsElement }) {
     this.#point = point;
     this.#model = model;
     this.#listElement = listElement;
+    this.#tripEventsElement = tripEventsElement;
   }
 
   init() {
@@ -147,11 +153,19 @@ export default class PointPresenter {
 
   /** Удаление текущей Point из списка. */
   #handleDeleteClick = () => {
-    // TODO Решить баг, кодгда на странице удалены все точки, должна отрисовываться пустая страничка
-    // Для этого надо удаление связать с данными из модели, а также удалять презентер со всеми его обработчиками.
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     remove(this.#pointFormComponent);
-    remove(this.#pointComponent);
+
+    const selectedPointId = this.#point.id;
+    this.#model.removePoint(selectedPointId);
+
+    //Если список пустой, то возвращает сообщение о предложении создания
+    // новой путевой точки.
+    if (this.#model.listPoints.length === 0) {
+      this.#tripEventsElement.innerHTML =
+        '<h2 class="visually-hidden">Trip events</h2>';
+      render(new TripEventsEmptyView(), this.#tripEventsElement);
+    }
   };
 
   /** Обработчик добавления в избранное. */
@@ -160,7 +174,7 @@ export default class PointPresenter {
     // Обновляем данные.
     this.#model.updatePointFavorite(selectedPointId);
 
-    // Обновляем точку на странице.
+    // Перерисовываем точку на странице.
     const prevPointComponent = this.#pointComponent;
     this.#createPointComponent();
     replace(this.#pointComponent, prevPointComponent);

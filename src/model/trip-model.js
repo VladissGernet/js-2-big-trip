@@ -67,4 +67,9 @@ export default class TripModel {
     const index = this.listPoints.findIndex((item) => item.id === pointId);
     this.listPoints[index].isFavorite = !this.listPoints[index].isFavorite;
   }
+
+  removePoint(pointId) {
+    const index = this.listPoints.findIndex((item) => item.id === pointId);
+    this.listPoints.splice(index, 1);
+  }
 }

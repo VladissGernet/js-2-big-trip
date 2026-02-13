@@ -55,6 +55,7 @@ export default class PageMainPresenter {
   #renderEventsSection(headerFilterControls) {
     render(this.tripEvents, this.#main.container);
 
+    // Проверка на пустой список при первой отрисовке.
     if (this.#model.listPoints.length !== 0) {
       this.#renderEvents();
     } else {
@@ -82,7 +83,7 @@ export default class PageMainPresenter {
     // Если список пустой, то возвращает сообщение о предложении создания
     // новой путевой точки.
     const checkedFilter = headerFilterControls.querySelector(
-      'input[name="trip-filter"]:checked'
+      'input[name="trip-filter"]:checked',
     ).value;
     this.tripEventsEmpty = new TripEventsEmptyView(checkedFilter);
     render(this.tripEventsEmpty, this.tripEvents.element);

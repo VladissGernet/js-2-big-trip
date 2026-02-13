@@ -33,14 +33,20 @@ export default class ListPresenter {
         point: point,
         listElement: this.listView.element,
         model: this.#tripModel,
+        tripEventsElement: this.#container,
       });
     });
 
     render(this.listView, this.#container);
   }
 
-  #createPoint({ point, model, listElement }) {
-    const pointPresenter = new PointPresenter({ point, model, listElement });
+  #createPoint({ point, model, listElement, tripEventsElement }) {
+    const pointPresenter = new PointPresenter({
+      point,
+      model,
+      listElement,
+      tripEventsElement,
+    });
     pointPresenter.init();
   }
 }

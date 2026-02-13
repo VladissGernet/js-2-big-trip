@@ -69,8 +69,12 @@ export default class NewEventBtnPresenter {
     this.#newEventBtn.element.disabled = true;
 
     if (this.#model.listPoints.length === 0) {
+      // Очищаю таблицу.
       remove(this.#tripEventsEmpty);
-      this.#tripEventsEmpty = null;
+      this.#tripEvents.element.innerHTML =
+        '<h2 class="visually-hidden">Trip events</h2>';
+
+      // Создаю новый список.
       this.#newList = new ListView();
       render(this.#newList, this.#tripEvents.element);
       render(this.#newWaypointForm, this.#newList.element);
