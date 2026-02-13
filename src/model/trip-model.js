@@ -54,4 +54,16 @@ export default class TripModel {
     }
     return this.#points;
   }
+
+  set listPoints(newPoints) {
+    if (!Array.isArray(newPoints)) {
+      throw new Error('listPoints must be an array');
+    }
+    this.#points = newPoints;
+  }
+
+  updatePointFavorite(pointId) {
+    const index = this.listPoints.findIndex((item) => item.id === pointId);
+    this.listPoints[index].isFavorite = !this.listPoints[index].isFavorite;
+  }
 }

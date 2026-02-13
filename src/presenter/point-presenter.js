@@ -155,9 +155,13 @@ export default class PointPresenter {
   };
 
   /** Обработчик добавления в избранное. */
-  #handleFavoriteClick = () => {
-    // evt.currentTarget.classList.toggle('event__favorite-btn--active');
-    // console.log(this.#point);
+  #handleFavoriteClick = (evt) => {
+    const selectedPointId = this.#point.id;
+    evt.currentTarget.classList.toggle('event__favorite-btn--active');
+    this.#model.updatePointFavorite(selectedPointId);
+
+    // TODO Реализовать .init() выбранной точки
+
     // console.log(this.#model.destinationsById);
     // TODO Остновился здесь на
     // В презентере маршрута опишите метод изменения данных.
