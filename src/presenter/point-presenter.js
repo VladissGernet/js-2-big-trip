@@ -155,18 +155,14 @@ export default class PointPresenter {
   };
 
   /** Обработчик добавления в избранное. */
-  #handleFavoriteClick = (evt) => {
+  #handleFavoriteClick = () => {
     const selectedPointId = this.#point.id;
-    evt.currentTarget.classList.toggle('event__favorite-btn--active');
+    // Обновляем данные.
     this.#model.updatePointFavorite(selectedPointId);
 
-    // TODO Реализовать .init() выбранной точки
-
-    // console.log(this.#model.destinationsById);
-    // TODO Остновился здесь на
-    // В презентере маршрута опишите метод изменения данных.
-    // Задача метода — обновить моки и вызвать обновление конкретной точки маршрута.
-    // 3. Добавить в обработичк обновление данных в Map
-    // 4. Перерисовать элемент.
+    // Обновляем точку на странице.
+    const prevPointComponent = this.#pointComponent;
+    this.#createPointComponent();
+    replace(this.#pointComponent, prevPointComponent);
   };
 }

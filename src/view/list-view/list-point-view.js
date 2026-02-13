@@ -150,7 +150,7 @@ export default class ListPointView extends AbstractView {
 
   #favoriteClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFavoriteClick(evt);
+    this.#handleFavoriteClick();
   };
 
   #addEventListeners() {
