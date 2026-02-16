@@ -65,6 +65,9 @@ export default class TripModel {
   /** Обновляет данные избранного выбранной точки */
   updatePointFavorite(pointId) {
     const index = this.listPoints.findIndex((item) => item.id === pointId);
+    if (index === -1) {
+      return;
+    }
     this.listPoints[index].isFavorite = !this.listPoints[index].isFavorite;
   }
 

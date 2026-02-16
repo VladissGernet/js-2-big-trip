@@ -112,6 +112,10 @@ export default class PointPresenter {
     });
   }
 
+  /**
+   *  Метод сброса представления в презентере маршрута для отображения точки маршрута
+   *  вместо формы редактирования.
+   */
   #replacePointToForm() {
     this.#createFormComponent();
 
