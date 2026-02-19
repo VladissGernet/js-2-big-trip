@@ -19,6 +19,7 @@ import { TRIP_SORTS } from '../const.js';
 export default class PageMainPresenter {
   #model;
   #container;
+  #newEventBtnPresenter;
   #main = new PageMainView();
 
   /** Публичный доступ к презентеру списка. */
@@ -36,9 +37,10 @@ export default class PageMainPresenter {
   tripEventsEmpty = null;
 
   /** @param {PresenterConfig} */
-  constructor({ container: container, model: model }) {
+  constructor({ container, model, newEventBtnPresenter }) {
     this.#container = container;
     this.#model = model;
+    this.#newEventBtnPresenter = newEventBtnPresenter;
   }
 
   init(headerFilterControls) {
@@ -69,6 +71,7 @@ export default class PageMainPresenter {
     this.listPresenter = new ListPresenter({
       container: this.tripEvents.element,
       tripModel: this.#model,
+      newEventBtnPresenter: this.#newEventBtnPresenter,
     });
 
     sortPresenter.init();

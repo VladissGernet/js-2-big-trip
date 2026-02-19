@@ -40,16 +40,27 @@ export default class PointPresenter {
   #model;
   #listElement;
   #tripEventsElement;
+  #newEventBtnPresenter;
+  #resetListView;
   #pointComponent = null;
   #pointFormComponent = null;
   #mode = Mode.DEFAULT;
 
   /** @param {PointConfig} config - Конфигурация презентера */
-  constructor({ point, model, listElement, tripEventsElement }) {
+  constructor({
+    point,
+    model,
+    listElement,
+    tripEventsElement,
+    newEventBtnPresenter,
+    resetListView,
+  }) {
     this.#point = point;
     this.#model = model;
     this.#listElement = listElement;
     this.#tripEventsElement = tripEventsElement;
+    this.#newEventBtnPresenter = newEventBtnPresenter;
+    this.#resetListView = resetListView;
   }
 
   init() {
@@ -70,6 +81,12 @@ export default class PointPresenter {
       destinationData: destinationData,
       transformedOfferTypeData: transformedOfferTypeData,
     };
+  }
+
+  fullReplaceFormToPoint() {
+    if (this.#mode === Mode.EDITING) {
+      this.#replaceFormToPoint();
+    }
   }
 
   #transformOfferTypeData(offerTypeData, currentPointOffers) {
@@ -123,6 +140,11 @@ export default class PointPresenter {
    *  вместо формы редактирования.
    */
   #replacePointToForm() {
+    this.#newEventBtnPresenter.closeForm();
+
+    this.#resetListView();
+
+    this.#mode = Mode.EDITING;
     this.#createFormComponent();
 
     replace(this.#pointFormComponent, this.#pointComponent);
@@ -132,10 +154,10 @@ export default class PointPresenter {
   }
 
   #replaceFormToPoint() {
+    this.#mode = Mode.DEFAULT;
     document.removeEventListener('keydown', this.#escKeyDownHandler);
 
     this.#createPointComponent();
-
     replace(this.#pointComponent, this.#pointFormComponent);
 
     this.#pointFormComponent.removeEventListeners();
@@ -144,14 +166,12 @@ export default class PointPresenter {
 
   /** Открытие по нажатию Rollup. */
   #handleOpenRollupClick = () => {
-    this.#mode = Mode.EDITING;
     this.#replacePointToForm();
     document.addEventListener('keydown', this.#escKeyDownHandler);
   };
 
   /** Закрытие по нажатию Rollup в форме. */
   #handleCloseRollupClick = () => {
-    this.#mode = Mode.DEFAULT;
     this.#replaceFormToPoint();
   };
 

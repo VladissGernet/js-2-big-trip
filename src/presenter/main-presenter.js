@@ -38,6 +38,7 @@ export default class MainPresenter {
     this.#pageMainPresenter = new PageMainPresenter({
       container: this.#pageBody,
       model: this.#model,
+      newEventBtnPresenter: this.#headerPresenter.newEventBtnPresenter,
     });
     this.#pageMainPresenter.init(this.#headerPresenter.filterControls);
   }

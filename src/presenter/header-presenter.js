@@ -13,9 +13,11 @@ import { render } from '../framework/render.js';
 
 /** Презентер header страницы */
 export default class HeaderPresenter {
+  /** Публичный доступ к презентеру кнопки создания новой точки для связывания со списком */
+  newEventBtnPresenter;
+
   #container;
   #model;
-  #newEventBtnPresenter;
   #pageHeader = new HeaderView();
   #tripMain = new TripMainView();
   #tripControls = new TripControlsView();
@@ -33,6 +35,10 @@ export default class HeaderPresenter {
 
   init() {
     this.#renderHeader();
+  }
+
+  connectPageMainComponents(components) {
+    this.newEventBtnPresenter.connectPageMainComponents(components);
   }
 
   #renderHeader() {
@@ -61,15 +67,11 @@ export default class HeaderPresenter {
   }
 
   #renderNewEventBtn() {
-    this.#newEventBtnPresenter = new NewEventBtnPresenter({
+    this.newEventBtnPresenter = new NewEventBtnPresenter({
       model: this.#model,
       filterControls: this.filterControls,
       containerElement: this.#tripMain.element,
     });
-    this.#newEventBtnPresenter.init();
-  }
-
-  connectPageMainComponents(components) {
-    this.#newEventBtnPresenter.connectPageMainComponents(components);
+    this.newEventBtnPresenter.init();
   }
 }
