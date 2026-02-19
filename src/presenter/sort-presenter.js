@@ -19,6 +19,9 @@ export default class SortPresenter {
   #container;
   #sorts;
 
+  // TODO
+  // Выполнить задание по сортировки
+
   /** @param {PresenterConfig} */
   constructor({ container, sorts }) {
     this.#container = container;

@@ -13,10 +13,6 @@ export default class ListPresenter {
   #newEventBtnPresenter;
   #container;
   #tripModel;
-  // TODO
-  // Переписать удаление точки из списка.
-  // Добавить ограничение на одну форму на странице, чтобы при открытии новой другие закрывались. Для этого
-  // в демо проекте task-presenter разобраться с работой Mode.DEFAULT и Mode.EDITING, и еще с this.#mode
 
   #pointPresenters = new Map();
 
