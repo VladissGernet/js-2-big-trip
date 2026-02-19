@@ -42,6 +42,7 @@ export default class PointPresenter {
   #tripEventsElement;
   #newEventBtnPresenter;
   #resetListView;
+  #removeFromPointPresenters;
   #pointComponent = null;
   #pointFormComponent = null;
   #mode = Mode.DEFAULT;
@@ -54,6 +55,7 @@ export default class PointPresenter {
     tripEventsElement,
     newEventBtnPresenter,
     resetListView,
+    removeFromPointPresenters,
   }) {
     this.#point = point;
     this.#model = model;
@@ -61,6 +63,7 @@ export default class PointPresenter {
     this.#tripEventsElement = tripEventsElement;
     this.#newEventBtnPresenter = newEventBtnPresenter;
     this.#resetListView = resetListView;
+    this.#removeFromPointPresenters = removeFromPointPresenters;
   }
 
   init() {
@@ -190,6 +193,8 @@ export default class PointPresenter {
 
     const selectedPointId = this.#point.id;
     this.#model.removePoint(selectedPointId);
+
+    this.#removeFromPointPresenters(this.#point.id);
 
     //Если список пустой, то возвращает сообщение о предложении создания
     // новой путевой точки.

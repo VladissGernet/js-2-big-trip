@@ -41,6 +41,9 @@ export default class ListPresenter {
     );
   };
 
+  // Удаляет из списка
+  removeFromPointPresenters = (id) => this.#pointPresenters.delete(id);
+
   #renderList() {
     // Добавляем путевые точки до рендера.
     this.#tripModel.listPoints.forEach((point) => this.#createPoint(point));
@@ -56,6 +59,7 @@ export default class ListPresenter {
       model: this.#tripModel,
       newEventBtnPresenter: this.#newEventBtnPresenter,
       resetListView: this.resetListView,
+      removeFromPointPresenters: this.removeFromPointPresenters,
     });
     pointPresenter.init();
     this.#pointPresenters.set(point.id, pointPresenter);
