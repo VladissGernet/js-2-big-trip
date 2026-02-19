@@ -19,7 +19,7 @@ export default class NewEventBtnPresenter {
   #containerElement;
   #tripEvents;
   #tripEventsEmpty;
-  #listView;
+  #listPresenter;
   #filterControls;
   #model;
   #newList;
@@ -32,14 +32,14 @@ export default class NewEventBtnPresenter {
     filterControls,
     containerElement,
     tripEventsEmpty = null,
-    listView = null,
+    listPresenter = null,
     tripEvents = null,
   }) {
     this.#model = model;
     this.#filterControls = filterControls;
     this.#containerElement = containerElement;
     this.#tripEventsEmpty = tripEventsEmpty;
-    this.#listView = listView;
+    this.#listPresenter = listPresenter;
     this.#tripEvents = tripEvents;
   }
 
@@ -53,9 +53,9 @@ export default class NewEventBtnPresenter {
   }
 
   /** Подключает компоненты из main после его редера */
-  connectPageMainComponents({ tripEventsEmpty, listView, tripEvents }) {
+  connectPageMainComponents({ tripEventsEmpty, listPresenter, tripEvents }) {
     this.#tripEventsEmpty = tripEventsEmpty;
-    this.#listView = listView;
+    this.#listPresenter = listPresenter;
     this.#tripEvents = tripEvents;
   }
 
@@ -81,7 +81,7 @@ export default class NewEventBtnPresenter {
     } else {
       render(
         this.#newWaypointForm,
-        this.#listView.element,
+        this.#listPresenter.listView.element,
         RenderPosition.AFTERBEGIN,
       );
     }

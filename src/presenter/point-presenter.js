@@ -30,6 +30,11 @@ import { render, replace, remove } from '../framework/render.js';
  * @property {Object<string, ListOffers>} offersByType - Предложения по типу
  */
 
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING',
+};
+
 export default class PointPresenter {
   #point;
   #model;
@@ -37,6 +42,7 @@ export default class PointPresenter {
   #tripEventsElement;
   #pointComponent = null;
   #pointFormComponent = null;
+  #mode = Mode.DEFAULT;
 
   /** @param {PointConfig} config - Конфигурация презентера */
   constructor({ point, model, listElement, tripEventsElement }) {
@@ -138,12 +144,14 @@ export default class PointPresenter {
 
   /** Открытие по нажатию Rollup. */
   #handleOpenRollupClick = () => {
+    this.#mode = Mode.EDITING;
     this.#replacePointToForm();
     document.addEventListener('keydown', this.#escKeyDownHandler);
   };
 
   /** Закрытие по нажатию Rollup в форме. */
   #handleCloseRollupClick = () => {
+    this.#mode = Mode.DEFAULT;
     this.#replaceFormToPoint();
   };
 

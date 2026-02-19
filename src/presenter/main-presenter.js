@@ -46,7 +46,7 @@ export default class MainPresenter {
   #connectPageMainComponents() {
     this.#headerPresenter.connectPageMainComponents({
       tripEventsEmpty: this.#pageMainPresenter.tripEventsEmpty,
-      listView: this.#pageMainPresenter.listView,
+      listPresenter: this.#pageMainPresenter.listPresenter,
       tripEvents: this.#pageMainPresenter.tripEvents,
     });
   }

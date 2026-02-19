@@ -13,12 +13,11 @@ export default class ListPresenter {
   #container;
   #tripModel;
   // TODO
-  // Переписать\обновить обновление данных и перерисовку при добавлении в избранное. (Логику обновления данных не трогать в модели)
   // Переписать удаление точки из списка.
   // Добавить ограничение на одну форму на странице, чтобы при открытии новой другие закрывались. Для этого
   // в демо проекте task-presenter разобраться с работой Mode.DEFAULT и Mode.EDITING, и еще с this.#mode
 
-  /** Публичный доступ для управления списком */
+  /** Публичный доступ для управления списком представления */
   listView = new ListView();
 
   /** @param {PresenterConfig} config - Конфигурация презентера */
@@ -34,26 +33,18 @@ export default class ListPresenter {
   #renderList() {
     // Добавляем путевые точки до рендера.
     this.#tripModel.listPoints.forEach((point) => {
-      this.#createPoint({
-        point: point,
-        listElement: this.listView.element,
-        model: this.#tripModel,
-        tripEventsElement: this.#container,
-      });
+      this.#createPoint(point);
     });
 
     render(this.listView, this.#container);
   }
 
-  #createPoint({ point, model, listElement, tripEventsElement }) {
-    // TODO
-    // Добавить метод destroy в pointPresenter
-    // Заменить работу даных с модели на этот модуль
+  #createPoint(point) {
     const pointPresenter = new PointPresenter({
       point,
-      model,
-      listElement,
-      tripEventsElement,
+      listElement: this.listView.element,
+      tripEventsElement: this.#container,
+      model: this.#tripModel,
     });
     pointPresenter.init();
   }

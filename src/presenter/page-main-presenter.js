@@ -21,16 +21,14 @@ export default class PageMainPresenter {
   #container;
   #main = new PageMainView();
 
+  /** Публичный доступ к презентеру списка. */
+  listPresenter;
+
   /** Секция с основынм списком событий.
    * @type {HTMLElement} - Элемент разметки section.
    * @description Публично для обновления статуса заполненности списка событий.
    */
   tripEvents = new TripEventsView();
-
-  /** Публичный доступ для управления списком
-   * @type {HTMLUlistElement} - Элемент разметки
-   */
-  listView = null;
 
   /** Публичный доступ к сообщению о пустоте списка
    * @type {HTMLParagraphElement} - Элемент текста разметки.
@@ -68,15 +66,13 @@ export default class PageMainPresenter {
       container: this.tripEvents.element,
       sorts: TRIP_SORTS,
     });
-    const listPresenter = new ListPresenter({
+    this.listPresenter = new ListPresenter({
       container: this.tripEvents.element,
       tripModel: this.#model,
     });
 
     sortPresenter.init();
-    listPresenter.init();
-
-    this.listView = listPresenter.listView;
+    this.listPresenter.init();
   }
 
   #renderEmptyMessage(headerFilterControls) {
