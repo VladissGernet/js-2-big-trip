@@ -152,8 +152,7 @@ export default class PointPresenter {
 
     replace(this.#pointFormComponent, this.#pointComponent);
 
-    this.#pointComponent.removeEventListeners();
-    this.#pointComponent = null;
+    remove(this.#pointComponent);
   }
 
   #replaceFormToPoint() {
@@ -163,8 +162,7 @@ export default class PointPresenter {
     this.#createPointComponent();
     replace(this.#pointComponent, this.#pointFormComponent);
 
-    this.#pointFormComponent.removeEventListeners();
-    this.#pointFormComponent = null;
+    remove(this.#pointFormComponent);
   }
 
   /** Открытие по нажатию Rollup. */

@@ -134,13 +134,10 @@ export default class ListPointView extends AbstractView {
     });
   }
 
-  removeEventListeners() {
-    this.element
-      .querySelector('.event__rollup-btn')
-      .removeEventListener('click', this.#rollupClickHandler);
-    this.element
-      .querySelector('.event__favorite-btn')
-      .removeEventListener('click', this.#favoriteClickHandler);
+  removeElement() {
+    super.removeElement();
+
+    this.#removeEventListeners();
   }
 
   #rollupClickHandler = (evt) => {
@@ -160,5 +157,14 @@ export default class ListPointView extends AbstractView {
     this.element
       .querySelector('.event__favorite-btn')
       .addEventListener('click', this.#favoriteClickHandler);
+  }
+
+  #removeEventListeners() {
+    this.element
+      .querySelector('.event__rollup-btn')
+      .removeEventListener('click', this.#rollupClickHandler);
+    this.element
+      .querySelector('.event__favorite-btn')
+      .removeEventListener('click', this.#favoriteClickHandler);
   }
 }

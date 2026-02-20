@@ -1,5 +1,6 @@
 import { createListPointFormTemplate } from './list-form-templates.js';
 import AbstractView from '../../framework/view/abstract-view.js';
+import { remove } from '../../framework/render.js';
 
 /** Создание формы добавления точки маршрута */
 export default class ListPointFormView extends AbstractView {
@@ -28,16 +29,10 @@ export default class ListPointFormView extends AbstractView {
     });
   }
 
-  removeEventListeners() {
-    if (this.#handleRollupClick) {
-      this.element
-        .querySelector('.event__rollup-btn')
-        .removeEventListener('click', this.#rollupClickHandler);
-    }
+  removeElement() {
+    super.removeElement();
 
-    this.element
-      .querySelector('.event__reset-btn')
-      .removeEventListener('click', this.#resetClickHandler);
+    this.#removeEventListeners();
   }
 
   #rollupClickHandler = (evt) => {
@@ -47,7 +42,7 @@ export default class ListPointFormView extends AbstractView {
 
   #resetClickHandler = (evt) => {
     evt.preventDefault();
-    this.removeEventListeners();
+    remove(this);
     this.#handleResetClick();
   };
 
@@ -61,5 +56,17 @@ export default class ListPointFormView extends AbstractView {
         .querySelector('.event__rollup-btn')
         .addEventListener('click', this.#rollupClickHandler);
     }
+  }
+
+  #removeEventListeners() {
+    if (this.#handleRollupClick) {
+      this.element
+        .querySelector('.event__rollup-btn')
+        .removeEventListener('click', this.#rollupClickHandler);
+    }
+
+    this.element
+      .querySelector('.event__reset-btn')
+      .removeEventListener('click', this.#resetClickHandler);
   }
 }
