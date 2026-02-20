@@ -74,7 +74,9 @@ export default class NewEventBtnPresenter {
   }
 
   #handleBtnClick = () => {
-    this.#listPresenter.resetListView();
+    if (this.#listPresenter) {
+      this.#listPresenter.resetListView();
+    }
 
     this.#newWaypointForm = new ListPointFormView({
       isEditForm: false,
