@@ -30,6 +30,13 @@ export default class ListPresenter {
     this.#renderList();
   }
 
+  /** Полная очистка списка и коллекции презентеров. */
+  clearList() {
+    this.listView.element.innerHTML = '';
+    this.#pointPresenters.forEach((presenter) => presenter.clear());
+    this.#pointPresenters.clear();
+  }
+
   // Перерисовывает список
   resetListView = () => {
     this.#pointPresenters.forEach((presenter) =>

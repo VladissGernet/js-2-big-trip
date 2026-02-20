@@ -64,15 +64,19 @@ export default class PageMainPresenter {
   }
 
   #renderEvents() {
-    const sortPresenter = new SortPresenter({
-      container: this.tripEvents.element,
-      sorts: TRIP_SORTS,
-      model: this.#model,
-    });
+    // Сперва необходимо создать презентер списка для
+    // его передачи презентеру сортириовки.
     this.listPresenter = new ListPresenter({
       container: this.tripEvents.element,
       tripModel: this.#model,
       newEventBtnPresenter: this.#newEventBtnPresenter,
+    });
+
+    const sortPresenter = new SortPresenter({
+      container: this.tripEvents.element,
+      sorts: TRIP_SORTS,
+      model: this.#model,
+      listPresenter: this.listPresenter,
     });
 
     sortPresenter.init();

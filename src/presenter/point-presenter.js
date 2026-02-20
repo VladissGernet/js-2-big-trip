@@ -70,6 +70,27 @@ export default class PointPresenter {
     this.#renderPoint();
   }
 
+  /**
+   * Закрывает форму через list-presenter (поэтому публичный метод), если она была открыта,
+   * чтобы на странице была только одна открытая форма.
+   */
+  fullReplaceFormToPoint() {
+    if (this.#mode === Mode.EDITING) {
+      this.#replaceFormToPoint();
+    }
+  }
+
+  /** Очищает презентер */
+  clear() {
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+
+    remove(this.#pointComponent);
+    remove(this.#pointFormComponent);
+
+    this.#pointComponent = null;
+    this.#pointFormComponent = null;
+  }
+
   get #data() {
     const { destinationsById, offersByType } = this.#model;
     const destinationData = destinationsById.get(this.#point.destination);
@@ -84,12 +105,6 @@ export default class PointPresenter {
       destinationData: destinationData,
       transformedOfferTypeData: transformedOfferTypeData,
     };
-  }
-
-  fullReplaceFormToPoint() {
-    if (this.#mode === Mode.EDITING) {
-      this.#replaceFormToPoint();
-    }
   }
 
   #transformOfferTypeData(offerTypeData, currentPointOffers) {
@@ -145,6 +160,10 @@ export default class PointPresenter {
   #replacePointToForm() {
     this.#newEventBtnPresenter.closeForm();
 
+    /**
+     * Закрывает все открытые формы через чтобы
+     * на странице была только одна открытая форма.
+     */
     this.#resetListView();
 
     this.#mode = Mode.EDITING;
@@ -186,12 +205,13 @@ export default class PointPresenter {
 
   /** Удаление текущей Point из списка. */
   #handleDeleteClick = () => {
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
-    remove(this.#pointFormComponent);
+    this.clear();
 
+    // Удаление из данных модели.
     const selectedPointId = this.#point.id;
     this.#model.removePoint(selectedPointId);
 
+    // Удаление из коллекции презентеров точек.
     this.#removeFromPointPresenters(this.#point.id);
 
     //Если список пустой, то возвращает сообщение о предложении создания

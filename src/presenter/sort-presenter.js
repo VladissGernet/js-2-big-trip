@@ -17,15 +17,22 @@ import { SortView } from '../view/index.js';
 
 const SORT_CONFIG = {
   price: ({ basePrice: priceA }, { basePrice: priceB }) => priceB - priceA,
-  dateFrom: ({ dateFrom: dateA }, { dateFrom: dateB }) => dateB - dateA,
+  dateFrom: ({ dateFrom: dateA }, { dateFrom: dateB }) =>
+    dayjs(dateA).valueOf() - dayjs(dateB).valueOf(),
   time: (
     { dateFrom: dateFromA, dateTo: dateToA },
     { dateFrom: dateFromB, dateTo: dateToB },
   ) => {
     const timeA = dayjs(dateToA).diff(dayjs(dateFromA));
     const timeB = dayjs(dateToB).diff(dayjs(dateFromB));
-    return timeA - timeB;
+    return timeB - timeA;
   },
+};
+
+const SORT_TYPES = {
+  'sort-day': 'dateFrom',
+  'sort-time': 'time',
+  'sort-price': 'price',
 };
 
 /** Презентер сортировки. Отвечает за рендеринг компонента сортирвки списка событйи. */
@@ -34,17 +41,17 @@ export default class SortPresenter {
   #sorts;
   #component;
   #model;
+  #listPresenter;
 
   /** @param {PresenterConfig} */
-  constructor({ container, sorts, model }) {
+  constructor({ container, sorts, model, listPresenter }) {
     this.#container = container;
     this.#sorts = sorts;
     this.#model = model;
+    this.#listPresenter = listPresenter;
   }
 
   init() {
-    this.#model.listPoints.sort(SORT_CONFIG.time);
-
     this.#renderSort();
   }
 
@@ -54,10 +61,17 @@ export default class SortPresenter {
       onChange: this.#handleChange,
     });
 
+    const currentSortValue = this.#component.element.querySelector(
+      'input[type="radio"]:checked',
+    ).value;
+    this.#model.listPoints.sort(SORT_CONFIG[SORT_TYPES[currentSortValue]]);
+
     render(this.#component, this.#container);
   }
 
-  #handleChange(evt) {
-    console.log(evt.target);
-  }
+  #handleChange = (evt) => {
+    this.#listPresenter.clearList();
+    this.#model.listPoints.sort(SORT_CONFIG[SORT_TYPES[evt.target.value]]);
+    this.#listPresenter.init();
+  };
 }

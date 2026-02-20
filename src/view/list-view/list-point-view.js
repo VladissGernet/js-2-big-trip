@@ -136,7 +136,6 @@ export default class ListPointView extends AbstractView {
 
   removeElement() {
     super.removeElement();
-
     this.#removeEventListeners();
   }
 
