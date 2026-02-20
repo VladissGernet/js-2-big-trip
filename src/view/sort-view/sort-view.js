@@ -15,12 +15,25 @@ function createSortTemplate(sorts) {
 export default class SortView extends AbstractView {
   #sorts;
 
-  constructor(sorts) {
+  #handleChange = null;
+
+  constructor({ sorts, onChange }) {
     super();
     this.#sorts = sorts;
+    this.#handleChange = onChange;
+
+    if (this.#handleChange !== null) {
+      this.element.addEventListener('change', this.#handleChange);
+    }
   }
 
   get template() {
     return createSortTemplate(this.#sorts);
+  }
+
+  removeElement() {
+    super.removeElement();
+
+    this.element.removeEventListener('change', this.#handleChange);
   }
 }

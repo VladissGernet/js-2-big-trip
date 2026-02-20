@@ -18,9 +18,7 @@ import { SortView } from '../view/index.js';
 export default class SortPresenter {
   #container;
   #sorts;
-
-  // TODO
-  // Выполнить задание по сортировки
+  #component;
 
   /** @param {PresenterConfig} */
   constructor({ container, sorts }) {
@@ -33,6 +31,12 @@ export default class SortPresenter {
   }
 
   #renderSort() {
-    render(new SortView(this.#sorts), this.#container);
+    this.#component = new SortView({
+      sorts: this.#sorts,
+      onChange: () => {
+        console.log('change');
+      },
+    });
+    render(this.#component, this.#container);
   }
 }
