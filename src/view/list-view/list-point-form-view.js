@@ -3,6 +3,7 @@ import AbstractView from '../../framework/view/abstract-view.js';
 import { remove } from '../../framework/render.js';
 
 /** Создание формы добавления точки маршрута */
+// TODO Заменить на stateful
 export default class ListPointFormView extends AbstractView {
   #pointData;
   #isEditForm;

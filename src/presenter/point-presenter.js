@@ -91,6 +91,8 @@ export default class PointPresenter {
     this.#pointFormComponent = null;
   }
 
+  // TODO
+  //Рассмотреть как static метод
   get #data() {
     const { destinationsById, offersByType } = this.#model;
     const destinationData = destinationsById.get(this.#point.destination);
@@ -107,6 +109,8 @@ export default class PointPresenter {
     };
   }
 
+  // TODO
+  //Рассмотреть как static метод
   #transformOfferTypeData(offerTypeData, currentPointOffers) {
     if (offerTypeData === 0 || currentPointOffers.size === 0) {
       return [];
