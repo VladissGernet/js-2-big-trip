@@ -1,17 +1,11 @@
 import { createListPointFormTemplate } from './list-form-templates.js';
-import AbstractStatefulView from '../../framework/view/abstract-view.js';
+import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
 import { remove } from '../../framework/render.js';
 
 /** Создание формы добавления точки маршрута */
 // TODO Заменить на stateful
 
 /*
-  Форма редактирования — довольно сложный интерактивный компонент. Но это поведение — не часть бизнес-логики приложения.
-  Это «бизнес-логика» самого компонента. Поэтому для реализации этой логики воспользуемся классом AbstractStatefulView.
-  Компоненты, созданные на основе этого класса, смогут перерисовывать себя.
-
-  Унаследуйте компонент формы редактирования от AbstractStatefulView с пока пустым методом _restoreHandlers.
-
   Теперь нужно реализовать перерисовку формы редактирования после взаимодействия с пользователем:
 
   при смене типа точки маршрута нужно показать соответствующий типу набор дополнительных опций;
@@ -40,7 +34,6 @@ import { remove } from '../../framework/render.js';
   даты указан в техническом задании.
 */
 export default class ListPointFormView extends AbstractStatefulView {
-  #pointData;
   #isEditForm;
   #model;
   #handleRollupClick = null;
@@ -48,7 +41,8 @@ export default class ListPointFormView extends AbstractStatefulView {
 
   constructor({ pointData, isEditForm, model, onRollupClick, onResetClick }) {
     super();
-    this.#pointData = pointData;
+    this._setState(pointData);
+
     this.#isEditForm = isEditForm;
     this.#model = model;
     this.#handleRollupClick = onRollupClick;
@@ -59,11 +53,15 @@ export default class ListPointFormView extends AbstractStatefulView {
 
   get template() {
     return createListPointFormTemplate({
-      pointData: this.#pointData,
+      pointData: this._state,
       isEditForm: this.#isEditForm,
       model: this.#model,
     });
   }
+
+  // _restoreHandlers() {
+  //   this.#addEventListeners();
+  // }
 
   removeElement() {
     super.removeElement();
