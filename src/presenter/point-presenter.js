@@ -98,7 +98,7 @@ export default class PointPresenter {
     const destinationData = destinationsById.get(this.#point.destination);
     const offerTypeData = offersByType.get(this.#point.type);
 
-    const transformedOfferTypeData = this.#transformOfferTypeData(
+    const transformedOfferTypeData = PointPresenter.transformOfferTypeData(
       offerTypeData,
       this.#point.offers,
     );
@@ -107,19 +107,6 @@ export default class PointPresenter {
       destinationData: destinationData,
       transformedOfferTypeData: transformedOfferTypeData,
     };
-  }
-
-  // TODO
-  //Рассмотреть как static метод
-  #transformOfferTypeData(offerTypeData, currentPointOffers) {
-    if (offerTypeData === 0 || currentPointOffers.size === 0) {
-      return [];
-    }
-
-    return Array.from(offerTypeData, ([id, data]) => ({
-      ...data,
-      isSelected: currentPointOffers.has(id),
-    }));
   }
 
   #renderPoint() {
@@ -238,4 +225,15 @@ export default class PointPresenter {
     this.#createPointComponent();
     replace(this.#pointComponent, prevPointComponent);
   };
+
+  static transformOfferTypeData(offerTypeData, currentPointOffers) {
+    if (offerTypeData === 0 || currentPointOffers.size === 0) {
+      return [];
+    }
+
+    return Array.from(offerTypeData, ([id, data]) => ({
+      ...data,
+      isSelected: currentPointOffers.has(id),
+    }));
+  }
 }
