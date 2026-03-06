@@ -73,6 +73,15 @@ export default class NewEventBtnPresenter {
     }
   }
 
+  #renderEmptyMessage() {
+    const selectedFilter = this.#filterControls.querySelector(
+      'input[name="trip-filter"]:checked',
+    ).value;
+    this.#newList = null;
+    this.#tripEventsEmpty = new TripEventsEmptyView(selectedFilter);
+    render(this.#tripEventsEmpty, this.#tripEvents.element);
+  }
+
   #handleBtnClick = () => {
     if (this.#listPresenter) {
       this.#listPresenter.resetListView();
@@ -106,15 +115,6 @@ export default class NewEventBtnPresenter {
 
     document.addEventListener('keydown', this.#escKeyDownHandler);
   };
-
-  #renderEmptyMessage() {
-    const selectedFilter = this.#filterControls.querySelector(
-      'input[name="trip-filter"]:checked',
-    ).value;
-    this.#newList = null;
-    this.#tripEventsEmpty = new TripEventsEmptyView(selectedFilter);
-    render(this.#tripEventsEmpty, this.#tripEvents.element);
-  }
 
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape') {
