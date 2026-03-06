@@ -122,8 +122,6 @@ export default class PointPresenter {
   }
 
   #createFormComponent() {
-    // TODO
-    // Не прорисовываются offers
     this.#pointFormComponent = new ListPointFormView({
       pointData: this.#pointData,
       isEditForm: true,

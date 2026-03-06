@@ -99,7 +99,7 @@ const createListPointFormTemplate = ({ pointData = {}, isEditForm, model }) => {
   const {
     listPoint = null,
     destinationData = null,
-    listOffers = null,
+    offerData = null,
   } = pointData;
 
   /**@param {string} date - ISO 8601 дата */
@@ -202,7 +202,7 @@ const createListPointFormTemplate = ({ pointData = {}, isEditForm, model }) => {
           ${closeEditFormBtn(isEditForm)}
         </header>
         <section class="event__details">
-          ${createOffersTemplate(listOffers)}
+          ${createOffersTemplate(offerData)}
           ${createDestinationSectionTemplate(destinationData)}
         </section>
       </form>
