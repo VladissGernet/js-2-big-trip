@@ -116,8 +116,8 @@ export default class PointPresenter {
   #createPointComponent() {
     this.#pointComponent = new ListPointView({
       ...this.#pointData,
-      onRollupClick: this.#handleOpenRollupClick,
-      onFavoriteClick: this.#handleFavoriteClick,
+      onRollupClick: this.#openRollupClickHandler,
+      onFavoriteClick: this.#favoriteClickHandler,
     });
   }
 
@@ -127,7 +127,7 @@ export default class PointPresenter {
       isEditForm: true,
       model: this.#model,
       onRollupClick: this.#handleCloseRollupClick,
-      onResetClick: this.#handleDeleteClick,
+      onResetClick: this.#deleteClickHandler,
     });
   }
 
@@ -163,7 +163,7 @@ export default class PointPresenter {
   }
 
   /** Открытие по нажатию Rollup. */
-  #handleOpenRollupClick = () => {
+  #openRollupClickHandler = () => {
     this.#replacePointToForm();
     document.addEventListener('keydown', this.#escKeyDownHandler);
   };
@@ -182,7 +182,7 @@ export default class PointPresenter {
   };
 
   /** Удаление текущей Point из списка. */
-  #handleDeleteClick = () => {
+  #deleteClickHandler = () => {
     this.clear();
 
     // Удаление из данных модели.
@@ -202,7 +202,7 @@ export default class PointPresenter {
   };
 
   /** Обработчик добавления в избранное. */
-  #handleFavoriteClick = () => {
+  #favoriteClickHandler = () => {
     const selectedPointId = this.#point.id;
     // Обновляем данные.
     this.#model.updatePointFavorite(selectedPointId);
