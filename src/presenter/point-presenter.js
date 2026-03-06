@@ -91,21 +91,20 @@ export default class PointPresenter {
     this.#pointFormComponent = null;
   }
 
-  // TODO
-  //Рассмотреть как static метод
-  get #data() {
-    const { destinationsById, offersByType } = this.#model;
-    const destinationData = destinationsById.get(this.#point.destination);
-    const offerTypeData = offersByType.get(this.#point.type);
-
-    const transformedOfferTypeData = PointPresenter.transformOfferTypeData(
-      offerTypeData,
-      this.#point.offers,
+  get #pointData() {
+    const destinationData = this.#model.destinationsById.get(
+      this.#point.destination,
     );
 
+    const transformedOfferTypeData = PointPresenter.transformOfferTypeData({
+      offerTypeData: this.#model.offersByType.get(this.#point.type),
+      currentPointOffers: this.#point.offers,
+    });
+
     return {
+      listPoint: this.#point,
       destinationData: destinationData,
-      transformedOfferTypeData: transformedOfferTypeData,
+      offerData: transformedOfferTypeData,
     };
   }
 
@@ -115,28 +114,18 @@ export default class PointPresenter {
   }
 
   #createPointComponent() {
-    const { destinationData, transformedOfferTypeData } = this.#data;
-
     this.#pointComponent = new ListPointView({
-      listPoint: this.#point,
-      destinationData: destinationData,
-      offerData: transformedOfferTypeData,
+      ...this.#pointData,
       onRollupClick: this.#handleOpenRollupClick,
       onFavoriteClick: this.#handleFavoriteClick,
     });
   }
 
   #createFormComponent() {
-    const { destinationData, transformedOfferTypeData } = this.#data;
-
-    const pointData = {
-      listPoint: this.#point,
-      destinationData: destinationData,
-      listOffers: transformedOfferTypeData,
-    };
-
+    // TODO
+    // Не прорисовываются offers
     this.#pointFormComponent = new ListPointFormView({
-      pointData: pointData,
+      pointData: this.#pointData,
       isEditForm: true,
       model: this.#model,
       onRollupClick: this.#handleCloseRollupClick,
@@ -226,7 +215,7 @@ export default class PointPresenter {
     replace(this.#pointComponent, prevPointComponent);
   };
 
-  static transformOfferTypeData(offerTypeData, currentPointOffers) {
+  static transformOfferTypeData({ offerTypeData, currentPointOffers }) {
     if (offerTypeData === 0 || currentPointOffers.size === 0) {
       return [];
     }
