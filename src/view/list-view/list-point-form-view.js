@@ -8,8 +8,8 @@ import { remove } from '../../framework/render.js';
 /*
   Теперь нужно реализовать перерисовку формы редактирования после взаимодействия с пользователем:
 
-  при смене типа точки маршрута нужно показать соответствующий типу набор дополнительных опций;
   при выборе пункта назначения нужно показать новые описание и фотографии.
+
   Обратите внимание, что при смене дополнительных опций ранее выбранные пользователем значения не сохраняются, а ещё
   выбор дополнительных опций не влияет на стоимость, указанную в соответствующем поле ввода.
 
@@ -110,11 +110,13 @@ export default class ListPointFormView extends AbstractStatefulView {
   };
 
   #changeTypeHandler = (evt) => {
-    //TODO
-    //при смене типа точки маршрута...
+    const typeOffers = this.#model.offersReadOnly.find(
+      ({ type }) => type === evt.target.value,
+    ).offers;
+
     this.updateElement({
       listPoint: { ...this._state.listPoint, type: evt.target.value },
+      offerData: typeOffers,
     });
-    // ...нужно показать соответствующий типу набор дополнительных опций;
   };
 }
