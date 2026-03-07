@@ -59,31 +59,25 @@ export default class ListPointFormView extends AbstractStatefulView {
     });
   }
 
-  // _restoreHandlers() {
-  //   this.#addEventListeners();
-  // }
-
   removeElement() {
     super.removeElement();
 
     this.#removeEventListeners();
   }
 
-  #rollupClickHandler = (evt) => {
-    evt.preventDefault();
-    this.#handleRollupClick();
-  };
-
-  #resetClickHandler = (evt) => {
-    evt.preventDefault();
-    remove(this);
-    this.#handleResetClick();
-  };
+  _restoreHandlers() {
+    this.#removeEventListeners();
+    this.#addEventListeners();
+  }
 
   #addEventListeners() {
     this.element
       .querySelector('.event__reset-btn')
       .addEventListener('click', this.#resetClickHandler);
+
+    this.element
+      .querySelector('.event__type-group')
+      .addEventListener('change', this.#changeTypeHandler);
 
     if (this.#handleRollupClick) {
       this.element
@@ -103,4 +97,24 @@ export default class ListPointFormView extends AbstractStatefulView {
       .querySelector('.event__reset-btn')
       .removeEventListener('click', this.#resetClickHandler);
   }
+
+  #rollupClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleRollupClick();
+  };
+
+  #resetClickHandler = (evt) => {
+    evt.preventDefault();
+    remove(this);
+    this.#handleResetClick();
+  };
+
+  #changeTypeHandler = (evt) => {
+    //TODO
+    //при смене типа точки маршрута...
+    this.updateElement({
+      listPoint: { ...this._state.listPoint, type: evt.target.value },
+    });
+    // ...нужно показать соответствующий типу набор дополнительных опций;
+  };
 }

@@ -62,7 +62,7 @@ const closeEditFormBtn = (isEditForm) =>
       </button>`
     : '';
 
-const createTypeList = (offers) => {
+const createTypeList = (offers, iconType) => {
   const listItems = offers.reduce(
     (finalHTML, item) =>
       finalHTML +
@@ -70,13 +70,14 @@ const createTypeList = (offers) => {
         <div class="event__type-item">
           <input
             id="event-type-${item.type}-1"
-            class="event__type-input  visually-hidden"
+            class="event__type-input visually-hidden"
             type="radio"
             name="event-type"
             value="${item.type}"
+            ${iconType === item.type ? 'checked' : ''}
           />
           <label
-            class="event__type-label  event__type-label--${item.type}"
+            class="event__type-label event__type-label--${item.type}"
             for="event-type-${item.type}-1"
             >${item.type[0].toUpperCase() + item.type.slice(1)}</label
           >
@@ -94,6 +95,9 @@ const createTypeList = (offers) => {
     </div>
   `;
 };
+
+const isModelForTypes = (model, iconType) =>
+  model?.offersReadOnly ? createTypeList(model.offersReadOnly, iconType) : '';
 
 const createListPointFormTemplate = ({ pointData = {}, isEditForm, model }) => {
   const {
@@ -134,7 +138,7 @@ const createListPointFormTemplate = ({ pointData = {}, isEditForm, model }) => {
               id="event-type-toggle-1"
               type="checkbox"
             />
-            ${model?.offersReadOnly ? createTypeList(model.offersReadOnly) : ''}
+            ${isModelForTypes(model, iconType)}
           </div>
 
           <div class="event__field-group event__field-group--destination">
