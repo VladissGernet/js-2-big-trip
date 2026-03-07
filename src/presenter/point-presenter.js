@@ -214,10 +214,6 @@ export default class PointPresenter {
   };
 
   static transformOfferTypeData({ offerTypeData, currentPointOffers }) {
-    if (offerTypeData === 0 || currentPointOffers.size === 0) {
-      return [];
-    }
-
     return Array.from(offerTypeData, ([id, data]) => ({
       ...data,
       isSelected: currentPointOffers.has(id),
