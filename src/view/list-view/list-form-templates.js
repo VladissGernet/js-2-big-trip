@@ -108,7 +108,7 @@ const createListPointFormTemplate = ({ pointData = {}, isEditForm, model }) => {
   const {
     listPoint = null,
     destinationData = null,
-    offerData = null,
+    offerData = model.offersReadOnly[0].offers,
   } = pointData;
 
   /**@param {string} date - ISO 8601 дата */

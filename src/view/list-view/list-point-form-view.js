@@ -79,6 +79,10 @@ export default class ListPointFormView extends AbstractStatefulView {
       .querySelector('.event__type-group')
       .addEventListener('change', this.#changeTypeHandler);
 
+    this.element
+      .querySelector('.event__input--destination')
+      .addEventListener('input', this.#changeCityHandler);
+
     if (this.#handleRollupClick) {
       this.element
         .querySelector('.event__rollup-btn')
@@ -87,15 +91,23 @@ export default class ListPointFormView extends AbstractStatefulView {
   }
 
   #removeEventListeners() {
+    this.element
+      .querySelector('.event__reset-btn')
+      .removeEventListener('click', this.#resetClickHandler);
+
+    this.element
+      .querySelector('.event__type-group')
+      .removeEventListener('change', this.#changeTypeHandler);
+
+    this.element
+      .querySelector('.event__input--destination')
+      .removeEventListener('click', this.#changeCityHandler);
+
     if (this.#handleRollupClick) {
       this.element
         .querySelector('.event__rollup-btn')
         .removeEventListener('click', this.#rollupClickHandler);
     }
-
-    this.element
-      .querySelector('.event__reset-btn')
-      .removeEventListener('click', this.#resetClickHandler);
   }
 
   #rollupClickHandler = (evt) => {
@@ -118,5 +130,13 @@ export default class ListPointFormView extends AbstractStatefulView {
       listPoint: { ...this._state.listPoint, type: evt.target.value },
       offerData: typeOffers,
     });
+  };
+
+  #changeCityHandler = (evt) => {
+    // TODO
+    // Остановился здесь
+    console.log(evt.target.value);
+
+    console.log('change');
   };
 }
