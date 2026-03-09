@@ -99,6 +99,11 @@ const createTypeList = (offers, iconType) => {
 const isModelForTypes = (model, iconType) =>
   model?.offersReadOnly ? createTypeList(model.offersReadOnly, iconType) : '';
 
+const createDatalist = (cities) =>
+  html` <datalist id="destination-list-1">
+    ${cities.map((city) => `<option value="${city}"></option>`).join('')}
+  </datalist>`;
+
 const createListPointFormTemplate = ({ pointData = {}, isEditForm, model }) => {
   const {
     listPoint = null,
@@ -156,11 +161,7 @@ const createListPointFormTemplate = ({ pointData = {}, isEditForm, model }) => {
               value="${destinationData?.name || ''}"
               list="destination-list-1"
             />
-            <datalist id="destination-list-1">
-              <option value="Amsterdam"></option>
-              <option value="Geneva"></option>
-              <option value="Chamonix"></option>
-            </datalist>
+            ${createDatalist(model.cities)}
           </div>
 
           <div class="event__field-group event__field-group--time">

@@ -10,6 +10,4 @@ mainPresenter.init();
 // TODO
 // После выполения задания удалить!
 console.log('Открывает первую форму');
-
 document.querySelector('.event__rollup-btn').click();
-document.querySelector('.event__type-toggle').click();

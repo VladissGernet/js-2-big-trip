@@ -16,6 +16,11 @@ export default class TripModel {
     return this.#offersReadOnly;
   }
 
+  // Список всех городов из данных
+  get cities() {
+    return destinationsMock.map((dest) => dest.name);
+  }
+
   /** @returns {Map<string, Object>}  Назначения по ID для быстрого поиска. */
   get destinationsById() {
     if (!this.#destinations) {
