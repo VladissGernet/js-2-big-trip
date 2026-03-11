@@ -41,13 +41,17 @@ export default class ListPointFormView extends AbstractStatefulView {
 
   constructor({ pointData, isEditForm, model, onRollupClick, onResetClick }) {
     super();
-    this._setState(pointData);
-
     this.#isEditForm = isEditForm;
     this.#model = model;
     this.#handleRollupClick = onRollupClick;
     this.#handleResetClick = onResetClick;
 
+    // При создании нового события добавляем по дефолту.
+    if (!pointData) {
+      pointData = { offerData: this.#model.offersReadOnly[0].offers };
+    }
+
+    this._setState(pointData);
     this.#addEventListeners();
   }
 
@@ -81,7 +85,11 @@ export default class ListPointFormView extends AbstractStatefulView {
 
     this.element
       .querySelector('.event__input--destination')
-      .addEventListener('input', this.#changeCityHandler);
+      .addEventListener('change', this.#changeDestinationHandler);
+
+    this.element
+      .querySelector('.event.event--edit')
+      .addEventListener('submit', this.#saveFormHandler);
 
     if (this.#handleRollupClick) {
       this.element
@@ -101,7 +109,11 @@ export default class ListPointFormView extends AbstractStatefulView {
 
     this.element
       .querySelector('.event__input--destination')
-      .removeEventListener('click', this.#changeCityHandler);
+      .removeEventListener('change', this.#changeDestinationHandler);
+
+    this.element
+      .querySelector('.event.event--edit')
+      .removeEventListener('submit', this.#saveFormHandler);
 
     if (this.#handleRollupClick) {
       this.element
@@ -121,6 +133,11 @@ export default class ListPointFormView extends AbstractStatefulView {
     this.#handleResetClick();
   };
 
+  #saveFormHandler = (evt) => {
+    evt.preventDefault();
+    console.log(this._state);
+  };
+
   #changeTypeHandler = (evt) => {
     const typeOffers = this.#model.offersReadOnly.find(
       ({ type }) => type === evt.target.value,
@@ -132,11 +149,23 @@ export default class ListPointFormView extends AbstractStatefulView {
     });
   };
 
-  #changeCityHandler = (evt) => {
-    // TODO
-    // Остановился здесь
-    console.log(evt.target.value);
+  #changeDestinationHandler = (evt) => {
+    let prevDestinationCity = this._state.destinationData?.name;
+    if (!prevDestinationCity) {
+      prevDestinationCity = '';
+    }
 
-    console.log('change');
+    const newDestinationCityData = this.#model.destinationsReadOnly.find(
+      ({ name }) => name === evt.target.value,
+    );
+
+    if (!newDestinationCityData) {
+      evt.target.value = prevDestinationCity;
+      return;
+    }
+
+    this.updateElement({
+      destinationData: newDestinationCityData,
+    });
   };
 }

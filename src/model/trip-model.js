@@ -7,7 +7,9 @@ export default class TripModel {
   #points = null;
   #destinations = null;
   #offers = null;
+
   #offersReadOnly = null;
+  #destinationsReadOnly = null;
 
   get offersReadOnly() {
     if (!this.#offersReadOnly) {
@@ -19,6 +21,15 @@ export default class TripModel {
   // Список всех городов из данных
   get cities() {
     return destinationsMock.map((dest) => dest.name);
+  }
+
+  get destinationsReadOnly() {
+    if (!this.#destinationsReadOnly) {
+      this.#destinationsReadOnly = Object.freeze(
+        structuredClone(destinationsMock),
+      );
+    }
+    return this.#destinationsReadOnly;
   }
 
   /** @returns {Map<string, Object>}  Назначения по ID для быстрого поиска. */
