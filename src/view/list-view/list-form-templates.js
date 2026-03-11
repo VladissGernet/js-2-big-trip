@@ -1,5 +1,4 @@
 import { html } from '../../utils/index.js';
-import dayjs from 'dayjs';
 
 const createOfferTemplate = ({ title, price, isSelected }) =>
   html`<div class="event__offer-selector">
@@ -111,13 +110,6 @@ const createListPointFormTemplate = ({ pointData = {}, isEditForm, model }) => {
     offerData = model.offersReadOnly[0].offers,
   } = pointData;
 
-  /**@param {string} date - ISO 8601 дата */
-  const formatDate = (date) =>
-    !date ? '' : dayjs(date).format('DD/MM/YY HH:mm');
-
-  const dateFrom = formatDate(listPoint?.dateFrom);
-  const dateTo = formatDate(listPoint?.dateTo);
-
   const iconType = listPoint?.type || model?.offersReadOnly[0]?.type || '';
 
   return html`
@@ -171,7 +163,6 @@ const createListPointFormTemplate = ({ pointData = {}, isEditForm, model }) => {
               id="event-start-time-1"
               type="text"
               name="event-start-time"
-              value="${dateFrom}"
             />
             &mdash;
             <label class="visually-hidden" for="event-end-time-1">To</label>
@@ -180,7 +171,6 @@ const createListPointFormTemplate = ({ pointData = {}, isEditForm, model }) => {
               id="event-end-time-1"
               type="text"
               name="event-end-time"
-              value="${dateTo}"
             />
           </div>
 

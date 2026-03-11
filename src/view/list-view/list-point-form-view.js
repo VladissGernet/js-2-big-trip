@@ -2,23 +2,14 @@ import { createListPointFormTemplate } from './list-form-templates.js';
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
 import { remove } from '../../framework/render.js';
 
+import dayjs from 'dayjs';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+
 /** Создание формы добавления точки маршрута */
-// TODO Заменить на stateful
 
 /*
-  Теперь нужно реализовать перерисовку формы редактирования после взаимодействия с пользователем:
-
-  при выборе пункта назначения нужно показать новые описание и фотографии.
-
-  Обратите внимание, что при смене дополнительных опций ранее выбранные пользователем значения не сохраняются, а ещё
-  выбор дополнительных опций не влияет на стоимость, указанную в соответствующем поле ввода.
-
-  При перерисовке компонента все обработчики событий будут утеряны, поэтому их нужно будет навесить заново.
-
-  Обратите внимание, что если вы не используете один и тот же компонент в качестве формы добавления и формы редактирования,
-  вам нужно повторить поведение контролов и валидации для компонента формы добавления новой точки маршрута.
-
-  ========================================================================================================================
+  TODO
 
   В этом задании мы выжмем всё из библиотек по работе с датами.
 
@@ -39,6 +30,9 @@ export default class ListPointFormView extends AbstractStatefulView {
   #handleRollupClick = null;
   #handleResetClick = null;
 
+  #inputDateFrom;
+  #inputDateTo;
+
   constructor({ pointData, isEditForm, model, onRollupClick, onResetClick }) {
     super();
     this.#isEditForm = isEditForm;
@@ -51,12 +45,13 @@ export default class ListPointFormView extends AbstractStatefulView {
       const transformedOfferData = this.#model.offersReadOnly[0].offers.map(
         (offer) => ({ ...offer, isSelected: false }),
       );
-
+      // TODO при создании нового события исправить ошибку
       pointData = { offerData: transformedOfferData };
     }
 
     this._setState(pointData);
     this.#addEventListeners();
+    this.#initInputDate();
   }
 
   get template() {
@@ -71,9 +66,13 @@ export default class ListPointFormView extends AbstractStatefulView {
     super.removeElement();
 
     this.#removeEventListeners();
+    this.#destroyInputDate();
   }
 
   _restoreHandlers() {
+    this.#destroyInputDate();
+    this.#initInputDate();
+
     this.#removeEventListeners();
     this.#addEventListeners();
   }
@@ -95,9 +94,11 @@ export default class ListPointFormView extends AbstractStatefulView {
       .querySelector('.event.event--edit')
       .addEventListener('submit', this.#saveFormHandler);
 
-    this.element
-      .querySelector('.event__available-offers')
-      .addEventListener('change', this.#changeOfferHandler);
+    if (this._state.offerData.length) {
+      this.element
+        .querySelector('.event__available-offers')
+        .addEventListener('change', this.#changeOfferHandler);
+    }
 
     if (this.#handleRollupClick) {
       this.element
@@ -123,15 +124,68 @@ export default class ListPointFormView extends AbstractStatefulView {
       .querySelector('.event.event--edit')
       .removeEventListener('submit', this.#saveFormHandler);
 
-    this.element
-      .querySelector('.event__available-offers')
-      .addEventListener('change', this.#changeOfferHandler);
+    if (this._state.offerData.length) {
+      this.element
+        .querySelector('.event__available-offers')
+        .addEventListener('change', this.#changeOfferHandler);
+    }
 
     if (this.#handleRollupClick) {
       this.element
         .querySelector('.event__rollup-btn')
         .removeEventListener('click', this.#rollupClickHandler);
     }
+  }
+
+  #initInputDate() {
+    this.#inputDateFrom = flatpickr(
+      this.element.querySelector('#event-start-time-1'),
+      {
+        defaultDate: this._state.listPoint.dateFrom,
+        maxDate: this._state.listPoint.dateTo,
+        ...ListPointFormView.#createFlatpickrEventConfig(),
+        // TODO
+        // Вынести в статический метод для DRY
+        onChange: (selectedDates) => {
+          const newListPoint = {
+            ...this._state.listPoint,
+            dateFrom: selectedDates[0].toISOString(),
+          };
+
+          this.#inputDateTo.set('minDate', selectedDates[0].toISOString());
+
+          this._setState({
+            listPoint: newListPoint,
+          });
+        },
+      },
+    );
+
+    this.#inputDateTo = flatpickr(
+      this.element.querySelector('#event-end-time-1'),
+      {
+        defaultDate: this._state.listPoint.dateTo,
+        minDate: this._state.listPoint.dateFrom,
+        ...ListPointFormView.#createFlatpickrEventConfig(),
+        onChange: (selectedDates) => {
+          const newListPoint = {
+            ...this._state.listPoint,
+            dateTo: selectedDates[0].toISOString(),
+          };
+
+          this.#inputDateFrom.set('maxDate', selectedDates[0].toISOString());
+
+          this._setState({
+            listPoint: newListPoint,
+          });
+        },
+      },
+    );
+  }
+
+  #destroyInputDate() {
+    this.#inputDateFrom.destroy();
+    this.#inputDateTo.destroy();
   }
 
   #rollupClickHandler = (evt) => {
@@ -193,4 +247,16 @@ export default class ListPointFormView extends AbstractStatefulView {
       offerData: updatedOfferData,
     });
   };
+
+  static #createFlatpickrEventConfig() {
+    // Для устранения ошибки линтера из-за snake case библиотеки.
+    const time24hr = 'time_24hr';
+
+    return {
+      enableTime: true,
+      dateFormat: 'Y-m-d H:i',
+      [time24hr]: true, // 24-часовой формат (16:00 вместо 4:00 PM)
+      formatDate: (date) => dayjs(date).format('DD/MM/YY HH:mm'),
+    };
+  }
 }
