@@ -48,7 +48,11 @@ export default class ListPointFormView extends AbstractStatefulView {
 
     // При создании нового события добавляем по дефолту.
     if (!pointData) {
-      pointData = { offerData: this.#model.offersReadOnly[0].offers };
+      const transformedOfferData = this.#model.offersReadOnly[0].offers.map(
+        (offer) => ({ ...offer, isSelected: false }),
+      );
+
+      pointData = { offerData: transformedOfferData };
     }
 
     this._setState(pointData);
