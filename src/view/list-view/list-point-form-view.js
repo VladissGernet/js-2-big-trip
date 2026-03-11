@@ -95,6 +95,10 @@ export default class ListPointFormView extends AbstractStatefulView {
       .querySelector('.event.event--edit')
       .addEventListener('submit', this.#saveFormHandler);
 
+    this.element
+      .querySelector('.event__available-offers')
+      .addEventListener('change', this.#changeOfferHandler);
+
     if (this.#handleRollupClick) {
       this.element
         .querySelector('.event__rollup-btn')
@@ -118,6 +122,10 @@ export default class ListPointFormView extends AbstractStatefulView {
     this.element
       .querySelector('.event.event--edit')
       .removeEventListener('submit', this.#saveFormHandler);
+
+    this.element
+      .querySelector('.event__available-offers')
+      .addEventListener('change', this.#changeOfferHandler);
 
     if (this.#handleRollupClick) {
       this.element
@@ -170,6 +178,19 @@ export default class ListPointFormView extends AbstractStatefulView {
 
     this.updateElement({
       destinationData: newDestinationCityData,
+    });
+  };
+
+  #changeOfferHandler = (evt) => {
+    const updatedOfferData = this._state.offerData.map((item) => {
+      if (item.title === evt.target.id) {
+        item.isSelected = evt.target.checked;
+      }
+      return item;
+    });
+
+    this._setState({
+      offerData: updatedOfferData,
     });
   };
 }
