@@ -30,8 +30,8 @@ export default class ListPointFormView extends AbstractStatefulView {
   #handleRollupClick = null;
   #handleResetClick = null;
 
-  #inputDateFrom;
-  #inputDateTo;
+  #inputDateFrom = null;
+  #inputDateTo = null;
 
   constructor({ pointData, isEditForm, model, onRollupClick, onResetClick }) {
     super();
@@ -144,20 +144,6 @@ export default class ListPointFormView extends AbstractStatefulView {
         defaultDate: this._state.listPoint.dateFrom,
         maxDate: this._state.listPoint.dateTo,
         ...ListPointFormView.#createFlatpickrEventConfig(),
-        // TODO
-        // Вынести в статический метод для DRY
-        onChange: (selectedDates) => {
-          const newListPoint = {
-            ...this._state.listPoint,
-            dateFrom: selectedDates[0].toISOString(),
-          };
-
-          this.#inputDateTo.set('minDate', selectedDates[0].toISOString());
-
-          this._setState({
-            listPoint: newListPoint,
-          });
-        },
       },
     );
 
@@ -167,19 +153,24 @@ export default class ListPointFormView extends AbstractStatefulView {
         defaultDate: this._state.listPoint.dateTo,
         minDate: this._state.listPoint.dateFrom,
         ...ListPointFormView.#createFlatpickrEventConfig(),
-        onChange: (selectedDates) => {
-          const newListPoint = {
-            ...this._state.listPoint,
-            dateTo: selectedDates[0].toISOString(),
-          };
-
-          this.#inputDateFrom.set('maxDate', selectedDates[0].toISOString());
-
-          this._setState({
-            listPoint: newListPoint,
-          });
-        },
       },
+    );
+
+    this.#inputDateFrom.set(
+      'onChange',
+      ListPointFormView.#createInputDateChangeHadler(
+        this,
+        'minDate',
+        this.#inputDateTo,
+      ),
+    );
+    this.#inputDateTo.set(
+      'onChange',
+      ListPointFormView.#createInputDateChangeHadler(
+        this,
+        'maxDate',
+        this.#inputDateFrom,
+      ),
     );
   }
 
@@ -247,6 +238,21 @@ export default class ListPointFormView extends AbstractStatefulView {
       offerData: updatedOfferData,
     });
   };
+
+  static #createInputDateChangeHadler(context, dateStage, otherInput) {
+    return (selectedDates) => {
+      const newListPoint = {
+        ...context._state.listPoint,
+        [dateStage]: selectedDates[0].toISOString(),
+      };
+
+      otherInput.set(dateStage, selectedDates[0].toISOString());
+
+      context._setState({
+        listPoint: newListPoint,
+      });
+    };
+  }
 
   static #createFlatpickrEventConfig() {
     // Для устранения ошибки линтера из-за snake case библиотеки.
