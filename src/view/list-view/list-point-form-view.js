@@ -45,8 +45,15 @@ export default class ListPointFormView extends AbstractStatefulView {
       const transformedOfferData = this.#model.offersReadOnly[0].offers.map(
         (offer) => ({ ...offer, isSelected: false }),
       );
-      // TODO при создании нового события исправить ошибку
-      pointData = { offerData: transformedOfferData };
+      const today = new Date().toISOString();
+
+      pointData = {
+        offerData: transformedOfferData,
+        listPoint: {
+          dateFrom: today,
+          dateTo: today,
+        },
+      };
     }
 
     this._setState(pointData);
@@ -150,6 +157,7 @@ export default class ListPointFormView extends AbstractStatefulView {
       { minDate: this._state.listPoint.dateFrom },
     );
 
+    // После создания ставим обработчики на input.
     this.#inputDateFrom.set(
       'onChange',
       ListPointFormView.#createInputDateChangeHadler(
@@ -158,7 +166,6 @@ export default class ListPointFormView extends AbstractStatefulView {
         this.#inputDateTo,
       ),
     );
-
     this.#inputDateTo.set(
       'onChange',
       ListPointFormView.#createInputDateChangeHadler(
