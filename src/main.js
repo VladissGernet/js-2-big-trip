@@ -6,8 +6,3 @@ const pageBody = document.querySelector('.page-body');
 const mainPresenter = new MainPresenter({ model: model, pageBody: pageBody });
 
 mainPresenter.init();
-
-// TODO
-// После выполения задания удалить!
-console.log('Открывает первую форму');
-document.querySelector('.trip-main__event-add-btn').click();
