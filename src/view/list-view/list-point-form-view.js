@@ -138,21 +138,16 @@ export default class ListPointFormView extends AbstractStatefulView {
   }
 
   #initInputDate() {
-    this.#inputDateFrom = flatpickr(
+    this.#inputDateFrom = ListPointFormView.#createFlatpickr(
       this.element.querySelector('#event-start-time-1'),
-
-      ListPointFormView.#createFlatpickrEventConfig(
-        this._state.listPoint.dateFrom,
-        { maxDate: this._state.listPoint.dateTo },
-      ),
+      this._state.listPoint.dateFrom,
+      { maxDate: this._state.listPoint.dateTo },
     );
 
-    this.#inputDateTo = flatpickr(
+    this.#inputDateTo = ListPointFormView.#createFlatpickr(
       this.element.querySelector('#event-end-time-1'),
-      ListPointFormView.#createFlatpickrEventConfig(
-        this._state.listPoint.dateTo,
-        { minDate: this._state.listPoint.dateFrom },
-      ),
+      this._state.listPoint.dateTo,
+      { minDate: this._state.listPoint.dateFrom },
     );
 
     this.#inputDateFrom.set(
@@ -163,6 +158,7 @@ export default class ListPointFormView extends AbstractStatefulView {
         this.#inputDateTo,
       ),
     );
+
     this.#inputDateTo.set(
       'onChange',
       ListPointFormView.#createInputDateChangeHadler(
@@ -238,6 +234,20 @@ export default class ListPointFormView extends AbstractStatefulView {
     });
   };
 
+  static #createFlatpickr(element, defaultDate, dateLimit) {
+    // Для устранения ошибки линтера из-за snake case библиотеки.
+    const time24hr = 'time_24hr';
+
+    return flatpickr(element, {
+      defaultDate: defaultDate,
+      enableTime: true,
+      dateFormat: 'Y-m-d H:i',
+      [time24hr]: true, // 24-часовой формат (16:00 вместо 4:00 PM)
+      formatDate: (date) => dayjs(date).format('DD/MM/YY HH:mm'),
+      ...dateLimit,
+    });
+  }
+
   static #createInputDateChangeHadler(context, dateStage, otherInput) {
     return (selectedDates) => {
       const newListPoint = {
@@ -250,20 +260,6 @@ export default class ListPointFormView extends AbstractStatefulView {
       context._setState({
         listPoint: newListPoint,
       });
-    };
-  }
-
-  static #createFlatpickrEventConfig(defaultDate, dateLimit) {
-    // Для устранения ошибки линтера из-за snake case библиотеки.
-    const time24hr = 'time_24hr';
-
-    return {
-      defaultDate: defaultDate,
-      enableTime: true,
-      dateFormat: 'Y-m-d H:i',
-      [time24hr]: true, // 24-часовой формат (16:00 вместо 4:00 PM)
-      formatDate: (date) => dayjs(date).format('DD/MM/YY HH:mm'),
-      ...dateLimit,
     };
   }
 }
