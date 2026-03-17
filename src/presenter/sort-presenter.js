@@ -40,14 +40,14 @@ export default class SortPresenter {
   #container;
   #sorts;
   #component;
-  #model;
+  #tripModel;
   #listPresenter;
 
   /** @param {PresenterConfig} */
-  constructor({ container, sorts, model, listPresenter }) {
+  constructor({ container, sorts, tripModel, listPresenter }) {
     this.#container = container;
     this.#sorts = sorts;
-    this.#model = model;
+    this.#tripModel = tripModel;
     this.#listPresenter = listPresenter;
   }
 
@@ -64,14 +64,14 @@ export default class SortPresenter {
     const currentSortValue = this.#component.element.querySelector(
       'input[type="radio"]:checked',
     ).value;
-    this.#model.listPoints.sort(SORT_CONFIG[SORT_TYPES[currentSortValue]]);
+    this.#tripModel.listPoints.sort(SORT_CONFIG[SORT_TYPES[currentSortValue]]);
 
     render(this.#component, this.#container);
   }
 
   #handleChange = (evt) => {
     this.#listPresenter.clearList();
-    this.#model.listPoints.sort(SORT_CONFIG[SORT_TYPES[evt.target.value]]);
+    this.#tripModel.listPoints.sort(SORT_CONFIG[SORT_TYPES[evt.target.value]]);
     this.#listPresenter.init();
   };
 }

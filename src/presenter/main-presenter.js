@@ -4,20 +4,22 @@ import PageMainPresenter from './page-main-presenter.js';
 /** Конфигурация презентера.
  * @typedef {Object} PresenterConfig
  * @property {HTMLBodyElement} pageBody - Видимая часть страницы.
- * @property {Model} model - Данные модели для рендера страницы
+ * @property {Model} tripModel - Данные модели для рендера страницы
  */
 
 export default class MainPresenter {
   #pageBody;
-  #model;
+  #tripModel;
+  #filterModel;
 
   #headerPresenter;
   #pageMainPresenter;
 
   /** @param {PresenterConfig} */
-  constructor({ model, pageBody }) {
+  constructor({ tripModel, pageBody, filterModel }) {
     this.#pageBody = pageBody;
-    this.#model = model;
+    this.#tripModel = tripModel;
+    this.#filterModel = filterModel;
   }
 
   init() {
@@ -29,7 +31,8 @@ export default class MainPresenter {
   #initHeader() {
     this.#headerPresenter = new HeaderPresenter({
       container: this.#pageBody,
-      model: this.#model,
+      tripModel: this.#tripModel,
+      filterModel: this.#filterModel,
     });
     this.#headerPresenter.init();
   }
@@ -37,7 +40,7 @@ export default class MainPresenter {
   #initPageMain() {
     this.#pageMainPresenter = new PageMainPresenter({
       container: this.#pageBody,
-      model: this.#model,
+      tripModel: this.#tripModel,
       newEventBtnPresenter: this.#headerPresenter.newEventBtnPresenter,
     });
     this.#pageMainPresenter.init(this.#headerPresenter.filterControls);

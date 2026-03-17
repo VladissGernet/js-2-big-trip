@@ -17,14 +17,20 @@ import { render } from '../framework/render.js';
 export default class FilterPresenter {
   #container;
   #filters;
+  #filterModel = null;
 
   /** Публичный доступ к комоненту фильтра */
   filterComponent = null;
 
   /** @param {PresenterConfig} config */
-  constructor({ container, filters }) {
+  constructor({ container, filters, filterModel }) {
     this.#container = container;
     this.#filters = filters;
+    this.#filterModel = filterModel;
+
+    // TODO
+    // Реализовал передачу модели в презентер.
+    console.log(filterModel);
   }
 
   init() {

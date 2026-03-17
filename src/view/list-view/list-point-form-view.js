@@ -10,23 +10,29 @@ import 'flatpickr/dist/flatpickr.min.css';
 
 export default class ListPointFormView extends AbstractStatefulView {
   #isEditForm;
-  #model;
+  #tripModel;
   #handleRollupClick = null;
   #handleResetClick = null;
 
   #inputDateFrom = null;
   #inputDateTo = null;
 
-  constructor({ pointData, isEditForm, model, onRollupClick, onResetClick }) {
+  constructor({
+    pointData,
+    isEditForm,
+    tripModel,
+    onRollupClick,
+    onResetClick,
+  }) {
     super();
     this.#isEditForm = isEditForm;
-    this.#model = model;
+    this.#tripModel = tripModel;
     this.#handleRollupClick = onRollupClick;
     this.#handleResetClick = onResetClick;
 
     // При создании нового события добавляем по дефолту.
     if (!pointData) {
-      const transformedOfferData = this.#model.offersReadOnly[0].offers.map(
+      const transformedOfferData = this.#tripModel.offersReadOnly[0].offers.map(
         (offer) => ({ ...offer, isSelected: false }),
       );
       const today = new Date().toISOString();
@@ -49,7 +55,7 @@ export default class ListPointFormView extends AbstractStatefulView {
     return createListPointFormTemplate({
       pointData: this._state,
       isEditForm: this.#isEditForm,
-      model: this.#model,
+      tripModel: this.#tripModel,
     });
   }
 
@@ -182,7 +188,7 @@ export default class ListPointFormView extends AbstractStatefulView {
   };
 
   #changeTypeHandler = (evt) => {
-    const typeOffers = this.#model.offersReadOnly.find(
+    const typeOffers = this.#tripModel.offersReadOnly.find(
       ({ type }) => type === evt.target.value,
     ).offers;
 
@@ -198,7 +204,7 @@ export default class ListPointFormView extends AbstractStatefulView {
       prevDestinationCity = '';
     }
 
-    const newDestinationCityData = this.#model.destinationsReadOnly.find(
+    const newDestinationCityData = this.#tripModel.destinationsReadOnly.find(
       ({ name }) => name === evt.target.value,
     );
 

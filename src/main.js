@@ -1,18 +1,21 @@
 import MainPresenter from './presenter/main-presenter.js';
 import TripModel from './model/trip-model.js';
+import FilterModel from './model/filter-model.js';
 
-const model = new TripModel();
+const tripModel = new TripModel();
+const filterModel = new FilterModel();
 const pageBody = document.querySelector('.page-body');
-const mainPresenter = new MainPresenter({ model: model, pageBody: pageBody });
+const mainPresenter = new MainPresenter({
+  tripModel: tripModel,
+  filterModel: filterModel,
+  pageBody: pageBody,
+});
 
 mainPresenter.init();
 
 /* TODO
 
 Фильтрация
-В этой части задания мы запрограммируем фильтры.
-
-На первом шаге классика — компонент фильтров у нас уже есть, нужен презентер для него. С конструктором и методом init — всё как у остальных. После создайте экземпляр презентера в main.js, вызовите у него метод инициализации для отрисовки.
 
 Для реализации фильтрации создайте отдельную модель: добавьте в неё методы для установки и получения фильтра. Передайте модель в презентер фильтров и реализуйте обработчик выбора фильтра, который будет передавать в модель новое значение.
 

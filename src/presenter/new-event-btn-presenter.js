@@ -8,7 +8,7 @@ import { render, RenderPosition, remove } from '../framework/render.js';
 
 /** Конфиг презентера обработчика событйи на кнопку создания новго события.
  * @typedef {Object} PresenterConfig - Параметры для создания обработчика
- * @property {Object} model - Модель данных поездки
+ * @property {Object} tripModel - Модель данных поездки
  * @property {HTMLFormElement} filterControls - Элеменет контролов фильтра.
  * @property {HTMLDivElement} containerElement - Элемент для рендера кнопки.
  * @property {Object} tripEventsEmpty - Компонент сообщения об отсутсвии путевых точек.
@@ -21,21 +21,21 @@ export default class NewEventBtnPresenter {
   #tripEventsEmpty;
   #listPresenter;
   #filterControls;
-  #model;
+  #tripModel;
   #newList;
   #newWaypointForm;
   #newEventBtn = null;
 
   /** @param {PresenterConfig} config - Конфигурация презентера */
   constructor({
-    model,
+    tripModel,
     filterControls,
     containerElement,
     tripEventsEmpty = null,
     listPresenter = null,
     tripEvents = null,
   }) {
-    this.#model = model;
+    this.#tripModel = tripModel;
     this.#filterControls = filterControls;
     this.#containerElement = containerElement;
     this.#tripEventsEmpty = tripEventsEmpty;
@@ -68,7 +68,7 @@ export default class NewEventBtnPresenter {
     remove(this.#newWaypointForm);
     this.#newWaypointForm = null;
     this.#newEventBtn.element.disabled = false;
-    if (this.#model.listPoints.length === 0) {
+    if (this.#tripModel.listPoints.length === 0) {
       this.#renderEmptyMessage();
     }
   }
@@ -89,13 +89,13 @@ export default class NewEventBtnPresenter {
 
     this.#newWaypointForm = new ListPointFormView({
       isEditForm: false,
-      model: this.#model,
+      tripModel: this.#tripModel,
       onResetClick: this.#handleResetBtn,
     });
 
     this.#newEventBtn.element.disabled = true;
 
-    if (this.#model.listPoints.length === 0) {
+    if (this.#tripModel.listPoints.length === 0) {
       // Очищаю таблицу.
       remove(this.#tripEventsEmpty);
       this.#tripEvents.element.innerHTML =

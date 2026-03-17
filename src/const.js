@@ -23,4 +23,11 @@ const TRIP_SORTS = [
   { name: 'Offers', isChecked: false, isDisabled: true },
 ];
 
-export { TRIP_FILTERS, TRIP_SORTS, NO_EVENTS_MESSAGES };
+const FilterType = {
+  EVERYTHING: 'Everything',
+  FUTURE: 'Future',
+  PRESENT: 'Present',
+  PAST: 'Past',
+};
+
+export { TRIP_FILTERS, TRIP_SORTS, NO_EVENTS_MESSAGES, FilterType };

@@ -59,7 +59,7 @@ export default class ListPresenter {
       point,
       listElement: this.listView.element,
       tripEventsElement: this.#container,
-      model: this.#tripModel,
+      tripModel: this.#tripModel,
       newEventBtnPresenter: this.#newEventBtnPresenter,
       resetListView: this.resetListView,
       removeFromPointPresenters: this.removeFromPointPresenters,

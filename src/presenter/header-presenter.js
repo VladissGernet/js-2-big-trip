@@ -8,7 +8,7 @@ import { render } from '../framework/render.js';
 /** Конфиг принимаемый презентором
  * @typedef {Object} PresenterConfig
  * @property {HTMLDivElement} container - Контейнер для рендера
- * @property {Model} model - Данные модели для рендера страницы
+ * @property {Model} tripModel - Данные модели для рендера страницы
  */
 
 /** Презентер header страницы */
@@ -17,7 +17,8 @@ export default class HeaderPresenter {
   newEventBtnPresenter;
 
   #container;
-  #model;
+  #tripModel;
+  #filterModel;
   #pageHeader = new HeaderView();
   #tripMain = new TripMainView();
   #tripControls = new TripControlsView();
@@ -28,9 +29,10 @@ export default class HeaderPresenter {
   filterControls = null;
 
   /** @param {PresenterConfig} config */
-  constructor({ container, model }) {
+  constructor({ container, tripModel, filterModel }) {
     this.#container = container;
-    this.#model = model;
+    this.#tripModel = tripModel;
+    this.#filterModel = filterModel;
   }
 
   init() {
@@ -61,6 +63,7 @@ export default class HeaderPresenter {
     const filterPresenter = new FilterPresenter({
       container: this.#tripControls.filtersContainer,
       filters: TRIP_FILTERS,
+      filterModel: this.#filterModel,
     });
     filterPresenter.init();
     this.filterControls = filterPresenter.filterComponent.element;
@@ -68,7 +71,7 @@ export default class HeaderPresenter {
 
   #renderNewEventBtn() {
     this.newEventBtnPresenter = new NewEventBtnPresenter({
-      model: this.#model,
+      tripModel: this.#tripModel,
       filterControls: this.filterControls,
       containerElement: this.#tripMain.element,
     });

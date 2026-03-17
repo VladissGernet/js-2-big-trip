@@ -95,22 +95,28 @@ const createTypeList = (offers, iconType) => {
   `;
 };
 
-const isModelForTypes = (model, iconType) =>
-  model?.offersReadOnly ? createTypeList(model.offersReadOnly, iconType) : '';
+const isModelForTypes = (tripModel, iconType) =>
+  tripModel?.offersReadOnly
+    ? createTypeList(tripModel.offersReadOnly, iconType)
+    : '';
 
 const createDatalist = (cities) =>
   html` <datalist id="destination-list-1">
     ${cities.map((city) => `<option value="${city}"></option>`).join('')}
   </datalist>`;
 
-const createListPointFormTemplate = ({ pointData = {}, isEditForm, model }) => {
+const createListPointFormTemplate = ({
+  pointData = {},
+  isEditForm,
+  tripModel,
+}) => {
   const {
     listPoint = null,
     destinationData = null,
-    offerData = model.offersReadOnly[0].offers,
+    offerData = tripModel.offersReadOnly[0].offers,
   } = pointData;
 
-  const iconType = listPoint?.type || model?.offersReadOnly[0]?.type || '';
+  const iconType = listPoint?.type || tripModel?.offersReadOnly[0]?.type || '';
 
   return html`
     <li class="trip-events__item">
@@ -135,7 +141,7 @@ const createListPointFormTemplate = ({ pointData = {}, isEditForm, model }) => {
               id="event-type-toggle-1"
               type="checkbox"
             />
-            ${isModelForTypes(model, iconType)}
+            ${isModelForTypes(tripModel, iconType)}
           </div>
 
           <div class="event__field-group event__field-group--destination">
@@ -153,7 +159,7 @@ const createListPointFormTemplate = ({ pointData = {}, isEditForm, model }) => {
               value="${destinationData?.name || ''}"
               list="destination-list-1"
             />
-            ${createDatalist(model.cities)}
+            ${createDatalist(tripModel.cities)}
           </div>
 
           <div class="event__field-group event__field-group--time">

@@ -8,7 +8,7 @@ import { render, replace, remove } from '../framework/render.js';
 /** Конфигурация презентера путевой точки.
  * @typedef {Object} PointConfig
  * @property {PointData} point - Данные точки маршрута.
- * @property {TripModel} model - Модель данных поездки.
+ * @property {TripModel} tripModel - Модель данных поездки.
  * @property {HTMLUListElement} listElement - Элемент списка для вставки точки.
  */
 
@@ -37,7 +37,7 @@ const Mode = {
 
 export default class PointPresenter {
   #point;
-  #model;
+  #tripModel;
   #listElement;
   #tripEventsElement;
   #newEventBtnPresenter;
@@ -50,7 +50,7 @@ export default class PointPresenter {
   /** @param {PointConfig} config - Конфигурация презентера */
   constructor({
     point,
-    model,
+    tripModel,
     listElement,
     tripEventsElement,
     newEventBtnPresenter,
@@ -58,7 +58,7 @@ export default class PointPresenter {
     removeFromPointPresenters,
   }) {
     this.#point = point;
-    this.#model = model;
+    this.#tripModel = tripModel;
     this.#listElement = listElement;
     this.#tripEventsElement = tripEventsElement;
     this.#newEventBtnPresenter = newEventBtnPresenter;
@@ -92,12 +92,12 @@ export default class PointPresenter {
   }
 
   get #pointData() {
-    const destinationData = this.#model.destinationsById.get(
+    const destinationData = this.#tripModel.destinationsById.get(
       this.#point.destination,
     );
 
     const transformedOfferTypeData = PointPresenter.transformOfferTypeData({
-      offerTypeData: this.#model.offersByType.get(this.#point.type),
+      offerTypeData: this.#tripModel.offersByType.get(this.#point.type),
       currentPointOffers: this.#point.offers,
     });
 
@@ -125,7 +125,7 @@ export default class PointPresenter {
     this.#pointFormComponent = new ListPointFormView({
       pointData: this.#pointData,
       isEditForm: true,
-      model: this.#model,
+      tripModel: this.#tripModel,
       onRollupClick: this.#handleCloseRollupClick,
       onResetClick: this.#deleteClickHandler,
     });
@@ -187,14 +187,14 @@ export default class PointPresenter {
 
     // Удаление из данных модели.
     const selectedPointId = this.#point.id;
-    this.#model.removePoint(selectedPointId);
+    this.#tripModel.removePoint(selectedPointId);
 
     // Удаление из коллекции презентеров точек.
     this.#removeFromPointPresenters(this.#point.id);
 
     //Если список пустой, то возвращает сообщение о предложении создания
     // новой путевой точки.
-    if (this.#model.listPoints.length === 0) {
+    if (this.#tripModel.listPoints.length === 0) {
       this.#tripEventsElement.innerHTML =
         '<h2 class="visually-hidden">Trip events</h2>';
       render(new TripEventsEmptyView(), this.#tripEventsElement);
@@ -205,7 +205,7 @@ export default class PointPresenter {
   #favoriteClickHandler = () => {
     const selectedPointId = this.#point.id;
     // Обновляем данные.
-    this.#point = this.#model.updatePoint(selectedPointId, {
+    this.#point = this.#tripModel.updatePoint(selectedPointId, {
       isFavorite: !this.#point.isFavorite,
     });
 

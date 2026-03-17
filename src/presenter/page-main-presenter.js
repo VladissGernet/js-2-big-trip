@@ -12,12 +12,12 @@ import { TRIP_SORTS } from '../const.js';
 /** Конфигурация презентера списка.
  * @typedef {Object} PresenterConfig
  * @property {HTMLElement} container - Контейнер для рендера
- * @property {Model} model - Данные модели для рендера страницы
+ * @property {Model} tripModel - Данные модели для рендера страницы
  */
 
 /** Презентер основного содержимого страницы */
 export default class PageMainPresenter {
-  #model;
+  #tripModel;
   #container;
   #newEventBtnPresenter;
   #main = new PageMainView();
@@ -37,9 +37,9 @@ export default class PageMainPresenter {
   tripEventsEmpty = null;
 
   /** @param {PresenterConfig} */
-  constructor({ container, model, newEventBtnPresenter }) {
+  constructor({ container, tripModel, newEventBtnPresenter }) {
     this.#container = container;
-    this.#model = model;
+    this.#tripModel = tripModel;
     this.#newEventBtnPresenter = newEventBtnPresenter;
   }
 
@@ -56,7 +56,7 @@ export default class PageMainPresenter {
     render(this.tripEvents, this.#main.container);
 
     // Проверка на пустой список при первой отрисовке.
-    if (this.#model.listPoints.length !== 0) {
+    if (this.#tripModel.listPoints.length !== 0) {
       this.#renderEvents();
     } else {
       this.#renderEmptyMessage(headerFilterControls);
@@ -68,14 +68,14 @@ export default class PageMainPresenter {
     // его передачи презентеру сортириовки.
     this.listPresenter = new ListPresenter({
       container: this.tripEvents.element,
-      tripModel: this.#model,
+      tripModel: this.#tripModel,
       newEventBtnPresenter: this.#newEventBtnPresenter,
     });
 
     const sortPresenter = new SortPresenter({
       container: this.tripEvents.element,
       sorts: TRIP_SORTS,
-      model: this.#model,
+      tripModel: this.#tripModel,
       listPresenter: this.listPresenter,
     });
 
