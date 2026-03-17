@@ -12,7 +12,9 @@ import PointPresenter from './point-presenter.js';
 export default class ListPresenter {
   #newEventBtnPresenter;
   #container;
+
   #tripModel;
+  #filterModel;
 
   #pointPresenters = new Map();
 
@@ -20,10 +22,14 @@ export default class ListPresenter {
   listView = new ListView();
 
   /** @param {PresenterConfig} config - Конфигурация презентера */
-  constructor({ container, tripModel, newEventBtnPresenter }) {
+  constructor({ container, tripModel, newEventBtnPresenter, filterModel }) {
     this.#container = container;
     this.#tripModel = tripModel;
     this.#newEventBtnPresenter = newEventBtnPresenter;
+    this.#filterModel = filterModel;
+
+    // Передал модель в презентер маршрута
+    console.log(this.#filterModel);
   }
 
   init() {

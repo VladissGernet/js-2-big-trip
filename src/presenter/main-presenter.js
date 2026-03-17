@@ -9,6 +9,7 @@ import PageMainPresenter from './page-main-presenter.js';
 
 export default class MainPresenter {
   #pageBody;
+
   #tripModel;
   #filterModel;
 
@@ -34,6 +35,7 @@ export default class MainPresenter {
       tripModel: this.#tripModel,
       filterModel: this.#filterModel,
     });
+
     this.#headerPresenter.init();
   }
 
@@ -41,8 +43,10 @@ export default class MainPresenter {
     this.#pageMainPresenter = new PageMainPresenter({
       container: this.#pageBody,
       tripModel: this.#tripModel,
+      filterModel: this.#filterModel,
       newEventBtnPresenter: this.#headerPresenter.newEventBtnPresenter,
     });
+
     this.#pageMainPresenter.init(this.#headerPresenter.filterControls);
   }
 
