@@ -78,13 +78,17 @@ export default class TripModel {
     this.#points = newPoints;
   }
 
-  /** Обновляет данные избранного выбранной точки */
-  updatePointFavorite(pointId) {
+  /** Обновляет данные выбранной точки */
+  updatePoint(pointId, updatedData) {
     const index = this.listPoints.findIndex((item) => item.id === pointId);
-    if (index === -1) {
-      return;
+    if (index !== -1) {
+      let selectedPoint = this.listPoints[index];
+      selectedPoint = { ...this.listPoints[index], ...updatedData };
+      this.listPoints[index] = selectedPoint;
+
+      // Возвращаем выбранную точку.
+      return selectedPoint;
     }
-    this.listPoints[index].isFavorite = !this.listPoints[index].isFavorite;
   }
 
   removePoint(pointId) {

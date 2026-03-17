@@ -205,7 +205,9 @@ export default class PointPresenter {
   #favoriteClickHandler = () => {
     const selectedPointId = this.#point.id;
     // Обновляем данные.
-    this.#model.updatePointFavorite(selectedPointId);
+    this.#point = this.#model.updatePoint(selectedPointId, {
+      isFavorite: !this.#point.isFavorite,
+    });
 
     // Перерисовываем точку на странице.
     const prevPointComponent = this.#pointComponent;
