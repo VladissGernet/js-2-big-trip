@@ -1,5 +1,6 @@
 import { FilterView } from '../view/index.js';
 import { render } from '../framework/render.js';
+import { UpdateType } from '../const.js';
 
 /** Конфигурация презентера списка.
  * @typedef {Object} PresenterConfig
@@ -27,10 +28,6 @@ export default class FilterPresenter {
     this.#container = container;
     this.#filters = filters;
     this.#filterModel = filterModel;
-
-    // TODO
-    // Реализовал передачу модели в презентер.
-    console.log(filterModel);
   }
 
   init() {
@@ -38,7 +35,14 @@ export default class FilterPresenter {
   }
 
   #renderFilterComponent() {
-    this.filterComponent = new FilterView(this.#filters);
+    this.filterComponent = new FilterView(
+      this.#filters,
+      this.#filterChangeHandler,
+    );
     render(this.filterComponent, this.#container);
   }
+
+  #filterChangeHandler = (evt) => {
+    this.#filterModel.setFilter(UpdateType.MAJOR, evt.target.value);
+  };
 }

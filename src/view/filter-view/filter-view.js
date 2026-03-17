@@ -15,10 +15,15 @@ function createFilterTemplate(filters) {
 
 export default class FilterView extends AbstractView {
   #filters;
+  #handleFilterChange = null;
 
-  constructor(filters) {
+  constructor(filters, onFilterChange) {
     super();
     this.#filters = filters;
+    this.#handleFilterChange = onFilterChange;
+
+    // Добавляет обработчик на форму.
+    this.element.addEventListener('change', this.#handleFilterChange);
   }
 
   get template() {

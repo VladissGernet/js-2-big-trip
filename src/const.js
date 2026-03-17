@@ -24,10 +24,16 @@ const TRIP_SORTS = [
 ];
 
 const FilterType = {
-  EVERYTHING: 'Everything',
-  FUTURE: 'Future',
-  PRESENT: 'Present',
-  PAST: 'Past',
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past',
 };
 
-export { TRIP_FILTERS, TRIP_SORTS, NO_EVENTS_MESSAGES, FilterType };
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+export { TRIP_FILTERS, TRIP_SORTS, NO_EVENTS_MESSAGES, FilterType, UpdateType };
