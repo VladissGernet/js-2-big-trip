@@ -2,13 +2,7 @@ import Observable from '../framework/observable.js';
 import { FilterType } from '../const.js';
 
 export default class FilterModel extends Observable {
-  // TODO
-  // Реализовать полную перерисовку спаиска.
-
-  // #filter = FilterType.EVERYTHING;
-  // #filter = FilterType.PAST;
-  // #filter = FilterType.FUTURE;
-  #filter = FilterType.PRESENT;
+  #filter = FilterType.EVERYTHING;
 
   get filter() {
     return this.#filter;

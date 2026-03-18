@@ -34,6 +34,8 @@ export default class ListPresenter {
     this.#tripModel = tripModel;
     this.#filterModel = filterModel;
     this.#newEventBtnPresenter = newEventBtnPresenter;
+
+    this.#filterModel.addObserver(this.#handleModeEvent);
   }
 
   init() {
@@ -83,6 +85,12 @@ export default class ListPresenter {
     this.#pointPresenters.set(point.id, pointPresenter);
   }
 
+  #handleModeEvent = () => {
+    this.clearList();
+    this.init();
+  };
+
+  /** Возвращает отфильтрованный список согласно типу филтра. */
   static #filterList(filterType, points) {
     /** Сегодняшняя дата */
     const today = dayjs();
