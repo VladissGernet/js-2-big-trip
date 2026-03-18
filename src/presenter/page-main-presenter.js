@@ -7,8 +7,6 @@ import {
 import SortPresenter from '../presenter/sort-presenter.js';
 import ListPresenter from '../presenter/list-presenter.js';
 
-import { TRIP_SORTS } from '../const.js';
-
 /** Конфигурация презентера списка.
  * @typedef {Object} PresenterConfig
  * @property {HTMLElement} container - Контейнер для рендера
@@ -67,20 +65,19 @@ export default class PageMainPresenter {
   }
 
   #renderEvents() {
-    // Сперва необходимо создать презентер списка для его передачи
-    // презентеру сортириовки.
-    this.listPresenter = new ListPresenter({
+    const commonConfig = {
       container: this.tripEvents.element,
       tripModel: this.#tripModel,
       filterModel: this.#filterModel,
       newEventBtnPresenter: this.#newEventBtnPresenter,
-    });
+    };
+
+    // Сперва необходимо создать презентер списка для его передачи
+    // презентеру сортириовки.
+    this.listPresenter = new ListPresenter(commonConfig);
 
     const sortPresenter = new SortPresenter({
-      container: this.tripEvents.element,
-      sorts: TRIP_SORTS,
-      tripModel: this.#tripModel,
-      filterModel: this.#filterModel,
+      ...commonConfig,
       listPresenter: this.listPresenter,
     });
 

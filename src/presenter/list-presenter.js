@@ -92,6 +92,7 @@ export default class ListPresenter {
   }
 
   #handleModeEvent = () => {
+    this.#newEventBtnPresenter.closeForm();
     this.clearList();
     this.init();
   };

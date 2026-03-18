@@ -1,6 +1,7 @@
 import { html } from '../../utils/index.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 import createSortItemTemplate from './sort-item.js';
+import { TRIP_SORTS } from '../../const.js';
 
 function createSortTemplate(sorts) {
   const formItems = sorts.map(createSortItemTemplate);
@@ -13,13 +14,10 @@ function createSortTemplate(sorts) {
 }
 
 export default class SortView extends AbstractView {
-  #sorts;
-
   #handleChange = null;
 
-  constructor({ sorts, onChange }) {
+  constructor(onChange) {
     super();
-    this.#sorts = sorts;
     this.#handleChange = onChange;
 
     if (this.#handleChange !== null) {
@@ -28,7 +26,7 @@ export default class SortView extends AbstractView {
   }
 
   get template() {
-    return createSortTemplate(this.#sorts);
+    return createSortTemplate(TRIP_SORTS);
   }
 
   removeElement() {

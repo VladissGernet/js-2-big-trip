@@ -3,35 +3,28 @@ import { SortView } from '../view/index.js';
 import { SORT_CONFIG, SORT_TYPES } from '../const.js';
 import ListPresenter from './list-presenter.js';
 
-/** Конфигурация презентера Сортировки.
- * @typedef {Object} PresenterConfig
- * @property {HTMLElement} container - Контейнер для рендера
- * @property {SortsData} sorts - Данные отрисовки сортировки
- */
-
-/** Модель элемента сортировки для планировщика поездок.
- * @typedef {Object} SortsData
- * @property {string} name - Название сортировки ('Day', 'Event', 'Time').
- * @property {boolean} isChecked - Статус выбора сортировки (true/false).
- * @property {boolean} isDisabled - Статус активности сортировки (true/false).
- */
-
 /** Презентер сортировки. Отвечает за рендеринг компонента сортирвки списка событйи. */
 export default class SortPresenter {
   #container;
-  #sorts;
   #component;
   #tripModel;
   #filterModel;
   #listPresenter;
+  #newEventBtnPresenter;
 
   /** @param {PresenterConfig} */
-  constructor({ container, sorts, tripModel, filterModel, listPresenter }) {
+  constructor({
+    container,
+    tripModel,
+    filterModel,
+    listPresenter,
+    newEventBtnPresenter,
+  }) {
     this.#container = container;
-    this.#sorts = sorts;
     this.#tripModel = tripModel;
     this.#filterModel = filterModel;
     this.#listPresenter = listPresenter;
+    this.#newEventBtnPresenter = newEventBtnPresenter;
 
     this.#filterModel.addObserver(this.#handleModeEvent);
   }
@@ -41,10 +34,7 @@ export default class SortPresenter {
   }
 
   #renderSort() {
-    this.#component = new SortView({
-      sorts: this.#sorts,
-      onChange: this.#handleChange,
-    });
+    this.#component = new SortView(this.#handleChange);
 
     const currentSortValue = this.#component.element.querySelector(
       'input[type="radio"]:checked',
@@ -55,6 +45,8 @@ export default class SortPresenter {
   }
 
   #handleChange = (evt) => {
+    this.#newEventBtnPresenter.closeForm();
+
     this.#listPresenter.clearList();
     const filteredList = ListPresenter.filterList(
       this.#filterModel.filter,
