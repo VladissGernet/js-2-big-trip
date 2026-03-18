@@ -1,6 +1,6 @@
-import dayjs from 'dayjs';
 import { render } from '../framework/render.js';
 import { SortView } from '../view/index.js';
+import { SORT_CONFIG, SORT_TYPES } from '../const.js';
 
 /** Конфигурация презентера Сортировки.
  * @typedef {Object} PresenterConfig
@@ -14,26 +14,6 @@ import { SortView } from '../view/index.js';
  * @property {boolean} isChecked - Статус выбора сортировки (true/false).
  * @property {boolean} isDisabled - Статус активности сортировки (true/false).
  */
-
-const SORT_CONFIG = {
-  price: ({ basePrice: priceA }, { basePrice: priceB }) => priceB - priceA,
-  dateFrom: ({ dateFrom: dateA }, { dateFrom: dateB }) =>
-    dayjs(dateA).valueOf() - dayjs(dateB).valueOf(),
-  time: (
-    { dateFrom: dateFromA, dateTo: dateToA },
-    { dateFrom: dateFromB, dateTo: dateToB },
-  ) => {
-    const timeA = dayjs(dateToA).diff(dayjs(dateFromA));
-    const timeB = dayjs(dateToB).diff(dayjs(dateFromB));
-    return timeB - timeA;
-  },
-};
-
-const SORT_TYPES = {
-  'sort-day': 'dateFrom',
-  'sort-time': 'time',
-  'sort-price': 'price',
-};
 
 /** Презентер сортировки. Отвечает за рендеринг компонента сортирвки списка событйи. */
 export default class SortPresenter {

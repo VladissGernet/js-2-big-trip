@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 /** Состояние кнопок филтров по умолчанию */
 const TRIP_FILTERS = [
   { name: 'Everything', isChecked: true },
@@ -36,4 +38,31 @@ const UpdateType = {
   MAJOR: 'MAJOR',
 };
 
-export { TRIP_FILTERS, TRIP_SORTS, NO_EVENTS_MESSAGES, FilterType, UpdateType };
+const SORT_CONFIG = {
+  price: ({ basePrice: priceA }, { basePrice: priceB }) => priceB - priceA,
+  date: (a, b) => dayjs(a.dateTo).diff(dayjs(b.dateTo)),
+  time: (
+    { dateFrom: dateFromA, dateTo: dateToA },
+    { dateFrom: dateFromB, dateTo: dateToB },
+  ) => {
+    const timeA = dayjs(dateToA).diff(dayjs(dateFromA));
+    const timeB = dayjs(dateToB).diff(dayjs(dateFromB));
+    return timeB - timeA;
+  },
+};
+
+const SORT_TYPES = {
+  'sort-day': 'date',
+  'sort-time': 'time',
+  'sort-price': 'price',
+};
+
+export {
+  TRIP_FILTERS,
+  TRIP_SORTS,
+  NO_EVENTS_MESSAGES,
+  FilterType,
+  UpdateType,
+  SORT_CONFIG,
+  SORT_TYPES,
+};

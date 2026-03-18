@@ -1,6 +1,13 @@
 import { ListView } from '../view/index.js';
 import { render } from '../framework/render.js';
 import PointPresenter from './point-presenter.js';
+import { SORT_CONFIG, FilterType } from '../const.js';
+
+import dayjs from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
 
 /** Конфигурация презентера списка.
  * @typedef {Object} PresenterConfig
@@ -25,11 +32,8 @@ export default class ListPresenter {
   constructor({ container, tripModel, newEventBtnPresenter, filterModel }) {
     this.#container = container;
     this.#tripModel = tripModel;
-    this.#newEventBtnPresenter = newEventBtnPresenter;
     this.#filterModel = filterModel;
-
-    // Передал модель в презентер маршрута
-    console.log(this.#filterModel);
+    this.#newEventBtnPresenter = newEventBtnPresenter;
   }
 
   init() {
@@ -54,8 +58,13 @@ export default class ListPresenter {
   removeFromPointPresenters = (id) => this.#pointPresenters.delete(id);
 
   #renderList() {
+    /** Значение для выделения нужных дат */
+    const currentFilter = this.#filterModel.filter;
+
     // Добавляем путевые точки до рендера.
-    this.#tripModel.listPoints.forEach((point) => this.#createPoint(point));
+    ListPresenter.#filterList(currentFilter, this.#tripModel.listPoints)
+      .sort(SORT_CONFIG.date)
+      .forEach((point) => this.#createPoint(point));
 
     render(this.listView, this.#container);
   }
@@ -72,5 +81,28 @@ export default class ListPresenter {
     });
     pointPresenter.init();
     this.#pointPresenters.set(point.id, pointPresenter);
+  }
+
+  static #filterList(filterType, points) {
+    /** Сегодняшняя дата */
+    const today = dayjs();
+
+    switch (filterType) {
+      case FilterType.FUTURE:
+        return points.filter((point) => dayjs(point.dateFrom).isAfter(today));
+
+      case FilterType.PRESENT:
+        return points.filter(
+          (point) =>
+            dayjs(point.dateFrom).isSameOrBefore(today) &&
+            dayjs(point.dateTo).isSameOrAfter(today),
+        );
+
+      case FilterType.PAST:
+        return points.filter((point) => dayjs(point.dateTo).isBefore(today));
+
+      default:
+        return points;
+    }
   }
 }

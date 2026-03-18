@@ -4,8 +4,8 @@ const pointsMock = [
   {
     id: '7c5d33c6-41d1-4d46-9fbe-29fa1209c6a8',
     base_price: 4770,
-    date_from: '2025-10-28T06:36:05.526Z',
-    date_to: '2025-10-29T15:44:05.526Z',
+    date_from: '2026-02-28T06:36:05.526Z',
+    date_to: '2026-02-29T15:44:05.526Z',
     destination: '7d40a062-616b-41e0-93aa-b407eb20bb9e',
     is_favorite: false,
     offers: [
@@ -18,8 +18,8 @@ const pointsMock = [
   {
     id: 'd9f7cf77-9795-46b3-befe-2b4a1aa279ac',
     base_price: 6656,
-    date_from: '2025-10-30T11:15:05.526Z',
-    date_to: '2025-10-31T05:47:05.526Z',
+    date_from: '2026-02-30T11:15:05.526Z',
+    date_to: '2026-02-31T05:47:05.526Z',
     destination: '7d40a062-616b-41e0-93aa-b407eb20bb9e',
     is_favorite: false,
     offers: [
@@ -31,8 +31,8 @@ const pointsMock = [
   {
     id: '95984bfd-decd-4190-9740-16622df56376',
     base_price: 5698,
-    date_from: '2025-11-02T05:05:05.526Z',
-    date_to: '2025-11-03T19:56:05.526Z',
+    date_from: '2026-03-02T05:05:05.526Z',
+    date_to: '2026-03-03T19:56:05.526Z',
     destination: 'c3a12e39-c3e9-432b-b24b-035f424e6917',
     is_favorite: false,
     offers: [
@@ -44,8 +44,8 @@ const pointsMock = [
   {
     id: '4f1fc342-d6cf-42f4-865a-ebcab8f4fc93',
     base_price: 986,
-    date_from: '2025-11-05T20:14:05.526Z',
-    date_to: '2025-11-07T15:57:05.526Z',
+    date_from: '2026-03-05T20:14:05.526Z',
+    date_to: '2026-03-07T15:57:05.526Z',
     destination: '0f5ba760-1efc-4064-99ab-c5f614c3f53b',
     is_favorite: true,
     offers: [
@@ -60,8 +60,8 @@ const pointsMock = [
   {
     id: '8482e530-9d7a-45e6-9f23-16c07ab638f6',
     base_price: 9383,
-    date_from: '2025-11-09T01:50:05.526Z',
-    date_to: '2025-11-09T10:28:05.526Z',
+    date_from: '2026-03-09T01:50:05.526Z',
+    date_to: '2026-03-09T10:28:05.526Z',
     destination: 'dfe2761d-2772-4470-bee5-a06e2be265f8',
     is_favorite: true,
     offers: [],
@@ -70,8 +70,8 @@ const pointsMock = [
   {
     id: '15b7960f-e475-45db-81af-3c9ff3bc3aae',
     base_price: 9652,
-    date_from: '2025-11-09T20:00:05.526Z',
-    date_to: '2025-11-10T10:37:05.526Z',
+    date_from: '2026-03-09T20:00:05.526Z',
+    date_to: '2026-03-10T10:37:05.526Z',
     destination: 'a3b3e742-b820-4024-9e73-66ca5e4e0243',
     is_favorite: false,
     offers: [],
@@ -80,8 +80,8 @@ const pointsMock = [
   {
     id: '1991afb3-35dc-412e-bbdf-4af20e171000',
     base_price: 6650,
-    date_from: '2025-11-12T02:57:05.526Z',
-    date_to: '2025-11-12T13:25:05.526Z',
+    date_from: '2026-03-12T02:57:05.526Z',
+    date_to: '2026-03-12T13:25:05.526Z',
     destination: 'a02ffe9d-b18f-48da-a95b-20d3deae501b',
     is_favorite: true,
     offers: ['89f991cf-911b-449c-8f0d-e4b3151d1938'],
@@ -90,8 +90,8 @@ const pointsMock = [
   {
     id: '0fff1dd4-be5b-44cd-9ffb-8a722ec1fa10',
     base_price: 1601,
-    date_from: '2025-11-12T21:33:05.526Z',
-    date_to: '2025-11-13T12:25:05.526Z',
+    date_from: '2026-03-12T21:33:05.526Z',
+    date_to: '2026-03-13T12:25:05.526Z',
     destination: '0f5ba760-1efc-4064-99ab-c5f614c3f53b',
     is_favorite: true,
     offers: [
@@ -103,8 +103,8 @@ const pointsMock = [
   {
     id: 'b2adaa69-e24c-41ab-877d-86ea22ee2875',
     base_price: 6249,
-    date_from: '2025-11-15T00:34:05.526Z',
-    date_to: '2025-11-15T23:09:05.526Z',
+    date_from: '2026-03-15T00:34:05.526Z',
+    date_to: '2026-03-15T23:09:05.526Z',
     destination: '0f5ba760-1efc-4064-99ab-c5f614c3f53b',
     is_favorite: false,
     offers: [
@@ -117,8 +117,8 @@ const pointsMock = [
   {
     id: '0604a187-1cad-490b-a3ff-e6e8aeee5b36',
     base_price: 1486,
-    date_from: '2025-11-17T09:00:05.526Z',
-    date_to: '2025-11-17T20:05:05.526Z',
+    date_from: '2026-03-17T09:00:05.526Z',
+    date_to: '2026-03-18T20:05:05.526Z',
     destination: 'a3b3e742-b820-4024-9e73-66ca5e4e0243',
     is_favorite: false,
     offers: [
@@ -132,8 +132,8 @@ const pointsMock = [
   {
     id: 'e77989fa-7118-40b7-bd9a-05d0ab76ef25',
     base_price: 6500,
-    date_from: '2025-11-19T10:30:05.526Z',
-    date_to: '2025-11-19T23:24:05.526Z',
+    date_from: '2026-03-19T10:30:05.526Z',
+    date_to: '2026-03-19T23:24:05.526Z',
     destination: '80f27cde-fab6-4716-9cdc-81fe06808f13',
     is_favorite: true,
     offers: [],
@@ -142,8 +142,8 @@ const pointsMock = [
   {
     id: '3b83a32c-c395-4bee-9b57-6dc13b95d1e9',
     base_price: 7094,
-    date_from: '2025-11-21T23:10:05.526Z',
-    date_to: '2025-11-22T19:21:05.526Z',
+    date_from: '2026-03-21T23:10:05.526Z',
+    date_to: '2026-03-22T19:21:05.526Z',
     destination: '20e1d855-3f42-41a2-8148-4071fa267f2a',
     is_favorite: true,
     offers: [],
@@ -152,8 +152,8 @@ const pointsMock = [
   {
     id: '8a2b67fa-fa58-4396-95bf-8ca698df4871',
     base_price: 4070,
-    date_from: '2025-11-23T14:49:05.526Z',
-    date_to: '2025-11-24T20:00:05.526Z',
+    date_from: '2026-03-23T14:49:05.526Z',
+    date_to: '2026-03-24T20:00:05.526Z',
     destination: 'c3a12e39-c3e9-432b-b24b-035f424e6917',
     is_favorite: true,
     offers: [],
@@ -162,8 +162,8 @@ const pointsMock = [
   {
     id: '1a6352c5-3b0b-4bed-baec-1c3b706a6e67',
     base_price: 8235,
-    date_from: '2025-11-25T17:02:05.526Z',
-    date_to: '2025-11-26T23:44:05.526Z',
+    date_from: '2026-03-25T17:02:05.526Z',
+    date_to: '2026-03-26T23:44:05.526Z',
     destination: 'c3a12e39-c3e9-432b-b24b-035f424e6917',
     is_favorite: true,
     offers: [
@@ -177,8 +177,8 @@ const pointsMock = [
   {
     id: 'edaa46a9-a4ec-41cf-bbed-33a025a19119',
     base_price: 8703,
-    date_from: '2025-11-28T18:59:05.526Z',
-    date_to: '2025-11-29T23:15:05.526Z',
+    date_from: '2026-03-28T18:59:05.526Z',
+    date_to: '2026-03-29T23:15:05.526Z',
     destination: '7d40a062-616b-41e0-93aa-b407eb20bb9e',
     is_favorite: true,
     offers: [
@@ -190,8 +190,8 @@ const pointsMock = [
   {
     id: 'feff9a8f-aabf-40ef-991f-35fab05138b2',
     base_price: 5231,
-    date_from: '2025-12-01T11:13:05.526Z',
-    date_to: '2025-12-03T08:29:05.526Z',
+    date_from: '2026-04-01T11:13:05.526Z',
+    date_to: '2026-04-03T08:29:05.526Z',
     destination: '80f27cde-fab6-4716-9cdc-81fe06808f13',
     is_favorite: false,
     offers: ['40340ed8-9e75-498e-92be-c74fd3bb6b43'],
@@ -200,8 +200,8 @@ const pointsMock = [
   {
     id: '154bb4e9-fe9a-4b15-8ce0-b6dfd3f69a78',
     base_price: 8701,
-    date_from: '2025-12-03T22:12:05.526Z',
-    date_to: '2025-12-04T10:38:05.526Z',
+    date_from: '2026-04-03T22:12:05.526Z',
+    date_to: '2026-04-04T10:38:05.526Z',
     destination: '29ca7949-e01b-41bc-b9bf-5c4528b1423a',
     is_favorite: false,
     offers: ['265f3fe7-286f-4fdb-9866-51b023ecc332'],
@@ -210,8 +210,8 @@ const pointsMock = [
   {
     id: '6e5ed825-71c9-46c7-98aa-91e44762b261',
     base_price: 2136,
-    date_from: '2025-12-05T22:37:05.526Z',
-    date_to: '2025-12-07T09:43:05.526Z',
+    date_from: '2026-04-05T22:37:05.526Z',
+    date_to: '2026-04-07T09:43:05.526Z',
     destination: 'e01fb0a1-d976-4b52-993e-718ecf1659e5',
     is_favorite: true,
     offers: [
@@ -225,8 +225,8 @@ const pointsMock = [
   {
     id: '81a34241-f06a-42d6-85e5-e214c7a5d7c1',
     base_price: 9325,
-    date_from: '2025-12-08T11:46:05.526Z',
-    date_to: '2025-12-08T23:57:05.526Z',
+    date_from: '2026-04-08T11:46:05.526Z',
+    date_to: '2026-04-08T23:57:05.526Z',
     destination: 'dfe2761d-2772-4470-bee5-a06e2be265f8',
     is_favorite: false,
     offers: [
@@ -239,8 +239,8 @@ const pointsMock = [
   {
     id: 'adcd56e4-0742-4b1e-b02b-55f94673a496',
     base_price: 569,
-    date_from: '2025-12-10T10:04:05.526Z',
-    date_to: '2025-12-10T20:13:05.526Z',
+    date_from: '2026-04-10T10:04:05.526Z',
+    date_to: '2026-04-10T20:13:05.526Z',
     destination: 'dfe2761d-2772-4470-bee5-a06e2be265f8',
     is_favorite: false,
     offers: [
@@ -252,8 +252,8 @@ const pointsMock = [
   {
     id: 'fc581024-7436-495f-8067-c3867a0efcab',
     base_price: 8446,
-    date_from: '2025-12-12T21:12:05.526Z',
-    date_to: '2025-12-14T16:29:05.526Z',
+    date_from: '2026-04-12T21:12:05.526Z',
+    date_to: '2026-04-14T16:29:05.526Z',
     destination: 'dfe2761d-2772-4470-bee5-a06e2be265f8',
     is_favorite: false,
     offers: [],
@@ -262,8 +262,8 @@ const pointsMock = [
   {
     id: 'c5349c89-db67-43b0-945b-2c3488405d32',
     base_price: 1089,
-    date_from: '2025-12-15T02:58:05.526Z',
-    date_to: '2025-12-15T10:52:05.526Z',
+    date_from: '2026-04-15T02:58:05.526Z',
+    date_to: '2026-04-15T10:52:05.526Z',
     destination: '20e1d855-3f42-41a2-8148-4071fa267f2a',
     is_favorite: false,
     offers: [
@@ -275,8 +275,8 @@ const pointsMock = [
   {
     id: '4fd8900e-1037-475b-a0f7-66c5809333de',
     base_price: 569,
-    date_from: '2025-12-17T10:50:05.526Z',
-    date_to: '2025-12-18T00:29:05.526Z',
+    date_from: '2026-04-17T10:50:05.526Z',
+    date_to: '2026-04-18T00:29:05.526Z',
     destination: '80f27cde-fab6-4716-9cdc-81fe06808f13',
     is_favorite: false,
     offers: [],
@@ -285,8 +285,8 @@ const pointsMock = [
   {
     id: '609ade9c-c37c-4713-a050-1983c358a6f1',
     base_price: 1163,
-    date_from: '2025-12-19T16:05:05.526Z',
-    date_to: '2025-12-21T08:15:05.526Z',
+    date_from: '2026-04-19T16:05:05.526Z',
+    date_to: '2026-04-21T08:15:05.526Z',
     destination: '0f5ba760-1efc-4064-99ab-c5f614c3f53b',
     is_favorite: false,
     offers: [],
@@ -295,8 +295,8 @@ const pointsMock = [
   {
     id: '0f79386f-b2ca-4de2-92a6-bdb4d28d18f4',
     base_price: 4320,
-    date_from: '2025-12-23T06:56:05.526Z',
-    date_to: '2025-12-23T14:50:05.526Z',
+    date_from: '2026-04-23T06:56:05.526Z',
+    date_to: '2026-04-23T14:50:05.526Z',
     destination: '0f5ba760-1efc-4064-99ab-c5f614c3f53b',
     is_favorite: true,
     offers: [],
