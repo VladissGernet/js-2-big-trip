@@ -1,6 +1,7 @@
-import { render } from '../framework/render.js';
+import { render, replace } from '../framework/render.js';
 import { SortView } from '../view/index.js';
 import { SORT_CONFIG, SORT_TYPES } from '../const.js';
+import ListPresenter from './list-presenter.js';
 
 /** Конфигурация презентера Сортировки.
  * @typedef {Object} PresenterConfig
@@ -21,14 +22,18 @@ export default class SortPresenter {
   #sorts;
   #component;
   #tripModel;
+  #filterModel;
   #listPresenter;
 
   /** @param {PresenterConfig} */
-  constructor({ container, sorts, tripModel, listPresenter }) {
+  constructor({ container, sorts, tripModel, filterModel, listPresenter }) {
     this.#container = container;
     this.#sorts = sorts;
     this.#tripModel = tripModel;
+    this.#filterModel = filterModel;
     this.#listPresenter = listPresenter;
+
+    this.#filterModel.addObserver(this.#handleModeEvent);
   }
 
   init() {
@@ -51,7 +56,19 @@ export default class SortPresenter {
 
   #handleChange = (evt) => {
     this.#listPresenter.clearList();
-    this.#tripModel.listPoints.sort(SORT_CONFIG[SORT_TYPES[evt.target.value]]);
-    this.#listPresenter.init();
+    const filteredList = ListPresenter.filterList(
+      this.#filterModel.filter,
+      this.#tripModel.listPoints,
+    );
+    const sortedList = filteredList.sort(
+      SORT_CONFIG[SORT_TYPES[evt.target.value]],
+    );
+    this.#listPresenter.init(sortedList);
+  };
+
+  #handleModeEvent = () => {
+    const prevComponet = this.#component;
+    this.#renderSort();
+    replace(this.#component, prevComponet);
   };
 }

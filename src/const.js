@@ -18,10 +18,10 @@ const NO_EVENTS_MESSAGES = {
 
 /** Состояние кнопок сортировки по умолчанию */
 const TRIP_SORTS = [
-  { name: 'Day', isChecked: false, isDisabled: false },
+  { name: 'Day', isChecked: true, isDisabled: false },
   { name: 'Event', isChecked: false, isDisabled: true },
   { name: 'Time', isChecked: false, isDisabled: false },
-  { name: 'Price', isChecked: true, isDisabled: false },
+  { name: 'Price', isChecked: false, isDisabled: false },
   { name: 'Offers', isChecked: false, isDisabled: true },
 ];
 

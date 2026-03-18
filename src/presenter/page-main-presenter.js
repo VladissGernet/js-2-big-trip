@@ -67,8 +67,8 @@ export default class PageMainPresenter {
   }
 
   #renderEvents() {
-    // Сперва необходимо создать презентер списка для
-    // его передачи презентеру сортириовки.
+    // Сперва необходимо создать презентер списка для его передачи
+    // презентеру сортириовки.
     this.listPresenter = new ListPresenter({
       container: this.tripEvents.element,
       tripModel: this.#tripModel,

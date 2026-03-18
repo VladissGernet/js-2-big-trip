@@ -1,7 +1,7 @@
 import { ListView } from '../view/index.js';
 import { render } from '../framework/render.js';
 import PointPresenter from './point-presenter.js';
-import { SORT_CONFIG, FilterType } from '../const.js';
+import { FilterType, SORT_CONFIG } from '../const.js';
 
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
@@ -38,8 +38,8 @@ export default class ListPresenter {
     this.#filterModel.addObserver(this.#handleModeEvent);
   }
 
-  init() {
-    this.#renderList();
+  init(sortedList) {
+    this.#renderList(sortedList);
   }
 
   /** Полная очистка списка и коллекции презентеров. */
@@ -59,15 +59,21 @@ export default class ListPresenter {
   // Удаляет из списка
   removeFromPointPresenters = (id) => this.#pointPresenters.delete(id);
 
-  #renderList() {
-    /** Значение для выделения нужных дат */
-    const currentFilter = this.#filterModel.filter;
+  #renderList(sortedList = null) {
+    if (!sortedList) {
+      /** Значение для выделения нужных дат */
+      const currentFilter = this.#filterModel.filter;
 
-    // Добавляем путевые точки до рендера.
-    ListPresenter.#filterList(currentFilter, this.#tripModel.listPoints)
-      .sort(SORT_CONFIG.date)
-      .forEach((point) => this.#createPoint(point));
+      // Добавляем путевые точки до рендера.
+      ListPresenter.filterList(currentFilter, this.#tripModel.listPoints)
+        .sort(SORT_CONFIG['date'])
+        .forEach((point) => this.#createPoint(point));
 
+      render(this.listView, this.#container);
+      return;
+    }
+
+    sortedList.forEach((point) => this.#createPoint(point));
     render(this.listView, this.#container);
   }
 
@@ -91,7 +97,7 @@ export default class ListPresenter {
   };
 
   /** Возвращает отфильтрованный список согласно типу филтра. */
-  static #filterList(filterType, points) {
+  static filterList(filterType, points) {
     /** Сегодняшняя дата */
     const today = dayjs();
 
