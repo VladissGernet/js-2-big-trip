@@ -64,7 +64,7 @@ export default class HeaderPresenter {
     // TODO
     // Прокинуть данные из модели, которые должны обновляться
 
-    console.log(HeaderPresenter.#createTripInfoData(this.#tripModel));
+    // console.log(HeaderPresenter.#createTripInfoData(this.#tripModel));
 
     this.#tripInfo = new TripInfoView();
     render(this.#tripInfo, this.#tripMain.element);

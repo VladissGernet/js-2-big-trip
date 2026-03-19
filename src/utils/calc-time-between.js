@@ -12,15 +12,15 @@ const calcTimeBetween = (from, to) => {
 
   let result = `${durationBetween.format('mm')}M`;
 
-  if (durationBetween.hours() > 0) {
+  if (durationBetween.hours() >= 0) {
     result = `${durationBetween.format('HH')}H ${result}`;
   }
 
-  if (durationBetween.days() > 1) {
+  if (durationBetween.days() >= 1) {
     result = `${durationBetween.format('DD')}D ${result}`;
   }
 
-  if (durationBetween.years() > 1) {
+  if (durationBetween.years() >= 1) {
     result = `${durationBetween.format('YY')}Y ${result}`;
   }
 
