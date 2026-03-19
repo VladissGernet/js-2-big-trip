@@ -2,6 +2,7 @@ import { destinationsMock } from '../mock/destinations-mock.js';
 import { offersMock } from '../mock/offers-mock.js';
 import { pointsMock } from '../mock/points-mock.js';
 import { replaceSnakeToCamel } from '../utils/replace-snake-to-camel.js';
+import { SORT_CONFIG } from '../const.js';
 
 export default class TripModel {
   #points = null;
@@ -71,13 +72,6 @@ export default class TripModel {
     return this.#points;
   }
 
-  set listPoints(newPoints) {
-    if (!Array.isArray(newPoints)) {
-      throw new Error('listPoints must be an array');
-    }
-    this.#points = newPoints;
-  }
-
   /** Обновляет данные выбранной точки */
   updatePoint(pointId, updatedData) {
     const index = this.listPoints.findIndex((item) => item.id === pointId);
@@ -94,5 +88,14 @@ export default class TripModel {
   removePoint(pointId) {
     const index = this.listPoints.findIndex((item) => item.id === pointId);
     this.listPoints.splice(index, 1);
+  }
+
+  findPointByIndex(index) {
+    // Дефолтная сортировка по датам.
+    const sortedList = this.listPoints.toSorted(SORT_CONFIG['date']);
+
+    return this.destinationsReadOnly.find(
+      ({ id }) => id === sortedList[index].destination,
+    );
   }
 }

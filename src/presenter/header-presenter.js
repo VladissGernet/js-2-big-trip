@@ -1,8 +1,12 @@
-import { HeaderView, TripMainView, TripControlsView } from '../view/index.js';
+import {
+  HeaderView,
+  TripMainView,
+  TripControlsView,
+  TripInfoView,
+} from '../view/index.js';
 import NewEventBtnPresenter from './new-event-btn-presenter.js';
-
 import FilterPresenter from './filter-presenter.js';
-import { TRIP_FILTERS } from '../const.js';
+import { TRIP_FILTERS, TRIP_INFO_TITLE } from '../const.js';
 import { render } from '../framework/render.js';
 
 /** Конфиг принимаемый презентором
@@ -20,6 +24,7 @@ export default class HeaderPresenter {
   #tripModel;
   #filterModel;
   #pageHeader = new HeaderView();
+  #tripInfo = null;
   #tripMain = new TripMainView();
   #tripControls = new TripControlsView();
 
@@ -50,8 +55,19 @@ export default class HeaderPresenter {
 
   #renderTripMain() {
     render(this.#tripMain, this.#pageHeader.container);
+    this.#renderTripInfo();
     this.#renderTripControls();
     this.#renderNewEventBtn();
+  }
+
+  #renderTripInfo() {
+    // TODO
+    // Прокинуть данные из модели, которые должны обновляться
+
+    console.log(HeaderPresenter.#createTripInfoData(this.#tripModel));
+
+    this.#tripInfo = new TripInfoView();
+    render(this.#tripInfo, this.#tripMain.element);
   }
 
   #renderTripControls() {
@@ -76,5 +92,56 @@ export default class HeaderPresenter {
       containerElement: this.#tripMain.element,
     });
     this.newEventBtnPresenter.init();
+  }
+
+  static #createTripInfoData(tripModel) {
+    /* TODO
+
+        Исправить сортировку по времени
+
+        Добавить даты согласно ТЗ:
+
+          "Дата начала всего путешествия соответствует дате начала первой точки маршрута.
+          Дата окончания — дате завершения последней точки маршрута.
+          Например, «18 AUG — 6 OCT»."
+
+
+    */
+
+    const { MAX_VISIBLE_POINTS, PLACEHOLDER, TWO_POINTS } = TRIP_INFO_TITLE;
+
+    const tripInfoData = {
+      firstPoint: null,
+      middlePoint: null,
+      lastPoint: null,
+      totalPrice: 0,
+    };
+
+    tripInfoData.totalPrice = tripModel.listPoints.reduce(
+      (acc, { basePrice }) => acc + basePrice,
+      0,
+    );
+
+    tripInfoData.firstPoint = tripModel.findPointByIndex(0).name;
+
+    const listLength = tripModel.listPoints.length;
+
+    if (listLength > MAX_VISIBLE_POINTS) {
+      // Если точек больше 3-х.
+      tripInfoData.middlePoint = PLACEHOLDER;
+      tripInfoData.lastPoint = tripModel.findPointByIndex(listLength - 1).name;
+      return tripInfoData;
+    } else if (listLength === MAX_VISIBLE_POINTS) {
+      // Если 3 точки
+      tripInfoData.middlePoint = tripModel.findPointByIndex(1).name;
+      tripInfoData.lastPoint = tripModel.findPointByIndex(2).name;
+      return tripInfoData;
+    } else if (listLength === TWO_POINTS) {
+      // Если 2 точки
+      tripInfoData.lastPoint = tripModel.findPointByIndex(1).name;
+      return tripInfoData;
+    }
+
+    return tripInfoData;
   }
 }

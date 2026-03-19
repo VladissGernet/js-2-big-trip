@@ -57,6 +57,12 @@ const SORT_TYPES = {
   'sort-price': 'price',
 };
 
+const TRIP_INFO_TITLE = {
+  TWO_POINTS: 2,
+  MAX_VISIBLE_POINTS: 3, // сколько точек показывать явно
+  PLACEHOLDER: '...', // символ для «свернутой» части маршрута
+};
+
 export {
   TRIP_FILTERS,
   TRIP_SORTS,
@@ -65,4 +71,5 @@ export {
   UpdateType,
   SORT_CONFIG,
   SORT_TYPES,
+  TRIP_INFO_TITLE,
 };

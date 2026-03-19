@@ -10,3 +10,4 @@ export { default as TripControlsView } from './trip-controls-view/trip-controls-
 export { default as TripEventsEmptyView } from './trip-events-view/trip-events-empty-view-.js';
 export { default as TripEventsView } from './trip-events-view/trip-events-view.js';
 export { default as TripMainView } from './trip-main-view/trip-main-view.js';
+export { default as TripInfoView } from './trip-info-view/trip-info-view.js';

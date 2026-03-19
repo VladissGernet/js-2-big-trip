@@ -35,12 +35,6 @@ export default class SortPresenter {
 
   #renderSort() {
     this.#component = new SortView(this.#handleChange);
-
-    const currentSortValue = this.#component.element.querySelector(
-      'input[type="radio"]:checked',
-    ).value;
-    this.#tripModel.listPoints.sort(SORT_CONFIG[SORT_TYPES[currentSortValue]]);
-
     render(this.#component, this.#container);
   }
 

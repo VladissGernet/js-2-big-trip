@@ -4,7 +4,7 @@ function createTripMainTemplate() {
   return '<div class="trip-main"></div>';
 }
 
-export default class TripMain extends AbstractView {
+export default class TripMainView extends AbstractView {
   get template() {
     return createTripMainTemplate();
   }
