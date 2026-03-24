@@ -94,8 +94,8 @@ export default class TripModel {
     // Дефолтная сортировка по датам.
     const sortedList = this.listPoints.toSorted(SORT_CONFIG['date']);
 
-    return this.destinationsReadOnly.find(
-      ({ id }) => id === sortedList[index].destination,
+    return this.destinationsReadOnly?.find(
+      ({ id }) => id === sortedList[index]?.destination,
     );
   }
 }

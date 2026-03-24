@@ -33,10 +33,6 @@ function createPointTemplate({
   isFavorite,
   type,
 }) {
-  // Безопасные данные
-  const safeType = he.encode(type);
-  const safeBasePrice = he.encode(String(basePrice));
-
   // Оставляю тут, Prettier неверно отспупы ставит.
   const isFavoriteItem = isFavorite ? 'event__favorite-btn--active' : '';
 
@@ -53,11 +49,11 @@ function createPointTemplate({
             class="event__type-icon"
             width="42"
             height="42"
-            src="img/icons/${safeType}.png"
+            src="img/icons/${he.encode(type)}.png"
             alt="Event type icon"
           />
         </div>
-        <h3 class="event__title">${destinationData?.name || ''}</h3>
+        <h3 class="event__title">${he.encode(destinationData?.name) || ''}</h3>
         <div class="event__schedule">
           <p class="event__time">
             <time
@@ -75,7 +71,9 @@ function createPointTemplate({
           <p class="event__duration">${calcTimeBetween(dateFrom, dateTo)}</p>
         </div>
         <p class="event__price">
-          &euro;&nbsp;<span class="event__price-value">${safeBasePrice}</span>
+          &euro;&nbsp;<span class="event__price-value"
+            >${he.encode(String(basePrice))}</span
+          >
         </p>
         <h4 class="visually-hidden">Offers:</h4>
         <ul class="event__selected-offers">

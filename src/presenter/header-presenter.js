@@ -63,10 +63,14 @@ export default class HeaderPresenter {
   #renderTripInfo() {
     // TODO
     // Прокинуть данные из модели, которые должны обновляться
+    // Добавить даты согласно ТЗ:
 
-    // console.log(HeaderPresenter.#createTripInfoData(this.#tripModel));
+    // "Дата начала всего путешествия соответствует дате начала первой точки маршрута.
+    // Дата окончания — дате завершения последней точки маршрута.
+    // Например, «18 AUG — 6 OCT»."
 
-    this.#tripInfo = new TripInfoView();
+    const tripInfoData = HeaderPresenter.#createTripInfoData(this.#tripModel);
+    this.#tripInfo = new TripInfoView(tripInfoData);
     render(this.#tripInfo, this.#tripMain.element);
   }
 
@@ -95,25 +99,10 @@ export default class HeaderPresenter {
   }
 
   static #createTripInfoData(tripModel) {
-    /* TODO
-
-        Исправить сортировку по времени
-
-        Добавить даты согласно ТЗ:
-
-          "Дата начала всего путешествия соответствует дате начала первой точки маршрута.
-          Дата окончания — дате завершения последней точки маршрута.
-          Например, «18 AUG — 6 OCT»."
-
-
-    */
-
     const { MAX_VISIBLE_POINTS, PLACEHOLDER, TWO_POINTS } = TRIP_INFO_TITLE;
 
     const tripInfoData = {
-      firstPoint: null,
-      middlePoint: null,
-      lastPoint: null,
+      title: '',
       totalPrice: 0,
     };
 
@@ -122,23 +111,21 @@ export default class HeaderPresenter {
       0,
     );
 
-    tripInfoData.firstPoint = tripModel.findPointByIndex(0).name;
+    tripInfoData.title = tripModel.findPointByIndex(0)?.name;
 
     const listLength = tripModel.listPoints.length;
 
     if (listLength > MAX_VISIBLE_POINTS) {
       // Если точек больше 3-х.
-      tripInfoData.middlePoint = PLACEHOLDER;
-      tripInfoData.lastPoint = tripModel.findPointByIndex(listLength - 1).name;
+      tripInfoData.title += ` — ${PLACEHOLDER} — ${tripModel.findPointByIndex(listLength - 1).name}`;
       return tripInfoData;
     } else if (listLength === MAX_VISIBLE_POINTS) {
       // Если 3 точки
-      tripInfoData.middlePoint = tripModel.findPointByIndex(1).name;
-      tripInfoData.lastPoint = tripModel.findPointByIndex(2).name;
+      tripInfoData.title += ` — ${tripModel.findPointByIndex(1).name} — ${tripModel.findPointByIndex(2).name}`;
       return tripInfoData;
     } else if (listLength === TWO_POINTS) {
       // Если 2 точки
-      tripInfoData.lastPoint = tripModel.findPointByIndex(1).name;
+      tripInfoData.title += ` — ${tripModel.findPointByIndex(1).name}`;
       return tripInfoData;
     }
 
