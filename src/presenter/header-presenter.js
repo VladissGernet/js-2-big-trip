@@ -61,14 +61,6 @@ export default class HeaderPresenter {
   }
 
   #renderTripInfo() {
-    // TODO
-    // Прокинуть данные из модели, которые должны обновляться
-    // Добавить даты согласно ТЗ:
-
-    // "Дата начала всего путешествия соответствует дате начала первой точки маршрута.
-    // Дата окончания — дате завершения последней точки маршрута.
-    // Например, «18 AUG — 6 OCT»."
-
     const tripInfoData = HeaderPresenter.#createTripInfoData(this.#tripModel);
     this.#tripInfo = new TripInfoView(tripInfoData);
     render(this.#tripInfo, this.#tripMain.element);
@@ -105,16 +97,28 @@ export default class HeaderPresenter {
       title: '',
       totalPrice: 0,
     };
+    const listLength = tripModel.listPoints.length;
 
+    // TODO
+    // "Дата начала всего путешествия соответствует дате начала первой точки маршрута.
+    // Дата окончания — дате завершения последней точки маршрута.
+
+    // Также предусмотреть разность в годах
+
+    // Если даты в одном месяце одного года. Например, «18 — 20 AUG»."
+    // Если даты в разных месяцах одного года. Например, «18 AUG — 6 OCT»."
+    // Если даты в разных годах. Например, «18 AUG 2025 — 6 OCT 2026»."
+
+    console.log(tripModel.findPointByIndex(0));
+
+    // Общаяя цена.
     tripInfoData.totalPrice = tripModel.listPoints.reduce(
       (acc, { basePrice }) => acc + basePrice,
       0,
     );
 
+    // Формирование загаловка
     tripInfoData.title = tripModel.findPointByIndex(0)?.name;
-
-    const listLength = tripModel.listPoints.length;
-
     if (listLength > MAX_VISIBLE_POINTS) {
       // Если точек больше 3-х.
       tripInfoData.title += ` — ${PLACEHOLDER} — ${tripModel.findPointByIndex(listLength - 1).name}`;
