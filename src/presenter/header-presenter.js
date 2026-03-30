@@ -1,13 +1,8 @@
-import {
-  HeaderView,
-  TripMainView,
-  TripControlsView,
-  TripInfoView,
-} from '../view/index.js';
+import { HeaderView, TripMainView, TripControlsView } from '../view/index.js';
 import NewEventBtnPresenter from './new-event-btn-presenter.js';
 import FilterPresenter from './filter-presenter.js';
 import TripInfoPresenter from './trip-info-presenter.js';
-import { TRIP_FILTERS, TRIP_INFO_TITLE } from '../const.js';
+import { TRIP_FILTERS } from '../const.js';
 import { render } from '../framework/render.js';
 
 /** Конфиг принимаемый презентором
@@ -25,7 +20,6 @@ export default class HeaderPresenter {
   #tripModel;
   #filterModel;
   #pageHeader = new HeaderView();
-  #tripInfo = null;
   #tripMain = new TripMainView();
   #tripControls = new TripControlsView();
 
@@ -62,12 +56,8 @@ export default class HeaderPresenter {
   }
 
   #renderTripInfo() {
-    const tripInfoData = HeaderPresenter.#createTripInfoData(this.#tripModel);
-    this.#tripInfo = new TripInfoView(tripInfoData);
-
-    // TODO, создать новый презнтер
-    // new TripInfoPresenter();
-    render(this.#tripInfo, this.#tripMain.element);
+    const tripInfoPresenter = new TripInfoPresenter(this.#tripModel);
+    render(tripInfoPresenter.init(), this.#tripMain.element);
   }
 
   #renderTripControls() {
@@ -92,51 +82,5 @@ export default class HeaderPresenter {
       containerElement: this.#tripMain.element,
     });
     this.newEventBtnPresenter.init();
-  }
-
-  static #createTripInfoData(tripModel) {
-    const { MAX_VISIBLE_POINTS, PLACEHOLDER, TWO_POINTS } = TRIP_INFO_TITLE;
-
-    const tripInfoData = {
-      title: '',
-      totalPrice: 0,
-    };
-    const listLength = tripModel.listPoints.length;
-
-    // TODO
-    // "Дата начала всего путешествия соответствует дате начала первой точки маршрута.
-    // Дата окончания — дате завершения последней точки маршрута.
-
-    // Также предусмотреть разность в годах
-
-    // Если даты в одном месяце одного года. Например, «18 — 20 AUG»."
-    // Если даты в разных месяцах одного года. Например, «18 AUG — 6 OCT»."
-    // Если даты в разных годах. Например, «18 AUG 2025 — 6 OCT 2026»."
-
-    console.log(tripModel.findPointByIndex(0));
-
-    // Общаяя цена.
-    tripInfoData.totalPrice = tripModel.listPoints.reduce(
-      (acc, { basePrice }) => acc + basePrice,
-      0,
-    );
-
-    // Формирование загаловка
-    tripInfoData.title = tripModel.findPointByIndex(0)?.name;
-    if (listLength > MAX_VISIBLE_POINTS) {
-      // Если точек больше 3-х.
-      tripInfoData.title += ` — ${PLACEHOLDER} — ${tripModel.findPointByIndex(listLength - 1).name}`;
-      return tripInfoData;
-    } else if (listLength === MAX_VISIBLE_POINTS) {
-      // Если 3 точки
-      tripInfoData.title += ` — ${tripModel.findPointByIndex(1).name} — ${tripModel.findPointByIndex(2).name}`;
-      return tripInfoData;
-    } else if (listLength === TWO_POINTS) {
-      // Если 2 точки
-      tripInfoData.title += ` — ${tripModel.findPointByIndex(1).name}`;
-      return tripInfoData;
-    }
-
-    return tripInfoData;
   }
 }
