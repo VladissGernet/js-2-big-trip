@@ -90,7 +90,7 @@ export default class TripModel {
     this.listPoints.splice(index, 1);
   }
 
-  findPointByIndex(index) {
+  findDestinationByIndex(index) {
     // Дефолтная сортировка по датам.
     const sortedList = this.listPoints.toSorted(SORT_CONFIG['date']);
 
