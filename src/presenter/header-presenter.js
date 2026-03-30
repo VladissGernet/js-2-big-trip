@@ -6,6 +6,7 @@ import {
 } from '../view/index.js';
 import NewEventBtnPresenter from './new-event-btn-presenter.js';
 import FilterPresenter from './filter-presenter.js';
+import TripInfoPresenter from './trip-info-presenter.js';
 import { TRIP_FILTERS, TRIP_INFO_TITLE } from '../const.js';
 import { render } from '../framework/render.js';
 
@@ -63,6 +64,9 @@ export default class HeaderPresenter {
   #renderTripInfo() {
     const tripInfoData = HeaderPresenter.#createTripInfoData(this.#tripModel);
     this.#tripInfo = new TripInfoView(tripInfoData);
+
+    // TODO, создать новый презнтер
+    // new TripInfoPresenter();
     render(this.#tripInfo, this.#tripMain.element);
   }
 
