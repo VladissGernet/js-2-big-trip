@@ -1,5 +1,6 @@
 import { TripInfoView } from '../view/index.js';
 import { TRIP_INFO_TITLE } from '../const.js';
+import dayjs from 'dayjs';
 
 export default class TripInfoPresenter {
   #tripModel;
@@ -19,23 +20,34 @@ export default class TripInfoPresenter {
     const tripInfoData = {
       title: '',
       totalPrice: 0,
+      datesResult: '',
     };
     const listLength = tripModel.listPoints.length;
 
-    // TODO
-    // "Дата начала всего путешествия соответствует дате начала первой точки маршрута.
-    // Дата окончания — дате завершения последней точки маршрута.
-
-    // Также предусмотреть разность в годах
-
-    // Если даты в одном месяце одного года. Например, «18 — 20 AUG»."
-    // Если даты в разных месяцах одного года. Например, «18 AUG — 6 OCT»."
-    // Если даты в разных годах. Например, «18 AUG 2025 — 6 OCT 2026»."
+    // Формирование даты.
 
     // First Point
-    console.log(tripModel.findDestinationByIndex(0));
+    const firstPointDateFrom = dayjs(tripModel.listPoints[0].dateFrom);
     // Last Point
-    console.log(tripModel.findDestinationByIndex(listLength - 1));
+    const lastPointDateTo = dayjs(tripModel.listPoints[listLength - 1].dateTo);
+
+    const isSameYear = firstPointDateFrom.year() === lastPointDateTo.year();
+    const isSameMonth = firstPointDateFrom.month() === lastPointDateTo.month();
+    const isSameMonthDay = firstPointDateFrom.date() === lastPointDateTo.date();
+
+    if (isSameYear && isSameMonth && isSameMonthDay) {
+      // Если маршут умещается в один день.
+      tripInfoData.datesResult = lastPointDateTo.format('D MMM');
+    } else if (isSameYear && isSameMonth) {
+      // Если маршурт умещается в один месяц.
+      tripInfoData.datesResult = `${firstPointDateFrom.format('D')}&nbsp;—&nbsp;${lastPointDateTo.format('D MMM')}`;
+    } else if (isSameYear) {
+      // Если маршурт умещается в один год.
+      tripInfoData.datesResult = `${firstPointDateFrom.format('D MMM')}&nbsp;—&nbsp;${lastPointDateTo.format('D MMM')}`;
+    } else {
+      // Иначе полная дата
+      tripInfoData.datesResult = `${firstPointDateFrom.format('D MMM YYYY')}&nbsp;—&nbsp;${lastPointDateTo.format('D MMM YYYY')}`;
+    }
 
     // Общаяя цена.
     tripInfoData.totalPrice = tripModel.listPoints.reduce(

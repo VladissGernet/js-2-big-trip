@@ -56,8 +56,10 @@ export default class HeaderPresenter {
   }
 
   #renderTripInfo() {
-    const tripInfoPresenter = new TripInfoPresenter(this.#tripModel);
-    render(tripInfoPresenter.init(), this.#tripMain.element);
+    if (this.#tripModel.listPoints.length) {
+      const tripInfoPresenter = new TripInfoPresenter(this.#tripModel);
+      render(tripInfoPresenter.init(), this.#tripMain.element);
+    }
   }
 
   #renderTripControls() {
