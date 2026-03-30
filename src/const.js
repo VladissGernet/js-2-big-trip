@@ -32,12 +32,6 @@ const FilterType = {
   PAST: 'past',
 };
 
-const UpdateType = {
-  PATCH: 'PATCH',
-  MINOR: 'MINOR',
-  MAJOR: 'MAJOR',
-};
-
 const SORT_CONFIG = {
   price: ({ basePrice: priceA }, { basePrice: priceB }) => priceB - priceA,
   date: (a, b) => dayjs(a.dateTo).diff(dayjs(b.dateTo)),
@@ -68,7 +62,6 @@ export {
   TRIP_SORTS,
   NO_EVENTS_MESSAGES,
   FilterType,
-  UpdateType,
   SORT_CONFIG,
   SORT_TYPES,
   TRIP_INFO_TITLE,

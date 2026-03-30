@@ -1,6 +1,5 @@
 import { FilterView } from '../view/index.js';
 import { render } from '../framework/render.js';
-import { UpdateType } from '../const.js';
 
 /** Конфигурация презентера списка.
  * @typedef {Object} PresenterConfig
@@ -43,6 +42,6 @@ export default class FilterPresenter {
   }
 
   #filterChangeHandler = (evt) => {
-    this.#filterModel.setFilter(UpdateType.MAJOR, evt.target.value);
+    this.#filterModel.setFilter(evt.target.value);
   };
 }

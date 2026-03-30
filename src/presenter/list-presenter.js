@@ -65,11 +65,20 @@ export default class ListPresenter {
       const currentFilter = this.#filterModel.filter;
 
       // Добавляем путевые точки до рендера.
-      ListPresenter.filterList(currentFilter, this.#tripModel.listPoints)
-        .sort(SORT_CONFIG['date'])
-        .forEach((point) => this.#createPoint(point));
 
-      render(this.listView, this.#container);
+      const filteredList = ListPresenter.filterList(
+        currentFilter,
+        this.#tripModel.listPoints,
+      );
+
+      if (filteredList) {
+        filteredList
+          .sort(SORT_CONFIG['date'])
+          .forEach((point) => this.#createPoint(point));
+        render(this.listView, this.#container);
+      }
+      // TODO
+      // Добавить отрисовку пустого сообщения.
       return;
     }
 
