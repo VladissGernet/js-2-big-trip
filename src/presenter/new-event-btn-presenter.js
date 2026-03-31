@@ -16,14 +16,14 @@ import { render, RenderPosition, remove } from '../framework/render.js';
  * @property {HTMLElement} tripEvents - Компонент секции главной страницы.
  */
 export default class NewEventBtnPresenter {
-  #containerElement;
-  #tripEvents;
-  #tripEventsEmpty;
-  #listPresenter;
-  #filterControls;
-  #tripModel;
-  #newList;
-  #newWaypointForm;
+  #containerElement = null;
+  #tripEvents = null;
+  #tripEventsEmpty = null;
+  #listPresenter = null;
+  #filterControls = null;
+  #tripModel = null;
+  #newList = null;
+  #newWaypointForm = null;
   #newEventBtn = null;
 
   /** @param {PresenterConfig} config - Конфигурация презентера */

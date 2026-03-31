@@ -17,11 +17,11 @@ dayjs.extend(isSameOrAfter);
 
 /** Презентер списка. Отвечает за рендеринг компонента Списка. */
 export default class ListPresenter {
-  #newEventBtnPresenter;
-  #container;
+  #newEventBtnPresenter = null;
+  #container = null;
 
-  #tripModel;
-  #filterModel;
+  #tripModel = null;
+  #filterModel = null;
 
   #pointPresenters = new Map();
 
@@ -71,14 +71,11 @@ export default class ListPresenter {
         this.#tripModel.listPoints,
       );
 
-      if (filteredList) {
-        filteredList
-          .sort(SORT_CONFIG['date'])
-          .forEach((point) => this.#createPoint(point));
-        render(this.listView, this.#container);
-      }
-      // TODO
-      // Добавить отрисовку пустого сообщения.
+      filteredList
+        .sort(SORT_CONFIG['date'])
+        .forEach((point) => this.#createPoint(point));
+
+      render(this.listView, this.#container);
       return;
     }
 

@@ -13,15 +13,16 @@ import { render } from '../framework/render.js';
 
 /** Презентер header страницы */
 export default class HeaderPresenter {
-  /** Публичный доступ к презентеру кнопки создания новой точки для связывания со списком */
-  newEventBtnPresenter;
+  #container = null;
+  #tripModel = null;
+  #filterModel = null;
 
-  #container;
-  #tripModel;
-  #filterModel;
   #pageHeader = new HeaderView();
   #tripMain = new TripMainView();
   #tripControls = new TripControlsView();
+
+  /** Публичный доступ к презентеру кнопки создания новой точки для связывания со списком */
+  newEventBtnPresenter = null;
 
   /** Публичный доступ контролов фильтрации списка внутри main.
    *  @type {HTMLDivElement} Контейнер копок фильтров.

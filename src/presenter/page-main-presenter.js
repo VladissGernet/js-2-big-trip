@@ -15,15 +15,17 @@ import ListPresenter from '../presenter/list-presenter.js';
 
 /** Презентер основного содержимого страницы */
 export default class PageMainPresenter {
-  #tripModel;
-  #filterModel;
+  #tripModel = null;
+  #filterModel = null;
 
-  #container;
-  #newEventBtnPresenter;
+  #container = null;
+  #newEventBtnPresenter = null;
   #main = new PageMainView();
 
+  #sortPresenter = null;
+
   /** Публичный доступ к презентеру списка. */
-  listPresenter;
+  listPresenter = null;
 
   /** Секция с основынм списком событий.
    * @type {HTMLElement} - Элемент разметки section.
@@ -42,6 +44,8 @@ export default class PageMainPresenter {
     this.#tripModel = tripModel;
     this.#filterModel = filterModel;
     this.#newEventBtnPresenter = newEventBtnPresenter;
+
+    this.#filterModel.addObserver(this.#handleModeEvent);
   }
 
   init(headerFilterControls) {
@@ -76,12 +80,12 @@ export default class PageMainPresenter {
     // презентеру сортириовки.
     this.listPresenter = new ListPresenter(commonConfig);
 
-    const sortPresenter = new SortPresenter({
+    this.#sortPresenter = new SortPresenter({
       ...commonConfig,
       listPresenter: this.listPresenter,
     });
 
-    sortPresenter.init();
+    this.#sortPresenter.init();
     this.listPresenter.init();
   }
 
@@ -94,4 +98,12 @@ export default class PageMainPresenter {
     this.tripEventsEmpty = new TripEventsEmptyView(checkedFilter);
     render(this.tripEventsEmpty, this.tripEvents.element);
   }
+
+  #handleModeEvent = () => {
+    // TODO Продолжить работу
+    // Очистить sortPresenter и listPresenter
+    // Добавить соответствующее сообщение для рендера emptyMessage
+    // добавить отрисовку emptyMessage
+    console.log(this);
+  };
 }

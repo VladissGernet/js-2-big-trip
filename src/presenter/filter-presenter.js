@@ -15,8 +15,8 @@ import { render } from '../framework/render.js';
 
 /** Презентер фильтров. Отвечает за рендеринг компонента фильтров. */
 export default class FilterPresenter {
-  #container;
-  #filters;
+  #container = null;
+  #filters = null;
   #filterModel = null;
 
   /** Публичный доступ к комоненту фильтра */

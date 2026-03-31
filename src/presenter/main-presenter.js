@@ -8,13 +8,13 @@ import PageMainPresenter from './page-main-presenter.js';
  */
 
 export default class MainPresenter {
-  #pageBody;
+  #pageBody = null;
 
-  #tripModel;
-  #filterModel;
+  #tripModel = null;
+  #filterModel = null;
 
-  #headerPresenter;
-  #pageMainPresenter;
+  #headerPresenter = null;
+  #pageMainPresenter = null;
 
   /** @param {PresenterConfig} */
   constructor({ tripModel, pageBody, filterModel }) {
