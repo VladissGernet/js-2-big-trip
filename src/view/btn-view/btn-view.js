@@ -8,7 +8,7 @@ function createBtnTemplate(className) {
 }
 
 export default class BtnView extends AbstractView {
-  #className;
+  #className = null;
   #handleClick = null;
 
   constructor({ className, onClick }) {

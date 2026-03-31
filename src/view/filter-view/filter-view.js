@@ -14,7 +14,7 @@ function createFilterTemplate(filters) {
 }
 
 export default class FilterView extends AbstractView {
-  #filters;
+  #filters = null;
   #handleFilterChange = null;
 
   constructor(filters, onFilterChange) {

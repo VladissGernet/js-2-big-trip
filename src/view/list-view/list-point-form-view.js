@@ -7,10 +7,9 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 /** Создание формы добавления точки маршрута */
-
 export default class ListPointFormView extends AbstractStatefulView {
-  #isEditForm;
-  #tripModel;
+  #isEditForm = null;
+  #tripModel = null;
   #handleRollupClick = null;
   #handleResetClick = null;
 

@@ -3,14 +3,24 @@ import { SortView } from '../view/index.js';
 import { SORT_CONFIG, SORT_TYPES } from '../const.js';
 import ListPresenter from './list-presenter.js';
 
+/** Конфигурация презентера сортировки.
+ * @typedef {Object} PresenterConfig
+ * @property {HTMLElement} container - Контейнер для рендера
+ * @property {Model} tripModel - Данные модели для рендера страницы
+ * @property {Class} filterModel - Модель фильтра с наблюдателем.
+ * @property {Class} listPresenter - Презентер списка.
+ * @property {Class} newEventBtnPresenter - Презентер кнопки создания нового события.
+ */
+
 /** Презентер сортировки. Отвечает за рендеринг компонента сортирвки списка событйи. */
 export default class SortPresenter {
-  #container;
-  #component;
-  #tripModel;
-  #filterModel;
-  #listPresenter;
-  #newEventBtnPresenter;
+  #component = null;
+
+  #container = null;
+  #tripModel = null;
+  #filterModel = null;
+  #listPresenter = null;
+  #newEventBtnPresenter = null;
 
   /** @param {PresenterConfig} */
   constructor({

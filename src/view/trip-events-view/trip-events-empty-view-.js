@@ -9,7 +9,7 @@ function createTripEventsEmptyTemplate(value) {
 }
 
 export default class TripEventsEmptyView extends AbstractView {
-  #value;
+  #value = null;
 
   constructor(value) {
     super();

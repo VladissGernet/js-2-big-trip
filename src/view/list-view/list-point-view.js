@@ -101,9 +101,9 @@ function createPointTemplate({
 }
 
 export default class ListPointView extends AbstractView {
-  #listPoint;
-  #destinationData;
-  #listOffers;
+  #listPoint = null;
+  #destinationData = null;
+  #listOffers = null;
   #handleRollupCLick = null;
   #handleFavoriteClick = null;
 

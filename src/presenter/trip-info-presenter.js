@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 export default class TripInfoPresenter {
   #tripModel;
 
+  /** @param {TripModel} tripModel Модель данных поездки */
   constructor(tripModel) {
     this.#tripModel = tripModel;
   }

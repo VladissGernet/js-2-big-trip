@@ -15,6 +15,7 @@ import { render, RenderPosition, remove } from '../framework/render.js';
  * @property {Class} listPresenter - Презентер списка.
  * @property {HTMLElement} tripEvents - Компонент секции главной страницы.
  */
+
 export default class NewEventBtnPresenter {
   #containerElement = null;
   #tripEvents = null;
