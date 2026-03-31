@@ -1,20 +1,20 @@
 // Отключаю eslint, так как ниже моковые данные сервера.
 /* eslint-disable */
 const pointsMock = [
-  {
-    id: '7c5d33c6-41d1-4d46-9fbe-29fa1209c6a8',
-    base_price: 4770,
-    date_from: '2026-02-24T06:36:05.526Z',
-    date_to: '2026-02-25T15:44:05.526Z',
-    destination: '7d40a062-616b-41e0-93aa-b407eb20bb9e',
-    is_favorite: false,
-    offers: [
-      'cdb37899-eca1-4a16-920a-4ee49ca2519a',
-      '73d19a86-078e-4c66-879d-0f529b9af2bc',
-      '634d52c7-4df3-4b2a-acdb-cc98b8c29ce5',
-    ],
-    type: 'check-in',
-  },
+  // {
+  //   id: '7c5d33c6-41d1-4d46-9fbe-29fa1209c6a8',
+  //   base_price: 4770,
+  //   date_from: '2026-02-24T06:36:05.526Z',
+  //   date_to: '2026-02-25T15:44:05.526Z',
+  //   destination: '7d40a062-616b-41e0-93aa-b407eb20bb9e',
+  //   is_favorite: false,
+  //   offers: [
+  //     'cdb37899-eca1-4a16-920a-4ee49ca2519a',
+  //     '73d19a86-078e-4c66-879d-0f529b9af2bc',
+  //     '634d52c7-4df3-4b2a-acdb-cc98b8c29ce5',
+  //   ],
+  //   type: 'check-in',
+  // },
   // {
   //   id: 'd9f7cf77-9795-46b3-befe-2b4a1aa279ac',
   //   base_price: 6656,
@@ -177,8 +177,8 @@ const pointsMock = [
   // {
   //   id: 'edaa46a9-a4ec-41cf-bbed-33a025a19119',
   //   base_price: 8703,
-  //   date_from: '2026-03-28T18:59:05.526Z',
-  //   date_to: '2026-03-29T23:15:05.526Z',
+  //   date_from: '2026-03-31T02:59:05.526Z',
+  //   date_to: '2026-03-31T23:15:05.526Z',
   //   destination: '7d40a062-616b-41e0-93aa-b407eb20bb9e',
   //   is_favorite: true,
   //   offers: [

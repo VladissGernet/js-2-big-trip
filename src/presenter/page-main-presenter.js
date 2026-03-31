@@ -4,8 +4,9 @@ import {
   TripEventsEmptyView,
   TripEventsView,
 } from '../view/index.js';
-import SortPresenter from '../presenter/sort-presenter.js';
-import ListPresenter from '../presenter/list-presenter.js';
+import SortPresenter from './sort-presenter.js';
+import ListPresenter from './list-presenter.js';
+import FilterPresenter from './filter-presenter.js';
 
 /** Конфигурация презентера списка.
  * @typedef {Object} PresenterConfig
@@ -50,23 +51,23 @@ export default class PageMainPresenter {
     this.#filterModel.addObserver(this.#handleModeEvent);
   }
 
-  init(headerFilterControls) {
-    this.#renderMain(headerFilterControls);
+  init() {
+    this.#renderMain();
   }
 
-  #renderMain(headerFilterControls) {
+  #renderMain() {
     render(this.#main, this.#container);
-    this.#renderEventsSection(headerFilterControls);
+    this.#renderEventsSection();
   }
 
-  #renderEventsSection(headerFilterControls) {
+  #renderEventsSection() {
     render(this.tripEvents, this.#main.container);
 
     // Проверка на пустой список при первой отрисовке.
     if (this.#tripModel.listPoints.length !== 0) {
       this.#renderEvents();
     } else {
-      this.#renderEmptyMessage(headerFilterControls);
+      this.#renderEmptyMessage(this.#filterModel.filter);
     }
   }
 
@@ -91,21 +92,38 @@ export default class PageMainPresenter {
     this.listPresenter.init();
   }
 
-  #renderEmptyMessage(headerFilterControls) {
+  #renderEmptyMessage(filterStatus) {
     // Если список пустой, то возвращает сообщение о предложении создания
     // новой путевой точки.
-    const checkedFilter = headerFilterControls.querySelector(
-      'input[name="trip-filter"]:checked',
-    ).value;
-    this.tripEventsEmpty = new TripEventsEmptyView(checkedFilter);
+    this.tripEventsEmpty = new TripEventsEmptyView(filterStatus);
     render(this.tripEventsEmpty, this.tripEvents.element);
   }
 
   #handleModeEvent = () => {
-    // TODO Продолжить работу
+    const filterStauts = this.#filterModel.filter;
+
+    /** Список, с которым будет фильтрация. */
+    const points = this.#tripModel.listPoints;
+
+    const filteredPoints = FilterPresenter.filterList(filterStauts, points);
+
     // Очистить sortPresenter и listPresenter
-    // Добавить соответствующее сообщение для рендера emptyMessage
-    // добавить отрисовку emptyMessage
-    console.log(this);
+    this.#newEventBtnPresenter.closeForm();
+
+    if (points.length) {
+      this.listPresenter.clearList();
+      this.#sortPresenter.removeComponent();
+    }
+
+    if (filteredPoints.length) {
+      this.#sortPresenter.init();
+      this.listPresenter.init(filteredPoints);
+      return;
+    }
+
+    // Если filteredPoints будет пустой, то выводим сообщение о пустом списке.
+    this.#renderEmptyMessage(this.#filterModel.filter);
+    // TODO Исправить ошибку, когда нажимаешь поочередно на фильтры
+    // Еще renderEmptyMessage в new-event-btn-presenter пересмотреть
   };
 }

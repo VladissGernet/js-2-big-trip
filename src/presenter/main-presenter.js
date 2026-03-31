@@ -48,7 +48,7 @@ export default class MainPresenter {
       newEventBtnPresenter: this.#headerPresenter.newEventBtnPresenter,
     });
 
-    this.#pageMainPresenter.init(this.#headerPresenter.filterControls);
+    this.#pageMainPresenter.init();
   }
 
   /** Связывает компоненты PageMain с кнопкой создания новой точки маршурта в header. */

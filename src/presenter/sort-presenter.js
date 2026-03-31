@@ -1,7 +1,7 @@
-import { render, replace } from '../framework/render.js';
+import { render, replace, remove } from '../framework/render.js';
 import { SortView } from '../view/index.js';
 import { SORT_CONFIG, SORT_TYPES } from '../const.js';
-import ListPresenter from './list-presenter.js';
+import FilterPresenter from './filter-presenter.js';
 
 /** Конфигурация презентера сортировки.
  * @typedef {Object} PresenterConfig
@@ -43,6 +43,10 @@ export default class SortPresenter {
     this.#renderSort();
   }
 
+  removeComponent() {
+    remove(this.#component);
+  }
+
   #renderSort() {
     this.#component = new SortView(this.#handleChange);
     render(this.#component, this.#container);
@@ -52,7 +56,7 @@ export default class SortPresenter {
     this.#newEventBtnPresenter.closeForm();
 
     this.#listPresenter.clearList();
-    const filteredList = ListPresenter.filterList(
+    const filteredList = FilterPresenter.filterList(
       this.#filterModel.filter,
       this.#tripModel.listPoints,
     );

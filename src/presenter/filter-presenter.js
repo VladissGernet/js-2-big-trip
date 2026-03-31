@@ -1,5 +1,12 @@
 import { FilterView } from '../view/index.js';
 import { render } from '../framework/render.js';
+import { FilterType } from '../const.js';
+
+import dayjs from 'dayjs';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
 
 /** Конфигурация презентера списка.
  * @typedef {Object} PresenterConfig
@@ -45,4 +52,30 @@ export default class FilterPresenter {
   #filterChangeHandler = (evt) => {
     this.#filterModel.setFilter(evt.target.value);
   };
+
+  /** Возвращает отфильтрованный список согласно типу фильтра.
+   * Публичный для переиспользования.
+   */
+  static filterList(filterType, points) {
+    /** Сегодняшняя дата */
+    const today = dayjs();
+
+    switch (filterType) {
+      case FilterType.FUTURE:
+        return points.filter((point) => dayjs(point.dateFrom).isAfter(today));
+
+      case FilterType.PRESENT:
+        return points.filter(
+          (point) =>
+            dayjs(point.dateFrom).isSameOrBefore(today) &&
+            dayjs(point.dateTo).isSameOrAfter(today),
+        );
+
+      case FilterType.PAST:
+        return points.filter((point) => dayjs(point.dateTo).isBefore(today));
+
+      default:
+        return points;
+    }
+  }
 }

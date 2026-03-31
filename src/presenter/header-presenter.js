@@ -25,11 +25,6 @@ export default class HeaderPresenter {
   /** Публичный доступ к презентеру кнопки создания новой точки для связывания со списком */
   newEventBtnPresenter = null;
 
-  /** Публичный доступ контролов фильтрации списка внутри main.
-   *  @type {HTMLDivElement} Контейнер копок фильтров.
-   */
-  filterControls = null;
-
   /** @param {PresenterConfig} config */
   constructor({ container, tripModel, filterModel }) {
     this.#container = container;
@@ -76,13 +71,11 @@ export default class HeaderPresenter {
       filterModel: this.#filterModel,
     });
     filterPresenter.init();
-    this.filterControls = filterPresenter.filterComponent.element;
   }
 
   #renderNewEventBtn() {
     this.newEventBtnPresenter = new NewEventBtnPresenter({
       tripModel: this.#tripModel,
-      filterControls: this.filterControls,
       containerElement: this.#tripMain.element,
     });
     this.newEventBtnPresenter.init();

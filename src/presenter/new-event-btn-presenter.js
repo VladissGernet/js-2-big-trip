@@ -9,7 +9,6 @@ import { render, RenderPosition, remove } from '../framework/render.js';
 /** Конфиг презентера обработчика событйи на кнопку создания новго события.
  * @typedef {Object} PresenterConfig - Параметры для создания обработчика
  * @property {Object} tripModel - Модель данных поездки
- * @property {HTMLFormElement} filterControls - Элеменет контролов фильтра.
  * @property {HTMLDivElement} containerElement - Элемент для рендера кнопки.
  * @property {Object} tripEventsEmpty - Компонент сообщения об отсутсвии путевых точек.
  * @property {Class} listPresenter - Презентер списка.
@@ -21,7 +20,6 @@ export default class NewEventBtnPresenter {
   #tripEvents = null;
   #tripEventsEmpty = null;
   #listPresenter = null;
-  #filterControls = null;
   #tripModel = null;
   #newList = null;
   #newWaypointForm = null;
@@ -30,14 +28,12 @@ export default class NewEventBtnPresenter {
   /** @param {PresenterConfig} config - Конфигурация презентера */
   constructor({
     tripModel,
-    filterControls,
     containerElement,
     tripEventsEmpty,
     listPresenter,
     tripEvents,
   }) {
     this.#tripModel = tripModel;
-    this.#filterControls = filterControls;
     this.#containerElement = containerElement;
     this.#tripEventsEmpty = tripEventsEmpty;
     this.#listPresenter = listPresenter;
@@ -76,11 +72,8 @@ export default class NewEventBtnPresenter {
   }
 
   #renderEmptyMessage() {
-    const selectedFilter = this.#filterControls.querySelector(
-      'input[name="trip-filter"]:checked',
-    ).value;
     this.#newList = null;
-    this.#tripEventsEmpty = new TripEventsEmptyView(selectedFilter);
+    this.#tripEventsEmpty = new TripEventsEmptyView();
     render(this.#tripEventsEmpty, this.#tripEvents.element);
   }
 
