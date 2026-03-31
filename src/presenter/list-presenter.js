@@ -106,7 +106,7 @@ export default class ListPresenter {
     this.init();
   };
 
-  /** Возвращает отфильтрованный список согласно типу филтра. */
+  /** Возвращает отфильтрованный список согласно типу филтра. Публичный для переиспользования.*/
   static filterList(filterType, points) {
     /** Сегодняшняя дата */
     const today = dayjs();

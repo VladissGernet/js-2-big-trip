@@ -92,23 +92,6 @@ export default class PointPresenter {
     this.#pointFormComponent = null;
   }
 
-  get #pointData() {
-    const destinationData = this.#tripModel.destinationsById.get(
-      this.#point.destination,
-    );
-
-    const transformedOfferTypeData = PointPresenter.transformOfferTypeData({
-      offerTypeData: this.#tripModel.offersByType.get(this.#point.type),
-      currentPointOffers: this.#point.offers,
-    });
-
-    return {
-      listPoint: this.#point,
-      destinationData: destinationData,
-      offerData: transformedOfferTypeData,
-    };
-  }
-
   #renderPoint() {
     this.#createPointComponent();
     render(this.#pointComponent, this.#listElement);
@@ -116,7 +99,7 @@ export default class PointPresenter {
 
   #createPointComponent() {
     this.#pointComponent = new ListPointView({
-      ...this.#pointData,
+      ...PointPresenter.#createPointData(this.#tripModel, this.#point),
       onRollupClick: this.#openRollupClickHandler,
       onFavoriteClick: this.#favoriteClickHandler,
     });
@@ -124,7 +107,7 @@ export default class PointPresenter {
 
   #createFormComponent() {
     this.#pointFormComponent = new ListPointFormView({
-      pointData: this.#pointData,
+      pointData: PointPresenter.#createPointData(this.#tripModel, this.#point),
       isEditForm: true,
       tripModel: this.#tripModel,
       onRollupClick: this.#handleCloseRollupClick,
@@ -216,10 +199,25 @@ export default class PointPresenter {
     replace(this.#pointComponent, prevPointComponent);
   };
 
-  static transformOfferTypeData({ offerTypeData, currentPointOffers }) {
+  static #transformOfferTypeData({ offerTypeData, currentPointOffers }) {
     return Array.from(offerTypeData, ([id, data]) => ({
       ...data,
       isSelected: currentPointOffers.has(id),
     }));
+  }
+
+  static #createPointData(tripModel, point) {
+    const destinationData = tripModel.destinationsById.get(point.destination);
+
+    const transformedOfferTypeData = PointPresenter.#transformOfferTypeData({
+      offerTypeData: tripModel.offersByType.get(point.type),
+      currentPointOffers: point.offers,
+    });
+
+    return {
+      listPoint: point,
+      destinationData: destinationData,
+      offerData: transformedOfferTypeData,
+    };
   }
 }
