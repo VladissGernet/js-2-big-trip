@@ -3,8 +3,9 @@ import PageMainPresenter from './page-main-presenter.js';
 
 /** Конфигурация презентера.
  * @typedef {Object} PresenterConfig
- * @property {HTMLBodyElement} pageBody - Видимая часть страницы.
  * @property {Model} tripModel - Данные модели для рендера страницы
+ * @property {HTMLBodyElement} pageBody - Видимая часть страницы.
+ * @property {Class} filterModel - Модель фильтра с наблюдателем.
  */
 
 export default class MainPresenter {

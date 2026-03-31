@@ -9,6 +9,7 @@ import { render } from '../framework/render.js';
  * @typedef {Object} PresenterConfig
  * @property {HTMLDivElement} container - Контейнер для рендера
  * @property {Model} tripModel - Данные модели для рендера страницы
+ * @property {Class} filterModel - Модель фильтра с наблюдателем.
  */
 
 /** Презентер header страницы */

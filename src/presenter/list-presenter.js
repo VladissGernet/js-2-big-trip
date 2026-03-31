@@ -13,6 +13,8 @@ dayjs.extend(isSameOrAfter);
  * @typedef {Object} PresenterConfig
  * @property {HTMLElement} container - Контейнер для рендера
  * @property {TripModel} tripModel - Модель данных поездки
+ * @property {Class} newEventBtnPresenter - Презентер кнопки создания нового события.
+ * @property {Class} filterModel - Модель фильтра с наблюдателем.
  */
 
 /** Презентер списка. Отвечает за рендеринг компонента Списка. */
@@ -49,17 +51,18 @@ export default class ListPresenter {
     this.#pointPresenters.clear();
   }
 
-  // Перерисовывает список
+  /** Перерисовывает список */
   resetListView = () => {
     this.#pointPresenters.forEach((presenter) =>
       presenter.fullReplaceFormToPoint(),
     );
   };
 
-  // Удаляет из списка
+  /** Удаляет из списка */
   removeFromPointPresenters = (id) => this.#pointPresenters.delete(id);
 
   #renderList(sortedList = null) {
+    // Проверяет получение отсортированного списка, иначе берём данные из модели.
     if (!sortedList) {
       /** Значение для выделения нужных дат */
       const currentFilter = this.#filterModel.filter;

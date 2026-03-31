@@ -57,6 +57,11 @@ const TRIP_INFO_TITLE = {
   PLACEHOLDER: '...', // символ для «свернутой» части маршрута
 };
 
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING',
+};
+
 export {
   TRIP_FILTERS,
   TRIP_SORTS,
@@ -65,4 +70,5 @@ export {
   SORT_CONFIG,
   SORT_TYPES,
   TRIP_INFO_TITLE,
+  Mode,
 };

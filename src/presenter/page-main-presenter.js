@@ -11,6 +11,8 @@ import ListPresenter from '../presenter/list-presenter.js';
  * @typedef {Object} PresenterConfig
  * @property {HTMLElement} container - Контейнер для рендера
  * @property {Model} tripModel - Данные модели для рендера страницы
+ * @property {Class} newEventBtnPresenter - Презентер кнопки создания нового события.
+ * @property {Class} filterModel - Модель фильтра с наблюдателем.
  */
 
 /** Презентер основного содержимого страницы */

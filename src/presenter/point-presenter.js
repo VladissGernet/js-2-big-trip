@@ -4,12 +4,18 @@ import {
   TripEventsEmptyView,
 } from '../view/index.js';
 import { render, replace, remove } from '../framework/render.js';
+import { Mode } from '../const.js';
 
 /** Конфигурация презентера путевой точки.
  * @typedef {Object} PointConfig
  * @property {PointData} point - Данные точки маршрута.
  * @property {TripModel} tripModel - Модель данных поездки.
  * @property {HTMLUListElement} listElement - Элемент списка для вставки точки.
+ * @property {HTMLElement} tripEventsElement - Элемент с сортировкой и списком точек.
+ * @property {Class} newEventBtnPresenter - Презентер кнопки создания нового события.
+ * @property {function(): void} resetListView - Функция‑callback, сбрасывающая список
+ * @property {function(): void} removeFromPointPresenters - Функция‑callback, удаляющая
+ * из коллекции Map в listPresenter.
  */
 
 /** Модель точки маршрута (event point) для планировщика поездок.
@@ -30,19 +36,14 @@ import { render, replace, remove } from '../framework/render.js';
  * @property {Object<string, ListOffers>} offersByType - Предложения по типу
  */
 
-const Mode = {
-  DEFAULT: 'DEFAULT',
-  EDITING: 'EDITING',
-};
-
 export default class PointPresenter {
-  #point;
-  #tripModel;
-  #listElement;
-  #tripEventsElement;
-  #newEventBtnPresenter;
-  #resetListView;
-  #removeFromPointPresenters;
+  #point = null;
+  #tripModel = null;
+  #listElement = null;
+  #tripEventsElement = null;
+  #newEventBtnPresenter = null;
+  #resetListView = null;
+  #removeFromPointPresenters = null;
   #pointComponent = null;
   #pointFormComponent = null;
   #mode = Mode.DEFAULT;
@@ -71,7 +72,7 @@ export default class PointPresenter {
   }
 
   /**
-   * Закрывает форму через list-presenter (поэтому публичный метод), если она была открыта,
+   * Закрывает форму через listPresenter (поэтому публичный метод), если она была открыта,
    * чтобы на странице была только одна открытая форма.
    */
   fullReplaceFormToPoint() {

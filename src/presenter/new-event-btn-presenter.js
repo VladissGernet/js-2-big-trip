@@ -12,7 +12,7 @@ import { render, RenderPosition, remove } from '../framework/render.js';
  * @property {HTMLFormElement} filterControls - Элеменет контролов фильтра.
  * @property {HTMLDivElement} containerElement - Элемент для рендера кнопки.
  * @property {Object} tripEventsEmpty - Компонент сообщения об отсутсвии путевых точек.
- * @property {Object} listView - Компонент списка путевых точек.
+ * @property {Class} listPresenter - Презентер списка.
  * @property {HTMLElement} tripEvents - Компонент секции главной страницы.
  */
 export default class NewEventBtnPresenter {
@@ -31,9 +31,9 @@ export default class NewEventBtnPresenter {
     tripModel,
     filterControls,
     containerElement,
-    tripEventsEmpty = null,
-    listPresenter = null,
-    tripEvents = null,
+    tripEventsEmpty,
+    listPresenter,
+    tripEvents,
   }) {
     this.#tripModel = tripModel;
     this.#filterControls = filterControls;
@@ -44,6 +44,7 @@ export default class NewEventBtnPresenter {
   }
 
   init() {
+    // Добавляем обработчик клика на кнопку создания нового события в Header.
     this.#newEventBtn = new BtnView({
       className: 'trip-main__event-add-btn btn btn--big btn--yellow',
       onClick: this.#handleBtnClick,
@@ -93,6 +94,7 @@ export default class NewEventBtnPresenter {
       onResetClick: this.#handleResetBtn,
     });
 
+    // Отключаем возможность нажатия кнопки.
     this.#newEventBtn.element.disabled = true;
 
     if (this.#tripModel.listPoints.length === 0) {

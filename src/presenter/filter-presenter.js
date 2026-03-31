@@ -5,6 +5,7 @@ import { render } from '../framework/render.js';
  * @typedef {Object} PresenterConfig
  * @property {HTMLElement} container - Контейнер для рендера
  * @property {FilterData} filters - Данные отрисовки филтров
+ * @property {Class} filterModel - Модель фильтра с наблюдателем.
  */
 
 /** Модель элемента фильтра для планировщика поездок.
