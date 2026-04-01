@@ -26,18 +26,9 @@ export default class NewEventBtnPresenter {
   #newEventBtn = null;
 
   /** @param {PresenterConfig} config - Конфигурация презентера */
-  constructor({
-    tripModel,
-    containerElement,
-    tripEventsEmpty,
-    listPresenter,
-    tripEvents,
-  }) {
+  constructor({ tripModel, containerElement }) {
     this.#tripModel = tripModel;
     this.#containerElement = containerElement;
-    this.#tripEventsEmpty = tripEventsEmpty;
-    this.#listPresenter = listPresenter;
-    this.#tripEvents = tripEvents;
   }
 
   init() {
@@ -51,8 +42,8 @@ export default class NewEventBtnPresenter {
   }
 
   /** Подключает компоненты из main после его редера */
-  connectPageMainComponents({ tripEventsEmpty, listPresenter, tripEvents }) {
-    this.#tripEventsEmpty = tripEventsEmpty;
+  /** @param {PresenterConfig} config - Конфигурация презентера */
+  connectPageMainComponents({ listPresenter, tripEvents }) {
     this.#listPresenter = listPresenter;
     this.#tripEvents = tripEvents;
   }

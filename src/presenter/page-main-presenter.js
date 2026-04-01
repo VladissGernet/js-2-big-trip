@@ -26,6 +26,7 @@ export default class PageMainPresenter {
   #main = new PageMainView();
 
   #sortPresenter = null;
+  #tripEventsEmpty = null;
 
   /** Публичный доступ к презентеру списка. */
   listPresenter = null;
@@ -39,7 +40,6 @@ export default class PageMainPresenter {
   /** Публичный доступ к сообщению о пустоте списка
    * @type {HTMLParagraphElement} - Элемент текста разметки.
    */
-  tripEventsEmpty = null;
 
   /** @param {PresenterConfig} */
   constructor({ container, tripModel, newEventBtnPresenter, filterModel }) {
@@ -95,8 +95,8 @@ export default class PageMainPresenter {
   #renderEmptyMessage(filterStatus) {
     // Если список пустой, то возвращает сообщение о предложении создания
     // новой путевой точки.
-    this.tripEventsEmpty = new TripEventsEmptyView(filterStatus);
-    render(this.tripEventsEmpty, this.tripEvents.element);
+    this.#tripEventsEmpty = new TripEventsEmptyView(filterStatus);
+    render(this.#tripEventsEmpty, this.tripEvents.element);
   }
 
   #handleModeEvent = () => {
@@ -117,7 +117,8 @@ export default class PageMainPresenter {
     }
 
     // Очищаем элемент для нового рендера.
-    this.tripEvents.element.innerHTML = '';
+    this.tripEvents.element.innerHTML =
+      '<h2 class="visually-hidden">Trip events</h2>';
 
     // Если есть отфильтрованные точки.
     if (filteredPoints.length) {
