@@ -110,11 +110,16 @@ export default class PageMainPresenter {
     // Очистить sortPresenter и listPresenter
     this.#newEventBtnPresenter.closeForm();
 
+    // Если точки существуют.
     if (points.length) {
       this.listPresenter.clearList();
       this.#sortPresenter.removeComponent();
     }
 
+    // Очищаем элемент для нового рендера.
+    this.tripEvents.element.innerHTML = '';
+
+    // Если есть отфильтрованные точки.
     if (filteredPoints.length) {
       this.#sortPresenter.init();
       this.listPresenter.init(filteredPoints);
@@ -123,7 +128,5 @@ export default class PageMainPresenter {
 
     // Если filteredPoints будет пустой, то выводим сообщение о пустом списке.
     this.#renderEmptyMessage(this.#filterModel.filter);
-    // TODO Исправить ошибку, когда нажимаешь поочередно на фильтры
-    // Еще renderEmptyMessage в new-event-btn-presenter пересмотреть
   };
 }
