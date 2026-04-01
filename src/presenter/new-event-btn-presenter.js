@@ -29,6 +29,10 @@ export default class NewEventBtnPresenter {
   constructor({ tripModel, containerElement }) {
     this.#tripModel = tripModel;
     this.#containerElement = containerElement;
+
+    // TODO
+    // Прокинуть сюда filterPresenter для того, чтобы при создании нового событие было переключение на
+    // дефолтную кнопку 'everything'(т.е. перерисовку компонента можно сделать.)
   }
 
   init() {
