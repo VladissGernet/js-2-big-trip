@@ -1,5 +1,5 @@
 import { FilterView } from '../view/index.js';
-import { render } from '../framework/render.js';
+import { render, replace } from '../framework/render.js';
 import { FilterType } from '../const.js';
 
 import dayjs from 'dayjs';
@@ -27,8 +27,7 @@ export default class FilterPresenter {
   #filters = null;
   #filterModel = null;
 
-  /** Публичный доступ к комоненту фильтра */
-  filterComponent = null;
+  #filterComponent = null;
 
   /** @param {PresenterConfig} config */
   constructor({ container, filters, filterModel }) {
@@ -41,12 +40,21 @@ export default class FilterPresenter {
     this.#renderFilterComponent();
   }
 
-  #renderFilterComponent() {
-    this.filterComponent = new FilterView(
+  resetView() {
+    const prevComponent = this.#filterComponent;
+    this.#filterComponent = new FilterView(
       this.#filters,
       this.#filterChangeHandler,
     );
-    render(this.filterComponent, this.#container);
+    replace(this.#filterComponent, prevComponent);
+  }
+
+  #renderFilterComponent() {
+    this.#filterComponent = new FilterView(
+      this.#filters,
+      this.#filterChangeHandler,
+    );
+    render(this.#filterComponent, this.#container);
   }
 
   #filterChangeHandler = (evt) => {

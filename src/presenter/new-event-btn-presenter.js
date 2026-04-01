@@ -5,34 +5,42 @@ import {
   BtnView,
 } from '../view/index.js';
 import { render, RenderPosition, remove } from '../framework/render.js';
+import { FilterType } from '../const.js';
 
 /** Конфиг презентера обработчика событйи на кнопку создания новго события.
  * @typedef {Object} PresenterConfig - Параметры для создания обработчика
  * @property {Object} tripModel - Модель данных поездки
+ * @property {Class} filterModel - Модель фильтра с наблюдателем.
  * @property {HTMLDivElement} containerElement - Элемент для рендера кнопки.
  * @property {Object} tripEventsEmpty - Компонент сообщения об отсутсвии путевых точек.
  * @property {Class} listPresenter - Презентер списка.
+ * @property {Class} filterPresenter - Презентер фильтра списка.
  * @property {HTMLElement} tripEvents - Компонент секции главной страницы.
  */
 
 export default class NewEventBtnPresenter {
+  #tripModel = null;
+  #filterModel = null;
+
   #containerElement = null;
+
   #tripEvents = null;
   #tripEventsEmpty = null;
+
   #listPresenter = null;
-  #tripModel = null;
+  #filterPresenter = null;
+
   #newList = null;
   #newWaypointForm = null;
   #newEventBtn = null;
 
   /** @param {PresenterConfig} config - Конфигурация презентера */
-  constructor({ tripModel, containerElement }) {
+  constructor({ tripModel, filterModel, containerElement, filterPresenter }) {
     this.#tripModel = tripModel;
-    this.#containerElement = containerElement;
+    this.#filterModel = filterModel;
 
-    // TODO
-    // Прокинуть сюда filterPresenter для того, чтобы при создании нового событие было переключение на
-    // дефолтную кнопку 'everything'(т.е. перерисовку компонента можно сделать.)
+    this.#containerElement = containerElement;
+    this.#filterPresenter = filterPresenter;
   }
 
   init() {
@@ -75,6 +83,12 @@ export default class NewEventBtnPresenter {
   }
 
   #handleBtnClick = () => {
+    // Сбрасываем значение в модели.
+    this.#filterModel.setFilter(FilterType.EVERYTHING);
+
+    // Сбрасываем фильтр.
+    this.#filterPresenter.resetView();
+
     if (this.#listPresenter) {
       this.#listPresenter.resetListView();
     }

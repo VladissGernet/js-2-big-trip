@@ -22,6 +22,8 @@ export default class HeaderPresenter {
   #tripMain = new TripMainView();
   #tripControls = new TripControlsView();
 
+  #filterPresenter = null;
+
   /** Публичный доступ к презентеру кнопки создания новой точки для связывания со списком */
   newEventBtnPresenter = null;
 
@@ -65,18 +67,20 @@ export default class HeaderPresenter {
   }
 
   #renderFilters() {
-    const filterPresenter = new FilterPresenter({
+    this.#filterPresenter = new FilterPresenter({
       container: this.#tripControls.filtersContainer,
       filters: TRIP_FILTERS,
       filterModel: this.#filterModel,
     });
-    filterPresenter.init();
+    this.#filterPresenter.init();
   }
 
   #renderNewEventBtn() {
     this.newEventBtnPresenter = new NewEventBtnPresenter({
       tripModel: this.#tripModel,
+      filterModel: this.#filterModel,
       containerElement: this.#tripMain.element,
+      filterPresenter: this.#filterPresenter,
     });
     this.newEventBtnPresenter.init();
   }
