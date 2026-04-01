@@ -42,7 +42,9 @@ export default class NewEventBtnPresenter {
   }
 
   /** Подключает компоненты из main после его редера */
-  /** @param {PresenterConfig} config - Конфигурация презентера */
+  /** @param {PresenterConfig} config - Конфигурация презентера
+   * @description Подключает компоненты из main после его редера
+   */
   connectPageMainComponents({ listPresenter, tripEvents }) {
     this.#listPresenter = listPresenter;
     this.#tripEvents = tripEvents;
