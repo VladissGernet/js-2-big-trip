@@ -178,27 +178,29 @@ export default class PointPresenter {
     //    this.#tripModel.updatePoint(pointId, updatedData)
 
     // Поулчает все данные из формы.
-    // const data = Object.fromEntries(formData.entries());
-    // console.log(data);
+    const data = Object.fromEntries(formData.entries());
+    console.log(data);
 
-    // !!! Привязать к разметке это дело.
+    // 1.1. Получаем стоимость.
+    const price = formData.get('event-price');
+    console.log('pointsMock.base_price:', price);
+
+    // 1.2. Преобразовывает название пункта назначения в соответсвующий ему id.
     const formHeader =
       this.#pointFormComponent.element.querySelector('.event__header');
     const destinationId = formHeader.querySelector('#event-destination-1')
       .dataset.destinationId;
-
-    // 1.1. Преобразовывает название пункта назначения в соответсвующий ему id.
     console.log('pointsMock.destination:', destinationId);
-
-    // 1.2. Получаем стоимость.
-    const price = formData.get('event-price');
-    console.log('pointsMock.base_price:', price);
 
     // 1.3. Получаем дату from.
     // TODO. Надо как-то преобразовать дату в тип 2026-02-24T06:36:05.526Z
 
     // Получает массив offers, которые также нужно преобразовать в id.
     // console.log(formData.getAll('event-offers'));
+
+    // 1.* Получаем тип
+    const type = formData.get('event-type');
+    console.log('pointsMock.type:', type);
   };
 
   /** Удаление текущей Point из списка. */
