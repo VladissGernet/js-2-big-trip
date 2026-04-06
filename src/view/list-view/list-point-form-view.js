@@ -10,8 +10,10 @@ import 'flatpickr/dist/flatpickr.min.css';
 export default class ListPointFormView extends AbstractStatefulView {
   #isEditForm = null;
   #tripModel = null;
+
   #handleRollupClick = null;
   #handleResetClick = null;
+  #handleSubmitForm = null;
 
   #inputDateFrom = null;
   #inputDateTo = null;
@@ -22,12 +24,14 @@ export default class ListPointFormView extends AbstractStatefulView {
     tripModel,
     onRollupClick,
     onResetClick,
+    onFormSubmit,
   }) {
     super();
     this.#isEditForm = isEditForm;
     this.#tripModel = tripModel;
     this.#handleRollupClick = onRollupClick;
     this.#handleResetClick = onResetClick;
+    this.#handleSubmitForm = onFormSubmit;
 
     // При создании нового события добавляем по дефолту.
     if (!pointData) {
@@ -88,7 +92,7 @@ export default class ListPointFormView extends AbstractStatefulView {
 
     this.element
       .querySelector('.event.event--edit')
-      .addEventListener('submit', this.#saveFormHandler);
+      .addEventListener('submit', this.#submitFormHandler);
 
     if (this._state.offerData.length) {
       this.element
@@ -118,7 +122,7 @@ export default class ListPointFormView extends AbstractStatefulView {
 
     this.element
       .querySelector('.event.event--edit')
-      .removeEventListener('submit', this.#saveFormHandler);
+      .removeEventListener('submit', this.#submitFormHandler);
 
     if (this._state.offerData.length) {
       this.element
@@ -181,9 +185,9 @@ export default class ListPointFormView extends AbstractStatefulView {
     this.#handleResetClick();
   };
 
-  #saveFormHandler = (evt) => {
+  #submitFormHandler = (evt) => {
     evt.preventDefault();
-    console.log(this._state);
+    this.#handleSubmitForm(evt);
   };
 
   #changeTypeHandler = (evt) => {
@@ -241,6 +245,29 @@ export default class ListPointFormView extends AbstractStatefulView {
       [time24hr]: true, // 24-часовой формат (16:00 вместо 4:00 PM)
       formatDate: (date) => dayjs(date).format('DD/MM/YY HH:mm'),
       ...dateLimit,
+
+      // Для исправления отсутсвия id на элементах ввода от flatpickr.
+      // Chrome DevTools Lighthouse оставляет предупреждения.
+      onReady(_, __, instance) {
+        const monthSelect = instance.calendarContainer.querySelector(
+          '.flatpickr-monthDropdown-months',
+        );
+        monthSelect.id = `flatpickr-month-${element.id}`;
+
+        const yearInput =
+          instance.calendarContainer.querySelector('.numInput.cur-year');
+        yearInput.id = `flatpickr-year-${element.id}`;
+
+        const hourInput = instance.calendarContainer.querySelector(
+          '.numInput.flatpickr-hour',
+        );
+        hourInput.id = `flatpickr-hour-${element.id}`;
+
+        const minuteInput = instance.calendarContainer.querySelector(
+          '.numInput.flatpickr-minute',
+        );
+        minuteInput.id = `flatpickr-minute-${element.id}`;
+      },
     });
   }
 

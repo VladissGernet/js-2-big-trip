@@ -111,7 +111,8 @@ export default class PointPresenter {
       isEditForm: true,
       tripModel: this.#tripModel,
       onRollupClick: this.#handleCloseRollupClick,
-      onResetClick: this.#deleteClickHandler,
+      onResetClick: this.#handleDeleteClick,
+      onFormSubmit: this.#handleFormSubmit,
     });
   }
 
@@ -165,8 +166,20 @@ export default class PointPresenter {
     }
   };
 
+  /** Добавление\сохранение данных формы. */
+  #handleFormSubmit = (evt) => {
+    const formData = new FormData(evt.target);
+    const data = Object.fromEntries(formData.entries());
+
+    // TODO, Исправить получение данных offers
+    // https://www.perplexity.ai/search/javascript-mvp-spa-u-menia-est-uJtX2eeAQHiJ5gS49zggSQ
+
+    console.log(data);
+    console.log(formData.getAll('event-offers'));
+  };
+
   /** Удаление текущей Point из списка. */
-  #deleteClickHandler = () => {
+  #handleDeleteClick = () => {
     this.clear();
 
     // Удаление из данных модели.

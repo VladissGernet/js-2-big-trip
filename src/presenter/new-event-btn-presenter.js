@@ -97,6 +97,7 @@ export default class NewEventBtnPresenter {
       isEditForm: false,
       tripModel: this.#tripModel,
       onResetClick: this.#handleResetBtn,
+      onFormSubmit: this.#handleFormSubmit,
     });
 
     // Отключаем возможность нажатия кнопки.
@@ -132,5 +133,14 @@ export default class NewEventBtnPresenter {
 
   #handleResetBtn = () => {
     this.closeForm();
+  };
+
+  /** Добавление\сохранение данных формы. */
+  #handleFormSubmit = (evt) => {
+    const formData = new FormData(evt.target);
+    const data = Object.fromEntries(formData.entries());
+
+    // TODO, Исправить получение данных offers
+    console.log(data);
   };
 }

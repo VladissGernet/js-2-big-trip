@@ -1,20 +1,24 @@
 import { html } from '../../utils/index.js';
 
-const createOfferTemplate = ({ title, price, isSelected }) =>
-  html`<div class="event__offer-selector">
+const createOfferTemplate = ({ title, price, isSelected }) => {
+  const id = title.toLowerCase() + price;
+
+  return html`<div class="event__offer-selector">
     <input
       class="event__offer-checkbox visually-hidden"
-      id="${title}"
+      id="${id}"
       type="checkbox"
-      name="event-offer-luggage"
+      name="event-offers"
+      value="${title.toLowerCase()}"
       ${isSelected ? 'checked' : ''}
     />
-    <label class="event__offer-label" for="${title}">
+    <label class="event__offer-label" for="${id}">
       <span class="event__offer-title">${title}</span>
       &plus;&euro;&nbsp;
       <span class="event__offer-price">${price}</span>
     </label>
   </div>`;
+};
 
 const createOffersTemplate = (offers) => {
   if (!offers?.length) {
