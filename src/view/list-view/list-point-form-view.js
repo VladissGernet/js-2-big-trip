@@ -216,6 +216,7 @@ export default class ListPointFormView extends AbstractStatefulView {
       return;
     }
 
+    // Обновляем данные.
     this.updateElement({
       destinationData: newDestinationCityData,
     });

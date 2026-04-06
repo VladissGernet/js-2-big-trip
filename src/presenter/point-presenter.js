@@ -169,13 +169,36 @@ export default class PointPresenter {
   /** Добавление\сохранение данных формы. */
   #handleFormSubmit = (evt) => {
     const formData = new FormData(evt.target);
-    const data = Object.fromEntries(formData.entries());
 
-    // TODO, Исправить получение данных offers
-    // https://www.perplexity.ai/search/javascript-mvp-spa-u-menia-est-uJtX2eeAQHiJ5gS49zggSQ
+    // TODO
+    // 1. накидать список поулчаемых данных.
+    // 2. Преобразовать обратно данные в соответсвии с mock.
+    // 3. Реализовать функцию обновления данных в моделе tripModel.
+    //    Возможно имеющийся публичный метод подойдет:
+    //    this.#tripModel.updatePoint(pointId, updatedData)
 
-    console.log(data);
-    console.log(formData.getAll('event-offers'));
+    // Поулчает все данные из формы.
+    // const data = Object.fromEntries(formData.entries());
+    // console.log(data);
+
+    // !!! Привязать к разметке это дело.
+    const formHeader =
+      this.#pointFormComponent.element.querySelector('.event__header');
+    const destinationId = formHeader.querySelector('#event-destination-1')
+      .dataset.destinationId;
+
+    // 1.1. Преобразовывает название пункта назначения в соответсвующий ему id.
+    console.log('pointsMock.destination:', destinationId);
+
+    // 1.2. Получаем стоимость.
+    const price = formData.get('event-price');
+    console.log('pointsMock.base_price:', price);
+
+    // 1.3. Получаем дату from.
+    // TODO. Надо как-то преобразовать дату в тип 2026-02-24T06:36:05.526Z
+
+    // Получает массив offers, которые также нужно преобразовать в id.
+    // console.log(formData.getAll('event-offers'));
   };
 
   /** Удаление текущей Point из списка. */

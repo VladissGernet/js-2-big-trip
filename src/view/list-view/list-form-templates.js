@@ -121,6 +121,9 @@ const createListPointFormTemplate = ({
   } = pointData;
 
   const iconType = listPoint?.type || tripModel?.offersReadOnly[0]?.type || '';
+  const destinationId = tripModel.transformDestinationNameToId(
+    destinationData.name,
+  );
 
   return html`
     <li class="trip-events__item">
@@ -162,6 +165,7 @@ const createListPointFormTemplate = ({
               name="event-destination"
               value="${destinationData?.name || ''}"
               list="destination-list-1"
+              data-destination-id="${destinationId}"
             />
             ${createDatalist(tripModel.cities)}
           </div>

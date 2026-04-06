@@ -98,4 +98,12 @@ export default class TripModel {
       ({ id }) => id === sortedList[index]?.destination,
     );
   }
+
+  /** Обратно переводит имя назначения в id. */
+  transformDestinationNameToId(destinationName) {
+    const item = this.destinationsReadOnly.find(
+      ({ name }) => name === destinationName,
+    );
+    return item.id;
+  }
 }
