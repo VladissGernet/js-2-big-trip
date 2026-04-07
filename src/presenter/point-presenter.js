@@ -186,10 +186,9 @@ export default class PointPresenter {
     console.log('pointsMock.base_price:', price);
 
     // 1.2. Преобразовывает название пункта назначения в соответсвующий ему id.
-    const formHeader =
-      this.#pointFormComponent.element.querySelector('.event__header');
-    const destinationId = formHeader.querySelector('#event-destination-1')
-      .dataset.destinationId;
+    const destinationId = this.#tripModel.transformDestinationNameToId(
+      formData.get('event-destination'),
+    );
     console.log('pointsMock.destination:', destinationId);
 
     // 1.3. Получаем дату from.
