@@ -182,27 +182,30 @@ export default class PointPresenter {
     const data = Object.fromEntries(formData.entries());
 
     // 1.1. Получаем стоимость.
-    const price = formData.get('event-price');
-    console.log('pointsMock.base_price:', price);
+    // const price = formData.get('event-price');
+    // console.log('base_price:', price);
 
-    // 1.2. Преобразовывает название пункта назначения в соответсвующий ему id.
-    const destinationId = this.#tripModel.transformDestinationNameToId(
-      formData.get('event-destination'),
-    );
-    console.log('pointsMock.destination:', destinationId);
+    // 1.2. Получаем дату from.
+    // console.log('dateFrom:', currentState.listPoint.dateFrom);
+    // console.log('dateTo:', currentState.listPoint.dateTo);
 
-    // 1.3. Получаем дату from.
-    console.log('pointsMock.dateFrom:', currentState.listPoint.dateFrom);
-    console.log('pointsMock.dateTo:', currentState.listPoint.dateTo);
+    // 1.3. Преобразовывает название пункта назначения в соответсвующий ему id.
+    // const destinationId = this.#tripModel.transformDestinationNameToId(
+    //   formData.get('event-destination'),
+    // );
+    // console.log('destination:', destinationId);
 
-    // 1.*
-    // Получает массив offers, которые также нужно преобразовать в id.
-    // console.log(formData.getAll('event-offers'));
+    // 1.4. Поулчает статус избранного.
+    // TODO если новое событие, то ставить по умолчанию false
+    // console.log('is_favorite:', this.#point.isFavorite);
+
+    // 1.5. Получает массив offers, которые также нужно преобразовать в id.
+    console.log(formData.getAll('event-offers'));
     console.log(currentState.offerData);
 
-    // 1.* Получаем тип
-    const type = formData.get('event-type');
-    console.log('pointsMock.type:', type);
+    // 1.6. Получаем тип
+    // const type = formData.get('event-type');
+    // console.log('type:', type);
   };
 
   /** Удаление текущей Point из списка. */
