@@ -51,6 +51,8 @@ const SORT_TYPES = {
   'sort-price': 'price',
 };
 
+// TODO исправить на слварь и еще раз изучить синтаксис перечислений и словарией
+// trip_info_title
 const TRIP_INFO_TITLE = {
   TWO_POINTS: 2,
   MAX_VISIBLE_POINTS: 3, // сколько точек показывать явно
@@ -62,6 +64,16 @@ const Mode = {
   EDITING: 'EDITING',
 };
 
+const InputDateStage = {
+  MINDATE: 'minDate',
+  MAXDATE: 'maxDate',
+};
+
+const DateStateStage = {
+  minDate: 'dateFrom',
+  maxDate: 'dateTo',
+};
+
 export {
   TRIP_FILTERS,
   TRIP_SORTS,
@@ -71,4 +83,6 @@ export {
   SORT_TYPES,
   TRIP_INFO_TITLE,
   Mode,
+  InputDateStage,
+  DateStateStage,
 };

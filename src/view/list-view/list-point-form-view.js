@@ -1,6 +1,7 @@
 import { createListPointFormTemplate } from './list-form-templates.js';
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
 import { remove } from '../../framework/render.js';
+import { InputDateStage, DateStateStage } from '../../const.js';
 
 import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
@@ -155,7 +156,7 @@ export default class ListPointFormView extends AbstractStatefulView {
       'onChange',
       ListPointFormView.#createInputDateChangeHadler(
         this,
-        'minDate',
+        InputDateStage.MINDATE,
         this.#inputDateTo,
       ),
     );
@@ -163,7 +164,7 @@ export default class ListPointFormView extends AbstractStatefulView {
       'onChange',
       ListPointFormView.#createInputDateChangeHadler(
         this,
-        'maxDate',
+        InputDateStage.MAXDATE,
         this.#inputDateFrom,
       ),
     );
@@ -229,6 +230,8 @@ export default class ListPointFormView extends AbstractStatefulView {
       }
       return item;
     });
+    // TODO данные не обновляеются
+    console.log(updatedOfferData);
 
     this._setState({
       offerData: updatedOfferData,
@@ -274,15 +277,18 @@ export default class ListPointFormView extends AbstractStatefulView {
 
   static #createInputDateChangeHadler(context, dateStage, otherInput) {
     return (selectedDates) => {
-      const newListPoint = {
+      const ISODate = selectedDates[0].toISOString();
+
+      // Взаимодействие с противостоящим вводом даты для синхронизации данных.
+      otherInput.set(dateStage, ISODate);
+
+      // Обновление данных точки.
+      const newListPointState = {
         ...context._state.listPoint,
-        [dateStage]: selectedDates[0].toISOString(),
+        [DateStateStage[dateStage]]: ISODate,
       };
-
-      otherInput.set(dateStage, selectedDates[0].toISOString());
-
       context._setState({
-        listPoint: newListPoint,
+        listPoint: newListPointState,
       });
     };
   }

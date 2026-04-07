@@ -168,6 +168,7 @@ export default class PointPresenter {
 
   /** Добавление\сохранение данных формы. */
   #handleFormSubmit = (evt) => {
+    const currentState = this.#pointFormComponent._state;
     const formData = new FormData(evt.target);
 
     // TODO
@@ -179,7 +180,6 @@ export default class PointPresenter {
 
     // Поулчает все данные из формы.
     const data = Object.fromEntries(formData.entries());
-    console.log(data);
 
     // 1.1. Получаем стоимость.
     const price = formData.get('event-price');
@@ -193,8 +193,10 @@ export default class PointPresenter {
     console.log('pointsMock.destination:', destinationId);
 
     // 1.3. Получаем дату from.
-    // TODO. Надо как-то преобразовать дату в тип 2026-02-24T06:36:05.526Z
+    console.log('pointsMock.dateFrom:', currentState.listPoint.dateFrom);
+    console.log('pointsMock.dateTo:', currentState.listPoint.dateTo);
 
+    // 1.*
     // Получает массив offers, которые также нужно преобразовать в id.
     // console.log(formData.getAll('event-offers'));
 

@@ -125,13 +125,6 @@ const createListPointFormTemplate = ({
     destinationData.name,
   );
 
-  // TODO
-  // Остановился здесь на добавлении даты в ISO формате в качестве dataset аттрибута в DOM разметку
-  // для упрощения обратной трансформации данных с их последующим обновлением.
-  // Надо как-то получать ISO формат и фиксировать его на соответвующих input, а также обновлять его,
-  // когда ставлю новую дату.
-  console.log(listPoint);
-
   return html`
     <li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
