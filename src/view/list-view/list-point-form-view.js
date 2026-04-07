@@ -225,13 +225,11 @@ export default class ListPointFormView extends AbstractStatefulView {
 
   #changeOfferHandler = (evt) => {
     const updatedOfferData = this._state.offerData.map((item) => {
-      if (item.title === evt.target.id) {
+      if (item.title.toLowerCase() === evt.target.value) {
         item.isSelected = evt.target.checked;
       }
       return item;
     });
-    // TODO данные не обновляеются
-    console.log(updatedOfferData);
 
     this._setState({
       offerData: updatedOfferData,

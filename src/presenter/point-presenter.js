@@ -199,6 +199,7 @@ export default class PointPresenter {
     // 1.*
     // Получает массив offers, которые также нужно преобразовать в id.
     // console.log(formData.getAll('event-offers'));
+    console.log(currentState.offerData);
 
     // 1.* Получаем тип
     const type = formData.get('event-type');
