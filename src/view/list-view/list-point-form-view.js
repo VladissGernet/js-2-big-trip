@@ -50,6 +50,7 @@ export default class ListPointFormView extends AbstractStatefulView {
       };
     }
 
+    // Для удобства передачи данных точек упаковываю всё в this._state.
     this._setState(pointData);
     this.#addEventListeners();
     this.#initInputDate();
@@ -126,6 +127,7 @@ export default class ListPointFormView extends AbstractStatefulView {
     }
   }
 
+  /** Иницилизирует выбор дат "from" и "to" библиотекой flatpickr. */
   #initInputDate() {
     this.#inputDateFrom = ListPointFormView.#createFlatpickr(
       this.element.querySelector('#event-start-time-1'),

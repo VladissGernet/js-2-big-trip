@@ -200,6 +200,7 @@ export default class PointPresenter {
     // console.log('is_favorite:', this.#point.isFavorite);
 
     // 1.5. Получает массив offers, которые также нужно преобразовать в id.
+    // TODO решаем целесообразность добавления в _state.offerData
     console.log(formData.getAll('event-offers'));
     console.log(currentState.offerData);
 
