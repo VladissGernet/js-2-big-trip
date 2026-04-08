@@ -199,14 +199,23 @@ export default class PointPresenter {
     // TODO если новое событие, то ставить по умолчанию false
     // console.log('is_favorite:', this.#point.isFavorite);
 
-    // 1.5. Получает массив offers, которые также нужно преобразовать в id.
-    // TODO решаем целесообразность добавления в _state.offerData
-    console.log(formData.getAll('event-offers'));
-    console.log(currentState.offerData);
-
-    // 1.6. Получаем тип
-    // const type = formData.get('event-type');
+    // 1.5. Получаем тип сначала, так как он нужен будет в преобразовании предложений.
+    const type = formData.get('event-type');
     // console.log('type:', type);
+
+    // 1.6. Получает массив offers, которые также нужно преобразовать в id.
+    // 1.6.1. Получаем массив выбранных предложений.
+    const selectedOffers = formData.getAll('event-offers');
+    // 1.6.2. Получаем все id из текущего типа.
+    const allOffers = this.#tripModel.offersByType.get(type);
+    const selectedIdOffers = selectedOffers.map((offer) => {
+      for (const [id, { title }] of allOffers) {
+        if (title.toLowerCase() === offer) {
+          return id;
+        }
+      }
+    });
+    console.log(selectedIdOffers);
   };
 
   /** Удаление текущей Point из списка. */
