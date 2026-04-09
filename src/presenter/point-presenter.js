@@ -45,6 +45,7 @@ export default class PointPresenter {
   #resetListView = null;
   #removeFromPointPresenters = null;
   #pointComponent = null;
+
   #pointFormComponent = null;
   #mode = Mode.DEFAULT;
 
@@ -110,7 +111,7 @@ export default class PointPresenter {
       pointData: PointPresenter.#createPointData(this.#tripModel, this.#point),
       isEditForm: true,
       tripModel: this.#tripModel,
-      onRollupClick: this.#handleCloseRollupClick,
+      onRolldownClick: this.#handleCloseRolldownClick,
       onResetClick: this.#handleDeleteClick,
       onFormSubmit: this.#handleFormSubmit,
     });
@@ -154,7 +155,7 @@ export default class PointPresenter {
   };
 
   /** Закрытие по нажатию Rollup в форме. */
-  #handleCloseRollupClick = () => {
+  #handleCloseRolldownClick = () => {
     this.#replaceFormToPoint();
   };
 

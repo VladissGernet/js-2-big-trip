@@ -12,7 +12,7 @@ export default class ListPointFormView extends AbstractStatefulView {
   #isEditForm = null;
   #tripModel = null;
 
-  #handleRollupClick = null;
+  #handleRolldownClick = null;
   #handleResetClick = null;
   #handleSubmitForm = null;
 
@@ -23,14 +23,14 @@ export default class ListPointFormView extends AbstractStatefulView {
     pointData,
     isEditForm,
     tripModel,
-    onRollupClick,
+    onRolldownClick,
     onResetClick,
     onFormSubmit,
   }) {
     super();
     this.#isEditForm = isEditForm;
     this.#tripModel = tripModel;
-    this.#handleRollupClick = onRollupClick;
+    this.#handleRolldownClick = onRolldownClick;
     this.#handleResetClick = onResetClick;
     this.#handleSubmitForm = onFormSubmit;
 
@@ -96,10 +96,10 @@ export default class ListPointFormView extends AbstractStatefulView {
       .querySelector('.event.event--edit')
       .addEventListener('submit', this.#submitFormHandler);
 
-    if (this.#handleRollupClick) {
+    if (this.#handleRolldownClick) {
       this.element
         .querySelector('.event__rollup-btn')
-        .addEventListener('click', this.#rollupClickHandler);
+        .addEventListener('click', this.#rolldownClickHandler);
     }
   }
 
@@ -120,10 +120,10 @@ export default class ListPointFormView extends AbstractStatefulView {
       .querySelector('.event.event--edit')
       .removeEventListener('submit', this.#submitFormHandler);
 
-    if (this.#handleRollupClick) {
+    if (this.#handleRolldownClick) {
       this.element
         .querySelector('.event__rollup-btn')
-        .removeEventListener('click', this.#rollupClickHandler);
+        .removeEventListener('click', this.#rolldownClickHandler);
     }
   }
 
@@ -165,9 +165,9 @@ export default class ListPointFormView extends AbstractStatefulView {
     this.#inputDateTo.destroy();
   }
 
-  #rollupClickHandler = (evt) => {
+  #rolldownClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleRollupClick();
+    this.#handleRolldownClick();
   };
 
   #resetClickHandler = (evt) => {
