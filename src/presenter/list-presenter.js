@@ -53,7 +53,7 @@ export default class ListPresenter {
   };
 
   /** Удаляет из списка */
-  removeFromPointPresenters = (id) => this.#pointPresenters.delete(id);
+  #removeFromPointPresenters = (id) => this.#pointPresenters.delete(id);
 
   #renderList(sortedList = null) {
     // Проверяет получение отсортированного списка, иначе берём данные из модели.
@@ -88,7 +88,7 @@ export default class ListPresenter {
       tripModel: this.#tripModel,
       newEventBtnPresenter: this.#newEventBtnPresenter,
       resetListView: this.resetListView,
-      removeFromPointPresenters: this.removeFromPointPresenters,
+      removeFromPointPresenters: this.#removeFromPointPresenters,
     });
     pointPresenter.init();
     this.#pointPresenters.set(pointData.id, pointPresenter);

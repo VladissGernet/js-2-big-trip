@@ -39,7 +39,6 @@ export default class PointPresenter {
   #listElement = null;
   #tripEventsElement = null;
 
-  #removeFromPointPresenters = null;
   #newEventBtnPresenter = null;
   #pointFormPresenter = null;
 
@@ -64,7 +63,6 @@ export default class PointPresenter {
     this.#tripEventsElement = tripEventsElement;
     this.#newEventBtnPresenter = newEventBtnPresenter;
     this.#resetListView = resetListView;
-    this.#removeFromPointPresenters = removeFromPointPresenters;
 
     this.#pointFormPresenter = new PointFormPresenter({
       pointData: this.#pointData,
@@ -74,6 +72,7 @@ export default class PointPresenter {
       ),
       tripModel: this.#tripModel,
       onRolldownClick: this.#handleCloseRolldownClick,
+      removeFromPointPresenters: removeFromPointPresenters,
     });
   }
 

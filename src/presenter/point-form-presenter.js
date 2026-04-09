@@ -18,17 +18,25 @@ import { remove } from '../framework/render.js';
 export default class PointFormPresenter {
   #pointData = null;
   #viewPointData = null;
-
-  #pointFormComponent = null;
   #tripModel = null;
 
-  #handleRolldownClick = null;
+  #pointFormComponent = null;
 
-  constructor({ pointData, viewPointData, tripModel, onRolldownClick }) {
+  #handleRolldownClick = null;
+  #removeFromPointPresenters = null;
+
+  constructor({
+    pointData,
+    viewPointData,
+    tripModel,
+    onRolldownClick,
+    removeFromPointPresenters,
+  }) {
     this.#pointData = pointData;
     this.#viewPointData = viewPointData;
     this.#tripModel = tripModel;
     this.#handleRolldownClick = onRolldownClick;
+    this.#removeFromPointPresenters = removeFromPointPresenters;
   }
 
   /** Добавление\сохранение данных формы. */
@@ -50,26 +58,26 @@ export default class PointFormPresenter {
     );
   };
 
-  // TODO Остановился тут
   /** Удаление текущей Point из списка. */
-  // #handleDeleteClick = () => {
-  //   this.clear();
+  #handleDeleteClick = () => {
+    // TODO остановился здесь на реализации .clear()
+    this.clear();
 
-  //   // Удаление из данных модели.
-  //   const selectedPointId = this.#pointData.id;
-  //   this.#tripModel.removePoint(selectedPointId);
+    // Удаление из данных модели.
+    const selectedPointId = this.#pointData.id;
+    this.#tripModel.removePoint(selectedPointId);
 
-  //   // Удаление из коллекции презентеров точек.
-  //   this.#removeFromPointPresenters(this.#pointData.id);
+    // Удаление из коллекции презентеров точек.
+    // this.#removeFromPointPresenters(this.#pointData.id);
 
-  //   //Если список пустой, то возвращает сообщение о предложении создания
-  //   // новой путевой точки.
-  //   if (this.#tripModel.listPoints.length === 0) {
-  //     this.#tripEventsElement.innerHTML =
-  //       '<h2 class="visually-hidden">Trip events</h2>';
-  //     render(new TripEventsEmptyView(), this.#tripEventsElement);
-  //   }
-  // };
+    // //Если список пустой, то возвращает сообщение о предложении создания
+    // // новой путевой точки.
+    // if (this.#tripModel.listPoints.length === 0) {
+    //   this.#tripEventsElement.innerHTML =
+    //     '<h2 class="visually-hidden">Trip events</h2>';
+    //   render(new TripEventsEmptyView(), this.#tripEventsElement);
+    // }
+  };
 
   get component() {
     if (!this.#pointFormComponent) {
@@ -79,7 +87,7 @@ export default class PointFormPresenter {
         tripModel: this.#tripModel,
         onRolldownClick: this.#handleRolldownClick,
         onFormSubmit: this.#handleFormSubmit,
-        // onResetClick: this.#handleDeleteClick,
+        onResetClick: this.#handleDeleteClick,
       });
     }
     return this.#pointFormComponent;
