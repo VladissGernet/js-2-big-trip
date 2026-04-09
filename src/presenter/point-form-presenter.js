@@ -1,3 +1,135 @@
-export default class PointFormPresenter = {
+import { ListPointFormView, TripEventsEmptyView } from '../view/index.js';
+import { remove } from '../framework/render.js';
 
+/** Конфигурация презентера формы путевой точки.
+ * @typedef {Object} PointConfig
+ * @property {PointData} pointData - Данные точки маршрута.
+ * @property {PointData} viewPointData - Данные точки маршрута для view.
+ * @property {TripModel} tripModel - Модель данных поездки.
+ *
+ * @property {HTMLUListElement} listElement - Элемент списка для вставки точки.
+ * @property {HTMLElement} tripEventsElement - Элемент с сортировкой и списком точек.
+ * @property {Class} newEventBtnPresenter - Презентер кнопки создания нового события.
+ * @property {function(): void} resetListView - Функция‑callback, сбрасывающая список
+ * @property {function(): void} removeFromPointPresenters - Функция‑callback, удаляющая
+ * из коллекции Map в listPresenter.
+ */
+
+export default class PointFormPresenter {
+  #pointData = null;
+  #viewPointData = null;
+
+  #pointFormComponent = null;
+  #tripModel = null;
+
+  #handleRolldownClick = null;
+
+  constructor({ pointData, viewPointData, tripModel, onRolldownClick }) {
+    this.#pointData = pointData;
+    this.#viewPointData = viewPointData;
+    this.#tripModel = tripModel;
+    this.#handleRolldownClick = onRolldownClick;
+  }
+
+  /** Добавление\сохранение данных формы. */
+  #handleFormSubmit = (evt) => {
+    const currentState = this.#pointFormComponent._state;
+    const formData = new FormData(evt.target);
+
+    // TODO
+    // 3. Реализовать функцию обновления данных в моделе tripModel.
+    //    Возможно имеющийся публичный метод подойдет:
+    //    this.#tripModel.updatePoint(pointId, updatedData)
+    console.log(
+      PointFormPresenter.#preparePointData({
+        formData,
+        tripModel: this.#tripModel,
+        currentState,
+        pointData: this.#pointData,
+      }),
+    );
+  };
+
+  // TODO Остановился тут
+  /** Удаление текущей Point из списка. */
+  // #handleDeleteClick = () => {
+  //   this.clear();
+
+  //   // Удаление из данных модели.
+  //   const selectedPointId = this.#pointData.id;
+  //   this.#tripModel.removePoint(selectedPointId);
+
+  //   // Удаление из коллекции презентеров точек.
+  //   this.#removeFromPointPresenters(this.#pointData.id);
+
+  //   //Если список пустой, то возвращает сообщение о предложении создания
+  //   // новой путевой точки.
+  //   if (this.#tripModel.listPoints.length === 0) {
+  //     this.#tripEventsElement.innerHTML =
+  //       '<h2 class="visually-hidden">Trip events</h2>';
+  //     render(new TripEventsEmptyView(), this.#tripEventsElement);
+  //   }
+  // };
+
+  get component() {
+    if (!this.#pointFormComponent) {
+      this.#pointFormComponent = new ListPointFormView({
+        viewPointData: this.#viewPointData,
+        isEditForm: true,
+        tripModel: this.#tripModel,
+        onRolldownClick: this.#handleRolldownClick,
+        onFormSubmit: this.#handleFormSubmit,
+        // onResetClick: this.#handleDeleteClick,
+      });
+    }
+    return this.#pointFormComponent;
+  }
+
+  removeComponent() {
+    remove(this.#pointFormComponent);
+    this.#pointFormComponent = null;
+  }
+
+  static #preparePointData({ formData, tripModel, currentState, pointData }) {
+    let data = {};
+
+    // Получаем стоимость.
+    const price = formData.get('event-price');
+
+    // Преобразовывает название пункта назначения в соответсвующий ему id.
+    const destinationId = tripModel.transformDestinationNameToId(
+      formData.get('event-destination'),
+    );
+
+    // Получаем тип для массива предложений.
+    const type = formData.get('event-type');
+
+    // Получаем массив выбранных предложений (offers), которые также нужно
+    // преобразовать в id.
+    const selectedOffers = formData.getAll('event-offers');
+    // Получаем коллекцию Map всех предложаний по типу.
+    const allOffers = tripModel.offersByType.get(type);
+
+    // Создаём обратный Map для быстрого поиска по title (один раз O(n))
+    const titleToId = new Map();
+    for (const [id, { title }] of allOffers) {
+      titleToId.set(title.toLowerCase(), id);
+    }
+    // Массив из выбранных значений.
+    const selectedIdOffers = selectedOffers.map((offer) =>
+      titleToId.get(offer.toLowerCase()),
+    );
+
+    data = {
+      'base_price:': price,
+      'date_from:': currentState.listPoint.dateFrom,
+      'date_to:': currentState.listPoint.dateTo,
+      destination: destinationId,
+      'is_favorite:': pointData.isFavorite,
+      offers: selectedIdOffers,
+      'type:': type,
+    };
+
+    return data;
+  }
 }

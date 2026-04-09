@@ -20,7 +20,7 @@ export default class ListPointFormView extends AbstractStatefulView {
   #inputDateTo = null;
 
   constructor({
-    pointData,
+    viewPointData,
     isEditForm,
     tripModel,
     onRolldownClick,
@@ -35,13 +35,13 @@ export default class ListPointFormView extends AbstractStatefulView {
     this.#handleSubmitForm = onFormSubmit;
 
     // При создании нового события добавляем по дефолту.
-    if (!pointData) {
+    if (!viewPointData) {
       const transformedOfferData = this.#tripModel.offersReadOnly[0].offers.map(
         (offer) => ({ ...offer, isSelected: false }),
       );
       const today = new Date().toISOString();
 
-      pointData = {
+      viewPointData = {
         offerData: transformedOfferData,
         listPoint: {
           dateFrom: today,
@@ -51,14 +51,14 @@ export default class ListPointFormView extends AbstractStatefulView {
     }
 
     // Для удобства передачи данных точек упаковываю всё в this._state.
-    this._setState(pointData);
+    this._setState(viewPointData);
     this.#addEventListeners();
     this.#initInputDate();
   }
 
   get template() {
     return createListPointFormTemplate({
-      pointData: this._state,
+      viewPointData: this._state,
       isEditForm: this.#isEditForm,
       tripModel: this.#tripModel,
     });

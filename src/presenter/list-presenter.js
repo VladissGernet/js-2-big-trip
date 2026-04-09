@@ -20,6 +20,7 @@ export default class ListPresenter {
   #tripModel = null;
   #filterModel = null;
 
+  /** Коллекция из презентеров точек. */
   #pointPresenters = new Map();
 
   /** Публичный доступ для управления списком представления из header презентера при создании новой точки. */
@@ -79,9 +80,9 @@ export default class ListPresenter {
     render(this.listView, this.#container);
   }
 
-  #createPoint(point) {
+  #createPoint(pointData) {
     const pointPresenter = new PointPresenter({
-      point,
+      pointData,
       listElement: this.listView.element,
       tripEventsElement: this.#container,
       tripModel: this.#tripModel,
@@ -90,6 +91,6 @@ export default class ListPresenter {
       removeFromPointPresenters: this.removeFromPointPresenters,
     });
     pointPresenter.init();
-    this.#pointPresenters.set(point.id, pointPresenter);
+    this.#pointPresenters.set(pointData.id, pointPresenter);
   }
 }

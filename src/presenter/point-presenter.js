@@ -1,14 +1,11 @@
-import {
-  ListPointView,
-  ListPointFormView,
-  TripEventsEmptyView,
-} from '../view/index.js';
+import { ListPointView } from '../view/index.js';
+import PointFormPresenter from './point-form-presenter.js';
 import { render, replace, remove } from '../framework/render.js';
 import { Mode } from '../const.js';
 
 /** Конфигурация презентера путевой точки.
  * @typedef {Object} PointConfig
- * @property {PointData} point - Данные точки маршрута.
+ * @property {PointData} pointData - Данные точки маршрута.
  * @property {TripModel} tripModel - Модель данных поездки.
  * @property {HTMLUListElement} listElement - Элемент списка для вставки точки.
  * @property {HTMLElement} tripEventsElement - Элемент с сортировкой и списком точек.
@@ -37,21 +34,23 @@ import { Mode } from '../const.js';
  */
 
 export default class PointPresenter {
-  #point = null;
+  #pointData = null;
   #tripModel = null;
   #listElement = null;
   #tripEventsElement = null;
-  #newEventBtnPresenter = null;
-  #resetListView = null;
+
   #removeFromPointPresenters = null;
+  #newEventBtnPresenter = null;
+  #pointFormPresenter = null;
+
+  #resetListView = null;
   #pointComponent = null;
 
-  #pointFormComponent = null;
   #mode = Mode.DEFAULT;
 
   /** @param {PointConfig} config - Конфигурация презентера */
   constructor({
-    point,
+    pointData,
     tripModel,
     listElement,
     tripEventsElement,
@@ -59,13 +58,23 @@ export default class PointPresenter {
     resetListView,
     removeFromPointPresenters,
   }) {
-    this.#point = point;
+    this.#pointData = pointData;
     this.#tripModel = tripModel;
     this.#listElement = listElement;
     this.#tripEventsElement = tripEventsElement;
     this.#newEventBtnPresenter = newEventBtnPresenter;
     this.#resetListView = resetListView;
     this.#removeFromPointPresenters = removeFromPointPresenters;
+
+    this.#pointFormPresenter = new PointFormPresenter({
+      pointData: this.#pointData,
+      viewPointData: PointPresenter.#createViewPointData(
+        this.#tripModel,
+        this.#pointData,
+      ),
+      tripModel: this.#tripModel,
+      onRolldownClick: this.#handleCloseRolldownClick,
+    });
   }
 
   init() {
@@ -87,10 +96,9 @@ export default class PointPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
 
     remove(this.#pointComponent);
-    remove(this.#pointFormComponent);
-
     this.#pointComponent = null;
-    this.#pointFormComponent = null;
+
+    this.#pointFormPresenter.removeComponent();
   }
 
   #renderPoint() {
@@ -100,20 +108,9 @@ export default class PointPresenter {
 
   #createPointComponent() {
     this.#pointComponent = new ListPointView({
-      ...PointPresenter.#createPointData(this.#tripModel, this.#point),
+      ...PointPresenter.#createViewPointData(this.#tripModel, this.#pointData),
       onRollupClick: this.#openRollupClickHandler,
       onFavoriteClick: this.#favoriteClickHandler,
-    });
-  }
-
-  #createFormComponent() {
-    this.#pointFormComponent = new ListPointFormView({
-      pointData: PointPresenter.#createPointData(this.#tripModel, this.#point),
-      isEditForm: true,
-      tripModel: this.#tripModel,
-      onRolldownClick: this.#handleCloseRolldownClick,
-      onResetClick: this.#handleDeleteClick,
-      onFormSubmit: this.#handleFormSubmit,
     });
   }
 
@@ -131,10 +128,8 @@ export default class PointPresenter {
     this.#resetListView();
 
     this.#mode = Mode.EDITING;
-    this.#createFormComponent();
 
-    replace(this.#pointFormComponent, this.#pointComponent);
-
+    replace(this.#pointFormPresenter.component, this.#pointComponent);
     remove(this.#pointComponent);
   }
 
@@ -143,9 +138,9 @@ export default class PointPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
 
     this.#createPointComponent();
-    replace(this.#pointComponent, this.#pointFormComponent);
+    replace(this.#pointComponent, this.#pointFormPresenter.component);
 
-    remove(this.#pointFormComponent);
+    this.#pointFormPresenter.removeComponent();
   }
 
   /** Открытие по нажатию Rollup. */
@@ -167,51 +162,12 @@ export default class PointPresenter {
     }
   };
 
-  /** Добавление\сохранение данных формы. */
-  #handleFormSubmit = (evt) => {
-    const currentState = this.#pointFormComponent._state;
-    const formData = new FormData(evt.target);
-
-    // TODO
-    // 3. Реализовать функцию обновления данных в моделе tripModel.
-    //    Возможно имеющийся публичный метод подойдет:
-    //    this.#tripModel.updatePoint(pointId, updatedData)
-    console.log(
-      PointPresenter.#preparePointData({
-        formData,
-        tripModel: this.#tripModel,
-        currentState,
-        point: this.#point,
-      }),
-    );
-  };
-
-  /** Удаление текущей Point из списка. */
-  #handleDeleteClick = () => {
-    this.clear();
-
-    // Удаление из данных модели.
-    const selectedPointId = this.#point.id;
-    this.#tripModel.removePoint(selectedPointId);
-
-    // Удаление из коллекции презентеров точек.
-    this.#removeFromPointPresenters(this.#point.id);
-
-    //Если список пустой, то возвращает сообщение о предложении создания
-    // новой путевой точки.
-    if (this.#tripModel.listPoints.length === 0) {
-      this.#tripEventsElement.innerHTML =
-        '<h2 class="visually-hidden">Trip events</h2>';
-      render(new TripEventsEmptyView(), this.#tripEventsElement);
-    }
-  };
-
   /** Обработчик добавления в избранное. */
   #favoriteClickHandler = () => {
-    const selectedPointId = this.#point.id;
+    const selectedPointId = this.#pointData.id;
     // Обновляем данные.
-    this.#point = this.#tripModel.updatePoint(selectedPointId, {
-      isFavorite: !this.#point.isFavorite,
+    this.#pointData = this.#tripModel.updatePoint(selectedPointId, {
+      isFavorite: !this.#pointData.isFavorite,
     });
 
     // Перерисовываем точку на странице.
@@ -227,7 +183,7 @@ export default class PointPresenter {
     }));
   }
 
-  static #createPointData(tripModel, point) {
+  static #createViewPointData(tripModel, point) {
     const destinationData = tripModel.destinationsById.get(point.destination);
 
     const transformedOfferTypeData = PointPresenter.#transformOfferTypeData({
@@ -240,48 +196,5 @@ export default class PointPresenter {
       destinationData: destinationData,
       offerData: transformedOfferTypeData,
     };
-  }
-
-  static #preparePointData({ formData, tripModel, currentState, point }) {
-    let data = {};
-
-    // Получаем стоимость.
-    const price = formData.get('event-price');
-
-    // Преобразовывает название пункта назначения в соответсвующий ему id.
-    const destinationId = tripModel.transformDestinationNameToId(
-      formData.get('event-destination'),
-    );
-
-    // Получаем тип для массива предложений.
-    const type = formData.get('event-type');
-
-    // Получаем массив выбранных предложений (offers), которые также нужно
-    // преобразовать в id.
-    const selectedOffers = formData.getAll('event-offers');
-    // Получаем коллекцию Map всех предложаний по типу.
-    const allOffers = tripModel.offersByType.get(type);
-
-    // Создаём обратный Map для быстрого поиска по title (один раз O(n))
-    const titleToId = new Map();
-    for (const [id, { title }] of allOffers) {
-      titleToId.set(title.toLowerCase(), id);
-    }
-    // Массив из выбранных значений.
-    const selectedIdOffers = selectedOffers.map((offer) =>
-      titleToId.get(offer.toLowerCase()),
-    );
-
-    data = {
-      'base_price:': price,
-      'date_from:': currentState.listPoint.dateFrom,
-      'date_to:': currentState.listPoint.dateTo,
-      destination: destinationId,
-      'is_favorite:': point.isFavorite,
-      offers: selectedIdOffers,
-      'type:': type,
-    };
-
-    return data;
   }
 }

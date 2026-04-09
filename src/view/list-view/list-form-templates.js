@@ -110,7 +110,7 @@ const createDatalist = (cities) =>
   </datalist>`;
 
 const createListPointFormTemplate = ({
-  pointData = {},
+  viewPointData = {},
   isEditForm,
   tripModel,
 }) => {
@@ -118,7 +118,7 @@ const createListPointFormTemplate = ({
     listPoint = null,
     destinationData = null,
     offerData = tripModel.offersReadOnly[0].offers,
-  } = pointData;
+  } = viewPointData;
 
   const iconType = listPoint?.type || tripModel?.offersReadOnly[0]?.type || '';
 
