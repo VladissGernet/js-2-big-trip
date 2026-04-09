@@ -204,17 +204,20 @@ export default class PointPresenter {
     // console.log('type:', type);
 
     // 1.6. Получает массив offers, которые также нужно преобразовать в id.
-    // 1.6.1. Получаем массив выбранных предложений.
+    // Получаем массив выбранных предложений.
     const selectedOffers = formData.getAll('event-offers');
-    // 1.6.2. Получаем все id из текущего типа.
+    // Получаем коллекцию Map всех предложаний по типу.
     const allOffers = this.#tripModel.offersByType.get(type);
-    const selectedIdOffers = selectedOffers.map((offer) => {
-      for (const [id, { title }] of allOffers) {
-        if (title.toLowerCase() === offer) {
-          return id;
-        }
-      }
-    });
+
+    // Создаём обратный Map для быстрого поиска по title (один раз O(n))
+    const titleToId = new Map();
+    for (const [id, { title }] of allOffers) {
+      titleToId.set(title.toLowerCase(), id);
+    }
+    // Массив из выбранных значений.
+    const selectedIdOffers = selectedOffers.map((offer) =>
+      titleToId.get(offer.toLowerCase()),
+    );
     console.log(selectedIdOffers);
   };
 
