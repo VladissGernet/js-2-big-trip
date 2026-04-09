@@ -172,53 +172,17 @@ export default class PointPresenter {
     const formData = new FormData(evt.target);
 
     // TODO
-    // 1. накидать список поулчаемых данных.
-    // 2. Преобразовать обратно данные в соответсвии с mock.
     // 3. Реализовать функцию обновления данных в моделе tripModel.
     //    Возможно имеющийся публичный метод подойдет:
     //    this.#tripModel.updatePoint(pointId, updatedData)
-
-    // Поулчает все данные из формы.
-    const data = Object.fromEntries(formData.entries());
-
-    // 1.1. Получаем стоимость.
-    // const price = formData.get('event-price');
-    // console.log('base_price:', price);
-
-    // 1.2. Получаем дату from.
-    // console.log('dateFrom:', currentState.listPoint.dateFrom);
-    // console.log('dateTo:', currentState.listPoint.dateTo);
-
-    // 1.3. Преобразовывает название пункта назначения в соответсвующий ему id.
-    // const destinationId = this.#tripModel.transformDestinationNameToId(
-    //   formData.get('event-destination'),
-    // );
-    // console.log('destination:', destinationId);
-
-    // 1.4. Поулчает статус избранного.
-    // TODO если новое событие, то ставить по умолчанию false
-    // console.log('is_favorite:', this.#point.isFavorite);
-
-    // 1.5. Получаем тип сначала, так как он нужен будет в преобразовании предложений.
-    const type = formData.get('event-type');
-    // console.log('type:', type);
-
-    // 1.6. Получает массив offers, которые также нужно преобразовать в id.
-    // Получаем массив выбранных предложений.
-    const selectedOffers = formData.getAll('event-offers');
-    // Получаем коллекцию Map всех предложаний по типу.
-    const allOffers = this.#tripModel.offersByType.get(type);
-
-    // Создаём обратный Map для быстрого поиска по title (один раз O(n))
-    const titleToId = new Map();
-    for (const [id, { title }] of allOffers) {
-      titleToId.set(title.toLowerCase(), id);
-    }
-    // Массив из выбранных значений.
-    const selectedIdOffers = selectedOffers.map((offer) =>
-      titleToId.get(offer.toLowerCase()),
+    console.log(
+      PointPresenter.#preparePointData({
+        formData,
+        tripModel: this.#tripModel,
+        currentState,
+        point: this.#point,
+      }),
     );
-    console.log(selectedIdOffers);
   };
 
   /** Удаление текущей Point из списка. */
@@ -275,5 +239,48 @@ export default class PointPresenter {
       destinationData: destinationData,
       offerData: transformedOfferTypeData,
     };
+  }
+
+  static #preparePointData({ formData, tripModel, currentState, point }) {
+    let data = {};
+
+    // Получаем стоимость.
+    const price = formData.get('event-price');
+
+    // Преобразовывает название пункта назначения в соответсвующий ему id.
+    const destinationId = tripModel.transformDestinationNameToId(
+      formData.get('event-destination'),
+    );
+
+    // Получаем тип для массива предложений.
+    const type = formData.get('event-type');
+
+    // Получаем массив выбранных предложений (offers), которые также нужно
+    // преобразовать в id.
+    const selectedOffers = formData.getAll('event-offers');
+    // Получаем коллекцию Map всех предложаний по типу.
+    const allOffers = tripModel.offersByType.get(type);
+
+    // Создаём обратный Map для быстрого поиска по title (один раз O(n))
+    const titleToId = new Map();
+    for (const [id, { title }] of allOffers) {
+      titleToId.set(title.toLowerCase(), id);
+    }
+    // Массив из выбранных значений.
+    const selectedIdOffers = selectedOffers.map((offer) =>
+      titleToId.get(offer.toLowerCase()),
+    );
+
+    data = {
+      'base_price:': price,
+      'date_from:': currentState.listPoint.dateFrom,
+      'date_to:': currentState.listPoint.dateTo,
+      destination: destinationId,
+      'is_favorite:': point.isFavorite,
+      offers: selectedIdOffers,
+      'type:': type,
+    };
+
+    return data;
   }
 }
