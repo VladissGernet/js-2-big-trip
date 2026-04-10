@@ -1,16 +1,16 @@
 import { ListPointFormView, TripEventsEmptyView } from '../view/index.js';
-import { remove } from '../framework/render.js';
+import { render, remove } from '../framework/render.js';
 
 /** Конфигурация презентера формы путевой точки.
- * @typedef {Object} PointConfig
- * @property {PointData} pointData - Данные точки маршрута.
- * @property {PointData} viewPointData - Данные точки маршрута для view.
- * @property {TripModel} tripModel - Модель данных поездки.
- *
- * @property {HTMLUListElement} listElement - Элемент списка для вставки точки.
+ * @typedef {Object} PointFormConfig
+ * @property {Object} pointData - Данные точки маршрута.
+ * @property {Object} viewPointData - Данные точки маршрута для view.
+ * @property {Object} tripModel - Модель данных поездки.
+ * @property {Class} pointPresenter - Презентер точки.
  * @property {HTMLElement} tripEventsElement - Элемент с сортировкой и списком точек.
- * @property {Class} newEventBtnPresenter - Презентер кнопки создания нового события.
- * @property {function(): void} resetListView - Функция‑callback, сбрасывающая список
+ *
+ * @property {function(): void} onRolldownClick - Функция‑callback (обработчик клика), которая
+ * закрывает форму.
  * @property {function(): void} removeFromPointPresenters - Функция‑callback, удаляющая
  * из коллекции Map в listPresenter.
  */
@@ -19,22 +19,29 @@ export default class PointFormPresenter {
   #pointData = null;
   #viewPointData = null;
   #tripModel = null;
+  #pointPresenter = null;
+  #tripEventsElement = null;
 
   #pointFormComponent = null;
 
   #handleRolldownClick = null;
   #removeFromPointPresenters = null;
 
+  /** @param {PointFormConfig} config - Конфигурация презентера */
   constructor({
     pointData,
     viewPointData,
     tripModel,
+    pointPresenter,
+    tripEventsElement,
     onRolldownClick,
     removeFromPointPresenters,
   }) {
     this.#pointData = pointData;
     this.#viewPointData = viewPointData;
     this.#tripModel = tripModel;
+    this.#pointPresenter = pointPresenter;
+    this.#tripEventsElement = tripEventsElement;
     this.#handleRolldownClick = onRolldownClick;
     this.#removeFromPointPresenters = removeFromPointPresenters;
   }
@@ -60,23 +67,23 @@ export default class PointFormPresenter {
 
   /** Удаление текущей Point из списка. */
   #handleDeleteClick = () => {
-    // TODO остановился здесь на реализации .clear()
-    this.clear();
+    this.#pointPresenter.clear();
+    this.removeComponent();
 
     // Удаление из данных модели.
     const selectedPointId = this.#pointData.id;
     this.#tripModel.removePoint(selectedPointId);
 
     // Удаление из коллекции презентеров точек.
-    // this.#removeFromPointPresenters(this.#pointData.id);
+    this.#removeFromPointPresenters(this.#pointData.id);
 
-    // //Если список пустой, то возвращает сообщение о предложении создания
-    // // новой путевой точки.
-    // if (this.#tripModel.listPoints.length === 0) {
-    //   this.#tripEventsElement.innerHTML =
-    //     '<h2 class="visually-hidden">Trip events</h2>';
-    //   render(new TripEventsEmptyView(), this.#tripEventsElement);
-    // }
+    //Если список пустой, то возвращает сообщение о предложении создания
+    // новой путевой точки.
+    if (this.#tripModel.listPoints.length === 0) {
+      this.#tripEventsElement.innerHTML =
+        '<h2 class="visually-hidden">Trip events</h2>';
+      render(new TripEventsEmptyView(), this.#tripEventsElement);
+    }
   };
 
   get component() {
@@ -98,6 +105,7 @@ export default class PointFormPresenter {
     this.#pointFormComponent = null;
   }
 
+  /** Подготавливает данные для отправки. */
   static #preparePointData({ formData, tripModel, currentState, pointData }) {
     let data = {};
 

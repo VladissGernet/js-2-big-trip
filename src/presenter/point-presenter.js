@@ -37,7 +37,6 @@ export default class PointPresenter {
   #pointData = null;
   #tripModel = null;
   #listElement = null;
-  #tripEventsElement = null;
 
   #newEventBtnPresenter = null;
   #pointFormPresenter = null;
@@ -60,7 +59,6 @@ export default class PointPresenter {
     this.#pointData = pointData;
     this.#tripModel = tripModel;
     this.#listElement = listElement;
-    this.#tripEventsElement = tripEventsElement;
     this.#newEventBtnPresenter = newEventBtnPresenter;
     this.#resetListView = resetListView;
 
@@ -71,6 +69,8 @@ export default class PointPresenter {
         this.#pointData,
       ),
       tripModel: this.#tripModel,
+      pointPresenter: this,
+      tripEventsElement: tripEventsElement,
       onRolldownClick: this.#handleCloseRolldownClick,
       removeFromPointPresenters: removeFromPointPresenters,
     });
@@ -96,8 +96,6 @@ export default class PointPresenter {
 
     remove(this.#pointComponent);
     this.#pointComponent = null;
-
-    this.#pointFormPresenter.removeComponent();
   }
 
   #renderPoint() {
@@ -120,10 +118,7 @@ export default class PointPresenter {
   #replacePointToForm() {
     this.#newEventBtnPresenter.closeForm();
 
-    /**
-     * Закрывает все открытые формы через чтобы
-     * на странице была только одна открытая форма.
-     */
+    // Закрывает все открытые формы через чтобы на странице была только одна открытая форма.
     this.#resetListView();
 
     this.#mode = Mode.EDITING;
