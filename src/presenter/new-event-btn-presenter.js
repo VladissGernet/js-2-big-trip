@@ -137,10 +137,6 @@ export default class NewEventBtnPresenter {
 
   /** Добавление\сохранение данных формы. */
   #handleFormSubmit = (evt) => {
-    const formData = new FormData(evt.target);
-    const data = Object.fromEntries(formData.entries());
-
-    // TODO, Исправить получение данных offers
-    console.log(data);
+    // TODO, остановился здесь на реализации миграции презентера формы точки.
   };
 }
