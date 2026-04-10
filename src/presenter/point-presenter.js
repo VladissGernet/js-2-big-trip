@@ -168,6 +168,8 @@ export default class PointPresenter {
     const prevPointComponent = this.#pointComponent;
     this.#createPointComponent();
     replace(this.#pointComponent, prevPointComponent);
+
+    this.#pointFormPresenter.updatePointData(this.#pointData);
   };
 
   static #transformOfferTypeData({ offerTypeData, currentPointOffers }) {

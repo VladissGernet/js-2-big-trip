@@ -46,6 +46,11 @@ export default class PointFormPresenter {
     this.#removeFromPointPresenters = removeFromPointPresenters;
   }
 
+  /** Обновляет данные точки. */
+  updatePointData(newPointData) {
+    this.#pointData = newPointData;
+  }
+
   /** Добавление\сохранение данных формы. */
   #handleFormSubmit = (evt) => {
     const currentState = this.#pointFormComponent._state;
@@ -106,7 +111,15 @@ export default class PointFormPresenter {
   }
 
   /** Подготавливает данные для отправки. */
-  static #preparePointData({ formData, tripModel, currentState, pointData }) {
+  static #preparePointData({
+    formData,
+    tripModel,
+    currentState,
+    pointData = null,
+  }) {
+    const pointId = pointData === null ? '' : pointData.id;
+    const isFavorite = pointData === null ? false : pointData.isFavorite;
+
     let data = {};
 
     // Получаем стоимость.
@@ -137,11 +150,12 @@ export default class PointFormPresenter {
     );
 
     data = {
+      id: pointId,
       'base_price:': price,
       'date_from:': currentState.listPoint.dateFrom,
       'date_to:': currentState.listPoint.dateTo,
       destination: destinationId,
-      'is_favorite:': pointData.isFavorite,
+      'is_favorite:': isFavorite,
       offers: selectedIdOffers,
       'type:': type,
     };
