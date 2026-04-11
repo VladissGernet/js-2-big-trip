@@ -1,4 +1,4 @@
-import { TripEventsEmptyView, BtnView } from '../view/index.js';
+import { TripEventsEmptyView, BtnView, ListView } from '../view/index.js';
 import PointFormPresenter from './point-form-presenter.js';
 import { render, RenderPosition } from '../framework/render.js';
 import { FilterType } from '../const.js';
@@ -83,6 +83,7 @@ export default class NewEventBtnPresenter {
 
     // Создаем презентер формы для отрисовки view.
     this.#pointFormPresenter = new PointFormPresenter({
+      filterModel: this.#filterModel,
       tripModel: this.#tripModel,
       isEditForm: false,
       newEventBtnPresenter: this,
@@ -97,9 +98,18 @@ export default class NewEventBtnPresenter {
         this.#listPresenter.listView.element,
         RenderPosition.AFTERBEGIN,
       );
+      return;
     }
 
-    // TODO выношу в презентер формы точки
+    // Если список пустой.
+    this.#tripEvents.element.innerHTML =
+      '<h2 class="visually-hidden">Trip events</h2>';
+
+    // Создаю новый список.
+    this.#newList = new ListView();
+    render(this.#newList, this.#tripEvents.element);
+    render(this.#pointFormPresenter.component, this.#newList.element);
+
     // if (this.#tripModel.listPoints.length === 0) {
     //   // Очищаю таблицу.
     //   console.log(this.#tripEventsEmpty);

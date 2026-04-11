@@ -84,6 +84,7 @@ export default class ListPresenter {
       pointData,
       listPresenter: this,
       tripModel: this.#tripModel,
+      filterModel: this.#filterModel,
       newEventBtnPresenter: this.#newEventBtnPresenter,
       resetListView: this.resetListView,
       removeFromPointPresenters: this.#removeFromPointPresenters,

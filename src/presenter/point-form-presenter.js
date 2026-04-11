@@ -4,6 +4,7 @@ import { render, remove } from '../framework/render.js';
 
 /** Конфигурация презентера формы путевой точки.
  * @typedef {Object} PointFormConfig
+ * @property {Class} filterModel - Модель фильтра с наблюдателем.
  * @property {Object} pointData - Данные точки маршрута.
  * @property {Object} tripModel - Модель данных поездки.
  * @property {Class} pointPresenter - Презентер точки.
@@ -20,6 +21,7 @@ import { render, remove } from '../framework/render.js';
 export default class PointFormPresenter {
   // Общие данные.
   #tripModel = null;
+  #filterModel = null;
   #tripEventsElement = null;
   #isEditForm = null;
   // Данные существующей точки.
@@ -34,6 +36,7 @@ export default class PointFormPresenter {
 
   /** @param {PointFormConfig} config - Конфигурация презентера */
   constructor({
+    filterModel,
     tripModel,
     tripEventsElement,
     isEditForm,
@@ -46,6 +49,7 @@ export default class PointFormPresenter {
   }) {
     // Общие данные.
     this.#tripModel = tripModel;
+    this.#filterModel = filterModel;
     this.#tripEventsElement = tripEventsElement;
     this.#isEditForm = isEditForm;
 
@@ -60,6 +64,9 @@ export default class PointFormPresenter {
 
     // Добавление обработчкиа закрытия по Esc.
     document.addEventListener('keydown', this.#escKeyDownHandler);
+
+    // CallBack на событие смены фильтра для очистки формы и её обработчкиа нажатия на Esc.
+    this.#filterModel.addObserver(this.#destroy);
   }
 
   /** Закрытие по нажатию ESC. */
@@ -74,7 +81,6 @@ export default class PointFormPresenter {
         return;
       }
       // Если форма редактирования точки, то закрываем форму.
-
       this.#pointPresenter.fullReplaceFormToPoint();
       this.removeComponent();
     }
@@ -99,8 +105,12 @@ export default class PointFormPresenter {
     );
   };
 
-  #destroy() {
+  /** Удаляент компонент презентера формы, удаляет нужную точку. */
+  #destroy = () => {
+    this.#filterModel.removeObserver(this.#destroy);
+
     this.removeComponent();
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
 
     if (!this.#isEditForm) {
       // Если создание новой точки.
@@ -108,7 +118,6 @@ export default class PointFormPresenter {
     } else if (this.#isEditForm) {
       // Если редактирование точки, то идет удаление.
       // Очищаем презентер точки.
-      document.removeEventListener('keydown', this.#escKeyDownHandler);
       this.#pointPresenter.clear();
       this.#pointPresenter = null;
 
@@ -119,7 +128,7 @@ export default class PointFormPresenter {
       // Удаление из коллекции Map презентеров точек.
       this.#removeFromPointPresenters(this.#pointData.id);
     }
-  }
+  };
 
   /** Удаление текущей Point из списка. */
   #handleDeleteClick = () => {

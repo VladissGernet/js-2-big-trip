@@ -7,6 +7,7 @@ import { Mode } from '../const.js';
  * @typedef {Object} PointConfig
  * @property {PointData} pointData - Данные точки маршрута.
  * @property {TripModel} tripModel - Модель данных поездки.
+ * @property {Class} filterModel - Модель фильтра с наблюдателем.
  * @property {Class} listPresenter - Презентер списка для вставки точки.
  * @property {Class} newEventBtnPresenter - Презентер кнопки создания нового события.
  * @property {function(): void} resetListView - Функция‑callback, сбрасывающая список
@@ -35,6 +36,7 @@ import { Mode } from '../const.js';
 export default class PointPresenter {
   #pointData = null;
   #tripModel = null;
+  #filterModel = null;
   #listPresenter = null;
 
   #newEventBtnPresenter = null;
@@ -50,6 +52,7 @@ export default class PointPresenter {
   constructor({
     pointData,
     tripModel,
+    filterModel,
 
     listPresenter,
 
@@ -59,6 +62,7 @@ export default class PointPresenter {
   }) {
     this.#pointData = pointData;
     this.#tripModel = tripModel;
+    this.#filterModel = filterModel;
 
     this.#listPresenter = listPresenter;
 
@@ -120,6 +124,7 @@ export default class PointPresenter {
   #createPointFormPresenter() {
     this.#pointFormPresenter = new PointFormPresenter({
       pointData: this.#pointData,
+      filterModel: this.#filterModel,
       tripModel: this.#tripModel,
       pointPresenter: this,
       tripEventsElement: this.#listPresenter.listView.element,

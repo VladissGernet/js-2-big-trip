@@ -20,11 +20,9 @@ import FilterPresenter from './filter-presenter.js';
 export default class PageMainPresenter {
   #tripModel = null;
   #filterModel = null;
-
   #container = null;
   #newEventBtnPresenter = null;
   #main = new PageMainView();
-
   #sortPresenter = null;
   #tripEventsEmpty = null;
 
@@ -32,7 +30,7 @@ export default class PageMainPresenter {
   listPresenter = null;
 
   /** Секция с основынм списком событий.
-   * @type {HTMLElement} - Элемент разметки section.
+   * @type {Class} - Экземпляр разметки section.
    * @description Публично для обновления статуса заполненности списка событий.
    */
   tripEvents = new TripEventsView();
@@ -48,7 +46,7 @@ export default class PageMainPresenter {
     this.#filterModel = filterModel;
     this.#newEventBtnPresenter = newEventBtnPresenter;
 
-    this.#filterModel.addObserver(this.#handleModeEvent);
+    this.#filterModel.addObserver(this.#handleFilterStatus);
   }
 
   init() {
@@ -67,7 +65,7 @@ export default class PageMainPresenter {
     if (this.#tripModel.listPoints.length !== 0) {
       this.#renderEvents();
     } else {
-      this.#renderEmptyMessage(this.#filterModel.filter);
+      this.#renderEmptyMessage();
     }
   }
 
@@ -99,7 +97,7 @@ export default class PageMainPresenter {
     render(this.#tripEventsEmpty, this.tripEvents.element);
   }
 
-  #handleModeEvent = () => {
+  #handleFilterStatus = () => {
     const filterStauts = this.#filterModel.filter;
 
     /** Список, с которым будет фильтрация. */
@@ -107,7 +105,7 @@ export default class PageMainPresenter {
 
     const filteredPoints = FilterPresenter.filterList(filterStauts, points);
 
-    // Очистить sortPresenter и listPresenter
+    // Очищаем презентер новой точки.
     this.#newEventBtnPresenter.destroy();
 
     // Если точки существуют.
