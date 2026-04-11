@@ -108,7 +108,7 @@ export default class PageMainPresenter {
     const filteredPoints = FilterPresenter.filterList(filterStauts, points);
 
     // Очистить sortPresenter и listPresenter
-    this.#newEventBtnPresenter.closeForm();
+    this.#newEventBtnPresenter.destroy();
 
     // Если точки существуют.
     if (points.length) {

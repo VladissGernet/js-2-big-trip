@@ -53,7 +53,7 @@ export default class SortPresenter {
   }
 
   #handleChange = (evt) => {
-    this.#newEventBtnPresenter.closeForm();
+    this.#newEventBtnPresenter.destroy();
 
     this.#listPresenter.clearList();
     const filteredList = FilterPresenter.filterList(

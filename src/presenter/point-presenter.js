@@ -7,8 +7,7 @@ import { Mode } from '../const.js';
  * @typedef {Object} PointConfig
  * @property {PointData} pointData - Данные точки маршрута.
  * @property {TripModel} tripModel - Модель данных поездки.
- * @property {HTMLUListElement} listElement - Элемент списка для вставки точки.
- * @property {HTMLElement} tripEventsElement - Элемент с сортировкой и списком точек.
+ * @property {Class} listPresenter - Презентер списка для вставки точки.
  * @property {Class} newEventBtnPresenter - Презентер кнопки создания нового события.
  * @property {function(): void} resetListView - Функция‑callback, сбрасывающая список
  * @property {function(): void} removeFromPointPresenters - Функция‑callback, удаляющая
@@ -36,13 +35,14 @@ import { Mode } from '../const.js';
 export default class PointPresenter {
   #pointData = null;
   #tripModel = null;
-  #listElement = null;
+  #listPresenter = null;
 
   #newEventBtnPresenter = null;
   #pointFormPresenter = null;
 
   #resetListView = null;
   #pointComponent = null;
+  #removeFromPointPresenters = null;
 
   #mode = Mode.DEFAULT;
 
@@ -50,30 +50,21 @@ export default class PointPresenter {
   constructor({
     pointData,
     tripModel,
-    listElement,
-    tripEventsElement,
+
+    listPresenter,
+
     newEventBtnPresenter,
     resetListView,
     removeFromPointPresenters,
   }) {
     this.#pointData = pointData;
     this.#tripModel = tripModel;
-    this.#listElement = listElement;
+
+    this.#listPresenter = listPresenter;
+
     this.#newEventBtnPresenter = newEventBtnPresenter;
     this.#resetListView = resetListView;
-
-    this.#pointFormPresenter = new PointFormPresenter({
-      pointData: this.#pointData,
-      viewPointData: PointPresenter.#createViewPointData(
-        this.#tripModel,
-        this.#pointData,
-      ),
-      tripModel: this.#tripModel,
-      pointPresenter: this,
-      tripEventsElement: tripEventsElement,
-      onRolldownClick: this.#handleCloseRolldownClick,
-      removeFromPointPresenters: removeFromPointPresenters,
-    });
+    this.#removeFromPointPresenters = removeFromPointPresenters;
   }
 
   init() {
@@ -90,22 +81,20 @@ export default class PointPresenter {
     }
   }
 
-  /** Очищает презентер */
+  /** Очищает компонент презентера. */
   clear() {
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
-
     remove(this.#pointComponent);
     this.#pointComponent = null;
   }
 
   #renderPoint() {
     this.#createPointComponent();
-    render(this.#pointComponent, this.#listElement);
+    render(this.#pointComponent, this.#listPresenter.listView.element);
   }
 
   #createPointComponent() {
     this.#pointComponent = new ListPointView({
-      ...PointPresenter.#createViewPointData(this.#tripModel, this.#pointData),
+      ...PointPresenter.createViewPointData(this.#tripModel, this.#pointData),
       onRollupClick: this.#openRollupClickHandler,
       onFavoriteClick: this.#favoriteClickHandler,
     });
@@ -116,9 +105,10 @@ export default class PointPresenter {
    *  вместо формы редактирования.
    */
   #replacePointToForm() {
-    this.#newEventBtnPresenter.closeForm();
+    this.#newEventBtnPresenter.destroy();
+    this.#createPointFormPresenter();
 
-    // Закрывает все открытые формы через чтобы на странице была только одна открытая форма.
+    // Закрывает все открытые формы чтобы на странице была только одна открытая форма.
     this.#resetListView();
 
     this.#mode = Mode.EDITING;
@@ -127,33 +117,36 @@ export default class PointPresenter {
     remove(this.#pointComponent);
   }
 
+  #createPointFormPresenter() {
+    this.#pointFormPresenter = new PointFormPresenter({
+      pointData: this.#pointData,
+      tripModel: this.#tripModel,
+      pointPresenter: this,
+      tripEventsElement: this.#listPresenter.listView.element,
+      isEditForm: true,
+      onRolldownClick: this.#handleCloseRolldownClick,
+      removeFromPointPresenters: this.#removeFromPointPresenters,
+    });
+  }
+
   #replaceFormToPoint() {
     this.#mode = Mode.DEFAULT;
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
 
     this.#createPointComponent();
     replace(this.#pointComponent, this.#pointFormPresenter.component);
 
     this.#pointFormPresenter.removeComponent();
+    this.#pointFormPresenter = null;
   }
 
   /** Открытие по нажатию Rollup. */
   #openRollupClickHandler = () => {
     this.#replacePointToForm();
-    document.addEventListener('keydown', this.#escKeyDownHandler);
   };
 
   /** Закрытие по нажатию Rollup в форме. */
   #handleCloseRolldownClick = () => {
     this.#replaceFormToPoint();
-  };
-
-  /** Закрытие по нажатию ESC. */
-  #escKeyDownHandler = (evt) => {
-    if (evt.key === 'Escape') {
-      evt.preventDefault();
-      this.#replaceFormToPoint();
-    }
   };
 
   /** Обработчик добавления в избранное. */
@@ -168,8 +161,6 @@ export default class PointPresenter {
     const prevPointComponent = this.#pointComponent;
     this.#createPointComponent();
     replace(this.#pointComponent, prevPointComponent);
-
-    this.#pointFormPresenter.updatePointData(this.#pointData);
   };
 
   static #transformOfferTypeData({ offerTypeData, currentPointOffers }) {
@@ -179,7 +170,7 @@ export default class PointPresenter {
     }));
   }
 
-  static #createViewPointData(tripModel, point) {
+  static createViewPointData(tripModel, point) {
     const destinationData = tripModel.destinationsById.get(point.destination);
 
     const transformedOfferTypeData = PointPresenter.#transformOfferTypeData({

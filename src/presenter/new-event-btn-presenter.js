@@ -1,10 +1,6 @@
-import {
-  ListPointFormView,
-  ListView,
-  TripEventsEmptyView,
-  BtnView,
-} from '../view/index.js';
-import { render, RenderPosition, remove } from '../framework/render.js';
+import { TripEventsEmptyView, BtnView } from '../view/index.js';
+import PointFormPresenter from './point-form-presenter.js';
+import { render, RenderPosition } from '../framework/render.js';
 import { FilterType } from '../const.js';
 
 /** Конфиг презентера обработчика событйи на кнопку создания новго события.
@@ -21,17 +17,14 @@ import { FilterType } from '../const.js';
 export default class NewEventBtnPresenter {
   #tripModel = null;
   #filterModel = null;
-
   #containerElement = null;
-
   #tripEvents = null;
   #tripEventsEmpty = null;
-
   #listPresenter = null;
+  #pointFormPresenter = null;
   #filterPresenter = null;
 
   #newList = null;
-  #newWaypointForm = null;
   #newEventBtn = null;
 
   /** @param {PresenterConfig} config - Конфигурация презентера */
@@ -53,7 +46,6 @@ export default class NewEventBtnPresenter {
     render(this.#newEventBtn, this.#containerElement);
   }
 
-  /** Подключает компоненты из main после его редера */
   /** @param {PresenterConfig} config - Конфигурация презентера
    * @description Подключает компоненты из main после его редера
    */
@@ -62,14 +54,10 @@ export default class NewEventBtnPresenter {
     this.#tripEvents = tripEvents;
   }
 
-  closeForm() {
-    if (!this.#newWaypointForm) {
+  destroy() {
+    if (!this.#pointFormPresenter) {
       return;
     }
-
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
-    remove(this.#newWaypointForm);
-    this.#newWaypointForm = null;
     this.#newEventBtn.element.disabled = false;
     if (this.#tripModel.listPoints.length === 0) {
       this.#renderEmptyMessage();
@@ -93,50 +81,43 @@ export default class NewEventBtnPresenter {
       this.#listPresenter.resetListView();
     }
 
-    this.#newWaypointForm = new ListPointFormView({
-      isEditForm: false,
+    // Создаем презентер формы для отрисовки view.
+    this.#pointFormPresenter = new PointFormPresenter({
       tripModel: this.#tripModel,
-      onResetClick: this.#handleResetBtn,
-      onFormSubmit: this.#handleFormSubmit,
+      isEditForm: false,
+      newEventBtnPresenter: this,
     });
 
     // Отключаем возможность нажатия кнопки.
     this.#newEventBtn.element.disabled = true;
 
-    if (this.#tripModel.listPoints.length === 0) {
-      // Очищаю таблицу.
-      remove(this.#tripEventsEmpty);
-      this.#tripEvents.element.innerHTML =
-        '<h2 class="visually-hidden">Trip events</h2>';
-
-      // Создаю новый список.
-      this.#newList = new ListView();
-      render(this.#newList, this.#tripEvents.element);
-      render(this.#newWaypointForm, this.#newList.element);
-    } else {
+    if (this.#tripModel.listPoints.length) {
       render(
-        this.#newWaypointForm,
+        this.#pointFormPresenter.component,
         this.#listPresenter.listView.element,
         RenderPosition.AFTERBEGIN,
       );
     }
 
-    document.addEventListener('keydown', this.#escKeyDownHandler);
-  };
+    // TODO выношу в презентер формы точки
+    // if (this.#tripModel.listPoints.length === 0) {
+    //   // Очищаю таблицу.
+    //   console.log(this.#tripEventsEmpty);
 
-  #escKeyDownHandler = (evt) => {
-    if (evt.key === 'Escape') {
-      evt.preventDefault();
-      this.closeForm();
-    }
-  };
+    //   remove(this.#tripEventsEmpty);
+    //   this.#tripEvents.element.innerHTML =
+    //     '<h2 class="visually-hidden">Trip events</h2>';
 
-  #handleResetBtn = () => {
-    this.closeForm();
-  };
-
-  /** Добавление\сохранение данных формы. */
-  #handleFormSubmit = (evt) => {
-    // TODO, остановился здесь на реализации миграции презентера формы точки.
+    //   // Создаю новый список.
+    //   this.#newList = new ListView();
+    //   render(this.#newList, this.#tripEvents.element);
+    //   render(this.#pointFormPresenter.component, this.#newList.element);
+    // } else {
+    //   render(
+    //     this.#pointFormPresenter.component,
+    //     this.#listPresenter.listView.element,
+    //     RenderPosition.AFTERBEGIN,
+    //   );
+    // }
   };
 }

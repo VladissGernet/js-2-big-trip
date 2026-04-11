@@ -16,7 +16,6 @@ import { SORT_CONFIG } from '../const.js';
 export default class ListPresenter {
   #newEventBtnPresenter = null;
   #container = null;
-
   #tripModel = null;
   #filterModel = null;
 
@@ -41,7 +40,10 @@ export default class ListPresenter {
   /** Полная очистка списка и коллекции презентеров. */
   clearList() {
     this.listView.element.innerHTML = '';
-    this.#pointPresenters.forEach((presenter) => presenter.clear());
+    this.#pointPresenters.forEach((presenter) => {
+      presenter.clear();
+      presenter = null;
+    });
     this.#pointPresenters.clear();
   }
 
@@ -52,7 +54,7 @@ export default class ListPresenter {
     );
   };
 
-  /** Удаляет из списка */
+  /** Удаляет презентер точки из списка по id */
   #removeFromPointPresenters = (id) => this.#pointPresenters.delete(id);
 
   #renderList(sortedList = null) {
@@ -60,9 +62,6 @@ export default class ListPresenter {
     if (!sortedList) {
       /** Значение для выделения нужных дат */
       const currentFilter = this.#filterModel.filter;
-
-      // Добавляем путевые точки до рендера.
-
       const filteredList = FilterPresenter.filterList(
         currentFilter,
         this.#tripModel.listPoints,
@@ -83,8 +82,7 @@ export default class ListPresenter {
   #createPoint(pointData) {
     const pointPresenter = new PointPresenter({
       pointData,
-      listElement: this.listView.element,
-      tripEventsElement: this.#container,
+      listPresenter: this,
       tripModel: this.#tripModel,
       newEventBtnPresenter: this.#newEventBtnPresenter,
       resetListView: this.resetListView,
