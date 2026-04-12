@@ -6,7 +6,7 @@ import { SORT_CONFIG } from '../const.js';
 
 /** Конфигурация презентера списка.
  * @typedef {Object} PresenterConfig
- * @property {HTMLElement} tripEventsElement - Контейнер для рендера.
+ * @property {Class} pageMainPresenter - Презентер страницы Main.
  * @property {TripModel} tripModel - Модель данных поездки.
  * @property {Class} newEventBtnPresenter - Презентер кнопки создания нового события.
  * @property {Class} filterModel - Модель фильтра с наблюдателем.
@@ -14,25 +14,24 @@ import { SORT_CONFIG } from '../const.js';
 
 /** Презентер списка. Отвечает за рендеринг компонента Списка. */
 export default class ListPresenter {
-  #newEventBtnPresenter = null;
-  #tripEventsElement = null;
+  #pageMainPresenter = null;
   #tripModel = null;
   #filterModel = null;
+  #newEventBtnPresenter = null;
+
+  #listView = null;
 
   /** Коллекция из презентеров точек. */
   #pointPresenters = new Map();
 
-  /** Публичный доступ для управления списком представления из header презентера при создании новой точки. */
-  listView = new ListView();
-
   /** @param {PresenterConfig} config - Конфигурация презентера */
   constructor({
-    tripEventsElement,
+    pageMainPresenter,
     tripModel,
     newEventBtnPresenter,
     filterModel,
   }) {
-    this.#tripEventsElement = tripEventsElement;
+    this.#pageMainPresenter = pageMainPresenter;
     this.#tripModel = tripModel;
     this.#filterModel = filterModel;
     this.#newEventBtnPresenter = newEventBtnPresenter;
@@ -60,10 +59,16 @@ export default class ListPresenter {
     );
   };
 
+  get listView() {
+    return this.#listView;
+  }
+
   /** Удаляет презентер точки из списка по id */
   #removeFromPointPresenters = (id) => this.#pointPresenters.delete(id);
 
   #renderList(sortedList = null) {
+    this.#listView = new ListView();
+
     // Проверяет получение отсортированного списка, иначе берём данные из модели.
     if (!sortedList) {
       /** Значение для выделения нужных дат */
@@ -77,22 +82,21 @@ export default class ListPresenter {
         .sort(SORT_CONFIG['date'])
         .forEach((point) => this.#createPoint(point));
 
-      render(this.listView, this.#tripEventsElement);
+      render(this.#listView, this.#pageMainPresenter.tripEventsView.element);
       return;
     }
 
     sortedList.forEach((point) => this.#createPoint(point));
-    render(this.listView, this.#tripEventsElement);
+    render(this.#listView, this.#pageMainPresenter);
   }
 
   #createPoint(pointData) {
     const pointPresenter = new PointPresenter({
       pointData,
-      listPresenter: this,
+      pageMainPresenter: this.#pageMainPresenter,
       tripModel: this.#tripModel,
       filterModel: this.#filterModel,
       newEventBtnPresenter: this.#newEventBtnPresenter,
-      tripEventsElement: this.#tripEventsElement,
       resetListView: this.resetListView,
       removeFromPointPresenters: this.#removeFromPointPresenters,
     });

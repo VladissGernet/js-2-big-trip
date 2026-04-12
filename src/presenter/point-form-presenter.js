@@ -66,8 +66,6 @@ export default class PointFormPresenter {
 
     // CallBack на событие смены фильтра для очистки формы и её обработчкиа нажатия на Esc.
     this.#filterModel.addObserver(this.#destroy);
-
-    console.log(listViewElement);
   }
 
   /** Закрытие по нажатию ESC. */
@@ -134,8 +132,6 @@ export default class PointFormPresenter {
     if (this.#tripModel.listPoints.length) {
       return;
     }
-
-    console.log(this.#listViewElement);
 
     this.#listViewElement.innerHTML =
       '<h2 class="visually-hidden">Trip events</h2>';

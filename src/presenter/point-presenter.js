@@ -5,18 +5,17 @@ import { Mode } from '../const.js';
 
 /** Конфигурация презентера путевой точки.
  * @typedef {Object} PointConfig
- * @property {HTMLElement} tripEventsElement - Контейнер для рендера.
  * @property {PointData} pointData - Данные точки маршрута.
  * @property {TripModel} tripModel - Модель данных поездки.
  * @property {Class} filterModel - Модель фильтра с наблюдателем.
- * @property {Class} listPresenter - Презентер списка для вставки точки.
+ * @property {Class} pageMainPresenter - Презентер страницы Main.
  * @property {Class} newEventBtnPresenter - Презентер кнопки создания нового события.
  * @property {function(): void} resetListView - Функция‑callback, сбрасывающая список
  * @property {function(): void} removeFromPointPresenters - Функция‑callback, удаляющая
  * из коллекции Map в listPresenter.
  */
 
-/** Модель точки маршрута (event point) для планировщика поездок.
+/** Данные точки маршрута (event point) для планировщика поездок.
  * @typedef {Object} PointData
  * @property {string} id - Уникальный идентификатор точки (UUID).
  * @property {number} basePrice - Базовая цена услуги в рублях.
@@ -38,16 +37,15 @@ export default class PointPresenter {
   #pointData = null;
   #tripModel = null;
   #filterModel = null;
-  #listPresenter = null;
-  #tripEventsElement = null;
-
+  #pageMainPresenter = null;
   #newEventBtnPresenter = null;
-  #pointFormPresenter = null;
-
   #resetListView = null;
-  #pointComponent = null;
   #removeFromPointPresenters = null;
 
+  #pointFormPresenter = null;
+  #pointComponent = null;
+
+  // Режим текущй точки (по умолчанию\редактируется)
   #mode = Mode.DEFAULT;
 
   /** @param {PointConfig} config - Конфигурация презентера */
@@ -55,10 +53,7 @@ export default class PointPresenter {
     pointData,
     tripModel,
     filterModel,
-    tripEventsElement,
-
-    listPresenter,
-
+    pageMainPresenter,
     newEventBtnPresenter,
     resetListView,
     removeFromPointPresenters,
@@ -66,10 +61,7 @@ export default class PointPresenter {
     this.#pointData = pointData;
     this.#tripModel = tripModel;
     this.#filterModel = filterModel;
-    this.#tripEventsElement = tripEventsElement;
-
-    this.#listPresenter = listPresenter;
-
+    this.#pageMainPresenter = pageMainPresenter;
     this.#newEventBtnPresenter = newEventBtnPresenter;
     this.#resetListView = resetListView;
     this.#removeFromPointPresenters = removeFromPointPresenters;
@@ -97,7 +89,7 @@ export default class PointPresenter {
 
   #renderPoint() {
     this.#createPointComponent();
-    render(this.#pointComponent, this.#listPresenter.listView.element);
+    render(this.#pointComponent, this.#pageMainPresenter.listView.element);
   }
 
   #createPointComponent() {
@@ -136,7 +128,7 @@ export default class PointPresenter {
       filterModel: this.#filterModel,
       tripModel: this.#tripModel,
       pointPresenter: this,
-      listViewElement: this.#listPresenter.listView.element,
+      listViewElement: this.#pageMainPresenter.listView.element,
 
       isEditForm: true,
       onRolldownClick: this.#handleCloseRolldownClick,

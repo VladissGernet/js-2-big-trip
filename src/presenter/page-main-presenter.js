@@ -13,32 +13,23 @@ import { FilterStatus } from '../const.js';
  * @typedef {Object} PresenterConfig
  * @property {HTMLElement} container - Контейнер для рендера
  * @property {Model} tripModel - Данные модели для рендера страницы
- * @property {Class} newEventBtnPresenter - Презентер кнопки создания нового события.
  * @property {Class} filterModel - Модель фильтра с наблюдателем.
+ * @property {Class} newEventBtnPresenter - Презентер кнопки создания нового события.
  */
 
 /** Презентер основного содержимого страницы */
 export default class PageMainPresenter {
+  #container = null;
   #tripModel = null;
   #filterModel = null;
-  #container = null;
   #newEventBtnPresenter = null;
-  #main = new PageMainView();
+
+  #mainView = new PageMainView();
+  #tripEventsView = null;
+  #tripEventsEmptyView = null;
+
   #sortPresenter = null;
-  #tripEventsEmpty = null;
-
-  /** Публичный доступ к презентеру списка. */
-  listPresenter = null;
-
-  /** Секция с основынм списком событий.
-   * @type {Class} - Экземпляр разметки section.
-   * @description Публично для обновления статуса заполненности списка событий.
-   */
-  tripEvents = new TripEventsView();
-
-  /** Публичный доступ к сообщению о пустоте списка
-   * @type {HTMLParagraphElement} - Элемент текста разметки.
-   */
+  #listPresenter = null;
 
   /** @param {PresenterConfig} */
   constructor({ container, tripModel, newEventBtnPresenter, filterModel }) {
@@ -54,16 +45,30 @@ export default class PageMainPresenter {
     this.#renderMain();
   }
 
+  get listView() {
+    return this.#listPresenter.listView;
+  }
+
+  get tripEventsView() {
+    return this.#tripEventsView;
+  }
+
+  resetListView(sortedList) {
+    // TODO остановился на реафкториге сортирвке, где в sort-presenter стоят
+    // this.#listPresenter.clearList() и this.#listPresenter.init(sortedList);
+  }
+
   #renderMain() {
-    render(this.#main, this.#container);
+    render(this.#mainView, this.#container);
     this.#renderEventsSection();
   }
 
   #renderEventsSection() {
-    render(this.tripEvents, this.#main.container);
+    this.#tripEventsView = new TripEventsView();
+    render(this.#tripEventsView, this.#mainView.container);
 
     // Проверка на пустой список при первой отрисовке.
-    if (this.#tripModel.listPoints.length !== 0) {
+    if (this.#tripModel.listPoints.length) {
       this.#renderEvents();
     } else {
       this.#renderEmptyMessage();
@@ -72,7 +77,7 @@ export default class PageMainPresenter {
 
   #renderEvents() {
     const commonConfig = {
-      tripEventsElement: this.tripEvents.element,
+      pageMainPresenter: this,
       tripModel: this.#tripModel,
       filterModel: this.#filterModel,
       newEventBtnPresenter: this.#newEventBtnPresenter,
@@ -80,22 +85,22 @@ export default class PageMainPresenter {
 
     // Сперва необходимо создать презентер списка для его передачи
     // презентеру сортириовки.
-    this.listPresenter = new ListPresenter(commonConfig);
+    this.#listPresenter = new ListPresenter(commonConfig);
 
     this.#sortPresenter = new SortPresenter({
       ...commonConfig,
-      listPresenter: this.listPresenter,
+      listPresenter: this.#listPresenter,
     });
 
     this.#sortPresenter.init();
-    this.listPresenter.init();
+    this.#listPresenter.init();
   }
 
   #renderEmptyMessage(filterStatus) {
     // Если список пустой, то возвращает сообщение о предложении создания
     // новой путевой точки.
-    this.#tripEventsEmpty = new TripEventsEmptyView(filterStatus);
-    render(this.#tripEventsEmpty, this.tripEvents.element);
+    this.#tripEventsEmptyView = new TripEventsEmptyView(filterStatus);
+    render(this.#tripEventsEmptyView, this.tripEvents.element);
   }
 
   #handleFilterStatus = (_, status) => {
@@ -116,7 +121,7 @@ export default class PageMainPresenter {
     }
 
     // Очищаем элемент для нового рендера.
-    this.tripEvents.element.innerHTML =
+    this.#tripEventsView.element.innerHTML =
       '<h2 class="visually-hidden">Trip events</h2>';
 
     // Если есть отфильтрованные точки.
