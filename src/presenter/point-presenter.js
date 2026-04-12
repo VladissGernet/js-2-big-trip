@@ -76,6 +76,7 @@ export default class PointPresenter {
    * чтобы на странице была только одна открытая форма.
    */
   fullReplaceFormToPoint() {
+    // Оптимизировано, чтобы не перерисовывать всю страницу.
     if (this.#mode === Mode.EDITING) {
       this.#replaceFormToPoint();
     }
@@ -124,13 +125,12 @@ export default class PointPresenter {
 
   #createPointFormPresenter() {
     this.#pointFormPresenter = new PointFormPresenter({
-      pointData: this.#pointData,
-      filterModel: this.#filterModel,
       tripModel: this.#tripModel,
-      pointPresenter: this,
-      listViewElement: this.#pageMainPresenter.listView.element,
-
+      filterModel: this.#filterModel,
       isEditForm: true,
+      pointData: this.#pointData,
+      pointPresenter: this,
+      pageMainPresenter: this.#pageMainPresenter,
       onRolldownClick: this.#handleCloseRolldownClick,
       removeFromPointPresenters: this.#removeFromPointPresenters,
     });

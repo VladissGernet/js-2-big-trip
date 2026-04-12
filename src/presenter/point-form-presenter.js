@@ -8,6 +8,7 @@ import { render, remove } from '../framework/render.js';
  * @property {Object} pointData - Данные точки маршрута.
  * @property {Object} tripModel - Модель данных поездки.
  * @property {Class} pointPresenter - Презентер точки.
+ * @property {Class} pageMainPresenter - Презентер страницы Main.
  * @property {Class} newEventBtnPresenter - Презентер создания новой точки.
  * @property {HTMLElement} listViewElement - Элемент списка точек.
  * @property {Boolean} isEditForm - Флаг решения какая форма будет, либо редактирование (true),
@@ -27,6 +28,7 @@ export default class PointFormPresenter {
   // Данные существующей точки.
   #pointData = null;
   #pointPresenter = null;
+  #pageMainPresenter = null;
   #handleRolldownClick = null;
   #removeFromPointPresenters = null;
   // Данные новой точки.
@@ -36,12 +38,12 @@ export default class PointFormPresenter {
 
   /** @param {PointFormConfig} config - Конфигурация презентера */
   constructor({
-    filterModel,
     tripModel,
-    listViewElement,
+    filterModel,
     isEditForm,
     pointData,
     pointPresenter,
+    pageMainPresenter,
     onRolldownClick,
     removeFromPointPresenters,
     newEventBtnPresenter,
@@ -49,12 +51,12 @@ export default class PointFormPresenter {
     // Общие данные.
     this.#tripModel = tripModel;
     this.#filterModel = filterModel;
-    this.#listViewElement = listViewElement;
     this.#isEditForm = isEditForm;
 
     // Данные существующей точки.
     this.#pointData = pointData;
     this.#pointPresenter = pointPresenter;
+    this.#pageMainPresenter = pageMainPresenter;
     this.#handleRolldownClick = onRolldownClick;
     this.#removeFromPointPresenters = removeFromPointPresenters;
 
@@ -110,7 +112,6 @@ export default class PointFormPresenter {
 
     this.removeComponent();
     document.removeEventListener('keydown', this.#escKeyDownHandler);
-
     if (!this.#isEditForm) {
       // Если создание новой точки.
       this.#newEventBtnPresenter.destroy();
@@ -128,13 +129,17 @@ export default class PointFormPresenter {
       this.#removeFromPointPresenters(this.#pointData.id);
     }
 
+    console.log('go');
+    // TODO
+    // Остановился здесь на перерисовке после удаления.
+
     // Рендер при пустом списке.
     if (this.#tripModel.listPoints.length) {
       return;
     }
-
-    this.#listViewElement.innerHTML =
-      '<h2 class="visually-hidden">Trip events</h2>';
+    // TODO заменить на что-то более подбающее, т.е. метод из презентера page main
+    // this.#listViewElement.innerHTML =
+    //   '<h2 class="visually-hidden">Trip events</h2>';
     const emptyMessageComponent = new TripEventsEmptyView(
       this.#filterModel.filter,
     );

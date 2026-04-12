@@ -1,5 +1,5 @@
 import { ListView } from '../view/index.js';
-import { render } from '../framework/render.js';
+import { render, remove } from '../framework/render.js';
 import PointPresenter from './point-presenter.js';
 import FilterPresenter from './filter-presenter.js';
 import { SORT_CONFIG } from '../const.js';
@@ -42,13 +42,16 @@ export default class ListPresenter {
   }
 
   /** Полная очистка списка и коллекции презентеров. */
-  clearList() {
-    this.listView.element.innerHTML = '';
+  destroy() {
     this.#pointPresenters.forEach((presenter) => {
       presenter.clear();
       presenter = null;
     });
     this.#pointPresenters.clear();
+
+    remove(this.#listView);
+    this.#listView.removeElement();
+    this.#listView = null;
   }
 
   /** Перерисовывает список */
@@ -68,6 +71,7 @@ export default class ListPresenter {
 
   #renderList(sortedList = null) {
     this.#listView = new ListView();
+    const tripEventsElement = this.#pageMainPresenter.tripEventsView.element;
 
     // Проверяет получение отсортированного списка, иначе берём данные из модели.
     if (!sortedList) {
@@ -82,12 +86,12 @@ export default class ListPresenter {
         .sort(SORT_CONFIG['date'])
         .forEach((point) => this.#createPoint(point));
 
-      render(this.#listView, this.#pageMainPresenter.tripEventsView.element);
+      render(this.#listView, tripEventsElement);
       return;
     }
 
     sortedList.forEach((point) => this.#createPoint(point));
-    render(this.#listView, this.#pageMainPresenter);
+    render(this.#listView, tripEventsElement);
   }
 
   #createPoint(pointData) {

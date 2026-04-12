@@ -45,17 +45,17 @@ export default class PageMainPresenter {
     this.#renderMain();
   }
 
-  get listView() {
-    return this.#listPresenter.listView;
-  }
-
   get tripEventsView() {
     return this.#tripEventsView;
   }
 
-  resetListView(sortedList) {
-    // TODO остановился на реафкториге сортирвке, где в sort-presenter стоят
-    // this.#listPresenter.clearList() и this.#listPresenter.init(sortedList);
+  get listView() {
+    return this.#listPresenter.listView;
+  }
+
+  reinitListView(sortedList) {
+    this.#listPresenter.destroy();
+    this.#listPresenter.init(sortedList);
   }
 
   #renderMain() {
@@ -86,11 +86,7 @@ export default class PageMainPresenter {
     // Сперва необходимо создать презентер списка для его передачи
     // презентеру сортириовки.
     this.#listPresenter = new ListPresenter(commonConfig);
-
-    this.#sortPresenter = new SortPresenter({
-      ...commonConfig,
-      listPresenter: this.#listPresenter,
-    });
+    this.#sortPresenter = new SortPresenter(commonConfig);
 
     this.#sortPresenter.init();
     this.#listPresenter.init();
@@ -116,7 +112,7 @@ export default class PageMainPresenter {
 
     // Если точки существуют.
     if (points.length) {
-      this.listPresenter.clearList();
+      this.#listPresenter.destroy();
       this.#sortPresenter.removeComponent();
     }
 

@@ -5,35 +5,30 @@ import FilterPresenter from './filter-presenter.js';
 
 /** Конфигурация презентера сортировки.
  * @typedef {Object} PresenterConfig
- * @property {HTMLElement} tripEventsElement - Контейнер для рендера
  * @property {Model} tripModel - Данные модели для рендера страницы
  * @property {Class} filterModel - Модель фильтра с наблюдателем.
- * @property {Class} listPresenter - Презентер списка.
+ * @property {Class} pageMainPresenter - Презентер страницы Main.
  * @property {Class} newEventBtnPresenter - Презентер кнопки создания нового события.
  */
 
 /** Презентер сортировки. Отвечает за рендеринг компонента сортирвки списка событйи. */
 export default class SortPresenter {
-  #component = null;
-
-  #tripEventsElement = null;
   #tripModel = null;
   #filterModel = null;
-  #listPresenter = null;
+  #pageMainPresenter = null;
   #newEventBtnPresenter = null;
+  #component = null;
 
   /** @param {PresenterConfig} */
   constructor({
-    tripEventsElement,
     tripModel,
     filterModel,
-    listPresenter,
+    pageMainPresenter,
     newEventBtnPresenter,
   }) {
-    this.#tripEventsElement = tripEventsElement;
     this.#tripModel = tripModel;
     this.#filterModel = filterModel;
-    this.#listPresenter = listPresenter;
+    this.#pageMainPresenter = pageMainPresenter;
     this.#newEventBtnPresenter = newEventBtnPresenter;
 
     this.#filterModel.addObserver(this.#handleModeEvent);
@@ -49,13 +44,11 @@ export default class SortPresenter {
 
   #renderSort() {
     this.#component = new SortView(this.#handleChange);
-    render(this.#component, this.#tripEventsElement);
+    render(this.#component, this.#pageMainPresenter.tripEventsView.element);
   }
 
   #handleChange = (evt) => {
     this.#newEventBtnPresenter.destroy();
-
-    this.#listPresenter.clearList();
     const filteredList = FilterPresenter.filterList(
       this.#filterModel.filter,
       this.#tripModel.listPoints,
@@ -63,7 +56,7 @@ export default class SortPresenter {
     const sortedList = filteredList.sort(
       SORT_CONFIG[SORT_TYPES[evt.target.value]],
     );
-    this.#listPresenter.init(sortedList);
+    this.#pageMainPresenter.reinitListView(sortedList);
   };
 
   #handleModeEvent = () => {
