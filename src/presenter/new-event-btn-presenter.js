@@ -80,6 +80,7 @@ export default class NewEventBtnPresenter {
       tripModel: this.#tripModel,
       isEditForm: false,
       newEventBtnPresenter: this,
+      tripEventsElement: this.#tripEvents.element,
     });
 
     // Отключаем возможность нажатия кнопки.

@@ -5,7 +5,7 @@ import FilterPresenter from './filter-presenter.js';
 
 /** Конфигурация презентера сортировки.
  * @typedef {Object} PresenterConfig
- * @property {HTMLElement} container - Контейнер для рендера
+ * @property {HTMLElement} tripEventsElement - Контейнер для рендера
  * @property {Model} tripModel - Данные модели для рендера страницы
  * @property {Class} filterModel - Модель фильтра с наблюдателем.
  * @property {Class} listPresenter - Презентер списка.
@@ -16,7 +16,7 @@ import FilterPresenter from './filter-presenter.js';
 export default class SortPresenter {
   #component = null;
 
-  #container = null;
+  #tripEventsElement = null;
   #tripModel = null;
   #filterModel = null;
   #listPresenter = null;
@@ -24,13 +24,13 @@ export default class SortPresenter {
 
   /** @param {PresenterConfig} */
   constructor({
-    container,
+    tripEventsElement,
     tripModel,
     filterModel,
     listPresenter,
     newEventBtnPresenter,
   }) {
-    this.#container = container;
+    this.#tripEventsElement = tripEventsElement;
     this.#tripModel = tripModel;
     this.#filterModel = filterModel;
     this.#listPresenter = listPresenter;
@@ -49,7 +49,7 @@ export default class SortPresenter {
 
   #renderSort() {
     this.#component = new SortView(this.#handleChange);
-    render(this.#component, this.#container);
+    render(this.#component, this.#tripEventsElement);
   }
 
   #handleChange = (evt) => {

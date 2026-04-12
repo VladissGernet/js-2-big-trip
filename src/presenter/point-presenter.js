@@ -5,6 +5,7 @@ import { Mode } from '../const.js';
 
 /** Конфигурация презентера путевой точки.
  * @typedef {Object} PointConfig
+ * @property {HTMLElement} tripEventsElement - Контейнер для рендера.
  * @property {PointData} pointData - Данные точки маршрута.
  * @property {TripModel} tripModel - Модель данных поездки.
  * @property {Class} filterModel - Модель фильтра с наблюдателем.
@@ -38,6 +39,7 @@ export default class PointPresenter {
   #tripModel = null;
   #filterModel = null;
   #listPresenter = null;
+  #tripEventsElement = null;
 
   #newEventBtnPresenter = null;
   #pointFormPresenter = null;
@@ -53,6 +55,7 @@ export default class PointPresenter {
     pointData,
     tripModel,
     filterModel,
+    tripEventsElement,
 
     listPresenter,
 
@@ -63,6 +66,7 @@ export default class PointPresenter {
     this.#pointData = pointData;
     this.#tripModel = tripModel;
     this.#filterModel = filterModel;
+    this.#tripEventsElement = tripEventsElement;
 
     this.#listPresenter = listPresenter;
 
@@ -97,8 +101,13 @@ export default class PointPresenter {
   }
 
   #createPointComponent() {
+    const viewPointData = PointPresenter.createViewPointData(
+      this.#tripModel,
+      this.#pointData,
+    );
+
     this.#pointComponent = new ListPointView({
-      ...PointPresenter.createViewPointData(this.#tripModel, this.#pointData),
+      ...viewPointData,
       onRollupClick: this.#openRollupClickHandler,
       onFavoriteClick: this.#favoriteClickHandler,
     });
@@ -127,7 +136,8 @@ export default class PointPresenter {
       filterModel: this.#filterModel,
       tripModel: this.#tripModel,
       pointPresenter: this,
-      tripEventsElement: this.#listPresenter.listView.element,
+      listViewElement: this.#listPresenter.listView.element,
+
       isEditForm: true,
       onRolldownClick: this.#handleCloseRolldownClick,
       removeFromPointPresenters: this.#removeFromPointPresenters,

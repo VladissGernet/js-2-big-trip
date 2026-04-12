@@ -54,6 +54,7 @@ export default class MainPresenter {
   /** Связывает компоненты PageMain с кнопкой создания новой точки маршурта в header. */
   #connectPageMainComponents() {
     this.#headerPresenter.connectPageMainComponents({
+      // TODO Придется походу передлывать listPresenter как-то на tripPresenter
       listPresenter: this.#pageMainPresenter.listPresenter,
       tripEvents: this.#pageMainPresenter.tripEvents,
     });

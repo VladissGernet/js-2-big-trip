@@ -9,7 +9,7 @@ import { render, remove } from '../framework/render.js';
  * @property {Object} tripModel - Модель данных поездки.
  * @property {Class} pointPresenter - Презентер точки.
  * @property {Class} newEventBtnPresenter - Презентер создания новой точки.
- * @property {HTMLElement} tripEventsElement - Элемент с сортировкой и списком точек.
+ * @property {HTMLElement} listViewElement - Элемент списка точек.
  * @property {Boolean} isEditForm - Флаг решения какая форма будет, либо редактирование (true),
  * либо создание новой точки.
  * @property {function(): void} onRolldownClick - Функция‑callback (обработчик клика), которая
@@ -22,7 +22,7 @@ export default class PointFormPresenter {
   // Общие данные.
   #tripModel = null;
   #filterModel = null;
-  #tripEventsElement = null;
+  #listViewElement = null;
   #isEditForm = null;
   // Данные существующей точки.
   #pointData = null;
@@ -38,19 +38,18 @@ export default class PointFormPresenter {
   constructor({
     filterModel,
     tripModel,
-    tripEventsElement,
+    listViewElement,
     isEditForm,
     pointData,
     pointPresenter,
     onRolldownClick,
     removeFromPointPresenters,
-
     newEventBtnPresenter,
   }) {
     // Общие данные.
     this.#tripModel = tripModel;
     this.#filterModel = filterModel;
-    this.#tripEventsElement = tripEventsElement;
+    this.#listViewElement = listViewElement;
     this.#isEditForm = isEditForm;
 
     // Данные существующей точки.
@@ -67,6 +66,8 @@ export default class PointFormPresenter {
 
     // CallBack на событие смены фильтра для очистки формы и её обработчкиа нажатия на Esc.
     this.#filterModel.addObserver(this.#destroy);
+
+    console.log(listViewElement);
   }
 
   /** Закрытие по нажатию ESC. */
@@ -129,8 +130,19 @@ export default class PointFormPresenter {
       this.#removeFromPointPresenters(this.#pointData.id);
     }
 
-    // Редер при пустом списке.
-    // console.log(this.);
+    // Рендер при пустом списке.
+    if (this.#tripModel.listPoints.length) {
+      return;
+    }
+
+    console.log(this.#listViewElement);
+
+    this.#listViewElement.innerHTML =
+      '<h2 class="visually-hidden">Trip events</h2>';
+    const emptyMessageComponent = new TripEventsEmptyView(
+      this.#filterModel.filter,
+    );
+    render(emptyMessageComponent, this.#listViewElement);
   };
 
   /** Удаление текущей Point из списка. */

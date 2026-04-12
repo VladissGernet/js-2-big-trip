@@ -6,8 +6,8 @@ import { SORT_CONFIG } from '../const.js';
 
 /** Конфигурация презентера списка.
  * @typedef {Object} PresenterConfig
- * @property {HTMLElement} container - Контейнер для рендера
- * @property {TripModel} tripModel - Модель данных поездки
+ * @property {HTMLElement} tripEventsElement - Контейнер для рендера.
+ * @property {TripModel} tripModel - Модель данных поездки.
  * @property {Class} newEventBtnPresenter - Презентер кнопки создания нового события.
  * @property {Class} filterModel - Модель фильтра с наблюдателем.
  */
@@ -15,7 +15,7 @@ import { SORT_CONFIG } from '../const.js';
 /** Презентер списка. Отвечает за рендеринг компонента Списка. */
 export default class ListPresenter {
   #newEventBtnPresenter = null;
-  #container = null;
+  #tripEventsElement = null;
   #tripModel = null;
   #filterModel = null;
 
@@ -26,8 +26,13 @@ export default class ListPresenter {
   listView = new ListView();
 
   /** @param {PresenterConfig} config - Конфигурация презентера */
-  constructor({ container, tripModel, newEventBtnPresenter, filterModel }) {
-    this.#container = container;
+  constructor({
+    tripEventsElement,
+    tripModel,
+    newEventBtnPresenter,
+    filterModel,
+  }) {
+    this.#tripEventsElement = tripEventsElement;
     this.#tripModel = tripModel;
     this.#filterModel = filterModel;
     this.#newEventBtnPresenter = newEventBtnPresenter;
@@ -72,12 +77,12 @@ export default class ListPresenter {
         .sort(SORT_CONFIG['date'])
         .forEach((point) => this.#createPoint(point));
 
-      render(this.listView, this.#container);
+      render(this.listView, this.#tripEventsElement);
       return;
     }
 
     sortedList.forEach((point) => this.#createPoint(point));
-    render(this.listView, this.#container);
+    render(this.listView, this.#tripEventsElement);
   }
 
   #createPoint(pointData) {
@@ -87,6 +92,7 @@ export default class ListPresenter {
       tripModel: this.#tripModel,
       filterModel: this.#filterModel,
       newEventBtnPresenter: this.#newEventBtnPresenter,
+      tripEventsElement: this.#tripEventsElement,
       resetListView: this.resetListView,
       removeFromPointPresenters: this.#removeFromPointPresenters,
     });

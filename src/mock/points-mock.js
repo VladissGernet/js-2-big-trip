@@ -15,19 +15,19 @@ const pointsMock = [
     ],
     type: 'check-in',
   },
-  {
-    id: 'd9f7cf77-9795-46b3-befe-2b4a1aa279ac',
-    base_price: 6656,
-    date_from: '2026-02-26T11:15:05.526Z',
-    date_to: '2026-02-27T05:47:05.526Z',
-    destination: '7d40a062-616b-41e0-93aa-b407eb20bb9e',
-    is_favorite: false,
-    offers: [
-      '517d044c-0986-4375-8927-e8b1996e6d95',
-      '265f3fe7-286f-4fdb-9866-51b023ecc332',
-    ],
-    type: 'ship',
-  },
+  // {
+  //   id: 'd9f7cf77-9795-46b3-befe-2b4a1aa279ac',
+  //   base_price: 6656,
+  //   date_from: '2026-02-26T11:15:05.526Z',
+  //   date_to: '2026-02-27T05:47:05.526Z',
+  //   destination: '7d40a062-616b-41e0-93aa-b407eb20bb9e',
+  //   is_favorite: false,
+  //   offers: [
+  //     '517d044c-0986-4375-8927-e8b1996e6d95',
+  //     '265f3fe7-286f-4fdb-9866-51b023ecc332',
+  //   ],
+  //   type: 'ship',
+  // },
   // {
   //   id: '95984bfd-decd-4190-9740-16622df56376',
   //   base_price: 5698,

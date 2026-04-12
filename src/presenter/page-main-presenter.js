@@ -72,7 +72,7 @@ export default class PageMainPresenter {
 
   #renderEvents() {
     const commonConfig = {
-      container: this.tripEvents.element,
+      tripEventsElement: this.tripEvents.element,
       tripModel: this.#tripModel,
       filterModel: this.#filterModel,
       newEventBtnPresenter: this.#newEventBtnPresenter,
