@@ -45,6 +45,9 @@ export default class MainPresenter {
       container: this.#pageBody,
       tripModel: this.#tripModel,
       filterModel: this.#filterModel,
+      // TODO
+      // Сделать тоже более абстрактно, т.е. не нужно знать PageMainPresenter о каком-то newEventBtnPresenter,
+      // а просто передать публичный метод от headerPresenter, который будет делать закрытие формы или еще чего.
       newEventBtnPresenter: this.#headerPresenter.newEventBtnPresenter,
     });
 
