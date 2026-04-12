@@ -128,40 +128,14 @@ export default class PointFormPresenter {
       // Удаление из коллекции Map презентеров точек.
       this.#removeFromPointPresenters(this.#pointData.id);
     }
+
+    // Редер при пустом списке.
+    // console.log(this.);
   };
 
   /** Удаление текущей Point из списка. */
   #handleDeleteClick = () => {
     this.#destroy();
-
-    // if (this.#tripModel.listPoints.length === 0) {
-    //   // Очищаю таблицу.
-    //   console.log(this.#tripEventsEmpty);
-
-    //   remove(this.#tripEventsEmpty);
-    //   this.#tripEvents.element.innerHTML =
-    //     '<h2 class="visually-hidden">Trip events</h2>';
-
-    //   // Создаю новый список.
-    //   this.#newList = new ListView();
-    //   render(this.#newList, this.#tripEvents.element);
-    //   render(this.#pointFormPresenter.component, this.#newList.element);
-    // } else {
-    //   render(
-    //     this.#pointFormPresenter.component,
-    //     this.#listPresenter.listView.element,
-    //     RenderPosition.AFTERBEGIN,
-    //   );
-    // }
-
-    // это убираю
-    // Если список пустой, то возвращает сообщение о предложении создания
-    // новой путевой точки.
-    // if (this.#tripModel.listPoints.length === 0) {
-    //   this.#tripEventsElement.innerHTML =
-    //     '<h2 class="visually-hidden">Trip events</h2>';
-    //   render(new TripEventsEmptyView(), this.#tripEventsElement);
-    // }
   };
 
   get component() {

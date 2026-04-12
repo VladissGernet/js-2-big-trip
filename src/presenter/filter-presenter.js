@@ -1,6 +1,6 @@
 import { FilterView } from '../view/index.js';
 import { render, replace } from '../framework/render.js';
-import { FilterType } from '../const.js';
+import { FilterType, FilterStatus } from '../const.js';
 
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
@@ -58,7 +58,7 @@ export default class FilterPresenter {
   }
 
   #filterChangeHandler = (evt) => {
-    this.#filterModel.setFilter(evt.target.value);
+    this.#filterModel.setFilter(evt.target.value, FilterStatus.CHANGE);
   };
 
   /** Возвращает отфильтрованный список согласно типу фильтра.

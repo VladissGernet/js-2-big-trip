@@ -49,6 +49,7 @@ export default class ListPresenter {
 
   /** Перерисовывает список */
   resetListView = () => {
+    // Нужен контекст для callback редактировании точки.
     this.#pointPresenters.forEach((presenter) =>
       presenter.fullReplaceFormToPoint(),
     );

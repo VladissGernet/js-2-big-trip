@@ -32,6 +32,11 @@ const FilterType = {
   PAST: 'past',
 };
 
+const FilterStatus = {
+  CHANGE: 'change',
+  DEFAULT: 'default',
+};
+
 const SORT_CONFIG = {
   price: ({ basePrice: priceA }, { basePrice: priceB }) => priceB - priceA,
   date: (a, b) => dayjs(a.dateTo).diff(dayjs(b.dateTo)),
@@ -85,4 +90,5 @@ export {
   Mode,
   InputDateStage,
   DateStateStage,
+  FilterStatus,
 };

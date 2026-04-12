@@ -11,6 +11,7 @@ export default class TripModel {
 
   #offersReadOnly = null;
   #destinationsReadOnly = null;
+  #cities = null;
 
   get offersReadOnly() {
     if (!this.#offersReadOnly) {
@@ -21,7 +22,11 @@ export default class TripModel {
 
   // Список всех городов из данных
   get cities() {
-    return destinationsMock.map((dest) => dest.name);
+    if (!this.#cities) {
+      this.#cities = destinationsMock.map((dest) => dest.name);
+    }
+
+    return this.#cities;
   }
 
   get destinationsReadOnly() {
@@ -74,6 +79,8 @@ export default class TripModel {
 
   /** Обновляет данные выбранной точки */
   updatePoint(pointId, updatedData) {
+    // TODO
+    // Написать функцию обновления данных выше.
     const index = this.listPoints.findIndex((item) => item.id === pointId);
     if (index !== -1) {
       let selectedPoint = this.listPoints[index];

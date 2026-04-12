@@ -7,6 +7,7 @@ import {
 import SortPresenter from './sort-presenter.js';
 import ListPresenter from './list-presenter.js';
 import FilterPresenter from './filter-presenter.js';
+import { FilterStatus } from '../const.js';
 
 /** Конфигурация презентера списка.
  * @typedef {Object} PresenterConfig
@@ -97,7 +98,7 @@ export default class PageMainPresenter {
     render(this.#tripEventsEmpty, this.tripEvents.element);
   }
 
-  #handleFilterStatus = () => {
+  #handleFilterStatus = (_, status) => {
     const filterStauts = this.#filterModel.filter;
 
     /** Список, с которым будет фильтрация. */
@@ -126,6 +127,9 @@ export default class PageMainPresenter {
     }
 
     // Если filteredPoints будет пустой, то выводим сообщение о пустом списке.
-    this.#renderEmptyMessage(this.#filterModel.filter);
+    if (status === FilterStatus.CHANGE) {
+      // Нужно реднерить только при смене статуса, чтобы небыло 2 сообщения.
+      this.#renderEmptyMessage(this.#filterModel.filter);
+    }
   };
 }
