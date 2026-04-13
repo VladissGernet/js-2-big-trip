@@ -1,4 +1,4 @@
-import { render } from '../framework/render.js';
+import { render, remove } from '../framework/render.js';
 import {
   PageMainView,
   TripEventsEmptyView,
@@ -58,21 +58,49 @@ export default class PageMainPresenter {
     this.#listPresenter.init(sortedList);
   }
 
-  #renderMain() {
-    render(this.#mainView, this.#container);
-    this.#renderEventsSection();
-  }
+  renderEventsSection(filteredPoints = null, filter = null) {
+    if (this.#tripEventsView) {
+      this.#destroyTripEventsView();
+    }
+    if (this.#sortPresenter) {
+      this.#sortPresenter.removeComponent();
+    }
 
-  #renderEventsSection() {
     this.#tripEventsView = new TripEventsView();
     render(this.#tripEventsView, this.#mainView.container);
 
-    // Проверка на пустой список при первой отрисовке.
+    // При переключении фильтра соответсвующий рендер.
+    if (filteredPoints) {
+      if (filteredPoints.length) {
+        this.#renderEvents();
+        return;
+      }
+      this.#renderEmptyMessage(filter);
+      return;
+    }
+
+    // Рендер по умолчанию.
     if (this.#tripModel.listPoints.length) {
       this.#renderEvents();
     } else {
       this.#renderEmptyMessage();
     }
+  }
+
+  /** Очищает элемент tripEvents. */
+  #destroyTripEventsView() {
+    if (this.#listPresenter) {
+      this.#listPresenter.destroy();
+      this.#listPresenter = null;
+    }
+
+    remove(this.#tripEventsView);
+    this.#tripEventsEmptyView = null;
+  }
+
+  #renderMain() {
+    render(this.#mainView, this.#container);
+    this.renderEventsSection();
   }
 
   #renderEvents() {
@@ -92,45 +120,28 @@ export default class PageMainPresenter {
     this.#listPresenter.init();
   }
 
-  #renderEmptyMessage(filterStatus) {
+  #renderEmptyMessage(filter) {
     // Если список пустой, то возвращает сообщение о предложении создания
     // новой путевой точки.
-    this.#tripEventsEmptyView = new TripEventsEmptyView(filterStatus);
-    render(this.#tripEventsEmptyView, this.tripEvents.element);
+    this.#sortPresenter.removeComponent();
+    this.#tripEventsEmptyView = new TripEventsEmptyView(filter);
+    render(this.#tripEventsEmptyView, this.#tripEventsView.element);
   }
 
-  #handleFilterStatus = (_, status) => {
-    const filterStauts = this.#filterModel.filter;
+  #handleFilterStatus = (filter, status) => {
+    if (status !== FilterStatus.CHANGE) {
+      return;
+    }
 
     /** Список, с которым будет фильтрация. */
     const points = this.#tripModel.listPoints;
-
+    const filterStauts = this.#filterModel.filter;
     const filteredPoints = FilterPresenter.filterList(filterStauts, points);
 
     // Очищаем презентер новой точки.
     this.#newEventBtnPresenter.destroy();
 
-    // Если точки существуют.
-    if (points.length) {
-      this.#listPresenter.destroy();
-      this.#sortPresenter.removeComponent();
-    }
-
     // Очищаем элемент для нового рендера.
-    this.#tripEventsView.element.innerHTML =
-      '<h2 class="visually-hidden">Trip events</h2>';
-
-    // Если есть отфильтрованные точки.
-    if (filteredPoints.length) {
-      this.#sortPresenter.init();
-      this.listPresenter.init(filteredPoints);
-      return;
-    }
-
-    // Если filteredPoints будет пустой, то выводим сообщение о пустом списке.
-    if (status === FilterStatus.CHANGE) {
-      // Нужно реднерить только при смене статуса, чтобы небыло 2 сообщения.
-      this.#renderEmptyMessage(this.#filterModel.filter);
-    }
+    this.renderEventsSection(filteredPoints, filter);
   };
 }

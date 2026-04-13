@@ -37,7 +37,7 @@ export default class ListPresenter {
     this.#newEventBtnPresenter = newEventBtnPresenter;
   }
 
-  init(sortedList) {
+  init(sortedList = null) {
     this.#renderList(sortedList);
   }
 

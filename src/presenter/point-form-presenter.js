@@ -1,6 +1,6 @@
-import { ListPointFormView, TripEventsEmptyView } from '../view/index.js';
+import { ListPointFormView } from '../view/index.js';
 import PointPresenter from './point-presenter.js';
-import { render, remove } from '../framework/render.js';
+import { remove } from '../framework/render.js';
 
 /** Конфигурация презентера формы путевой точки.
  * @typedef {Object} PointFormConfig
@@ -10,7 +10,6 @@ import { render, remove } from '../framework/render.js';
  * @property {Class} pointPresenter - Презентер точки.
  * @property {Class} pageMainPresenter - Презентер страницы Main.
  * @property {Class} newEventBtnPresenter - Презентер создания новой точки.
- * @property {HTMLElement} listViewElement - Элемент списка точек.
  * @property {Boolean} isEditForm - Флаг решения какая форма будет, либо редактирование (true),
  * либо создание новой точки.
  * @property {function(): void} onRolldownClick - Функция‑callback (обработчик клика), которая
@@ -23,12 +22,12 @@ export default class PointFormPresenter {
   // Общие данные.
   #tripModel = null;
   #filterModel = null;
-  #listViewElement = null;
   #isEditForm = null;
+  #pageMainPresenter = null;
+
   // Данные существующей точки.
   #pointData = null;
   #pointPresenter = null;
-  #pageMainPresenter = null;
   #handleRolldownClick = null;
   #removeFromPointPresenters = null;
   // Данные новой точки.
@@ -129,21 +128,12 @@ export default class PointFormPresenter {
       this.#removeFromPointPresenters(this.#pointData.id);
     }
 
-    console.log('go');
-    // TODO
-    // Остановился здесь на перерисовке после удаления.
-
-    // Рендер при пустом списке.
-    if (this.#tripModel.listPoints.length) {
-      return;
-    }
-    // TODO заменить на что-то более подбающее, т.е. метод из презентера page main
-    // this.#listViewElement.innerHTML =
-    //   '<h2 class="visually-hidden">Trip events</h2>';
-    const emptyMessageComponent = new TripEventsEmptyView(
-      this.#filterModel.filter,
-    );
-    render(emptyMessageComponent, this.#listViewElement);
+    // Если список точек будет пустой, то выведет сообщение.
+    // TODO Исправить баг
+    // 1. переключаем фильтр на present, например
+    // 2. удаляем последнюю точку
+    // 3. сообщение о пустом списке сразу не редерит
+    this.#pageMainPresenter.renderEventsSection();
   };
 
   /** Удаление текущей Point из списка. */
