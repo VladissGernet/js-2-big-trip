@@ -38,8 +38,8 @@ export default class HeaderPresenter {
     this.#renderHeader();
   }
 
-  connectPageMainComponents(components) {
-    this.newEventBtnPresenter.connectPageMainComponents(components);
+  connectPageMainPresenter(presenter) {
+    this.newEventBtnPresenter.connectPageMainPresenter(presenter);
   }
 
   #renderHeader() {

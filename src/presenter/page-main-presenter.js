@@ -41,16 +41,16 @@ export default class PageMainPresenter {
     this.#filterModel.addObserver(this.#handleFilterStatus);
   }
 
-  init() {
-    this.#renderMain();
-  }
-
   get tripEventsView() {
     return this.#tripEventsView;
   }
 
   get listView() {
     return this.#listPresenter.listView;
+  }
+
+  init() {
+    this.#renderMain();
   }
 
   reinitListView(sortedList) {
@@ -128,7 +128,9 @@ export default class PageMainPresenter {
   #renderEmptyMessage(filter) {
     // Если список пустой, то возвращает сообщение о предложении создания
     // новой путевой точки.
-    this.#sortPresenter.removeComponent();
+    if (this.#sortPresenter) {
+      this.#sortPresenter.removeComponent();
+    }
     this.#tripEventsEmptyView = new TripEventsEmptyView(filter);
     render(this.#tripEventsEmptyView, this.#tripEventsView.element);
   }

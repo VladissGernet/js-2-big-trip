@@ -1,4 +1,4 @@
-import { BtnView, ListView } from '../view/index.js';
+import { BtnView } from '../view/index.js';
 import PointFormPresenter from './point-form-presenter.js';
 import { render, RenderPosition } from '../framework/render.js';
 import { FilterType, FilterStatus } from '../const.js';
@@ -7,29 +7,25 @@ import { FilterType, FilterStatus } from '../const.js';
  * @typedef {Object} PresenterConfig - Параметры для создания обработчика
  * @property {Object} tripModel - Модель данных поездки
  * @property {Class} filterModel - Модель фильтра с наблюдателем.
- * @property {HTMLDivElement} containerElement - Элемент для рендера кнопки.
- * @property {Class} listPresenter - Презентер списка.
+ * @property {HTMLDivElement} containerElement - Элемент для рендера кнопки в header.
+ * @property {Class} pageMainPresenter - Презентер main.
  * @property {Class} filterPresenter - Презентер фильтра списка.
- * @property {HTMLElement} tripEvents - Компонент секции главной страницы.
  */
 
 export default class NewEventBtnPresenter {
   #tripModel = null;
   #filterModel = null;
   #containerElement = null;
-  #tripEvents = null;
-  #listPresenter = null;
+  #pageMainPresenter = null;
   #pointFormPresenter = null;
   #filterPresenter = null;
 
-  #newList = null;
   #newEventBtn = null;
 
   /** @param {PresenterConfig} config - Конфигурация презентера */
   constructor({ tripModel, filterModel, containerElement, filterPresenter }) {
     this.#tripModel = tripModel;
     this.#filterModel = filterModel;
-
     this.#containerElement = containerElement;
     this.#filterPresenter = filterPresenter;
   }
@@ -44,12 +40,9 @@ export default class NewEventBtnPresenter {
     render(this.#newEventBtn, this.#containerElement);
   }
 
-  /** @param {PresenterConfig} config - Конфигурация презентера
-   * @description Подключает компоненты из main после его редера
-   */
-  connectPageMainComponents({ listPresenter, tripEvents }) {
-    this.#listPresenter = listPresenter;
-    this.#tripEvents = tripEvents;
+  /** Подключает презетнер главной страницы main. */
+  connectPageMainPresenter(pageMainPresenter) {
+    this.#pageMainPresenter = pageMainPresenter;
   }
 
   destroy() {
@@ -70,38 +63,33 @@ export default class NewEventBtnPresenter {
     // Сбрасываем фильтр в header (Перерисовываем DOM элемент).
     this.#filterPresenter.resetView();
 
-    if (this.#listPresenter) {
-      this.#listPresenter.resetListView();
-    }
-
     // Создаем презентер формы для отрисовки view.
     this.#pointFormPresenter = new PointFormPresenter({
-      filterModel: this.#filterModel,
       tripModel: this.#tripModel,
+      filterModel: this.#filterModel,
       isEditForm: false,
+
       newEventBtnPresenter: this,
-      tripEventsElement: this.#tripEvents.element,
     });
 
     // Отключаем возможность нажатия кнопки.
     this.#newEventBtn.element.disabled = true;
 
+    // Перерисовываем список, чтобы выполнить условие ТЗ, т.е. сделать переключение на вкладку
+    // фильтрова "everything".
+    this.#pageMainPresenter.renderEventsSection();
+
+    // Добавляю форму создания новой точки в самый верх списка.
     if (this.#tripModel.listPoints.length) {
       render(
         this.#pointFormPresenter.component,
-        this.#listPresenter.listView.element,
+        this.#pageMainPresenter.listView.element,
         RenderPosition.AFTERBEGIN,
       );
-      return;
     }
-
-    // Если список пустой.
-    this.#tripEvents.element.innerHTML =
-      '<h2 class="visually-hidden">Trip events</h2>';
-
-    // Создаю новый список.
-    this.#newList = new ListView();
-    render(this.#newList, this.#tripEvents.element);
-    render(this.#pointFormPresenter.component, this.#newList.element);
+    // TODO
+    // переименовать newEventBtnPresetr на newPointPresenter
+    // Остановился здесь на создании формы при пустом списке this.#tripModel.listPoints.length
+    return;
   };
 }

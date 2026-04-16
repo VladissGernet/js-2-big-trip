@@ -27,7 +27,7 @@ export default class MainPresenter {
   init() {
     this.#initHeader();
     this.#initPageMain();
-    this.#connectPageMainComponents();
+    this.#connectPageMainPresenter();
   }
 
   #initHeader() {
@@ -45,9 +45,6 @@ export default class MainPresenter {
       container: this.#pageBody,
       tripModel: this.#tripModel,
       filterModel: this.#filterModel,
-      // TODO
-      // Сделать тоже более абстрактно, т.е. не нужно знать PageMainPresenter о каком-то newEventBtnPresenter,
-      // а просто передать публичный метод от headerPresenter, который будет делать закрытие формы или еще чего.
       newEventBtnPresenter: this.#headerPresenter.newEventBtnPresenter,
     });
 
@@ -55,10 +52,7 @@ export default class MainPresenter {
   }
 
   /** Связывает компоненты PageMain с кнопкой создания новой точки маршурта в Header. */
-  #connectPageMainComponents() {
-    this.#headerPresenter.connectPageMainComponents({
-      pageMainPresenter: this.#pageMainPresenter,
-      tripEvents: this.#pageMainPresenter.tripEvents,
-    });
+  #connectPageMainPresenter() {
+    this.#headerPresenter.connectPageMainPresenter(this.#pageMainPresenter);
   }
 }
