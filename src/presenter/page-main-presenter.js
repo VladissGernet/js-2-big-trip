@@ -58,7 +58,7 @@ export default class PageMainPresenter {
     this.#listPresenter.init(sortedList);
   }
 
-  renderEventsSection(filteredPoints = null, filter = null) {
+  renderEventsSection(filter = null) {
     if (this.#tripEventsView) {
       this.#destroyTripEventsView();
     }
@@ -70,7 +70,12 @@ export default class PageMainPresenter {
     render(this.#tripEventsView, this.#mainView.container);
 
     // При переключении фильтра соответсвующий рендер.
-    if (filteredPoints) {
+    if (filter) {
+      /** Список, с которым будет фильтрация. */
+      const points = this.#tripModel.listPoints;
+      const filterStauts = this.#filterModel.filter;
+      const filteredPoints = FilterPresenter.filterList(filterStauts, points);
+
       if (filteredPoints.length) {
         this.#renderEvents();
         return;
@@ -133,15 +138,10 @@ export default class PageMainPresenter {
       return;
     }
 
-    /** Список, с которым будет фильтрация. */
-    const points = this.#tripModel.listPoints;
-    const filterStauts = this.#filterModel.filter;
-    const filteredPoints = FilterPresenter.filterList(filterStauts, points);
-
     // Очищаем презентер новой точки.
     this.#newEventBtnPresenter.destroy();
 
     // Очищаем элемент для нового рендера.
-    this.renderEventsSection(filteredPoints, filter);
+    this.renderEventsSection(filter);
   };
 }

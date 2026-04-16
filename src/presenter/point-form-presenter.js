@@ -129,11 +129,8 @@ export default class PointFormPresenter {
     }
 
     // Если список точек будет пустой, то выведет сообщение.
-    // TODO Исправить баг
-    // 1. переключаем фильтр на present, например
-    // 2. удаляем последнюю точку
-    // 3. сообщение о пустом списке сразу не редерит
-    this.#pageMainPresenter.renderEventsSection();
+    // может сюда прокинуть фильтр соотвествующйи
+    this.#pageMainPresenter.renderEventsSection(this.#filterModel.filter);
   };
 
   /** Удаление текущей Point из списка. */
