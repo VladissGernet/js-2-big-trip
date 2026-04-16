@@ -9,7 +9,7 @@ import { remove } from '../framework/render.js';
  * @property {Object} tripModel - Модель данных поездки.
  * @property {Class} pointPresenter - Презентер точки.
  * @property {Class} pageMainPresenter - Презентер страницы Main.
- * @property {Class} newEventBtnPresenter - Презентер создания новой точки.
+ * @property {Class} newPointPresenter - Презентер создания новой точки.
  * @property {Boolean} isEditForm - Флаг решения какая форма будет, либо редактирование (true),
  * либо создание новой точки.
  * @property {function(): void} onRolldownClick - Функция‑callback (обработчик клика), которая
@@ -31,7 +31,7 @@ export default class PointFormPresenter {
   #handleRolldownClick = null;
   #removeFromPointPresenters = null;
   // Данные новой точки.
-  #newEventBtnPresenter = null;
+  #newPointPresenter = null;
 
   #pointFormComponent = null;
 
@@ -45,7 +45,7 @@ export default class PointFormPresenter {
     pageMainPresenter,
     onRolldownClick,
     removeFromPointPresenters,
-    newEventBtnPresenter,
+    newPointPresenter,
   }) {
     // Общие данные.
     this.#tripModel = tripModel;
@@ -60,7 +60,7 @@ export default class PointFormPresenter {
     this.#removeFromPointPresenters = removeFromPointPresenters;
 
     // Данные новой точки.
-    this.#newEventBtnPresenter = newEventBtnPresenter;
+    this.#newPointPresenter = newPointPresenter;
 
     // Добавление обработчкиа закрытия по Esc.
     document.addEventListener('keydown', this.#escKeyDownHandler);
@@ -113,7 +113,7 @@ export default class PointFormPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     if (!this.#isEditForm) {
       // Если создание новой точки.
-      this.#newEventBtnPresenter.destroy();
+      this.#newPointPresenter.destroy();
     } else if (this.#isEditForm) {
       // Если редактирование точки, то идет удаление.
       // Очищаем презентер точки.

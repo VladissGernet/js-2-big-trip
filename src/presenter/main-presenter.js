@@ -45,7 +45,7 @@ export default class MainPresenter {
       container: this.#pageBody,
       tripModel: this.#tripModel,
       filterModel: this.#filterModel,
-      newEventBtnPresenter: this.#headerPresenter.newEventBtnPresenter,
+      newPointPresenter: this.#headerPresenter.newPointPresenter,
     });
 
     this.#pageMainPresenter.init();

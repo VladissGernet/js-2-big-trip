@@ -8,7 +8,7 @@ import FilterPresenter from './filter-presenter.js';
  * @property {Model} tripModel - Данные модели для рендера страницы
  * @property {Class} filterModel - Модель фильтра с наблюдателем.
  * @property {Class} pageMainPresenter - Презентер страницы Main.
- * @property {Class} newEventBtnPresenter - Презентер кнопки создания нового события.
+ * @property {Class} newPointPresenter - Презентер кнопки создания нового события.
  */
 
 /** Презентер сортировки. Отвечает за рендеринг компонента сортирвки списка событйи. */
@@ -16,7 +16,7 @@ export default class SortPresenter {
   #tripModel = null;
   #filterModel = null;
   #pageMainPresenter = null;
-  #newEventBtnPresenter = null;
+  #newPointPresenter = null;
   #component = null;
 
   /** @param {PresenterConfig} */
@@ -24,12 +24,12 @@ export default class SortPresenter {
     tripModel,
     filterModel,
     pageMainPresenter,
-    newEventBtnPresenter,
+    newPointPresenter,
   }) {
     this.#tripModel = tripModel;
     this.#filterModel = filterModel;
     this.#pageMainPresenter = pageMainPresenter;
-    this.#newEventBtnPresenter = newEventBtnPresenter;
+    this.#newPointPresenter = newPointPresenter;
 
     this.#filterModel.addObserver(this.#handleModeEvent);
   }
@@ -48,7 +48,7 @@ export default class SortPresenter {
   }
 
   #handleChange = (evt) => {
-    this.#newEventBtnPresenter.destroy();
+    this.#newPointPresenter.destroy();
     const filteredList = FilterPresenter.filterList(
       this.#filterModel.filter,
       this.#tripModel.listPoints,

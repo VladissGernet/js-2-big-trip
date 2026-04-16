@@ -14,7 +14,7 @@ import { FilterStatus } from '../const.js';
  * @property {HTMLElement} container - Контейнер для рендера
  * @property {Model} tripModel - Данные модели для рендера страницы
  * @property {Class} filterModel - Модель фильтра с наблюдателем.
- * @property {Class} newEventBtnPresenter - Презентер кнопки создания нового события.
+ * @property {Class} newPointPresenter - Презентер кнопки создания нового события.
  */
 
 /** Презентер основного содержимого страницы */
@@ -22,7 +22,7 @@ export default class PageMainPresenter {
   #container = null;
   #tripModel = null;
   #filterModel = null;
-  #newEventBtnPresenter = null;
+  #newPointPresenter = null;
 
   #mainView = new PageMainView();
   #tripEventsView = null;
@@ -32,11 +32,11 @@ export default class PageMainPresenter {
   #listPresenter = null;
 
   /** @param {PresenterConfig} */
-  constructor({ container, tripModel, newEventBtnPresenter, filterModel }) {
+  constructor({ container, tripModel, newPointPresenter, filterModel }) {
     this.#container = container;
     this.#tripModel = tripModel;
     this.#filterModel = filterModel;
-    this.#newEventBtnPresenter = newEventBtnPresenter;
+    this.#newPointPresenter = newPointPresenter;
 
     this.#filterModel.addObserver(this.#handleFilterStatus);
   }
@@ -113,7 +113,7 @@ export default class PageMainPresenter {
       pageMainPresenter: this,
       tripModel: this.#tripModel,
       filterModel: this.#filterModel,
-      newEventBtnPresenter: this.#newEventBtnPresenter,
+      newPointPresenter: this.#newPointPresenter,
     };
 
     // Сперва необходимо создать презентер списка для его передачи
@@ -141,7 +141,7 @@ export default class PageMainPresenter {
     }
 
     // Очищаем презентер новой точки.
-    this.#newEventBtnPresenter.destroy();
+    this.#newPointPresenter.destroy();
 
     // Очищаем элемент для нового рендера.
     this.renderEventsSection(filter);

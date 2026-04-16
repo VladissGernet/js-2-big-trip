@@ -12,7 +12,7 @@ import { FilterType, FilterStatus } from '../const.js';
  * @property {Class} filterPresenter - Презентер фильтра списка.
  */
 
-export default class NewEventBtnPresenter {
+export default class NewPointPresenter {
   #tripModel = null;
   #filterModel = null;
   #containerElement = null;
@@ -68,8 +68,7 @@ export default class NewEventBtnPresenter {
       tripModel: this.#tripModel,
       filterModel: this.#filterModel,
       isEditForm: false,
-
-      newEventBtnPresenter: this,
+      newPointPresenter: this,
     });
 
     // Отключаем возможность нажатия кнопки.
@@ -88,7 +87,6 @@ export default class NewEventBtnPresenter {
       );
     }
     // TODO
-    // переименовать newEventBtnPresetr на newPointPresenter
     // Остановился здесь на создании формы при пустом списке this.#tripModel.listPoints.length
     return;
   };

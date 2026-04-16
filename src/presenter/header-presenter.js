@@ -1,5 +1,5 @@
 import { HeaderView, TripMainView, TripControlsView } from '../view/index.js';
-import NewEventBtnPresenter from './new-event-btn-presenter.js';
+import NewPointPresenter from './new-point-presenter.js';
 import FilterPresenter from './filter-presenter.js';
 import TripInfoPresenter from './trip-info-presenter.js';
 import { TRIP_FILTERS } from '../const.js';
@@ -25,7 +25,7 @@ export default class HeaderPresenter {
   #filterPresenter = null;
 
   /** Публичный доступ к презентеру кнопки создания новой точки для связывания со списком */
-  newEventBtnPresenter = null;
+  newPointPresenter = null;
 
   /** @param {PresenterConfig} config */
   constructor({ container, tripModel, filterModel }) {
@@ -39,7 +39,7 @@ export default class HeaderPresenter {
   }
 
   connectPageMainPresenter(presenter) {
-    this.newEventBtnPresenter.connectPageMainPresenter(presenter);
+    this.newPointPresenter.connectPageMainPresenter(presenter);
   }
 
   #renderHeader() {
@@ -76,12 +76,12 @@ export default class HeaderPresenter {
   }
 
   #renderNewEventBtn() {
-    this.newEventBtnPresenter = new NewEventBtnPresenter({
+    this.newPointPresenter = new NewPointPresenter({
       tripModel: this.#tripModel,
       filterModel: this.#filterModel,
       containerElement: this.#tripMain.element,
       filterPresenter: this.#filterPresenter,
     });
-    this.newEventBtnPresenter.init();
+    this.newPointPresenter.init();
   }
 }

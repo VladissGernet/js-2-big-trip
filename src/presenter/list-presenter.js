@@ -8,7 +8,7 @@ import { SORT_CONFIG } from '../const.js';
  * @typedef {Object} PresenterConfig
  * @property {Class} pageMainPresenter - Презентер страницы Main.
  * @property {TripModel} tripModel - Модель данных поездки.
- * @property {Class} newEventBtnPresenter - Презентер кнопки создания нового события.
+ * @property {Class} newPointPresenter - Презентер кнопки создания нового события.
  * @property {Class} filterModel - Модель фильтра с наблюдателем.
  */
 
@@ -17,7 +17,7 @@ export default class ListPresenter {
   #pageMainPresenter = null;
   #tripModel = null;
   #filterModel = null;
-  #newEventBtnPresenter = null;
+  #newPointPresenter = null;
 
   #listView = null;
 
@@ -28,13 +28,13 @@ export default class ListPresenter {
   constructor({
     pageMainPresenter,
     tripModel,
-    newEventBtnPresenter,
+    newPointPresenter,
     filterModel,
   }) {
     this.#pageMainPresenter = pageMainPresenter;
     this.#tripModel = tripModel;
     this.#filterModel = filterModel;
-    this.#newEventBtnPresenter = newEventBtnPresenter;
+    this.#newPointPresenter = newPointPresenter;
   }
 
   init(sortedList = null) {
@@ -100,7 +100,7 @@ export default class ListPresenter {
       pageMainPresenter: this.#pageMainPresenter,
       tripModel: this.#tripModel,
       filterModel: this.#filterModel,
-      newEventBtnPresenter: this.#newEventBtnPresenter,
+      newPointPresenter: this.#newPointPresenter,
       resetListView: this.resetListView,
       removeFromPointPresenters: this.#removeFromPointPresenters,
     });

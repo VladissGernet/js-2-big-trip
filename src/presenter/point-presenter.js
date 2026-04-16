@@ -9,7 +9,7 @@ import { Mode } from '../const.js';
  * @property {TripModel} tripModel - Модель данных поездки.
  * @property {Class} filterModel - Модель фильтра с наблюдателем.
  * @property {Class} pageMainPresenter - Презентер страницы Main.
- * @property {Class} newEventBtnPresenter - Презентер кнопки создания нового события.
+ * @property {Class} newPointPresenter - Презентер кнопки создания нового события.
  * @property {function(): void} resetListView - Функция‑callback, сбрасывающая список
  * @property {function(): void} removeFromPointPresenters - Функция‑callback, удаляющая
  * из коллекции Map в listPresenter.
@@ -38,7 +38,7 @@ export default class PointPresenter {
   #tripModel = null;
   #filterModel = null;
   #pageMainPresenter = null;
-  #newEventBtnPresenter = null;
+  #newPointPresenter = null;
   #resetListView = null;
   #removeFromPointPresenters = null;
 
@@ -54,7 +54,7 @@ export default class PointPresenter {
     tripModel,
     filterModel,
     pageMainPresenter,
-    newEventBtnPresenter,
+    newPointPresenter,
     resetListView,
     removeFromPointPresenters,
   }) {
@@ -62,7 +62,7 @@ export default class PointPresenter {
     this.#tripModel = tripModel;
     this.#filterModel = filterModel;
     this.#pageMainPresenter = pageMainPresenter;
-    this.#newEventBtnPresenter = newEventBtnPresenter;
+    this.#newPointPresenter = newPointPresenter;
     this.#resetListView = resetListView;
     this.#removeFromPointPresenters = removeFromPointPresenters;
   }
@@ -111,7 +111,7 @@ export default class PointPresenter {
    *  вместо формы редактирования.
    */
   #replacePointToForm() {
-    this.#newEventBtnPresenter.destroy();
+    this.#newPointPresenter.destroy();
     this.#createPointFormPresenter();
 
     // Закрывает все открытые формы чтобы на странице была только одна открытая форма.
