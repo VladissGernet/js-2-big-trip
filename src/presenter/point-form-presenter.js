@@ -129,7 +129,6 @@ export default class PointFormPresenter {
     }
 
     // Если список точек будет пустой, то выведет сообщение.
-    // может сюда прокинуть фильтр соотвествующйи
     this.#pageMainPresenter.renderEventsSection(this.#filterModel.filter);
   };
 

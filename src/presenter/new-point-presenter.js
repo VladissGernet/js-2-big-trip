@@ -52,10 +52,6 @@ export default class NewPointPresenter {
     this.#newEventBtn.element.disabled = false;
   }
 
-  get pointFormPresenterStatus() {
-    return this.#pointFormPresenter;
-  }
-
   #handleBtnClick = () => {
     // Сбрасываем значение в модели.
     this.#filterModel.setFilter(FilterType.EVERYTHING, FilterStatus.DEFAULT);
@@ -69,6 +65,7 @@ export default class NewPointPresenter {
       filterModel: this.#filterModel,
       isEditForm: false,
       newPointPresenter: this,
+      pageMainPresenter: this.#pageMainPresenter,
     });
 
     // Отключаем возможность нажатия кнопки.
