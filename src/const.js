@@ -1,29 +1,6 @@
 import dayjs from 'dayjs';
 
-/** Состояние кнопок филтров по умолчанию */
-const TRIP_FILTERS = [
-  { name: 'Everything', isChecked: true },
-  { name: 'Future', isChecked: false },
-  { name: 'Present', isChecked: false },
-  { name: 'Past', isChecked: false },
-];
-
-/** Набор сообщений в зависимости от значения фильтра */
-const NO_EVENTS_MESSAGES = {
-  everything: 'Click New Event to create your first point',
-  past: 'There are no past events now',
-  present: 'There are no present events now',
-  future: 'There are no future events now',
-};
-
-/** Состояние кнопок сортировки по умолчанию */
-const TRIP_SORTS = [
-  { name: 'Day', isChecked: true, isDisabled: false },
-  { name: 'Event', isChecked: false, isDisabled: true },
-  { name: 'Time', isChecked: false, isDisabled: false },
-  { name: 'Price', isChecked: false, isDisabled: false },
-  { name: 'Offers', isChecked: false, isDisabled: true },
-];
+// Перечисления (Enum)
 
 const FilterType = {
   EVERYTHING: 'everything',
@@ -35,6 +12,45 @@ const FilterType = {
 const FilterStatus = {
   CHANGE: 'change',
   DEFAULT: 'default',
+};
+
+const Mode = {
+  DEFAULT: 'default',
+  EDITING: 'editing',
+};
+
+const InputDateStage = {
+  MINDATE: 'minDate',
+  MAXDATE: 'maxDate',
+};
+
+// Конфигурационные массивы с дефолтными данными для UI.
+
+/** Состояние кнопок филтров по умолчанию. */
+const TRIP_FILTERS = [
+  { name: 'Everything', isChecked: true },
+  { name: 'Future', isChecked: false },
+  { name: 'Present', isChecked: false },
+  { name: 'Past', isChecked: false },
+];
+
+/** Состояние кнопок сортировки по умолчанию. */
+const TRIP_SORTS = [
+  { name: 'Day', isChecked: true, isDisabled: false },
+  { name: 'Event', isChecked: false, isDisabled: true },
+  { name: 'Time', isChecked: false, isDisabled: false },
+  { name: 'Price', isChecked: false, isDisabled: false },
+  { name: 'Offers', isChecked: false, isDisabled: true },
+];
+
+// Словари.
+
+/** Набор сообщений в зависимости от значения фильтра. */
+const NO_EVENTS_MESSAGES = {
+  [FilterType.EVERYTHING]: 'Click New Event to create your first point',
+  [FilterType.PAST]: 'There are no past events now',
+  [FilterType.PRESENT]: 'There are no present events now',
+  [FilterType.FUTURE]: 'There are no future events now',
 };
 
 const SORT_CONFIG = {
@@ -50,33 +66,21 @@ const SORT_CONFIG = {
   },
 };
 
+const DateStateStage = {
+  minDate: 'dateFrom',
+  maxDate: 'dateTo',
+};
+
 const SORT_TYPES = {
   'sort-day': 'date',
   'sort-time': 'time',
   'sort-price': 'price',
 };
 
-// TODO исправить на слварь и еще раз изучить синтаксис перечислений и словарией
-// trip_info_title
 const TRIP_INFO_TITLE = {
   TWO_POINTS: 2,
   MAX_VISIBLE_POINTS: 3, // сколько точек показывать явно
   PLACEHOLDER: '...', // символ для «свернутой» части маршрута
-};
-
-const Mode = {
-  DEFAULT: 'DEFAULT',
-  EDITING: 'EDITING',
-};
-
-const InputDateStage = {
-  MINDATE: 'minDate',
-  MAXDATE: 'maxDate',
-};
-
-const DateStateStage = {
-  minDate: 'dateFrom',
-  maxDate: 'dateTo',
 };
 
 export {
