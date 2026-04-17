@@ -98,13 +98,8 @@ export default class PointFormPresenter {
     });
 
     if (this.#isEditForm) {
-      console.log('go');
-
-      // TODO
-      // 3. Реализовать функцию обновления данных в моделе tripModel.
-      // Проблема в преобразовании коллекции MAP в массив.
-
-      // this.#tripModel.updatePoint(currentState.listPoint.id, newData);
+      // TODO при сохранении данных точка пропадает
+      this.#tripModel.updatePoint(currentState.listPoint.id, newData);
     }
 
     this.#pageMainPresenter.renderEventsSection();
@@ -213,7 +208,7 @@ export default class PointFormPresenter {
       'date_to:': currentState.listPoint.dateTo,
       destination: destinationId,
       'is_favorite:': isFavorite,
-      offers: selectedIdOffers,
+      offers: new Set(selectedIdOffers),
       'type:': type,
     };
 
