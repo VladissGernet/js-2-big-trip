@@ -79,8 +79,6 @@ export default class TripModel {
 
   /** Обновляет данные выбранной точки */
   updatePoint(pointId, updatedData) {
-    // TODO
-    // Написать функцию обновления данных выше.
     const index = this.listPoints.findIndex((item) => item.id === pointId);
     if (index !== -1) {
       let selectedPoint = this.listPoints[index];
