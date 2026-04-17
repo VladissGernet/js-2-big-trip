@@ -74,20 +74,29 @@ export default class NewPointPresenter {
     // Отключаем возможность нажатия кнопки.
     this.#newEventBtn.element.disabled = true;
 
-    // Перерисовываем список, чтобы выполнить условие ТЗ, т.е. сделать переключение на вкладку
-    // фильтрова "everything".
-    this.#pageMainPresenter.renderEventsSection();
-
     // Добавляю форму создания новой точки в самый верх списка.
     if (this.#tripModel.listPoints.length) {
+      // Перерисовываем список, чтобы выполнить условие ТЗ, т.е. сделать переключение на вкладку
+      // фильтрова "everything".
+      this.#pageMainPresenter.renderEventsSection(FilterType.EVERYTHING);
       render(
         this.#pointFormPresenter.component,
         this.#pageMainPresenter.listView.element,
         RenderPosition.AFTERBEGIN,
       );
+      return;
     }
-    // TODO
-    // Остановился здесь на создании формы при пустом списке this.#tripModel.listPoints.length
-    return;
+    // Если общий список точек пустой рендер только формы создания новой точки.
+    const isNoEmptyMessage = true;
+    this.#pageMainPresenter.renderEventsSection(
+      FilterType.EVERYTHING,
+      isNoEmptyMessage,
+    );
+
+    render(
+      this.#pointFormPresenter.component,
+      this.#pageMainPresenter.listView.element,
+      RenderPosition.AFTERBEGIN,
+    );
   };
 }

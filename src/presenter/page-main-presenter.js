@@ -58,7 +58,8 @@ export default class PageMainPresenter {
     this.#listPresenter.init(sortedList);
   }
 
-  renderEventsSection(filter = null) {
+  renderEventsSection(filter = null, isNoEmptyMessage = false) {
+    // Если фильтр отсутсвует, то рендер по-умолчанию с фильтром 'everything' согласно ТЗ.
     if (this.#tripEventsView) {
       this.#destroyTripEventsView();
     }
@@ -68,6 +69,14 @@ export default class PageMainPresenter {
 
     this.#tripEventsView = new TripEventsView();
     render(this.#tripEventsView, this.#mainView.container);
+
+    // Рендер без сообщения о пустом списке при пустом списке для созднаия новой первой точки и без
+    // сортировки.
+    if (isNoEmptyMessage) {
+      this.#listPresenter = new ListPresenter(this.#createCommonConfig());
+      this.#listPresenter.init();
+      return;
+    }
 
     // При переключении фильтра соответсвующий рендер.
     if (filter) {
@@ -80,7 +89,7 @@ export default class PageMainPresenter {
         this.#renderEvents();
         return;
       }
-      this.#renderEmptyMessage(filter);
+      this.#renderEmptyMessage(filterStauts);
       return;
     }
 
@@ -109,23 +118,25 @@ export default class PageMainPresenter {
   }
 
   #renderEvents() {
-    const commonConfig = {
-      pageMainPresenter: this,
-      tripModel: this.#tripModel,
-      filterModel: this.#filterModel,
-      newPointPresenter: this.#newPointPresenter,
-    };
-
     // Сперва необходимо создать презентер списка для его передачи
     // презентеру сортириовки.
-    this.#listPresenter = new ListPresenter(commonConfig);
-    this.#sortPresenter = new SortPresenter(commonConfig);
+    this.#listPresenter = new ListPresenter(this.#createCommonConfig());
+    this.#sortPresenter = new SortPresenter(this.#createCommonConfig());
 
     this.#sortPresenter.init();
     this.#listPresenter.init();
   }
 
-  #renderEmptyMessage(filter) {
+  #createCommonConfig() {
+    return {
+      pageMainPresenter: this,
+      tripModel: this.#tripModel,
+      filterModel: this.#filterModel,
+      newPointPresenter: this.#newPointPresenter,
+    };
+  }
+
+  #renderEmptyMessage(filter = null) {
     // Если список пустой, то возвращает сообщение о предложении создания
     // новой путевой точки.
     if (this.#sortPresenter) {
