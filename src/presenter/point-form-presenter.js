@@ -90,19 +90,25 @@ export default class PointFormPresenter {
   #handleFormSubmit = (evt) => {
     const currentState = this.#pointFormComponent._state;
     const formData = new FormData(evt.target);
+    const newData = PointFormPresenter.#preparePointData({
+      formData,
+      tripModel: this.#tripModel,
+      currentState,
+      pointData: this.#pointData,
+    });
 
-    // TODO
-    // 3. Реализовать функцию обновления данных в моделе tripModel.
-    //    Возможно имеющийся публичный метод подойдет:
-    //    this.#tripModel.updatePoint(pointId, updatedData)
-    console.log(
-      PointFormPresenter.#preparePointData({
-        formData,
-        tripModel: this.#tripModel,
-        currentState,
-        pointData: this.#pointData,
-      }),
-    );
+    if (this.#isEditForm) {
+      console.log('go');
+
+      // TODO
+      // 3. Реализовать функцию обновления данных в моделе tripModel.
+      // Проблема в преобразовании коллекции MAP в массив.
+
+      // this.#tripModel.updatePoint(currentState.listPoint.id, newData);
+    }
+
+    this.#pageMainPresenter.renderEventsSection();
+    // TODO Реализовать удаление презентера после закрытия.
   };
 
   /** Удаляент компонент презентера формы, удаляет нужную точку. */

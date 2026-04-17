@@ -81,6 +81,7 @@ export default class TripModel {
   updatePoint(pointId, updatedData) {
     const index = this.listPoints.findIndex((item) => item.id === pointId);
     if (index !== -1) {
+      // TODO Ошибка в том, что после побновления offers первращается из коллекции в массив.
       let selectedPoint = this.listPoints[index];
       selectedPoint = { ...this.listPoints[index], ...updatedData };
       this.listPoints[index] = selectedPoint;
