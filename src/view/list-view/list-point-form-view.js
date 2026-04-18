@@ -15,6 +15,7 @@ export default class ListPointFormView extends AbstractStatefulView {
   #handleRolldownClick = null;
   #handleResetClick = null;
   #handleSubmitForm = null;
+  #handlePriceChange = null;
 
   #inputDateFrom = null;
   #inputDateTo = null;
@@ -26,6 +27,7 @@ export default class ListPointFormView extends AbstractStatefulView {
     onRolldownClick,
     onResetClick,
     onFormSubmit,
+    onPriceChange,
   }) {
     super();
     this.#isEditForm = isEditForm;
@@ -33,6 +35,7 @@ export default class ListPointFormView extends AbstractStatefulView {
     this.#handleRolldownClick = onRolldownClick;
     this.#handleResetClick = onResetClick;
     this.#handleSubmitForm = onFormSubmit;
+    this.#handlePriceChange = onPriceChange;
 
     // При создании нового события добавляем по дефолту.
     if (!viewPointData) {
@@ -96,6 +99,10 @@ export default class ListPointFormView extends AbstractStatefulView {
       .querySelector('.event.event--edit')
       .addEventListener('submit', this.#submitFormHandler);
 
+    this.element
+      .querySelector('.event__input.event__input--price')
+      .addEventListener('change', this.#handlePriceChange);
+
     if (this.#handleRolldownClick) {
       this.element
         .querySelector('.event__rollup-btn')
@@ -119,6 +126,10 @@ export default class ListPointFormView extends AbstractStatefulView {
     this.element
       .querySelector('.event.event--edit')
       .removeEventListener('submit', this.#submitFormHandler);
+
+    this.element
+      .querySelector('.event__input.event__input--price')
+      .removeEventListener('change', this.#handlePriceChange);
 
     if (this.#handleRolldownClick) {
       this.element

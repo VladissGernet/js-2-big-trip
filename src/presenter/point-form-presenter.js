@@ -142,6 +142,11 @@ export default class PointFormPresenter {
     this.#newPointPresenter.destroy();
   };
 
+  #handlePriceChange = (evt) => {
+    const value = evt.target.value.replace(/[\D]/g, '');
+    evt.target.value = value;
+  };
+
   get component() {
     if (!this.#pointFormComponent) {
       const viewPointData = this.#pointData
@@ -155,6 +160,7 @@ export default class PointFormPresenter {
         onRolldownClick: this.#handleRolldownClick,
         onFormSubmit: this.#handleFormSubmit,
         onResetClick: this.#handleResetClick,
+        onPriceChange: this.#handlePriceChange,
       });
     }
     return this.#pointFormComponent;
@@ -173,6 +179,9 @@ export default class PointFormPresenter {
     let data = {};
 
     // Получаем стоимость.
+    // TODO Сделать перерасчет стоимости согласно ТЗ
+    // Выбор дополнительных опций влияет на общую стоимость путешествия. Стоимость точки маршрута,
+    // которую ввёл пользователь в соответствующее поле ввода, при этом не изменяется.
     const price = formData.get('event-price');
 
     // Преобразовывает название пункта назначения в соответсвующий ему id.
