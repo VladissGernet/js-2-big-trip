@@ -102,8 +102,14 @@ export default class PointFormPresenter {
       this.#tripModel.updatePoint(currentState.listPoint.id, newData);
     }
 
+    if (this.#isEditForm) {
+      this.destroy();
+    } else {
+      this.#newPointPresenter.destroy();
+    }
     this.#pageMainPresenter.renderEventsSection();
-    // TODO Реализовать удаление презентера после закрытия.
+
+    // TODO
     // Еще обновление данных идет непправильно, только офферы обновляются.
   };
 
