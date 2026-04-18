@@ -149,8 +149,14 @@ export default class PointFormPresenter {
 
   get component() {
     if (!this.#pointFormComponent) {
+      const createViewPointDataConfig = () => ({
+        tripModel: this.#tripModel,
+        pointData: this.#pointData,
+        isFormData: true,
+      });
+
       const viewPointData = this.#pointData
-        ? PointPresenter.createViewPointData(this.#tripModel, this.#pointData)
+        ? PointPresenter.createViewPointData(createViewPointDataConfig())
         : null;
 
       this.#pointFormComponent = new ListPointFormView({
@@ -178,11 +184,8 @@ export default class PointFormPresenter {
 
     let data = {};
 
-    // Получаем стоимость.
-    // TODO Сделать перерасчет стоимости согласно ТЗ
-    // Выбор дополнительных опций влияет на общую стоимость путешествия. Стоимость точки маршрута,
-    // которую ввёл пользователь в соответствующее поле ввода, при этом не изменяется.
-    const price = formData.get('event-price');
+    // Получаем базовую стоимость.
+    const price = Number(formData.get('event-price'));
 
     // Преобразовывает название пункта назначения в соответсвующий ему id.
     const destinationName = formData.get('event-destination');
@@ -200,13 +203,13 @@ export default class PointFormPresenter {
     const allOffers = tripModel.offersByType.get(type);
 
     // Создаём обратный Map для быстрого поиска по title (один раз O(n))
-    const titleToId = new Map();
+    const offersTitleToId = new Map();
     for (const [id, { title }] of allOffers) {
-      titleToId.set(title.toLowerCase(), id);
+      offersTitleToId.set(title.toLowerCase(), id);
     }
     // Массив из выбранных значений.
     const selectedIdOffers = selectedOffers.map((offer) =>
-      titleToId.get(offer.toLowerCase()),
+      offersTitleToId.get(offer.toLowerCase()),
     );
 
     data = {

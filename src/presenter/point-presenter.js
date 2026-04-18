@@ -94,10 +94,11 @@ export default class PointPresenter {
   }
 
   #createPointComponent() {
-    const viewPointData = PointPresenter.createViewPointData(
-      this.#tripModel,
-      this.#pointData,
-    );
+    const viewPointData = PointPresenter.createViewPointData({
+      tripModel: this.#tripModel,
+      pointData: this.#pointData,
+      isFormData: false,
+    });
 
     this.#pointComponent = new ListPointView({
       ...viewPointData,
@@ -177,16 +178,35 @@ export default class PointPresenter {
     }));
   }
 
-  static createViewPointData(tripModel, point) {
-    const destinationData = tripModel.destinationsById.get(point.destination);
+  static createViewPointData({ tripModel, pointData, isFormData = false }) {
+    const destinationData = tripModel.destinationsById.get(
+      pointData.destination,
+    );
 
     const transformedOfferTypeData = PointPresenter.#transformOfferTypeData({
-      offerTypeData: tripModel.offersByType.get(point.type),
-      currentPointOffers: point.offers,
+      offerTypeData: tripModel.offersByType.get(pointData.type),
+      currentPointOffers: pointData.offers,
     });
 
+    if (!isFormData) {
+      // Подсчет полной стоимсти с учетом добавления надбавок от offer.
+      let finalPrice = Number(pointData.basePrice);
+      const allOffers = tripModel.offersByType.get(pointData.type);
+      pointData.offers.forEach(
+        (offerId) => (finalPrice += allOffers.get(offerId).price),
+      );
+      const pointCopy = structuredClone(pointData);
+      pointCopy.basePrice = finalPrice;
+
+      return {
+        listPoint: pointCopy,
+        destinationData: destinationData,
+        offerData: transformedOfferTypeData,
+      };
+    }
+
     return {
-      listPoint: point,
+      listPoint: pointData,
       destinationData: destinationData,
       offerData: transformedOfferTypeData,
     };

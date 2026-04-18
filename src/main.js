@@ -14,7 +14,5 @@ const mainPresenter = new MainPresenter({
 mainPresenter.init();
 
 /* TODO
-
-Запретите возможность ввода в поле «Цена» любых значений, кроме числовых.
-
+  Реализовать перерасчет стоимости и точек в header.
 */
