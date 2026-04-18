@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import { destinationsMock } from '../mock/destinations-mock.js';
 import { offersMock } from '../mock/offers-mock.js';
 import { pointsMock } from '../mock/points-mock.js';
@@ -94,6 +95,13 @@ export default class TripModel {
   removePoint(pointId) {
     const index = this.listPoints.findIndex((item) => item.id === pointId);
     this.listPoints.splice(index, 1);
+  }
+
+  addPoint(data) {
+    // Генерируем новый ID.
+    data.id = nanoid();
+    this.listPoints.push(data);
+    this.listPoints.sort(SORT_CONFIG['date']);
   }
 
   findDestinationByIndex(index) {

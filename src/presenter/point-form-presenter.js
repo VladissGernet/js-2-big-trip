@@ -97,16 +97,11 @@ export default class PointFormPresenter {
       currentState,
       pointData: this.#pointData,
     });
-
-    // TODO реализовать добавление новой точки.
-
     if (this.#isEditForm) {
       this.#tripModel.updatePoint(currentState.listPoint.id, newData);
-    }
-
-    if (this.#isEditForm) {
       this.destroy();
     } else {
+      this.#tripModel.addPoint(newData);
       this.#newPointPresenter.destroy();
     }
     this.#pageMainPresenter.renderEventsSection();

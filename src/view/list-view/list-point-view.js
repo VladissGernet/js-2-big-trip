@@ -53,7 +53,9 @@ function createPointTemplate({
             alt="Event type icon"
           />
         </div>
-        <h3 class="event__title">${he.encode(destinationData?.name) || ''}</h3>
+        <h3 class="event__title">
+          ${destinationData ? he.encode(destinationData?.name) : ''}
+        </h3>
         <div class="event__schedule">
           <p class="event__time">
             <time
