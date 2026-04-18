@@ -98,6 +98,8 @@ export default class PointFormPresenter {
       pointData: this.#pointData,
     });
 
+    // TODO реализовать добавление новой точки.
+
     if (this.#isEditForm) {
       this.#tripModel.updatePoint(currentState.listPoint.id, newData);
     }
@@ -108,9 +110,6 @@ export default class PointFormPresenter {
       this.#newPointPresenter.destroy();
     }
     this.#pageMainPresenter.renderEventsSection();
-
-    // TODO
-    // Еще обновление данных идет непправильно, только офферы обновляются.
   };
 
   /** Удаляент компонент презентера формы.
@@ -182,9 +181,9 @@ export default class PointFormPresenter {
     const price = formData.get('event-price');
 
     // Преобразовывает название пункта назначения в соответсвующий ему id.
-    const destination = formData.get('event-destination');
-    const destinationId = destination
-      ? tripModel.transformDestinationNameToId(destination)
+    const destinationName = formData.get('event-destination');
+    const destination = destinationName
+      ? tripModel.transformDestinationNameToId(destinationName)
       : '';
 
     // Получаем тип для массива предложений.
@@ -208,13 +207,13 @@ export default class PointFormPresenter {
 
     data = {
       id: pointId,
-      'base_price:': price,
-      'date_from:': currentState.listPoint.dateFrom,
-      'date_to:': currentState.listPoint.dateTo,
-      destination: destinationId,
-      'is_favorite:': isFavorite,
+      basePrice: price,
+      dateFrom: currentState.listPoint.dateFrom,
+      dateTo: currentState.listPoint.dateTo,
+      destination,
+      isFavorite,
       offers: new Set(selectedIdOffers),
-      'type:': type,
+      type,
     };
 
     return data;
