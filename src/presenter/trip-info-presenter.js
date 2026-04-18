@@ -15,6 +15,14 @@ export default class TripInfoPresenter {
     return new TripInfoView(tripInfoData);
   }
 
+  rerenderView() {
+    // TODO Остановился здесь на создании функции перерисовки хедера при внесении данных в trip model
+    // * возможно тут стоит добавить обсервер на tripModel, который будет уведомлять об обновлении списка точек.
+    // * нужно будет обновлять только "trip-main__trip-info trip-info"
+    // * Попробовать добавить оптимизацию, если первый и последний совпадают, то
+    //   не нужно перерисовывать(учесть количество точек). Прописать случаи, при которых не нужно делать перерисовку.
+  }
+
   static #createTripInfoData(tripModel) {
     const { MAX_VISIBLE_POINTS, PLACEHOLDER, TWO_POINTS } = TRIP_INFO_TITLE;
 
