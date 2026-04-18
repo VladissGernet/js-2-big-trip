@@ -104,6 +104,7 @@ export default class PointFormPresenter {
 
     this.#pageMainPresenter.renderEventsSection();
     // TODO Реализовать удаление презентера после закрытия.
+    // Еще обновление данных идет непправильно, только офферы обновляются.
   };
 
   /** Удаляент компонент презентера формы.
