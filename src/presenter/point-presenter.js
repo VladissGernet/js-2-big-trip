@@ -142,7 +142,7 @@ export default class PointPresenter {
     this.#createPointComponent();
     replace(this.#pointComponent, this.#pointFormPresenter.component);
 
-    this.#pointFormPresenter.removeComponent();
+    this.#pointFormPresenter.destroy();
     this.#pointFormPresenter = null;
   }
 

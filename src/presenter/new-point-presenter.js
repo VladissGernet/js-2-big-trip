@@ -49,6 +49,7 @@ export default class NewPointPresenter {
     if (!this.#pointFormPresenter) {
       return;
     }
+    this.#pointFormPresenter.destroy();
     this.#newEventBtn.element.disabled = false;
   }
 
