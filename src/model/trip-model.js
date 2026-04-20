@@ -1,3 +1,4 @@
+import Observable from '../framework/observable.js';
 import { nanoid } from 'nanoid';
 import { destinationsMock } from '../mock/destinations-mock.js';
 import { offersMock } from '../mock/offers-mock.js';
@@ -5,7 +6,7 @@ import { pointsMock } from '../mock/points-mock.js';
 import { replaceSnakeToCamel } from '../utils/replace-snake-to-camel.js';
 import { SORT_CONFIG } from '../const.js';
 
-export default class TripModel {
+export default class TripModel extends Observable {
   #points = null;
   #destinations = null;
   #offers = null;
@@ -87,6 +88,7 @@ export default class TripModel {
     let selectedPoint = this.listPoints[index];
     selectedPoint = { ...this.listPoints[index], ...updatedData };
     this.listPoints[index] = selectedPoint;
+    this.#notifyAboutListChange();
 
     // Возвращаем выбранную точку.
     return selectedPoint;
@@ -95,6 +97,7 @@ export default class TripModel {
   removePoint(pointId) {
     const index = this.listPoints.findIndex((item) => item.id === pointId);
     this.listPoints.splice(index, 1);
+    this.#notifyAboutListChange();
   }
 
   addPoint(data) {
@@ -102,6 +105,7 @@ export default class TripModel {
     data.id = nanoid();
     this.listPoints.push(data);
     this.listPoints.sort(SORT_CONFIG['date']);
+    this.#notifyAboutListChange();
   }
 
   findDestinationByIndex(index) {
@@ -119,5 +123,9 @@ export default class TripModel {
       ({ name }) => name === destinationName,
     );
     return item.id;
+  }
+
+  #notifyAboutListChange() {
+    this._notify();
   }
 }

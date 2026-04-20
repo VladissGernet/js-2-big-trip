@@ -1,27 +1,38 @@
 import { TripInfoView } from '../view/index.js';
 import { TRIP_INFO_TITLE } from '../const.js';
 import dayjs from 'dayjs';
+import { remove, replace } from '../framework/render.js';
 
 export default class TripInfoPresenter {
   #tripModel;
+  #tripInfoView = null;
 
   /** @param {TripModel} tripModel Модель данных поездки */
   constructor(tripModel) {
     this.#tripModel = tripModel;
+
+    this.#tripModel.addObserver(this.#handleListStatus);
   }
 
   init() {
     const tripInfoData = TripInfoPresenter.#createTripInfoData(this.#tripModel);
-    return new TripInfoView(tripInfoData);
+    this.#tripInfoView = new TripInfoView(tripInfoData);
+    return this.#tripInfoView;
   }
 
-  rerenderView() {
-    // TODO Остановился здесь на создании функции перерисовки хедера при внесении данных в trip model
-    // * возможно тут стоит добавить обсервер на tripModel, который будет уведомлять об обновлении списка точек.
-    // * нужно будет обновлять только "trip-main__trip-info trip-info"
-    // * Попробовать добавить оптимизацию, если первый и последний совпадают, то
-    //   не нужно перерисовывать(учесть количество точек). Прописать случаи, при которых не нужно делать перерисовку.
-  }
+  /** Обновляет информацию о всем маршруте. */
+  #handleListStatus = () => {
+    if (!this.#tripModel.listPoints.length) {
+      remove(this.#tripInfoView);
+      return;
+    }
+
+    const tripInfoData = TripInfoPresenter.#createTripInfoData(this.#tripModel);
+    const newTripInfoView = new TripInfoView(tripInfoData);
+    replace(newTripInfoView, this.#tripInfoView);
+    remove(this.#tripInfoView);
+    this.#tripInfoView = newTripInfoView;
+  };
 
   static #createTripInfoData(tripModel) {
     const { MAX_VISIBLE_POINTS, PLACEHOLDER, TWO_POINTS } = TRIP_INFO_TITLE;
@@ -59,24 +70,30 @@ export default class TripInfoPresenter {
     }
 
     // Общаяя цена.
+    // TODO Исправить подсчет конецчной цены на основе выбранных офферов.
     tripInfoData.totalPrice = tripModel.listPoints.reduce(
       (acc, { basePrice }) => acc + basePrice,
       0,
     );
 
+    const getDestination = (index) => {
+      const name = tripModel.findDestinationByIndex(index)?.name;
+      return name ? name : '';
+    };
+
     // Формирование загаловка
-    tripInfoData.title = tripModel.findDestinationByIndex(0)?.name;
+    tripInfoData.title = getDestination(0);
     if (listLength > MAX_VISIBLE_POINTS) {
       // Если точек больше 3-х.
-      tripInfoData.title += ` — ${PLACEHOLDER} — ${tripModel.findDestinationByIndex(listLength - 1).name}`;
+      tripInfoData.title += ` — ${PLACEHOLDER} — ${getDestination(listLength - 1)}`;
       return tripInfoData;
     } else if (listLength === MAX_VISIBLE_POINTS) {
       // Если 3 точки
-      tripInfoData.title += ` — ${tripModel.findDestinationByIndex(1).name} — ${tripModel.findDestinationByIndex(2).name}`;
+      tripInfoData.title += ` — ${getDestination(1)} — ${getDestination(2)}`;
       return tripInfoData;
     } else if (listLength === TWO_POINTS) {
       // Если 2 точки
-      tripInfoData.title += ` — ${tripModel.findDestinationByIndex(1).name}`;
+      tripInfoData.title += ` — ${getDestination(1)}`;
       return tripInfoData;
     }
 
