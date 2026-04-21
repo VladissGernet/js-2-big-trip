@@ -2,6 +2,7 @@ import { ListPointView } from '../view/index.js';
 import PointFormPresenter from './point-form-presenter.js';
 import { render, replace, remove } from '../framework/render.js';
 import { Mode } from '../const.js';
+import { calcFinalPrice } from '../utils/index.js';
 
 /** Конфигурация презентера путевой точки.
  * @typedef {Object} PointConfig
@@ -179,24 +180,23 @@ export default class PointPresenter {
   }
 
   static createViewPointData({ tripModel, pointData, isFormData = false }) {
-    const destinationData = tripModel.destinationsById.get(
-      pointData.destination,
-    );
+    const { destination, type, offers, basePrice } = pointData;
+
+    const destinationData = tripModel.destinationsById.get(destination);
 
     const transformedOfferTypeData = PointPresenter.#transformOfferTypeData({
-      offerTypeData: tripModel.offersByType.get(pointData.type),
-      currentPointOffers: pointData.offers,
+      offerTypeData: tripModel.offersByType.get(type),
+      currentPointOffers: offers,
     });
 
     if (!isFormData) {
       // Подсчет полной стоимсти с учетом добавления надбавок от offer.
-      let finalPrice = Number(pointData.basePrice);
-      const allOffers = tripModel.offersByType.get(pointData.type);
-      pointData.offers.forEach(
-        (offerId) => (finalPrice += allOffers.get(offerId).price),
-      );
       const pointCopy = structuredClone(pointData);
-      pointCopy.basePrice = finalPrice;
+      pointCopy.basePrice = calcFinalPrice(
+        tripModel.offersByType.get(type),
+        basePrice,
+        offers,
+      );
 
       return {
         listPoint: pointCopy,

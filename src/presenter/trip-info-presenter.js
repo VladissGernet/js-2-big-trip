@@ -2,6 +2,7 @@ import { TripInfoView } from '../view/index.js';
 import { TRIP_INFO_TITLE } from '../const.js';
 import dayjs from 'dayjs';
 import { remove, replace } from '../framework/render.js';
+import { calcFinalPrice } from '../utils/index.js';
 
 export default class TripInfoPresenter {
   #tripModel;
@@ -69,10 +70,11 @@ export default class TripInfoPresenter {
       tripInfoData.datesResult = `${firstPointDateFrom.format('D MMM YYYY')}&nbsp;—&nbsp;${lastPointDateTo.format('D MMM YYYY')}`;
     }
 
-    // Общаяя цена.
-    // TODO Исправить подсчет конецчной цены на основе выбранных офферов.
+    // Подсчет конечной цены на основе выбранных офферов.
     tripInfoData.totalPrice = tripModel.listPoints.reduce(
-      (acc, { basePrice }) => acc + basePrice,
+      (acc, { basePrice, offers, type }) =>
+        acc +
+        calcFinalPrice(tripModel.offersByType.get(type), basePrice, offers),
       0,
     );
 
