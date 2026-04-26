@@ -85,6 +85,9 @@ export default class TripModel extends Observable {
 
   /** Обновляет данные выбранной точки */
   updatePoint(pointId, updatedData) {
+    // TODO
+    // Сначала нужно сделать изменение на сервере, дождаться с помощью await и только потом
+    // отобразить на клиенте в разметке.
     const index = this.listPoints.findIndex((item) => item.id === pointId);
     if (index === -1) {
       return;
@@ -99,12 +102,18 @@ export default class TripModel extends Observable {
   }
 
   removePoint(pointId) {
+    // TODO
+    // Сначала нужно сделать изменение на сервере, дождаться с помощью await и только потом
+    // отобразить на клиенте в разметке.
     const index = this.listPoints.findIndex((item) => item.id === pointId);
     this.listPoints.splice(index, 1);
     this.#notifyAboutListChange();
   }
 
   addPoint(data) {
+    // TODO
+    // Сначала нужно сделать изменение на сервере, дождаться с помощью await и только потом
+    // отобразить на клиенте в разметке.
     // Генерируем новый ID.
     data.id = nanoid();
     this.listPoints.push(data);
