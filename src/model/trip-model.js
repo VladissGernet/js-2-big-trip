@@ -1,4 +1,6 @@
 import Observable from '../framework/observable.js';
+// TODO
+// Рассмотреть удаление nanoid обязательно через 'npm uninstall'. Обязательно затестировать нужно присвоение id новым точкам.
 import { nanoid } from 'nanoid';
 import { destinationsMock } from '../mock/destinations-mock.js';
 import { offersMock } from '../mock/offers-mock.js';
