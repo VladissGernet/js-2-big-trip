@@ -86,8 +86,8 @@ export default class TripModel extends Observable {
   /** Обновляет данные выбранной точки */
   updatePoint(pointId, updatedData) {
     // TODO
-    // Сначала нужно сделать изменение на сервере, дождаться с помощью await и только потом
-    // отобразить на клиенте в разметке.
+    // Сначала нужно сделать изменение на сервере, дождаться с помощью try/catch и await и только потом
+    // отобразить на клиенте в разметке, иначе отработать ошибку в catch.
     const index = this.listPoints.findIndex((item) => item.id === pointId);
     if (index === -1) {
       return;
@@ -103,8 +103,8 @@ export default class TripModel extends Observable {
 
   removePoint(pointId) {
     // TODO
-    // Сначала нужно сделать изменение на сервере, дождаться с помощью await и только потом
-    // отобразить на клиенте в разметке.
+    // Сначала нужно сделать изменение на сервере, дождаться с помощью try/catch и await и только потом
+    // отобразить на клиенте в разметке, иначе отработать ошибку в catch.
     const index = this.listPoints.findIndex((item) => item.id === pointId);
     this.listPoints.splice(index, 1);
     this.#notifyAboutListChange();
@@ -112,8 +112,11 @@ export default class TripModel extends Observable {
 
   addPoint(data) {
     // TODO
-    // Сначала нужно сделать изменение на сервере, дождаться с помощью await и только потом
-    // отобразить на клиенте в разметке.
+    // Сначала нужно сделать изменение на сервере, дождаться с помощью try/catch и await и только потом
+    // отобразить на клиенте в разметке, иначе отработать ошибку в catch.
+
+    // Есть пример в демо проекте async addAtask
+
     // Генерируем новый ID.
     data.id = nanoid();
     this.listPoints.push(data);
