@@ -1,6 +1,7 @@
 import { ListPointFormView } from '../view/index.js';
 import PointPresenter from './point-presenter.js';
 import { remove } from '../framework/render.js';
+import { transformDestinationNameToId } from '../utils/index.js';
 
 /** Конфигурация презентера формы путевой точки.
  * @typedef {Object} PointFormConfig
@@ -190,7 +191,7 @@ export default class PointFormPresenter {
     // Преобразовывает название пункта назначения в соответсвующий ему id.
     const destinationName = formData.get('event-destination');
     const destination = destinationName
-      ? tripModel.transformDestinationNameToId(destinationName)
+      ? transformDestinationNameToId(destinationName)
       : '';
 
     // Получаем тип для массива предложений.

@@ -6,12 +6,11 @@ import { destinationsMock } from '../mock/destinations-mock.js';
 import { offersMock } from '../mock/offers-mock.js';
 import { pointsMock } from '../mock/points-mock.js';
 import { replaceSnakeToCamel } from '../utils/replace-snake-to-camel.js';
-import { SORT_CONFIG } from '../const.js';
 
 export default class TripModel extends Observable {
-  #points = null;
-  #destinations = null;
-  #offers = null;
+  #points = [];
+  #destinations = [];
+  #offers = [];
 
   #offersReadOnly = null;
   #destinationsReadOnly = null;
@@ -124,22 +123,6 @@ export default class TripModel extends Observable {
     this.listPoints.push(data);
     this.listPoints.sort(SORT_CONFIG['date']);
     this.#notifyAboutListChange();
-  }
-
-  findDestinationByIndex(index) {
-    // Дефолтная сортировка по датам.
-    const sortedList = this.listPoints.toSorted(SORT_CONFIG['date']);
-    return this.destinationsReadOnly?.find(
-      ({ id }) => id === sortedList[index]?.destination,
-    );
-  }
-
-  /** Обратно переводит имя назначения в id. */
-  transformDestinationNameToId(destinationName) {
-    const item = this.destinationsReadOnly.find(
-      ({ name }) => name === destinationName,
-    );
-    return item.id;
   }
 
   #notifyAboutListChange() {

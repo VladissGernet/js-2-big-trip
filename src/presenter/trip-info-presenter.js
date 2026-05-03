@@ -2,7 +2,7 @@ import { TripInfoView } from '../view/index.js';
 import { TRIP_INFO_TITLE } from '../const.js';
 import dayjs from 'dayjs';
 import { remove, replace } from '../framework/render.js';
-import { calcFinalPrice } from '../utils/index.js';
+import { calcFinalPrice, findDestinationByIndex } from '../utils/index.js';
 
 export default class TripInfoPresenter {
   #tripModel;
@@ -79,7 +79,7 @@ export default class TripInfoPresenter {
     );
 
     const getDestination = (index) => {
-      const name = tripModel.findDestinationByIndex(index)?.name;
+      const name = findDestinationByIndex(index)?.name;
       return name ? name : '';
     };
 
