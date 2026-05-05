@@ -1,7 +1,11 @@
 import { createListPointFormTemplate } from './list-form-templates.js';
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
 import { remove } from '../../framework/render.js';
-import { InputDateStage, DateStateStage } from '../../const.js';
+import {
+  InputDateStage,
+  DateStateStage,
+  DEFAULT_TYPE_OFFER,
+} from '../../const.js';
 
 import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
@@ -39,13 +43,11 @@ export default class ListPointFormView extends AbstractStatefulView {
 
     // При создании нового события добавляем по дефолту.
     if (!viewPointData) {
-      const transformedOfferData = this.#tripModel.offersReadOnly[0].offers.map(
-        (offer) => ({ ...offer, isSelected: false }),
-      );
       const today = new Date().toISOString();
 
+      // TODO есть подозрение, что при отправке дата будет неверной
       viewPointData = {
-        offerData: transformedOfferData,
+        offerData: this.#tripModel.offersByType.get(DEFAULT_TYPE_OFFER),
         listPoint: {
           dateFrom: today,
           dateTo: today,
@@ -193,9 +195,9 @@ export default class ListPointFormView extends AbstractStatefulView {
   };
 
   #changeTypeHandler = (evt) => {
-    const typeOffers = this.#tripModel.offersReadOnly.find(
-      ({ type }) => type === evt.target.value,
-    ).offers;
+    const typeOffers = this.#tripModel.offersByType.get(evt.target.value);
+    // TODO остановился здесь, оно прогитывает map, надо адаптировать
+    console.log(typeOffers);
 
     this.updateElement({
       listPoint: { ...this._state.listPoint, type: evt.target.value },

@@ -13,16 +13,8 @@ export default class TripModel extends Observable {
   #destinations = null;
   #offers = null;
 
-  #offersReadOnly = null;
   #destinationsReadOnly = null;
   #cities = null;
-
-  get offersReadOnly() {
-    if (!this.#offersReadOnly) {
-      this.#offersReadOnly = Object.freeze(structuredClone(offersMock));
-    }
-    return this.#offersReadOnly;
-  }
 
   /** Массив всех городов из данных */
   get cities() {
@@ -67,6 +59,12 @@ export default class TripModel extends Observable {
       }, new Map());
     }
     return this.#offers;
+  }
+
+  /** Для отрисовки списка выбора типа маршрута. По умолчанию выбирается самый первый из полученных данных. */
+  // TODO исправить магические данные
+  get defaultTypeOffer() {
+    return 'taxi';
   }
 
   /** @returns {Array<Object>} Список путевых точек */

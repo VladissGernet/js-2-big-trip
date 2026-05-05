@@ -64,6 +64,7 @@ export default class NewPointPresenter {
     this.#pointFormPresenter = new PointFormPresenter({
       tripModel: this.#tripModel,
       filterModel: this.#filterModel,
+      pointData: this.#createDefaultPointDataConfig(),
       isEditForm: false,
       newPointPresenter: this,
       pageMainPresenter: this.#pageMainPresenter,
@@ -97,4 +98,18 @@ export default class NewPointPresenter {
       RenderPosition.AFTERBEGIN,
     );
   };
+
+  /** Данные создания формы по умолчанию */
+  #createDefaultPointDataConfig() {
+    const today = new Date().toISOString();
+    return {
+      basePrice: '',
+      dateFrom: today,
+      dateTo: today,
+      destination: '',
+      isFavorite: false,
+      offers: new Map(),
+      type: this.#tripModel.defaultTypeOffer,
+    };
+  }
 }

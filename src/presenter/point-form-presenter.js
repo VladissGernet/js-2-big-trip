@@ -1,7 +1,9 @@
 import { ListPointFormView } from '../view/index.js';
-import PointPresenter from './point-presenter.js';
 import { remove } from '../framework/render.js';
-import { transformDestinationNameToId } from '../utils/index.js';
+import {
+  transformDestinationNameToId,
+  createViewPointData,
+} from '../utils/index.js';
 
 /** Конфигурация презентера формы путевой точки.
  * @typedef {Object} PointFormConfig
@@ -90,6 +92,7 @@ export default class PointFormPresenter {
 
   /** Добавление\сохранение данных формы. */
   #handleFormSubmit = (evt) => {
+    // TODO ошибка при submit
     const currentState = this.#pointFormComponent._state;
     const formData = new FormData(evt.target);
     const newData = PointFormPresenter.#preparePointData({
@@ -150,18 +153,12 @@ export default class PointFormPresenter {
 
   get component() {
     if (!this.#pointFormComponent) {
-      const createViewPointDataConfig = () => ({
-        tripModel: this.#tripModel,
-        pointData: this.#pointData,
-        isFormData: true,
-      });
-
-      const viewPointData = this.#pointData
-        ? PointPresenter.createViewPointData(createViewPointDataConfig())
-        : null;
-
       this.#pointFormComponent = new ListPointFormView({
-        viewPointData: viewPointData,
+        viewPointData: createViewPointData({
+          tripModel: this.#tripModel,
+          pointData: this.#pointData,
+          isFormData: true,
+        }),
         isEditForm: this.#isEditForm,
         tripModel: this.#tripModel,
         onRolldownClick: this.#handleRolldownClick,

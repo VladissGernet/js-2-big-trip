@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 
 // Константы
 const DEFAULT_SORT = 'date';
+// TODO Заменить на то, что будет в model
 const DEFAULT_TYPE_OFFER = 'taxi';
 
 // Перечисления (Enum)

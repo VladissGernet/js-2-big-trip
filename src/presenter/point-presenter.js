@@ -2,7 +2,7 @@ import { ListPointView } from '../view/index.js';
 import PointFormPresenter from './point-form-presenter.js';
 import { render, replace, remove } from '../framework/render.js';
 import { Mode } from '../const.js';
-import { calcFinalPrice } from '../utils/index.js';
+import { createViewPointData } from '../utils/index.js';
 
 /** Конфигурация презентера путевой точки.
  * @typedef {Object} PointConfig
@@ -95,7 +95,7 @@ export default class PointPresenter {
   }
 
   #createPointComponent() {
-    const viewPointData = PointPresenter.createViewPointData({
+    const viewPointData = createViewPointData({
       tripModel: this.#tripModel,
       pointData: this.#pointData,
       isFormData: false,
@@ -171,44 +171,4 @@ export default class PointPresenter {
     this.#createPointComponent();
     replace(this.#pointComponent, prevPointComponent);
   };
-
-  static #transformOfferTypeData({ offerTypeData, currentPointOffers }) {
-    return Array.from(offerTypeData, ([id, data]) => ({
-      ...data,
-      isSelected: currentPointOffers.has(id),
-    }));
-  }
-
-  static createViewPointData({ tripModel, pointData, isFormData = false }) {
-    const { destination, type, offers, basePrice } = pointData;
-
-    const destinationData = tripModel.destinationsById.get(destination);
-
-    const transformedOfferTypeData = PointPresenter.#transformOfferTypeData({
-      offerTypeData: tripModel.offersByType.get(type),
-      currentPointOffers: offers,
-    });
-
-    if (!isFormData) {
-      // Подсчет полной стоимсти с учетом добавления надбавок от offer.
-      const pointCopy = structuredClone(pointData);
-      pointCopy.basePrice = calcFinalPrice(
-        tripModel.offersByType.get(type),
-        basePrice,
-        offers,
-      );
-
-      return {
-        listPoint: pointCopy,
-        destinationData: destinationData,
-        offerData: transformedOfferTypeData,
-      };
-    }
-
-    return {
-      listPoint: pointData,
-      destinationData: destinationData,
-      offerData: transformedOfferTypeData,
-    };
-  }
 }
