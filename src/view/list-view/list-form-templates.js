@@ -1,4 +1,5 @@
 import { html } from '../../utils/index.js';
+import { DEFAULT_TYPE_OFFER } from '../../const.js';
 
 const createOfferTemplate = ({ title, price, isSelected }) => {
   const id = title.toLowerCase() + price;
@@ -24,10 +25,9 @@ const createOffersTemplate = (offers) => {
   if (!offers?.length) {
     return '';
   }
-
   const result = offers.map((item) => createOfferTemplate(item)).join('');
-  return html` <section class="event__section  event__section--offers">
-    <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+  return html`<section class="event__section event__section--offers">
+    <h3 class="event__section-title event__section-title--offers">Offers</h3>
     <div class="event__available-offers">${result}</div>
   </section>`;
 };
@@ -66,28 +66,25 @@ const closeEditFormBtn = (isEditForm) =>
     : '';
 
 const createTypeList = (offers, iconType) => {
-  const listItems = offers.reduce(
-    (finalHTML, item) =>
-      finalHTML +
-      html`
-        <div class="event__type-item">
-          <input
-            id="event-type-${item.type}-1"
-            class="event__type-input visually-hidden"
-            type="radio"
-            name="event-type"
-            value="${item.type}"
-            ${iconType === item.type ? 'checked' : ''}
-          />
-          <label
-            class="event__type-label event__type-label--${item.type}"
-            for="event-type-${item.type}-1"
-            >${item.type[0].toUpperCase() + item.type.slice(1)}</label
-          >
-        </div>
-      `,
-    '',
-  );
+  let listItems = '';
+
+  for (const offerName of offers) {
+    listItems += html`<div class="event__type-item">
+      <input
+        id="event-type-${offerName}-1"
+        class="event__type-input visually-hidden"
+        type="radio"
+        name="event-type"
+        value="${offerName}"
+        ${iconType === offerName ? 'checked' : ''}
+      />
+      <label
+        class="event__type-label event__type-label--${offerName}"
+        for="event-type-${offerName}-1"
+        >${offerName[0].toUpperCase() + offerName.slice(1)}</label
+      >
+    </div>`;
+  }
 
   return html`
     <div class="event__type-list">
@@ -98,11 +95,6 @@ const createTypeList = (offers, iconType) => {
     </div>
   `;
 };
-
-const isModelForTypes = (tripModel, iconType) =>
-  tripModel?.offersReadOnly
-    ? createTypeList(tripModel.offersReadOnly, iconType)
-    : '';
 
 const createDatalist = (cities) =>
   html` <datalist id="destination-list-1">
@@ -117,10 +109,10 @@ const createListPointFormTemplate = ({
   const {
     listPoint = null,
     destinationData = null,
-    offerData = tripModel.offersReadOnly[0].offers,
+    offerData = null,
   } = viewPointData;
 
-  const iconType = listPoint?.type || tripModel?.offersReadOnly[0]?.type || '';
+  const iconType = listPoint?.type || DEFAULT_TYPE_OFFER;
 
   return html`
     <li class="trip-events__item">
@@ -145,7 +137,7 @@ const createListPointFormTemplate = ({
               id="event-type-toggle-1"
               type="checkbox"
             />
-            ${isModelForTypes(tripModel, iconType)}
+            ${createTypeList(tripModel.offersByType.keys(), iconType)}
           </div>
 
           <div class="event__field-group event__field-group--destination">

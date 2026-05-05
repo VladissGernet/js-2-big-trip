@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 
 // Константы
 const DEFAULT_SORT = 'date';
+const DEFAULT_TYPE_OFFER = 'taxi';
 
 // Перечисления (Enum)
 
@@ -99,4 +100,5 @@ export {
   DateStateStage,
   FilterStatus,
   DEFAULT_SORT,
+  DEFAULT_TYPE_OFFER,
 };

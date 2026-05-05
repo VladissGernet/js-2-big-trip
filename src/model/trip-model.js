@@ -24,7 +24,7 @@ export default class TripModel extends Observable {
     return this.#offersReadOnly;
   }
 
-  // Список всех городов из данных
+  /** Массив всех городов из данных */
   get cities() {
     if (!this.#cities) {
       this.#cities = destinationsMock.map((dest) => dest.name);
