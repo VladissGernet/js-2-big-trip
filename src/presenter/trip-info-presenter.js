@@ -79,7 +79,11 @@ export default class TripInfoPresenter {
     );
 
     const getDestination = (index) => {
-      const name = findDestinationByIndex(index)?.name;
+      const name = findDestinationByIndex(
+        index,
+        tripModel.listPoints,
+        tripModel.destinationsReadOnly,
+      ).name;
       return name ? name : '';
     };
 

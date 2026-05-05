@@ -6,11 +6,12 @@ import { destinationsMock } from '../mock/destinations-mock.js';
 import { offersMock } from '../mock/offers-mock.js';
 import { pointsMock } from '../mock/points-mock.js';
 import { replaceSnakeToCamel } from '../utils/replace-snake-to-camel.js';
+import { SORT_CONFIG } from '../const.js';
 
 export default class TripModel extends Observable {
-  #points = [];
-  #destinations = [];
-  #offers = [];
+  #points = null;
+  #destinations = null;
+  #offers = null;
 
   #offersReadOnly = null;
   #destinationsReadOnly = null;
