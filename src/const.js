@@ -1,5 +1,8 @@
 import dayjs from 'dayjs';
 
+// Константы
+const DEFAULT_SORT = 'date';
+
 // Перечисления (Enum)
 
 const FilterType = {
@@ -95,4 +98,5 @@ export {
   InputDateStage,
   DateStateStage,
   FilterStatus,
+  DEFAULT_SORT,
 };

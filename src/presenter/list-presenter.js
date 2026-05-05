@@ -2,7 +2,7 @@ import { ListView } from '../view/index.js';
 import { render, remove } from '../framework/render.js';
 import PointPresenter from './point-presenter.js';
 import FilterPresenter from './filter-presenter.js';
-import { SORT_CONFIG } from '../const.js';
+import { SORT_CONFIG, DEFAULT_SORT } from '../const.js';
 
 /** Конфигурация презентера списка.
  * @typedef {Object} PresenterConfig
@@ -83,7 +83,7 @@ export default class ListPresenter {
       );
 
       filteredList
-        .sort(SORT_CONFIG['date'])
+        .sort(SORT_CONFIG[DEFAULT_SORT])
         .forEach((point) => this.#createPoint(point));
 
       render(this.#listView, tripEventsElement);

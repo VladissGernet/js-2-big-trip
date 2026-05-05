@@ -1,9 +1,9 @@
-import { SORT_CONFIG } from '../const.js';
+import { SORT_CONFIG, DEFAULT_SORT } from '../const.js';
 
 /** Поиск города назначения по индексу. */
 const findDestinationByIndex = (index, points, destinations) => {
   // Дефолтная сортировка по датам.
-  const sortedList = points.toSorted(SORT_CONFIG['date']);
+  const sortedList = points.toSorted(SORT_CONFIG[DEFAULT_SORT]);
   return destinations?.find(({ id }) => id === sortedList[index]?.destination);
 };
 

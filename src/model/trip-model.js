@@ -6,7 +6,7 @@ import { destinationsMock } from '../mock/destinations-mock.js';
 import { offersMock } from '../mock/offers-mock.js';
 import { pointsMock } from '../mock/points-mock.js';
 import { replaceSnakeToCamel } from '../utils/replace-snake-to-camel.js';
-import { SORT_CONFIG } from '../const.js';
+import { SORT_CONFIG, DEFAULT_SORT } from '../const.js';
 
 export default class TripModel extends Observable {
   #points = null;
@@ -122,7 +122,7 @@ export default class TripModel extends Observable {
     // Генерируем новый ID.
     data.id = nanoid();
     this.listPoints.push(data);
-    this.listPoints.sort(SORT_CONFIG['date']);
+    this.listPoints.sort(SORT_CONFIG[DEFAULT_SORT]);
     this.#notifyAboutListChange();
   }
 
