@@ -16,15 +16,19 @@ export default class TripModel extends Observable {
   #destinationsReadOnly = null;
   #cities = null;
 
+  // TODO проследить путь данных
+
   /** Массив всех городов из данных */
   get cities() {
     if (!this.#cities) {
+      // TODO обработать данные с сервера.
       this.#cities = destinationsMock.map((dest) => dest.name);
     }
 
     return this.#cities;
   }
 
+  // TODO заменить на destinationsById
   get destinationsReadOnly() {
     if (!this.#destinationsReadOnly) {
       this.#destinationsReadOnly = Object.freeze(
@@ -38,6 +42,7 @@ export default class TripModel extends Observable {
   get destinationsById() {
     if (!this.#destinations) {
       // Преобразовываю данные для оптимизированного поиска.
+      // TODO преобразовать для получения данных с сервера.
       this.#destinations = destinationsMock.reduce(
         (result, { id, ...rest }) => result.set(id, rest),
         new Map(),

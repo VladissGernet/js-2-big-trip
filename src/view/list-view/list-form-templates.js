@@ -96,7 +96,7 @@ const createTypeList = (offers, iconType) => {
 };
 
 const createDatalist = (cities) =>
-  html` <datalist id="destination-list-1">
+  html`<datalist id="destination-list-1">
     ${cities.map((city) => `<option value="${city}"></option>`).join('')}
   </datalist>`;
 
