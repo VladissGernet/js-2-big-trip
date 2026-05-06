@@ -1,5 +1,4 @@
 import { html } from '../../utils/index.js';
-import { DEFAULT_TYPE_OFFER } from '../../const.js';
 
 const createOfferTemplate = ({ title, price, isSelected }) => {
   const id = title.toLowerCase() + price;
@@ -112,8 +111,6 @@ const createListPointFormTemplate = ({
     offerData = null,
   } = viewPointData;
 
-  const iconType = listPoint?.type || DEFAULT_TYPE_OFFER;
-
   return html`
     <li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
@@ -128,7 +125,7 @@ const createListPointFormTemplate = ({
                 class="event__type-icon"
                 width="17"
                 height="17"
-                src="${iconType === '' ? '' : `img/icons/${iconType}.png`}"
+                src="img/icons/${`${listPoint.type}`}.png"
                 alt="Event type icon"
               />
             </label>
@@ -137,7 +134,7 @@ const createListPointFormTemplate = ({
               id="event-type-toggle-1"
               type="checkbox"
             />
-            ${createTypeList(tripModel.offersByType.keys(), iconType)}
+            ${createTypeList(tripModel.offersByType.keys(), listPoint.type)}
           </div>
 
           <div class="event__field-group event__field-group--destination">
@@ -145,7 +142,7 @@ const createListPointFormTemplate = ({
               class="event__label event__type-output"
               for="event-destination-1"
             >
-              ${iconType}
+              ${listPoint.type}
             </label>
             <input
               class="event__input event__input--destination"
