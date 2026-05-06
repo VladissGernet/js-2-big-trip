@@ -1,12 +1,10 @@
 import { createListPointFormTemplate } from './list-form-templates.js';
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
 import { remove } from '../../framework/render.js';
-import {
-  InputDateStage,
-  DateStateStage,
-  DEFAULT_TYPE_OFFER,
-} from '../../const.js';
+import { InputDateStage, DateStateStage } from '../../const.js';
+import { transformOfferTypeData } from '../../utils/index.js';
 
+// Библиотека dayjs.
 import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
@@ -40,20 +38,6 @@ export default class ListPointFormView extends AbstractStatefulView {
     this.#handleResetClick = onResetClick;
     this.#handleSubmitForm = onFormSubmit;
     this.#handlePriceChange = onPriceChange;
-
-    // При создании нового события добавляем по дефолту.
-    if (!viewPointData) {
-      const today = new Date().toISOString();
-
-      // TODO есть подозрение, что при отправке дата будет неверной
-      viewPointData = {
-        offerData: this.#tripModel.offersByType.get(DEFAULT_TYPE_OFFER),
-        listPoint: {
-          dateFrom: today,
-          dateTo: today,
-        },
-      };
-    }
 
     // Для удобства передачи данных точек упаковываю всё в this._state.
     this._setState(viewPointData);
@@ -196,12 +180,9 @@ export default class ListPointFormView extends AbstractStatefulView {
 
   #changeTypeHandler = (evt) => {
     const typeOffers = this.#tripModel.offersByType.get(evt.target.value);
-    // TODO остановился здесь, оно прогитывает map, надо адаптировать
-    console.log(typeOffers);
-
     this.updateElement({
       listPoint: { ...this._state.listPoint, type: evt.target.value },
-      offerData: typeOffers,
+      offerData: transformOfferTypeData({ allOffers: typeOffers }),
     });
   };
 

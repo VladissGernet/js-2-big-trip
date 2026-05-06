@@ -1,15 +1,13 @@
-import { calcFinalPrice } from './calc-final-price.js';
+import { calcFinalPrice, transformOfferTypeData } from './index.js';
 
 const createViewPointData = ({ tripModel, pointData, isFormData = false }) => {
   const { destination, type, offers, basePrice } = pointData;
   const destinationData = tripModel.destinationsById.get(destination);
-  const transformedOfferTypeData = Array.from(
-    tripModel.offersByType.get(type),
-    ([id, data]) => ({
-      ...data,
-      isSelected: offers.has(id),
-    }),
-  );
+
+  const transformedOfferTypeData = transformOfferTypeData({
+    allOffers: tripModel.offersByType.get(type),
+    selectedOffers: offers,
+  });
 
   if (!isFormData) {
     // TODO вот это возможно лишний подсчет
