@@ -4,7 +4,7 @@ import { SORT_CONFIG, DEFAULT_SORT } from '../const.js';
 const findDestinationByIndex = (index, points, destinations) => {
   // Дефолтная сортировка по датам.
   const sortedList = points.toSorted(SORT_CONFIG[DEFAULT_SORT]);
-  return destinations?.find(({ id }) => id === sortedList[index]?.destination);
+  return destinations.get(sortedList[index].destination);
 };
 
 export { findDestinationByIndex };

@@ -2,6 +2,7 @@ import { BtnView } from '../view/index.js';
 import PointFormPresenter from './point-form-presenter.js';
 import { render, RenderPosition } from '../framework/render.js';
 import { FilterType, FilterStatus } from '../const.js';
+import { createDefaultPointDataConfig } from '../utils/index.js';
 
 /** Конфиг презентера обработчика событйи на кнопку создания новго события.
  * @typedef {Object} PresenterConfig - Параметры для создания обработчика
@@ -64,7 +65,7 @@ export default class NewPointPresenter {
     this.#pointFormPresenter = new PointFormPresenter({
       tripModel: this.#tripModel,
       filterModel: this.#filterModel,
-      pointData: this.#createDefaultPointDataConfig(),
+      pointData: createDefaultPointDataConfig(this.#tripModel.defaultTypeOffer),
       isEditForm: false,
       newPointPresenter: this,
       pageMainPresenter: this.#pageMainPresenter,
@@ -75,8 +76,8 @@ export default class NewPointPresenter {
 
     // Добавляю форму создания новой точки в самый верх списка.
     if (this.#tripModel.listPoints.length) {
-      // Перерисовываем список, чтобы выполнить условие ТЗ, т.е. сделать переключение на вкладку
-      // фильтрова "everything".
+      // Перерисовываем список, чтобы выполнить условие ТЗ (сделать переключение на вкладку
+      // фильтрова "everything").
       this.#pageMainPresenter.renderEventsSection(FilterType.EVERYTHING);
       render(
         this.#pointFormPresenter.component,
@@ -98,18 +99,4 @@ export default class NewPointPresenter {
       RenderPosition.AFTERBEGIN,
     );
   };
-
-  /** Данные создания формы по умолчанию */
-  #createDefaultPointDataConfig() {
-    const today = new Date().toISOString();
-    return {
-      basePrice: '',
-      dateFrom: today,
-      dateTo: today,
-      destination: '',
-      isFavorite: false,
-      offers: new Map(),
-      type: this.#tripModel.defaultTypeOffer,
-    };
-  }
 }

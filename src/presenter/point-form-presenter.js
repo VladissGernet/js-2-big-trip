@@ -187,9 +187,10 @@ export default class PointFormPresenter {
 
     // Преобразовывает название пункта назначения в соответсвующий ему id.
     const destinationName = formData.get('event-destination');
-    const destination = destinationName
-      ? transformDestinationNameToId(destinationName)
-      : '';
+    const destination = transformDestinationNameToId(
+      destinationName,
+      tripModel.destinationsById,
+    );
 
     // Получаем тип для массива предложений.
     const type = formData.get('event-type');

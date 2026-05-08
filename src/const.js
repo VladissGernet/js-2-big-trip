@@ -2,6 +2,9 @@ import dayjs from 'dayjs';
 
 // Константы
 const DEFAULT_SORT = 'date';
+const FIRST_DESTINATION = 0;
+const SECOND_DESTINATION = 1;
+const THIRD_DESTINATION = 2;
 
 // Перечисления (Enum)
 
@@ -99,4 +102,7 @@ export {
   DateStateStage,
   FilterStatus,
   DEFAULT_SORT,
+  FIRST_DESTINATION,
+  SECOND_DESTINATION,
+  THIRD_DESTINATION,
 };

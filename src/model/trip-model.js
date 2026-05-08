@@ -13,7 +13,6 @@ export default class TripModel extends Observable {
   #destinations = null;
   #offers = null;
 
-  #destinationsReadOnly = null;
   #cities = null;
 
   // TODO проследить путь данных
@@ -26,16 +25,6 @@ export default class TripModel extends Observable {
     }
 
     return this.#cities;
-  }
-
-  // TODO заменить на destinationsById
-  get destinationsReadOnly() {
-    if (!this.#destinationsReadOnly) {
-      this.#destinationsReadOnly = Object.freeze(
-        structuredClone(destinationsMock),
-      );
-    }
-    return this.#destinationsReadOnly;
   }
 
   /** @returns {Map<string, Object>}  Назначения по ID для быстрого поиска. */

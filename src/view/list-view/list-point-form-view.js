@@ -2,7 +2,10 @@ import { createListPointFormTemplate } from './list-form-templates.js';
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
 import { remove } from '../../framework/render.js';
 import { InputDateStage, DateStateStage } from '../../const.js';
-import { transformOfferTypeData } from '../../utils/index.js';
+import {
+  transformOfferTypeData,
+  findDestinationByName,
+} from '../../utils/index.js';
 
 // Библиотека dayjs.
 import dayjs from 'dayjs';
@@ -192,8 +195,9 @@ export default class ListPointFormView extends AbstractStatefulView {
       prevDestinationCity = '';
     }
 
-    const newDestinationCityData = this.#tripModel.destinationsReadOnly.find(
-      ({ name }) => name === evt.target.value,
+    const newDestinationCityData = findDestinationByName(
+      evt.target.value,
+      this.#tripModel.destinationsById,
     );
 
     if (!newDestinationCityData) {

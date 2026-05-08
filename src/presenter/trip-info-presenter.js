@@ -3,6 +3,11 @@ import { TRIP_INFO_TITLE } from '../const.js';
 import dayjs from 'dayjs';
 import { remove, replace } from '../framework/render.js';
 import { calcFinalPrice, findDestinationByIndex } from '../utils/index.js';
+import {
+  FIRST_DESTINATION,
+  SECOND_DESTINATION,
+  THIRD_DESTINATION,
+} from '../const.js';
 
 export default class TripInfoPresenter {
   #tripModel;
@@ -78,28 +83,26 @@ export default class TripInfoPresenter {
       0,
     );
 
-    const getDestination = (index) => {
-      const name = findDestinationByIndex(
+    const getDestination = (index) =>
+      findDestinationByIndex(
         index,
         tripModel.listPoints,
-        tripModel.destinationsReadOnly,
+        tripModel.destinationsById,
       ).name;
-      return name ? name : '';
-    };
 
     // Формирование загаловка
-    tripInfoData.title = getDestination(0);
+    tripInfoData.title = getDestination(FIRST_DESTINATION);
     if (listLength > MAX_VISIBLE_POINTS) {
       // Если точек больше 3-х.
       tripInfoData.title += ` — ${PLACEHOLDER} — ${getDestination(listLength - 1)}`;
       return tripInfoData;
     } else if (listLength === MAX_VISIBLE_POINTS) {
       // Если 3 точки
-      tripInfoData.title += ` — ${getDestination(1)} — ${getDestination(2)}`;
+      tripInfoData.title += ` — ${getDestination(SECOND_DESTINATION)} — ${getDestination(THIRD_DESTINATION)}`;
       return tripInfoData;
     } else if (listLength === TWO_POINTS) {
       // Если 2 точки
-      tripInfoData.title += ` — ${getDestination(1)}`;
+      tripInfoData.title += ` — ${getDestination(SECOND_DESTINATION)}`;
       return tripInfoData;
     }
 
