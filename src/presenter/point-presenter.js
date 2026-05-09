@@ -47,6 +47,7 @@ export default class PointPresenter {
   #pointComponent = null;
 
   // Режим текущй точки (по умолчанию\редактируется)
+  // TODO можно заменить на флаг isEdditing
   #mode = Mode.DEFAULT;
 
   /** @param {PointConfig} config - Конфигурация презентера */
@@ -70,6 +71,7 @@ export default class PointPresenter {
 
   init() {
     this.#renderPoint();
+    // TODO описать сценарии очистки слушателей и другого.
   }
 
   /**
@@ -144,6 +146,7 @@ export default class PointPresenter {
     this.#createPointComponent();
     replace(this.#pointComponent, this.#pointFormPresenter.component);
 
+    // TODO здесь при сохранении и удалении точки это не вызывается.
     this.#pointFormPresenter.destroy();
     this.#pointFormPresenter = null;
   }
@@ -160,6 +163,7 @@ export default class PointPresenter {
 
   /** Обработчик добавления в избранное. */
   #favoriteClickHandler = () => {
+    // TODO проверить, во время перерисовки удаляются ли обработчики.
     const selectedPointId = this.#pointData.id;
     // Обновляем данные.
     this.#pointData = this.#tripModel.updatePoint(selectedPointId, {

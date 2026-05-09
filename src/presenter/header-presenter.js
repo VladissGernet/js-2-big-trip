@@ -24,7 +24,7 @@ export default class HeaderPresenter {
 
   #filterPresenter = null;
 
-  /** Публичный доступ к презентеру кнопки создания новой точки для связывания со списком */
+  /** Публичный доступ к презентеру кнопки создания новой точки для связывания со списком. */
   newPointPresenter = null;
 
   /** @param {PresenterConfig} config */
@@ -38,6 +38,7 @@ export default class HeaderPresenter {
     this.#renderHeader();
   }
 
+  /** Связывает <main> страницы с header.*/
   connectPageMainPresenter(presenter) {
     this.newPointPresenter.connectPageMainPresenter(presenter);
   }

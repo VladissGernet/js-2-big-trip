@@ -1,7 +1,10 @@
 import dayjs from 'dayjs';
 
 // Константы
+
 const DEFAULT_SORT = 'date';
+
+// Формирование Trip Info.
 const FIRST_DESTINATION = 0;
 const SECOND_DESTINATION = 1;
 const THIRD_DESTINATION = 2;
@@ -86,7 +89,7 @@ const SORT_TYPES = {
 const TRIP_INFO_TITLE = {
   TWO_POINTS: 2,
   MAX_VISIBLE_POINTS: 3, // сколько точек показывать явно
-  PLACEHOLDER: '...', // символ для «свернутой» части маршрута
+  PLACEHOLDER: '...', // символ для "свернутой" части маршрута
 };
 
 export {

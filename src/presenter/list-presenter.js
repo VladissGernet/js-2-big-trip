@@ -37,6 +37,10 @@ export default class ListPresenter {
     this.#newPointPresenter = newPointPresenter;
   }
 
+  get listView() {
+    return this.#listView;
+  }
+
   init(sortedList = null) {
     this.#renderList(sortedList);
   }
@@ -56,20 +60,20 @@ export default class ListPresenter {
 
   /** Перерисовывает список */
   resetListView = () => {
-    // Нужен контекст для callback редактировании точки.
+    // Нужен контекст для callback редактировании точки и публичный метод.
     this.#pointPresenters.forEach((presenter) =>
       presenter.fullReplaceFormToPoint(),
     );
   };
 
-  get listView() {
-    return this.#listView;
-  }
-
   /** Удаляет презентер точки из списка по id */
   #removeFromPointPresenters = (id) => this.#pointPresenters.delete(id);
 
   #renderList(sortedList = null) {
+    if (this.#listView) {
+      this.destroy();
+    }
+
     this.#listView = new ListView();
     const tripEventsElement = this.#pageMainPresenter.tripEventsView.element;
 

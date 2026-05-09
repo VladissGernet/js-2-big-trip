@@ -2,6 +2,7 @@ import { FilterView } from '../view/index.js';
 import { render, replace } from '../framework/render.js';
 import { FilterType, FilterStatus } from '../const.js';
 
+// Библиотека dayjs.
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
@@ -18,7 +19,7 @@ dayjs.extend(isSameOrAfter);
 /** Модель элемента фильтра для планировщика поездок.
  * @typedef {Object} FilterData
  * @property {string} name - Название фильтра ('Everything', 'Future', 'Past').
- * @property {boolean} isChecked - Статус активности фильтра (true/false).
+ * @property {boolean} isChecked - Статус активности фильтра (Boolean).
  */
 
 /** Презентер фильтров. Отвечает за рендеринг компонента фильтров. */

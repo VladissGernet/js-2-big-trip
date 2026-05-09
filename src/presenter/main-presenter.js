@@ -4,7 +4,7 @@ import PageMainPresenter from './page-main-presenter.js';
 /** Конфигурация презентера.
  * @typedef {Object} PresenterConfig
  * @property {Model} tripModel - Данные модели для рендера страницы
- * @property {HTMLBodyElement} pageBody - Видимая часть страницы.
+ * @property {HTMLBodyElement} pageBody - Видимая часть страницы body.
  * @property {Class} filterModel - Модель фильтра с наблюдателем.
  */
 
@@ -36,7 +36,6 @@ export default class MainPresenter {
       tripModel: this.#tripModel,
       filterModel: this.#filterModel,
     });
-
     this.#headerPresenter.init();
   }
 
@@ -47,11 +46,10 @@ export default class MainPresenter {
       filterModel: this.#filterModel,
       newPointPresenter: this.#headerPresenter.newPointPresenter,
     });
-
     this.#pageMainPresenter.init();
   }
 
-  /** Связывает компоненты PageMain с кнопкой создания новой точки маршурта в Header. */
+  /** Связывает компоненты PageMain с кнопкой создания новой точки маршурта в Header.*/
   #connectPageMainPresenter() {
     this.#headerPresenter.connectPageMainPresenter(this.#pageMainPresenter);
   }

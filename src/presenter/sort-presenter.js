@@ -39,6 +39,7 @@ export default class SortPresenter {
   }
 
   removeComponent() {
+    // TODO возможно не удалаются обработчики событий.
     remove(this.#component);
   }
 

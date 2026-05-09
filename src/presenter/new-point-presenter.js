@@ -9,7 +9,6 @@ import { createDefaultPointDataConfig } from '../utils/index.js';
  * @property {Object} tripModel - Модель данных поездки
  * @property {Class} filterModel - Модель фильтра с наблюдателем.
  * @property {HTMLDivElement} containerElement - Элемент для рендера кнопки в header.
- * @property {Class} pageMainPresenter - Презентер main.
  * @property {Class} filterPresenter - Презентер фильтра списка.
  */
 
@@ -41,7 +40,10 @@ export default class NewPointPresenter {
     render(this.#newEventBtn, this.#containerElement);
   }
 
-  /** Подключает презетнер главной страницы main. */
+  /**
+   * Связывает main страницы с header.
+   * @param {Class} pageMainPresenter - Презентер рендера main.
+   */
   connectPageMainPresenter(pageMainPresenter) {
     this.#pageMainPresenter = pageMainPresenter;
   }
@@ -51,6 +53,7 @@ export default class NewPointPresenter {
       return;
     }
     this.#pointFormPresenter.destroy();
+    this.#pointFormPresenter = null;
     this.#newEventBtn.element.disabled = false;
   }
 
@@ -86,7 +89,7 @@ export default class NewPointPresenter {
       );
       return;
     }
-    // Если общий список точек пустой рендер только формы создания новой точки.
+    // Если общий список точек пустой, рендер только формы создания новой точки.
     const isNoEmptyMessage = true;
     this.#pageMainPresenter.renderEventsSection(
       FilterType.EVERYTHING,

@@ -18,7 +18,16 @@ export default class Observable {
    * @param {observerCallback} observer Функция, которую больше не нужно вызывать при наступлении события
    */
   removeObserver(observer) {
+    // TODO
+    // где‑то в конфиге
+    // onFormDestroyed: (formPresenter) => {
+    //   this.#pointFormPresenter = null;
+    // }
+    //   #onFromDestroy;
+    console.log(this.#observers);
+
     this.#observers.delete(observer);
+    console.log(this.#observers);
   }
 
   /**

@@ -8,12 +8,12 @@ import {
 /** Конфигурация презентера формы путевой точки.
  * @typedef {Object} PointFormConfig
  * @property {Class} filterModel - Модель фильтра с наблюдателем.
- * @property {Object} pointData - Данные точки маршрута.
  * @property {Object} tripModel - Модель данных поездки.
+ * @property {Object} pointData - Данные точки маршрута.
  * @property {Class} pointPresenter - Презентер точки.
  * @property {Class} pageMainPresenter - Презентер страницы Main.
  * @property {Class} newPointPresenter - Презентер создания новой точки.
- * @property {Boolean} isEditForm - Флаг решения какая форма будет, либо редактирование (true),
+ * @property {Boolean} isEditForm - Флаг решения типа формы. Редактирование (true),
  * либо создание новой точки.
  * @property {function(): void} onRolldownClick - Функция‑callback (обработчик клика), которая
  * закрывает форму.
@@ -27,6 +27,11 @@ export default class PointFormPresenter {
   #filterModel = null;
   #isEditForm = null;
   #pageMainPresenter = null;
+  // TODO , передать // где‑то в конфиге
+  // onFormDestroyed: (formPresenter) => {
+  //   this.#pointFormPresenter = null;
+  // }
+  //   #onFromDestroy;
 
   // Данные существующей точки.
   #pointData = null;
@@ -42,13 +47,20 @@ export default class PointFormPresenter {
   constructor({
     tripModel,
     filterModel,
-    isEditForm,
     pointData,
     pointPresenter,
     pageMainPresenter,
+    newPointPresenter,
+    isEditForm,
     onRolldownClick,
     removeFromPointPresenters,
-    newPointPresenter,
+    // TODO , передать // где‑то в конфиге
+    // onFormDestroyed: (formPresenter) => {
+    //   this.#pointFormPresenter = null;
+    // }
+    //   #onFromDestroy;
+
+    // onFormDestroy,
   }) {
     // Общие данные.
     this.#tripModel = tripModel;
@@ -66,17 +78,101 @@ export default class PointFormPresenter {
     this.#newPointPresenter = newPointPresenter;
 
     // Добавление обработчкиа закрытия по Esc.
-    document.addEventListener('keydown', this.#escKeyDownHandler);
+    document.addEventListener('keydown', this.#handleEscKeyDown);
 
     // CallBack на событие смены фильтра для очистки формы и её обработчкиа нажатия на Esc.
     this.#filterModel.addObserver(this.destroy);
   }
 
+  get component() {
+    if (!this.#pointFormComponent) {
+      this.#pointFormComponent = new ListPointFormView({
+        viewPointData: createViewPointData({
+          tripModel: this.#tripModel,
+          pointData: this.#pointData,
+          isFormData: true,
+        }),
+        isEditForm: this.#isEditForm,
+        tripModel: this.#tripModel,
+        onRolldownClick: this.#handleRolldownClick,
+        onFormSubmit: this.#handleFormSubmit,
+        onResetClick: this.#handleResetClick,
+        onPriceChange: this.#handlePriceChange,
+      });
+    }
+    return this.#pointFormComponent;
+  }
+
+  /**
+   * Удаляент компонент презентера формы.
+   * Для передачи callback в removeObserver необходима стрелочнкая функция.
+   */
+  destroy = () => {
+    console.log('go save');
+
+    /*
+    Сценарии удаления:
+      1. Существуящая форма.
+        1.1. Нажатие "Save".
+        1.2. Нажатие "Delete".
+        1.3. Нажатие "Rollup".
+        1.4. Нажатие Клавиши ESC.
+        1.5. Переключение фильтра (Everything, future, ...).
+        1.6. Переключение сортировки (Day, Time, Price, ...).
+        1.7. Открытие редактирования другой точки.
+        1.8. Создание новой точки.
+
+      2. Новая форма.
+        2.1. Нажатие "Save".
+        2.2. Нажатие "Cancel".
+        2.3. Нажатие Клавиши ESC.
+        2.4. Переключение фильтра (Everything, future, ...).
+        2.5. Переключение сортировки (Day, Time, Price, ...).
+        2.6. Открытие редактирования другой точки.
+    */
+
+    // TODO не вызвается при удалении точки, возможно нужно добавить просто в #removePoint
+    this.#filterModel.removeObserver(this.destroy);
+    document.removeEventListener('keydown', this.#handleEscKeyDown);
+
+    remove(this.#pointFormComponent);
+    this.#pointFormComponent = null;
+  };
+
+  /** Удаляет точку из списка. */
+  #removePoint() {
+    // Очищаем презентер точки.
+    this.#pointPresenter.clear();
+    this.#pointPresenter = null;
+
+    // Удаление из данных модели.
+    const selectedPointId = this.#pointData.id;
+    this.#tripModel.removePoint(selectedPointId);
+
+    // Удаление из коллекции Map презентеров точек.
+    this.#removeFromPointPresenters(selectedPointId);
+  }
+
+  /** Удаление текущей Point из списка. */
+  #handleResetClick = () => {
+    if (this.#isEditForm) {
+      this.#removePoint();
+      this.#pageMainPresenter.renderEventsSection(this.#filterModel.filter);
+      return;
+    }
+    this.#newPointPresenter.destroy();
+  };
+
+  #handlePriceChange = (evt) => {
+    const value = evt.target.value.replace(/[\D]/g, '');
+    evt.target.value = value;
+  };
+
   /** Закрытие по нажатию ESC. */
-  #escKeyDownHandler = (evt) => {
+  #handleEscKeyDown = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
-      document.removeEventListener('keydown', this.#escKeyDownHandler);
+      document.removeEventListener('keydown', this.#handleEscKeyDown);
 
       if (!this.#isEditForm) {
         // Если форма создания новой точки, то просто все убираем.
@@ -104,71 +200,15 @@ export default class PointFormPresenter {
     if (this.#isEditForm) {
       this.#tripModel.updatePoint(currentState.listPoint.id, newData);
       this.destroy();
+
+      // TODO, здесь formPresenter делает = null, для очистки.
     } else {
       this.#tripModel.addPoint(newData);
+      // TODO, здесь formPresenter делает = null, для очистки. преверить что там
       this.#newPointPresenter.destroy();
     }
     this.#pageMainPresenter.renderEventsSection();
   };
-
-  /** Удаляент компонент презентера формы.
-   * Для передачи callback в removeObserver необходима стрелочнкая функция.
-   */
-  destroy = () => {
-    this.#filterModel.removeObserver(this.destroy);
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
-
-    remove(this.#pointFormComponent);
-    this.#pointFormComponent = null;
-  };
-
-  /** Удаляет точку из списка. */
-  #removePoint() {
-    // Очищаем презентер точки.
-    this.#pointPresenter.clear();
-    this.#pointPresenter = null;
-
-    // Удаление из данных модели.
-    const selectedPointId = this.#pointData.id;
-    this.#tripModel.removePoint(selectedPointId);
-
-    // Удаление из коллекции Map презентеров точек.
-    this.#removeFromPointPresenters(this.#pointData.id);
-  }
-
-  /** Удаление текущей Point из списка. */
-  #handleResetClick = () => {
-    if (this.#isEditForm) {
-      this.#removePoint();
-      this.#pageMainPresenter.renderEventsSection(this.#filterModel.filter);
-      return;
-    }
-    this.#newPointPresenter.destroy();
-  };
-
-  #handlePriceChange = (evt) => {
-    const value = evt.target.value.replace(/[\D]/g, '');
-    evt.target.value = value;
-  };
-
-  get component() {
-    if (!this.#pointFormComponent) {
-      this.#pointFormComponent = new ListPointFormView({
-        viewPointData: createViewPointData({
-          tripModel: this.#tripModel,
-          pointData: this.#pointData,
-          isFormData: true,
-        }),
-        isEditForm: this.#isEditForm,
-        tripModel: this.#tripModel,
-        onRolldownClick: this.#handleRolldownClick,
-        onFormSubmit: this.#handleFormSubmit,
-        onResetClick: this.#handleResetClick,
-        onPriceChange: this.#handlePriceChange,
-      });
-    }
-    return this.#pointFormComponent;
-  }
 
   /** Подготавливает данные для отправки. */
   static #preparePointData({

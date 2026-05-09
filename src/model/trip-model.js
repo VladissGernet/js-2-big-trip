@@ -12,10 +12,7 @@ export default class TripModel extends Observable {
   #points = null;
   #destinations = null;
   #offers = null;
-
   #cities = null;
-
-  // TODO проследить путь данных
 
   /** Массив всех городов из данных */
   get cities() {
@@ -39,6 +36,7 @@ export default class TripModel extends Observable {
     }
     return this.#destinations;
   }
+  // TODO проследить путь данных
 
   /** @returns {Map<string, Map<string, Object>}  Назначения по типу для быстрого поиска. */
   get offersByType() {
@@ -64,7 +62,7 @@ export default class TripModel extends Observable {
   /** @returns {Array<Object>} Список путевых точек */
   get listPoints() {
     // TODO
-    // Рассмотреть возможность заменты полей date_from и date_to сразу на объекты Date, чтобы
+    // Рассмотреть возможность заменты полей date_from и date_to сразу на объекты Date (dayjs), чтобы
     // каждый раз не преобразовывать их из строки в объект и из объекта в строку, ведь отправлть
     // на сервер буду адаптированные для этого данные.
     if (!this.#points) {
@@ -112,6 +110,7 @@ export default class TripModel extends Observable {
     // Есть пример в демо проекте async addAtask
 
     // Генерируем новый ID.
+    // TODO удалить naonoid после настройки данных с сервера
     data.id = nanoid();
     this.listPoints.push(data);
     this.listPoints.sort(SORT_CONFIG[DEFAULT_SORT]);
