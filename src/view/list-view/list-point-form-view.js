@@ -56,19 +56,19 @@ export default class ListPointFormView extends AbstractStatefulView {
     });
   }
 
-  removeElement() {
-    super.removeElement();
-
-    this.#removeEventListeners();
-    this.#destroyInputDate();
-  }
-
   _restoreHandlers() {
     this.#destroyInputDate();
     this.#initInputDate();
 
     this.#removeEventListeners();
     this.#addEventListeners();
+  }
+
+  removeElement() {
+    super.removeElement();
+
+    this.#removeEventListeners();
+    this.#destroyInputDate();
   }
 
   #addEventListeners() {

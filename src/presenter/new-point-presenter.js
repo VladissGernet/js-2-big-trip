@@ -32,11 +32,7 @@ export default class NewPointPresenter {
 
   init() {
     // Добавляем обработчик клика на кнопку создания нового события в Header.
-    this.#newEventBtn = new BtnView({
-      className: 'trip-main__event-add-btn btn btn--big btn--yellow',
-      onClick: this.#handleBtnClick,
-    });
-
+    this.#newEventBtn = new BtnView(this.#handleBtnClick);
     render(this.#newEventBtn, this.#containerElement);
   }
 

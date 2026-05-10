@@ -1,11 +1,7 @@
 import AbstractView from './../../framework/view/abstract-view.js';
 
-function createTripMainTemplate() {
-  return '<div class="trip-main"></div>';
-}
-
 export default class TripMainView extends AbstractView {
   get template() {
-    return createTripMainTemplate();
+    return '<div class="trip-main"></div>';
   }
 }

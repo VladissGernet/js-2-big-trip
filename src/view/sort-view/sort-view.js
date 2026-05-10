@@ -31,7 +31,6 @@ export default class SortView extends AbstractView {
 
   removeElement() {
     super.removeElement();
-
     this.element.removeEventListener('change', this.#handleChange);
   }
 }

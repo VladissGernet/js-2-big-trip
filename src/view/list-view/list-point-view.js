@@ -21,7 +21,7 @@ function createPointOffersTemplate(offerData) {
         </li>
       `;
     })
-    .join(' ');
+    .join('');
 }
 
 function createPointTemplate({

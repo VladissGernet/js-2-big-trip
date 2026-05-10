@@ -12,3 +12,4 @@ const mainPresenter = new MainPresenter({
 });
 
 mainPresenter.init();
+// todo еще раз пересмотреть utils и статические методы.
