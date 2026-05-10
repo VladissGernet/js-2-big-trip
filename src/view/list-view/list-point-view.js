@@ -39,10 +39,8 @@ function createPointTemplate({
   return html`
     <li class="trip-events__item">
       <div class="event">
-        <time
-          class="event__date"
-          datetime=${dayjs(dateFrom).format('YYYY-MM-DD')}
-          >${dayjs(dateFrom).format('MMM D').toUpperCase()}</time
+        <time class="event__date" datetime=${dateFrom.format('YYYY-MM-DD')}
+          >${dateFrom.format('MMM D').toUpperCase()}</time
         >
         <div class="event__type">
           <img
@@ -58,16 +56,12 @@ function createPointTemplate({
         </h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time
-              class="event__start-time"
-              datetime=${dayjs(dateFrom).toISOString()}
-              >${dayjs(dateFrom).format('HH:mm')}</time
+            <time class="event__start-time" datetime=${dateFrom.toISOString()}
+              >${dateFrom.format('HH:mm')}</time
             >
             &mdash;
-            <time
-              class="event__end-time"
-              datetime=${dayjs(dateTo).toISOString()}
-              >${dayjs(dateTo).format('HH:mm')}</time
+            <time class="event__end-time" datetime=${dateTo.toISOString()}
+              >${dateTo.format('HH:mm')}</time
             >
           </p>
           <p class="event__duration">${calcTimeBetween(dateFrom, dateTo)}</p>
@@ -127,6 +121,11 @@ export default class ListPointView extends AbstractView {
   }
 
   get template() {
+    const dateFrom = dayjs(this.#listPoint.dateFrom);
+    const dateTo = dayjs(this.#listPoint.dateTo);
+    this.#listPoint.dateFrom = dateFrom;
+    this.#listPoint.dateTo = dateTo;
+
     return createPointTemplate({
       ...this.#listPoint,
       destinationData: this.#destinationData,

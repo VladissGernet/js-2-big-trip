@@ -61,10 +61,6 @@ export default class TripModel extends Observable {
 
   /** @returns {Array<Object>} Список путевых точек */
   get listPoints() {
-    // TODO
-    // Рассмотреть возможность заменты полей date_from и date_to сразу на объекты Date (dayjs), чтобы
-    // каждый раз не преобразовывать их из строки в объект и из объекта в строку, ведь отправлть
-    // на сервер буду адаптированные для этого данные.
     if (!this.#points) {
       this.#points = replaceSnakeToCamel(pointsMock);
       this.#points = this.#points.map(({ offers, ...rest }) => ({
