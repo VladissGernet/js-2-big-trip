@@ -133,12 +133,11 @@ export default class PointFormPresenter {
     // TODO не вызвается при удалении точки, возможно нужно добавить просто в #removePoint
     this.#filterModel.removeObserver(this.destroy);
     document.removeEventListener('keydown', this.#handleEscKeyDown);
-
     remove(this.#pointFormComponent);
     this.#pointFormComponent = null;
   };
 
-  /** Удаляет точку из списка. */
+  /** Удаляет существующую точку из списка. */
   #removePoint() {
     // Очищаем презентер точки.
     this.#pointPresenter.clear();
@@ -152,7 +151,7 @@ export default class PointFormPresenter {
     this.#removeFromPointPresenters(selectedPointId);
   }
 
-  /** Удаление текущей Point из списка. */
+  /** Удаление текущей Point из списка или закрытие создания новой точки. */
   #handleResetClick = () => {
     if (this.#isEditForm) {
       this.#removePoint();
