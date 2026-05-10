@@ -187,7 +187,6 @@ export default class PointFormPresenter {
 
   /** Добавление\сохранение данных формы. */
   #handleFormSubmit = (evt) => {
-    // TODO ошибка при submit
     const currentState = this.#pointFormComponent._state;
     const formData = new FormData(evt.target);
     const newData = PointFormPresenter.#preparePointData({
