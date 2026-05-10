@@ -100,7 +100,6 @@ export default class PointPresenter {
     const viewPointData = createViewPointData({
       tripModel: this.#tripModel,
       pointData: this.#pointData,
-      isFormData: false,
     });
 
     this.#pointComponent = new ListPointView({

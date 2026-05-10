@@ -90,7 +90,6 @@ export default class PointFormPresenter {
         viewPointData: createViewPointData({
           tripModel: this.#tripModel,
           pointData: this.#pointData,
-          isFormData: true,
         }),
         isEditForm: this.#isEditForm,
         tripModel: this.#tripModel,
