@@ -1,6 +1,5 @@
 export { calcFinalPrice } from './calc-final-price.js';
 export { calcTimeBetween } from './calc-time-between.js';
-export { createDefaultPointDataConfig } from './create-default-point-data-config.js';
 export { createViewPointData } from './create-view-point-data.js';
 export { findDestinationByIndex } from './find-destination-by-index.js';
 export { findDestinationByName } from './find-destination-by-name.js';

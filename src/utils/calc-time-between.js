@@ -4,7 +4,6 @@ import duration from 'dayjs/plugin/duration.js';
 dayjs.extend(duration);
 
 const calcTimeBetween = (from, to) => {
-  // TODO переместить в приватный метод
   const start = dayjs(from);
   const end = dayjs(to);
 
