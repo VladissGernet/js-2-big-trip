@@ -30,7 +30,7 @@ export default class SortPresenter {
     this.#filterModel = filterModel;
     this.#pageMainPresenter = pageMainPresenter;
     this.#newPointPresenter = newPointPresenter;
-
+    // TODO, остановился здесь. Где-то делается повторный рендер сортировки или НЕ удаляется правильно.
     this.#filterModel.addObserver(this.#handleModeEvent);
   }
 

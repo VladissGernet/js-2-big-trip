@@ -121,6 +121,9 @@ export default class PageMainPresenter {
     // Сперва необходимо создать презентер списка для его передачи
     // презентеру сортириовки.
     this.#listPresenter = new ListPresenter(this.#createCommonConfig());
+    // Повтороно инициализируем список, передавая в него отсортированный список, когда this.#sortPresenter !== null
+    console.log(this.#sortPresenter);
+
     this.#sortPresenter = new SortPresenter(this.#createCommonConfig());
 
     this.#sortPresenter.init();

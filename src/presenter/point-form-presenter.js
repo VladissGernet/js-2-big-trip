@@ -107,7 +107,7 @@ export default class PointFormPresenter {
    * Для передачи callback в removeObserver необходима стрелочнкая функция.
    */
   destroy = () => {
-    console.log('go save');
+    console.log('go destroy');
 
     /*
     Сценарии удаления:
@@ -149,6 +149,8 @@ export default class PointFormPresenter {
 
     // Удаление из коллекции Map презентеров точек.
     this.#removeFromPointPresenters(selectedPointId);
+
+    this.destroy();
   }
 
   /** Удаление текущей Point из списка или закрытие создания новой точки. */
@@ -168,6 +170,7 @@ export default class PointFormPresenter {
 
   /** Закрытие по нажатию ESC. */
   #handleEscKeyDown = (evt) => {
+    // todo вызывает дважды destroy()
     if (evt.key === 'Escape') {
       evt.preventDefault();
       document.removeEventListener('keydown', this.#handleEscKeyDown);
