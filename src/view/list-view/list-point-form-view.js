@@ -213,6 +213,8 @@ export default class ListPointFormView extends AbstractStatefulView {
 
   static #createFlatpickr(element, defaultDate, dateLimit) {
     // Для устранения ошибки линтера из-за snake_case в библиотеке.
+    console.log(defaultDate);
+
     const time24hr = 'time_24hr';
 
     return flatpickr(element, {

@@ -121,13 +121,14 @@ export default class ListPointView extends AbstractView {
   }
 
   get template() {
-    const dateFrom = dayjs(this.#listPoint.dateFrom);
-    const dateTo = dayjs(this.#listPoint.dateTo);
-    this.#listPoint.dateFrom = dateFrom;
-    this.#listPoint.dateTo = dateTo;
+    const listPointData = structuredClone(this.#listPoint);
+    const dateFrom = dayjs(listPointData.dateFrom);
+    const dateTo = dayjs(listPointData.dateTo);
+    listPointData.dateFrom = dateFrom;
+    listPointData.dateTo = dateTo;
 
     return createPointTemplate({
-      ...this.#listPoint,
+      ...listPointData,
       destinationData: this.#destinationData,
       offerData: this.#listOffers,
     });
