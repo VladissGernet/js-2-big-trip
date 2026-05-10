@@ -54,7 +54,7 @@ export default class PageMainPresenter {
   }
 
   reinitListView(sortedList) {
-    // TODO здесь удалил     this.#listPresenter.destroy();, проверить зачем.
+    this.#listPresenter.destroy();
     this.#listPresenter.init(sortedList);
   }
 
