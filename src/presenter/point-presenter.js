@@ -1,7 +1,6 @@
 import { ListPointView } from '../view/index.js';
 import PointFormPresenter from './point-form-presenter.js';
 import { render, replace, remove } from '../framework/render.js';
-import { Mode } from '../const.js';
 import { createViewPointData } from '../utils/index.js';
 
 /** Конфигурация презентера путевой точки.
@@ -46,9 +45,8 @@ export default class PointPresenter {
   #pointFormPresenter = null;
   #pointComponent = null;
 
-  // Режим текущй точки (по умолчанию\редактируется)
-  // TODO можно заменить на флаг isEdditing
-  #mode = Mode.DEFAULT;
+  // Режим текущй точки.
+  #isEditing = false;
 
   /** @param {PointConfig} config - Конфигурация презентера */
   constructor({
@@ -80,7 +78,7 @@ export default class PointPresenter {
    */
   fullReplaceFormToPoint() {
     // Оптимизировано, чтобы не перерисовывать всю страницу.
-    if (this.#mode === Mode.EDITING) {
+    if (this.#isEditing) {
       this.#replaceFormToPoint();
     }
   }
@@ -120,7 +118,7 @@ export default class PointPresenter {
     // Закрывает все открытые формы чтобы на странице была только одна открытая форма.
     this.#resetListView();
 
-    this.#mode = Mode.EDITING;
+    this.#isEditing = true;
 
     replace(this.#pointFormPresenter.component, this.#pointComponent);
     remove(this.#pointComponent);
@@ -140,7 +138,7 @@ export default class PointPresenter {
   }
 
   #replaceFormToPoint() {
-    this.#mode = Mode.DEFAULT;
+    this.#isEditing = false;
 
     this.#createPointComponent();
     replace(this.#pointComponent, this.#pointFormPresenter.component);

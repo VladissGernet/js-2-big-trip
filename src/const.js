@@ -23,11 +23,6 @@ const FilterStatus = {
   DEFAULT: 'default',
 };
 
-const Mode = {
-  DEFAULT: 'default',
-  EDITING: 'editing',
-};
-
 const InputDateStage = {
   MINDATE: 'minDate',
   MAXDATE: 'maxDate',
@@ -100,7 +95,6 @@ export {
   SORT_CONFIG,
   SORT_TYPES,
   TRIP_INFO_TITLE,
-  Mode,
   InputDateStage,
   DateStateStage,
   FilterStatus,
