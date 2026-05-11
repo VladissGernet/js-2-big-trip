@@ -159,7 +159,6 @@ export default class PointPresenter {
 
   /** Обработчик добавления в избранное. */
   #favoriteClickHandler = () => {
-    // TODO проверить, во время перерисовки удаляются ли обработчики.
     const selectedPointId = this.#pointData.id;
     // Обновляем данные.
     this.#pointData = this.#tripModel.updatePoint(selectedPointId, {
@@ -170,5 +169,7 @@ export default class PointPresenter {
     const prevPointComponent = this.#pointComponent;
     this.#createPointComponent();
     replace(this.#pointComponent, prevPointComponent);
+    // Удаляем старую точку с обработчиками.
+    remove(prevPointComponent);
   };
 }
