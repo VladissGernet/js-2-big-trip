@@ -130,7 +130,6 @@ export default class PointFormPresenter {
         2.5. Переключение сортировки (Day, Time, Price, ...).
         2.6. Открытие редактирования другой точки.
     */
-
     // TODO не вызвается при удалении точки, возможно нужно добавить просто в #removePoint
     this.#filterModel.removeObserver(this.destroy);
     document.removeEventListener('keydown', this.#handleEscKeyDown);

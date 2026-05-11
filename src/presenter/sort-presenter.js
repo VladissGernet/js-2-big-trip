@@ -30,7 +30,6 @@ export default class SortPresenter {
     this.#filterModel = filterModel;
     this.#pageMainPresenter = pageMainPresenter;
     this.#newPointPresenter = newPointPresenter;
-    this.#filterModel.addObserver(this.#handleModeEvent);
   }
 
   init() {
@@ -56,11 +55,5 @@ export default class SortPresenter {
       SORT_CONFIG[SORT_TYPES[evt.target.value]],
     );
     this.#pageMainPresenter.reinitListView(sortedList);
-  };
-
-  #handleModeEvent = () => {
-    const prevComponet = this.#component;
-    this.#renderSort();
-    replace(this.#component, prevComponet);
   };
 }
