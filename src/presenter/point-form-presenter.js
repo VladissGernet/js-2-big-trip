@@ -107,9 +107,8 @@ export default class PointFormPresenter {
    * Для передачи callback в removeObserver необходима стрелочнкая функция.
    */
   destroy = () => {
-    console.log('go destroy');
-
     // TODO, не удаляются события на 1.6.
+    // 1.4. дважды destroy вызывает
 
     /*
     Сценарии удаления:

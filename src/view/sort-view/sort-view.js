@@ -21,6 +21,8 @@ export default class SortView extends AbstractView {
     this.#handleChange = onChange;
 
     if (this.#handleChange !== null) {
+      // todo добавляется много при удалении элемента, но они не убираются
+
       this.element.addEventListener('change', this.#handleChange);
     }
   }

@@ -63,9 +63,6 @@ export default class PageMainPresenter {
     if (this.#tripEventsView) {
       this.#destroyTripEventsView();
     }
-    if (this.#sortPresenter) {
-      this.#sortPresenter.removeComponent();
-    }
 
     this.#tripEventsView = new TripEventsView();
     render(this.#tripEventsView, this.#mainView.container);
@@ -106,6 +103,8 @@ export default class PageMainPresenter {
     if (this.#listPresenter) {
       this.#listPresenter.destroy();
       this.#listPresenter = null;
+      this.#sortPresenter.destroy();
+      this.#sortPresenter = null;
     }
 
     remove(this.#tripEventsView);
@@ -121,9 +120,6 @@ export default class PageMainPresenter {
     // Сперва необходимо создать презентер списка для его передачи
     // презентеру сортириовки.
     this.#listPresenter = new ListPresenter(this.#createCommonConfig());
-    // Повтороно инициализируем список, передавая в него отсортированный список, когда this.#sortPresenter !== null
-    console.log(this.#sortPresenter);
-
     this.#sortPresenter = new SortPresenter(this.#createCommonConfig());
 
     this.#sortPresenter.init();
@@ -140,11 +136,6 @@ export default class PageMainPresenter {
   }
 
   #renderEmptyMessage(filter = null) {
-    // Если список пустой, то возвращает сообщение о предложении создания
-    // новой путевой точки.
-    if (this.#sortPresenter) {
-      this.#sortPresenter.removeComponent();
-    }
     this.#tripEventsEmptyView = new TripEventsEmptyView(filter);
     render(this.#tripEventsEmptyView, this.#tripEventsView.element);
   }
