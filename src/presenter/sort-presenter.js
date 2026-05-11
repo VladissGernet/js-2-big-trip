@@ -1,4 +1,4 @@
-import { render, replace, remove } from '../framework/render.js';
+import { render, remove } from '../framework/render.js';
 import { SortView } from '../view/index.js';
 import { SORT_CONFIG, SORT_TYPES } from '../const.js';
 import FilterPresenter from './filter-presenter.js';
