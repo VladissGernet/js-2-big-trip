@@ -108,7 +108,6 @@ export default class PointFormPresenter {
    */
   destroy = () => {
     // TODO, не удаляются события на 1.6.
-    // 1.4. дважды destroy вызывает
 
     /*
     Сценарии удаления:
@@ -170,21 +169,20 @@ export default class PointFormPresenter {
 
   /** Закрытие по нажатию ESC. */
   #handleEscKeyDown = (evt) => {
-    // todo вызывает дважды destroy()
-    if (evt.key === 'Escape') {
-      evt.preventDefault();
-      document.removeEventListener('keydown', this.#handleEscKeyDown);
-
-      if (!this.#isEditForm) {
-        // Если форма создания новой точки, то просто все убираем.
-        this.#newPointPresenter.destroy();
-        return;
-      }
-
-      // Если форма редактирования точки, то закрываем форму.
-      this.#pointPresenter.fullReplaceFormToPoint();
-      this.destroy();
+    if (evt.key !== 'Escape') {
+      return;
     }
+    evt.preventDefault();
+    document.removeEventListener('keydown', this.#handleEscKeyDown);
+
+    if (!this.#isEditForm) {
+      // Если форма создания новой точки, то просто все убираем.
+      this.#newPointPresenter.destroy();
+      return;
+    }
+
+    // Если форма редактирования точки, то закрываем форму.
+    this.#pointPresenter.fullReplaceFormToPoint();
   };
 
   /** Добавление\сохранение данных формы. */
