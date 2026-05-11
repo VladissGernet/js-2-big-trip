@@ -54,7 +54,11 @@ export default class PageMainPresenter {
   }
 
   reinitListView(sortedList) {
+    // Закрывает открытые формы редактирования\создания точки.
+    this.#listPresenter.resetListView();
+    // Удаляет список точек.
     this.#listPresenter.destroy();
+    // Создает новый список точек с новыми данными sortedList.
     this.#listPresenter.init(sortedList);
   }
 
