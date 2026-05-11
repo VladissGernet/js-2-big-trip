@@ -69,7 +69,6 @@ export default class PointPresenter {
 
   init() {
     this.#renderPoint();
-    // TODO описать сценарии очистки слушателей и другого.
   }
 
   /**
