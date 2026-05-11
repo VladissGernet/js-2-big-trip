@@ -3,6 +3,9 @@ import dayjs from 'dayjs';
 // Константы
 
 const DEFAULT_SORT = 'date';
+// Server
+const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
+const AUTHORIZATION = 'Basic dXNlckBwYXNzd29yZA==';
 
 // Формирование Trip Info.
 const FIRST_DESTINATION = 0;
@@ -26,6 +29,12 @@ const FilterStatus = {
 const InputDateStage = {
   MINDATE: 'minDate',
   MAXDATE: 'maxDate',
+};
+
+const PointsURLs = {
+  POINTS: 'points',
+  DESTINATIONS: 'destinations',
+  OFFERS: 'offers',
 };
 
 // Конфигурационные массивы с дефолтными данными для UI.
@@ -102,4 +111,7 @@ export {
   FIRST_DESTINATION,
   SECOND_DESTINATION,
   THIRD_DESTINATION,
+  END_POINT,
+  AUTHORIZATION,
+  PointsURLs,
 };

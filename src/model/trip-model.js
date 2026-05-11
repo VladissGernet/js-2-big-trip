@@ -8,10 +8,28 @@ import { replaceSnakeToCamel } from '../utils/replace-snake-to-camel.js';
 import { SORT_CONFIG, DEFAULT_SORT } from '../const.js';
 
 export default class TripModel extends Observable {
+  #pointsApiService = null;
+
   #points = null;
   #destinations = null;
   #offers = null;
   #cities = null;
+
+  constructor({ pointsApiService }) {
+    super();
+    this.#pointsApiService = pointsApiService;
+    this.init();
+  }
+
+  async init() {
+    // Получаю данные с сервера
+    const serverPoints = await this.#pointsApiService.points;
+    console.log(serverPoints);
+    const serverDestinations = await this.#pointsApiService.destinations;
+    console.log(serverDestinations);
+    const serverOffers = await this.#pointsApiService.offers;
+    console.log(serverOffers);
+  }
 
   /** Массив всех городов из данных */
   get cities() {
