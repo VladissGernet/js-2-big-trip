@@ -109,6 +109,8 @@ export default class PointFormPresenter {
   destroy = () => {
     console.log('go destroy');
 
+    // TODO, не удаляются события на 1.6.
+
     /*
     Сценарии удаления:
       1. Существуящая форма.
