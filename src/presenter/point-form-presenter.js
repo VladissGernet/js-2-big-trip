@@ -27,11 +27,6 @@ export default class PointFormPresenter {
   #filterModel = null;
   #isEditForm = null;
   #pageMainPresenter = null;
-  // TODO , передать // где‑то в конфиге
-  // onFormDestroyed: (formPresenter) => {
-  //   this.#pointFormPresenter = null;
-  // }
-  //   #onFromDestroy;
 
   // Данные существующей точки.
   #pointData = null;
@@ -54,13 +49,6 @@ export default class PointFormPresenter {
     isEditForm,
     onRolldownClick,
     removeFromPointPresenters,
-    // TODO , передать // где‑то в конфиге
-    // onFormDestroyed: (formPresenter) => {
-    //   this.#pointFormPresenter = null;
-    // }
-    //   #onFromDestroy;
-
-    // onFormDestroy,
   }) {
     // Общие данные.
     this.#tripModel = tripModel;
@@ -107,27 +95,6 @@ export default class PointFormPresenter {
    * Для передачи callback в removeObserver необходима стрелочнкая функция.
    */
   destroy = () => {
-    /*
-    Сценарии удаления:
-      1. Существуящая форма.
-        1.1. Нажатие "Save".
-        1.2. Нажатие "Delete".
-        1.3. Нажатие "Rollup".
-        1.4. Нажатие Клавиши ESC.
-        1.5. Переключение фильтра (Everything, future, ...).
-        1.6. Переключение сортировки (Day, Time, Price, ...).
-        1.7. Открытие редактирования другой точки.
-        1.8. Создание новой точки.
-
-      2. Новая форма.
-        2.1. Нажатие "Save".
-        2.2. Нажатие "Cancel".
-        2.3. Нажатие Клавиши ESC.
-        2.4. Переключение фильтра (Everything, future, ...).
-        2.5. Переключение сортировки (Day, Time, Price, ...).
-        2.6. Открытие редактирования другой точки.
-    */
-    // TODO не вызвается при удалении точки, возможно нужно добавить просто в #removePoint
     this.#filterModel.removeObserver(this.destroy);
     document.removeEventListener('keydown', this.#handleEscKeyDown);
     remove(this.#pointFormComponent);
@@ -195,11 +162,8 @@ export default class PointFormPresenter {
     if (this.#isEditForm) {
       this.#tripModel.updatePoint(currentState.listPoint.id, newData);
       this.destroy();
-
-      // TODO, здесь formPresenter делает = null, для очистки.
     } else {
       this.#tripModel.addPoint(newData);
-      // TODO, здесь formPresenter делает = null, для очистки. преверить что там
       this.#newPointPresenter.destroy();
     }
     this.#pageMainPresenter.renderEventsSection();

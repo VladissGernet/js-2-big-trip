@@ -143,8 +143,6 @@ export default class PointPresenter {
 
     this.#createPointComponent();
     replace(this.#pointComponent, this.#pointFormPresenter.component);
-
-    // TODO здесь при сохранении и удалении точки это не вызывается.
     this.#pointFormPresenter.destroy();
     this.#pointFormPresenter = null;
   }
