@@ -87,8 +87,6 @@ export default class PointPresenter {
   clear() {
     remove(this.#pointComponent);
     this.#pointComponent = null;
-    // TODO дважды вызывает destroy
-    // this.#pointFormPresenter.destroy();
     this.#pointFormPresenter = null;
   }
 

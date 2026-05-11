@@ -107,7 +107,15 @@ export default class PointFormPresenter {
    * Для передачи callback в removeObserver необходима стрелочнкая функция.
    */
   destroy = () => {
-    // TODO, не удаляются события на 1.6.
+    console.log('go');
+
+    // TODO, не удаляются события на 1.6. и если
+    // 1. открыть форму
+    // 2. переключить на другую сортировку
+    // 3. все закроектся но не вызовется destroy.
+    // 4. повторитить 1-2 n раз.
+    // 5. нажать на esc и вызовет ошибку
+    // 6. либо преключить сортировку и вызовет несколько раз одновременно.
 
     /*
     Сценарии удаления:
@@ -156,7 +164,6 @@ export default class PointFormPresenter {
   #handleResetClick = () => {
     if (this.#isEditForm) {
       this.#removePoint();
-      this.#pageMainPresenter.renderEventsSection(this.#filterModel.filter);
       return;
     }
     this.#newPointPresenter.destroy();

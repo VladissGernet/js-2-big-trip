@@ -66,7 +66,6 @@ export default class ListPointFormView extends AbstractStatefulView {
 
   removeElement() {
     super.removeElement();
-
     this.#removeEventListeners();
     this.#destroyInputDate();
   }
@@ -102,7 +101,6 @@ export default class ListPointFormView extends AbstractStatefulView {
   #removeEventListeners() {
     // TODO, не удаляются события на 1.6.
     // 1.6. Переключение сортировки (Day, Time, Price, ...).
-    // 1.2. дважды вызывается.
 
     this.element
       .querySelector('.event__reset-btn')
@@ -176,7 +174,6 @@ export default class ListPointFormView extends AbstractStatefulView {
 
   #resetClickHandler = (evt) => {
     evt.preventDefault();
-    remove(this);
     this.#handleResetClick();
   };
 
