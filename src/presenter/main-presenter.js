@@ -29,6 +29,7 @@ export default class MainPresenter {
     this.#initPageMain();
     this.#connectPageMainPresenter();
 
+    this.#tripModel.init();
     /*
     TODO.
     0. Изначально init страницы с пустым списком .length или флагом для:

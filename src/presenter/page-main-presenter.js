@@ -27,7 +27,6 @@ export default class PageMainPresenter {
   #mainView = new PageMainView();
   #tripEventsView = null;
   #tripEventsEmptyView = null;
-
   #sortPresenter = null;
   #listPresenter = null;
 
