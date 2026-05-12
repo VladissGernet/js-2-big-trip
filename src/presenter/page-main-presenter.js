@@ -94,7 +94,7 @@ export default class PageMainPresenter {
     }
 
     // Рендер по умолчанию.
-    if (this.#tripModel.listPoints.length) {
+    if (this.#tripModel.listPoints?.length) {
       this.#renderEvents();
     } else {
       this.#renderEmptyMessage();

@@ -1,9 +1,6 @@
 import Observable from '../framework/observable.js';
 // TODO Рассмотреть удаление nanoid обязательно через 'npm uninstall'. Обязательно проверить нужно присвоение id новым точкам.
 import { nanoid } from 'nanoid';
-import { destinationsMock } from '../mock/destinations-mock.js';
-import { offersMock } from '../mock/offers-mock.js';
-import { pointsMock } from '../mock/points-mock.js';
 import { replaceSnakeToCamel } from '../utils/replace-snake-to-camel.js';
 import { SORT_CONFIG, DEFAULT_SORT } from '../const.js';
 
@@ -13,6 +10,7 @@ export default class TripModel extends Observable {
   #points = null;
   #destinations = null;
   #offers = null;
+  #defaultTypeOffer = null;
   #cities = null;
 
   constructor({ pointsApiService }) {
@@ -22,56 +20,26 @@ export default class TripModel extends Observable {
 
   /** Массив всех городов из данных */
   get cities() {
-    if (!this.#cities) {
-      // TODO обработать данные с сервера.
-      this.#cities = destinationsMock.map((dest) => dest.name);
-    }
     return this.#cities;
   }
 
   /** @returns {Map<string, Object>}  Назначения по ID для быстрого поиска. */
   get destinationsById() {
-    if (!this.#destinations) {
-      // Преобразовываю данные для оптимизированного поиска.
-      // TODO преобразовать для получения данных с сервера.
-      this.#destinations = destinationsMock.reduce(
-        (result, { id, ...rest }) => result.set(id, rest),
-        new Map(),
-      );
-    }
     return this.#destinations;
   }
 
   /** @returns {Map<string, Map<string, Object>}  Назначения по типу для быстрого поиска. */
   get offersByType() {
-    if (!this.#offers) {
-      // Преобразовываю данные для оптимизированного поиска.
-      this.#offers = offersMock.reduce((result, { type, offers }) => {
-        const offersMap = offers.reduce(
-          (acc, { id, ...rest }) => acc.set(id, rest),
-          new Map(),
-        );
-        return result.set(type, offersMap);
-      }, new Map());
-    }
     return this.#offers;
   }
 
   /** Для отрисовки формы создания новой точки. По умолчанию, выбирается самый первый из полученных данных. */
   get defaultTypeOffer() {
-    // TODO исправить при получении данных сервера.
-    return offersMock[0].type;
+    return this.#defaultTypeOffer;
   }
 
   /** @returns {Array<Object>} Список путевых точек */
   get listPoints() {
-    if (!this.#points) {
-      this.#points = replaceSnakeToCamel(pointsMock);
-      this.#points = this.#points.map(({ offers, ...rest }) => ({
-        ...rest,
-        offers: new Set(offers),
-      }));
-    }
     return this.#points;
   }
 
@@ -122,16 +90,31 @@ export default class TripModel extends Observable {
   }
 
   async init() {
+    // TODO , перестал работать tripInfoView
     // Получаю данные с сервера
-    const serverPoints = await this.#pointsApiService.points;
-    const serverDestinations = await this.#pointsApiService.destinations;
-    const serverOffers = await this.#pointsApiService.offers;
-    const clientData = TripModel.#adaptToClient(
+    const [serverPoints, serverDestinations, serverOffers] = await Promise.all([
+      this.#pointsApiService.points,
+      this.#pointsApiService.destinations,
+      this.#pointsApiService.offers,
+    ]);
+
+    const {
+      cities,
+      destinationsById,
+      offersByType,
+      defaultTypeOffer,
+      listPoints,
+    } = TripModel.#adaptToClient(
       serverPoints,
       serverDestinations,
       serverOffers,
     );
-    console.log(clientData);
+
+    this.#points = listPoints;
+    this.#destinations = destinationsById;
+    this.#offers = offersByType;
+    this.#defaultTypeOffer = defaultTypeOffer;
+    this.#cities = cities;
   }
 
   static #adaptToClient(serverPoints, serverDestinations, serverOffers) {
