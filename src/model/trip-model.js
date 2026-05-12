@@ -20,23 +20,12 @@ export default class TripModel extends Observable {
     this.#pointsApiService = pointsApiService;
   }
 
-  async init() {
-    // Получаю данные с сервера
-    const serverPoints = await this.#pointsApiService.points;
-    console.log(serverPoints);
-    const serverDestinations = await this.#pointsApiService.destinations;
-    console.log(serverDestinations);
-    const serverOffers = await this.#pointsApiService.offers;
-    console.log(serverOffers);
-  }
-
   /** Массив всех городов из данных */
   get cities() {
     if (!this.#cities) {
       // TODO обработать данные с сервера.
       this.#cities = destinationsMock.map((dest) => dest.name);
     }
-
     return this.#cities;
   }
 
@@ -130,5 +119,48 @@ export default class TripModel extends Observable {
 
   #notifyAboutListChange() {
     this._notify();
+  }
+
+  async init() {
+    // Получаю данные с сервера
+    const serverPoints = await this.#pointsApiService.points;
+    const serverDestinations = await this.#pointsApiService.destinations;
+    const serverOffers = await this.#pointsApiService.offers;
+    const clientData = TripModel.#adaptToClient(
+      serverPoints,
+      serverDestinations,
+      serverOffers,
+    );
+    console.log(clientData);
+  }
+
+  static #adaptToClient(serverPoints, serverDestinations, serverOffers) {
+    const listPoints = replaceSnakeToCamel(serverPoints).map(
+      ({ offers, ...rest }) => ({
+        ...rest,
+        offers: new Set(offers),
+      }),
+    );
+    const cities = serverDestinations.map((dest) => dest.name);
+    const destinationsById = serverDestinations.reduce(
+      (result, { id, ...rest }) => result.set(id, rest),
+      new Map(),
+    );
+    const offersByType = serverOffers.reduce((result, { type, offers }) => {
+      const offersMap = offers.reduce(
+        (acc, { id, ...rest }) => acc.set(id, rest),
+        new Map(),
+      );
+      return result.set(type, offersMap);
+    }, new Map());
+    const defaultTypeOffer = serverOffers[0].type;
+
+    return {
+      listPoints,
+      cities,
+      destinationsById,
+      offersByType,
+      defaultTypeOffer,
+    };
   }
 }
