@@ -3,7 +3,7 @@ import NewPointPresenter from './new-point-presenter.js';
 import FilterPresenter from './filter-presenter.js';
 import TripInfoPresenter from './trip-info-presenter.js';
 import { TRIP_FILTERS } from '../const.js';
-import { render } from '../framework/render.js';
+import { render, RenderPosition } from '../framework/render.js';
 
 /** Конфиг принимаемый презентором
  * @typedef {Object} PresenterConfig
@@ -32,13 +32,15 @@ export default class HeaderPresenter {
     this.#container = container;
     this.#tripModel = tripModel;
     this.#filterModel = filterModel;
+
+    this.#tripModel.addObserver(this.#handleLoadStatus);
   }
 
   init() {
     this.#renderHeader();
   }
 
-  /** Связывает <main> страницы с header.*/
+  /** Связывает main страницы с header.*/
   connectPageMainPresenter(presenter) {
     this.newPointPresenter.connectPageMainPresenter(presenter);
   }
@@ -50,15 +52,20 @@ export default class HeaderPresenter {
 
   #renderTripMain() {
     render(this.#tripMain, this.#pageHeader.container);
-    this.#renderTripInfo();
     this.#renderTripControls();
     this.#renderNewEventBtn();
   }
 
+  /** Активирует рендер информации о маршруте. */
   #renderTripInfo() {
+    // TODO, остановился здесь. Таким же способом реализовать блокировку контролов, кнопки и отрисовки сообщения emptyMessage
     if (this.#tripModel.listPoints?.length) {
       const tripInfoPresenter = new TripInfoPresenter(this.#tripModel);
-      render(tripInfoPresenter.init(), this.#tripMain.element);
+      render(
+        tripInfoPresenter.init(),
+        this.#tripMain.element,
+        RenderPosition.AFTERBEGIN,
+      );
     }
   }
 
@@ -85,4 +92,10 @@ export default class HeaderPresenter {
     });
     this.newPointPresenter.init();
   }
+
+  #handleLoadStatus = () => {
+    this.#renderTripInfo();
+    // После загрузки удалить из наблюдателя.
+    this.#tripModel.removeObserver(this.#handleLoadStatus);
+  };
 }

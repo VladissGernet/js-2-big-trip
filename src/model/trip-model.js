@@ -115,6 +115,9 @@ export default class TripModel extends Observable {
     this.#offers = offersByType;
     this.#defaultTypeOffer = defaultTypeOffer;
     this.#cities = cities;
+
+    // Уведомляю для реднера tripInfo в Header.
+    this._notify();
   }
 
   static #adaptToClient(serverPoints, serverDestinations, serverOffers) {
