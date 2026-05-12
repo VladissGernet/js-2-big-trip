@@ -53,7 +53,7 @@ export default class PageMainPresenter {
     this.#renderMain();
   }
 
-  reinitListView(sortedList) {
+  resetListView(sortedList) {
     // Закрывает открытые формы редактирования\создания точки.
     this.#listPresenter.resetListView();
     // Удаляет список точек.
@@ -62,8 +62,8 @@ export default class PageMainPresenter {
     this.#listPresenter.init(sortedList);
   }
 
-  renderEventsSection(filter = null, isNoEmptyMessage = false) {
-    // Если фильтр отсутсвует, то рендер по-умолчанию с фильтром 'everything' согласно ТЗ.
+  renderEventsSection(filter = null, isEmptyMessage = false) {
+    // Если фильтр отсутствует, то рендер по-умолчанию с фильтром 'everything' согласно ТЗ.
     if (this.#tripEventsView) {
       this.#destroyTripEventsView();
     }
@@ -71,26 +71,26 @@ export default class PageMainPresenter {
     this.#tripEventsView = new TripEventsView();
     render(this.#tripEventsView, this.#mainView.container);
 
-    // Рендер без сообщения о пустом списке при пустом списке для созднаия новой первой точки и без
+    // Рендер без сообщения о пустом списке при пустом списке для создания новой первой точки и без
     // сортировки.
-    if (isNoEmptyMessage) {
+    if (isEmptyMessage) {
       this.#listPresenter = new ListPresenter(this.#createCommonConfig());
       this.#listPresenter.init();
       return;
     }
 
-    // При переключении фильтра соответсвующий рендер.
+    // При переключении фильтра соответствующий рендер.
     if (filter) {
       /** Список, с которым будет фильтрация. */
       const points = this.#tripModel.listPoints;
-      const filterStauts = this.#filterModel.filter;
-      const filteredPoints = FilterPresenter.filterList(filterStauts, points);
+      const filterStatus = this.#filterModel.filter;
+      const filteredPoints = FilterPresenter.filterList(filterStatus, points);
 
       if (filteredPoints.length) {
         this.#renderEvents();
         return;
       }
-      this.#renderEmptyMessage(filterStauts);
+      this.#renderEmptyMessage(filterStatus);
       return;
     }
 
@@ -122,7 +122,7 @@ export default class PageMainPresenter {
 
   #renderEvents() {
     // Сперва необходимо создать презентер списка для его передачи
-    // презентеру сортириовки.
+    // презентеру сортировки.
     this.#listPresenter = new ListPresenter(this.#createCommonConfig());
     this.#sortPresenter = new SortPresenter(this.#createCommonConfig());
 

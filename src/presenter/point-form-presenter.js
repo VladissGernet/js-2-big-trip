@@ -65,10 +65,10 @@ export default class PointFormPresenter {
     // Данные новой точки.
     this.#newPointPresenter = newPointPresenter;
 
-    // Добавление обработчкиа закрытия по Esc.
+    // Добавление обработчика закрытия по Esc.
     document.addEventListener('keydown', this.#handleEscKeyDown);
 
-    // CallBack на событие смены фильтра для очистки формы и её обработчкиа нажатия на Esc.
+    // CallBack на событие смены фильтра для очистки формы и её обработчика нажатия на Esc.
     this.#filterModel.addObserver(this.destroy);
   }
 
@@ -91,8 +91,8 @@ export default class PointFormPresenter {
   }
 
   /**
-   * Удаляент компонент презентера формы.
-   * Для передачи callback в removeObserver необходима стрелочнкая функция.
+   * Удаляет компонент презентера формы.
+   * Для передачи callback в removeObserver необходима стрелочная функция.
    */
   destroy = () => {
     this.#filterModel.removeObserver(this.destroy);
@@ -184,7 +184,7 @@ export default class PointFormPresenter {
     // Получаем базовую стоимость.
     const price = Number(formData.get('event-price'));
 
-    // Преобразовывает название пункта назначения в соответсвующий ему id.
+    // Преобразовывает название пункта назначения в соответствующий ему id.
     const destinationName = formData.get('event-destination');
     const destination = transformDestinationNameToId(
       destinationName,
@@ -197,7 +197,7 @@ export default class PointFormPresenter {
     // Получаем массив выбранных предложений (offers), которые также нужно
     // преобразовать в id.
     const selectedOffers = formData.getAll('event-offers');
-    // Получаем коллекцию Map всех предложаний по типу.
+    // Получаем коллекцию Map всех предложений по типу.
     const allOffers = tripModel.offersByType.get(type);
 
     // Создаём обратный Map для быстрого поиска по title (один раз O(n))

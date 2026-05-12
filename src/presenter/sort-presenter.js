@@ -54,6 +54,6 @@ export default class SortPresenter {
     const sortedList = filteredList.sort(
       SORT_CONFIG[SORT_TYPES[evt.target.value]],
     );
-    this.#pageMainPresenter.reinitListView(sortedList);
+    this.#pageMainPresenter.resetListView(sortedList);
   };
 }

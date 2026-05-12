@@ -4,6 +4,7 @@ import FilterModel from './model/filter-model.js';
 import PointsApiService from './points-api-service.js';
 import { END_POINT, AUTHORIZATION } from './const.js';
 
+// TODO cSpell не работает нормально, пропускает слова.
 const tripModel = new TripModel({
   pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION),
 });

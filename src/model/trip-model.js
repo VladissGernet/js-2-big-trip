@@ -1,5 +1,5 @@
 import Observable from '../framework/observable.js';
-// TODO Рассмотреть удаление nanoid обязательно через 'npm uninstall'. Обязательно затестировать нужно присвоение id новым точкам.
+// TODO Рассмотреть удаление nanoid обязательно через 'npm uninstall'. Обязательно проверить нужно присвоение id новым точкам.
 import { nanoid } from 'nanoid';
 import { destinationsMock } from '../mock/destinations-mock.js';
 import { offersMock } from '../mock/offers-mock.js';
@@ -18,7 +18,6 @@ export default class TripModel extends Observable {
   constructor({ pointsApiService }) {
     super();
     this.#pointsApiService = pointsApiService;
-    this.init();
   }
 
   async init() {
@@ -119,10 +118,10 @@ export default class TripModel extends Observable {
     // Сначала нужно сделать изменение на сервере, дождаться с помощью try/catch и await и только потом
     // отобразить на клиенте в разметке, иначе отработать ошибку в catch.
 
-    // Есть пример в демо проекте async addAtask
+    // Есть пример в демо проекте async addTask
 
     // Генерируем новый ID.
-    // TODO удалить naonoid после настройки данных с сервера
+    // TODO удалить nanoid после настройки данных с сервера
     data.id = nanoid();
     this.listPoints.push(data);
     this.listPoints.sort(SORT_CONFIG[DEFAULT_SORT]);

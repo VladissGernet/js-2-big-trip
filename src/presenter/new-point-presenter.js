@@ -3,7 +3,7 @@ import PointFormPresenter from './point-form-presenter.js';
 import { render, RenderPosition } from '../framework/render.js';
 import { FilterType, FilterStatus } from '../const.js';
 
-/** Конфиг презентера обработчика событйи на кнопку создания новго события.
+/** Конфиг презентера обработчика событий на кнопку создания нового события.
  * @typedef {Object} PresenterConfig - Параметры для создания обработчика
  * @property {Object} tripModel - Модель данных поездки
  * @property {Class} filterModel - Модель фильтра с наблюдателем.
@@ -91,10 +91,10 @@ export default class NewPointPresenter {
       return;
     }
     // Если общий список точек пустой, рендер только формы создания новой точки.
-    const isNoEmptyMessage = true;
+    const isEmptyMessage = true;
     this.#pageMainPresenter.renderEventsSection(
       FilterType.EVERYTHING,
-      isNoEmptyMessage,
+      isEmptyMessage,
     );
 
     render(

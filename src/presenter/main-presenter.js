@@ -28,6 +28,26 @@ export default class MainPresenter {
     this.#initHeader();
     this.#initPageMain();
     this.#connectPageMainPresenter();
+
+    /*
+    TODO.
+    0. Изначально init страницы с пустым списком .length или флагом для:
+      - Пустого TripInfo (для него как раз .length === 0)
+      - Заблокированными tripControls (Filters: Everything, Future, ...)
+      - Заблокированной newEventBtn
+      - Empty message со словом Loading, возможно попробовать через
+      pageMainPresenter.renderEventsSection()
+
+    1. Загружаем данные this.#tripModel.init();
+      1.1. Если успех, то:
+        - Перерисовка TripInfo
+        - Разблокировка tripControls (Filters: Everything, Future, ...)
+        - Разблокировка newEventBtn
+        - Далее pageMainPresenter.renderEventsSection() должен все отрисовать.
+      1.2. Если ошибка, то поменять сообщение в emptyMessage на соответствующее ошибке,
+      глянуть в ТЗ как.
+
+    */
   }
 
   #initHeader() {
@@ -49,7 +69,7 @@ export default class MainPresenter {
     this.#pageMainPresenter.init();
   }
 
-  /** Связывает компоненты PageMain с кнопкой создания новой точки маршурта в Header.*/
+  /** Связывает компоненты PageMain с кнопкой создания новой точки маршрута в Header.*/
   #connectPageMainPresenter() {
     this.#headerPresenter.connectPageMainPresenter(this.#pageMainPresenter);
   }
