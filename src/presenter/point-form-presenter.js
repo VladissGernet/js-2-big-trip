@@ -115,6 +115,11 @@ export default class PointFormPresenter {
     this.#removeFromPointPresenters(selectedPointId);
 
     this.destroy();
+
+    // Если эта была последняя точка, то показываем сообщение о пустом списке.
+    if (!this.#tripModel.listPoints.length) {
+      this.#pageMainPresenter.renderEventsSection({ isNoPoints: true });
+    }
   }
 
   /** Удаление текущей Point из списка или закрытие создания новой точки. */

@@ -92,7 +92,9 @@ export default class NewPointPresenter {
     if (this.#tripModel.listPoints.length) {
       // Перерисовываем список, чтобы выполнить условие ТЗ (сделать переключение на вкладку
       // фильтрова "everything").
-      this.#pageMainPresenter.renderEventsSection(FilterType.EVERYTHING);
+      this.#pageMainPresenter.renderEventsSection({
+        filter: FilterType.EVERYTHING,
+      });
       render(
         this.#pointFormPresenter.component,
         this.#pageMainPresenter.listView.element,
@@ -101,11 +103,10 @@ export default class NewPointPresenter {
       return;
     }
     // Если общий список точек пустой, рендер только формы создания новой точки.
-    const isEmptyMessage = true;
-    this.#pageMainPresenter.renderEventsSection(
-      FilterType.EVERYTHING,
-      isEmptyMessage,
-    );
+    this.#pageMainPresenter.renderEventsSection({
+      filter: FilterType.EVERYTHING,
+      isNoPoints: true,
+    });
 
     render(
       this.#pointFormPresenter.component,

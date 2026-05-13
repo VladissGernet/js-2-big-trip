@@ -61,7 +61,11 @@ export default class PageMainPresenter {
     this.#listPresenter.init(sortedList);
   }
 
-  renderEventsSection(filter = null, isEmptyMessage = false) {
+  renderEventsSection({
+    filter = null,
+    isNoPoints = false,
+    isLoading = false,
+  } = {}) {
     // Если фильтр отсутствует, то рендер по-умолчанию с фильтром 'everything' согласно ТЗ.
     if (this.#tripEventsView) {
       this.#destroyTripEventsView();
@@ -72,7 +76,7 @@ export default class PageMainPresenter {
 
     // Рендер без сообщения о пустом списке при пустом списке для создания новой первой точки и без
     // сортировки.
-    if (isEmptyMessage) {
+    if (isNoPoints) {
       this.#listPresenter = new ListPresenter(this.#createCommonConfig());
       this.#listPresenter.init();
       return;
@@ -89,16 +93,22 @@ export default class PageMainPresenter {
         this.#renderEvents();
         return;
       }
-      this.#renderEmptyMessage(filterStatus);
+
+      this.#renderEmptyMessage({ filterStatus });
       return;
     }
 
     // Рендер по умолчанию.
     if (this.#tripModel.listPoints?.length) {
       this.#renderEvents();
-    } else {
-      this.#renderEmptyMessage();
+      return;
     }
+
+    if (isLoading) {
+      this.#renderEmptyMessage({ isLoading });
+      return;
+    }
+    this.#renderEmptyMessage();
   }
 
   /** Очищает элемент tripEvents. */
@@ -106,6 +116,9 @@ export default class PageMainPresenter {
     if (this.#listPresenter) {
       this.#listPresenter.destroy();
       this.#listPresenter = null;
+    }
+
+    if (this.#sortPresenter) {
       this.#sortPresenter.destroy();
       this.#sortPresenter = null;
     }
@@ -114,9 +127,10 @@ export default class PageMainPresenter {
     this.#tripEventsEmptyView = null;
   }
 
+  /** Рендер до загрузки данных. */
   #renderMain() {
     render(this.#mainView, this.#container);
-    this.renderEventsSection();
+    this.renderEventsSection({ isLoading: true });
   }
 
   #renderEvents() {
@@ -138,8 +152,11 @@ export default class PageMainPresenter {
     };
   }
 
-  #renderEmptyMessage(filter = null) {
-    this.#tripEventsEmptyView = new TripEventsEmptyView(filter);
+  #renderEmptyMessage({ filterStatus = null, isLoading = false } = {}) {
+    // TODO остановился на прокидываении статуса загрузки..
+    console.log(isLoading);
+
+    this.#tripEventsEmptyView = new TripEventsEmptyView(filterStatus);
     render(this.#tripEventsEmptyView, this.#tripEventsView.element);
   }
 
@@ -152,6 +169,6 @@ export default class PageMainPresenter {
     this.#newPointPresenter.destroy();
 
     // Очищаем элемент для нового рендера.
-    this.renderEventsSection(filter);
+    this.renderEventsSection({ filter });
   };
 }
