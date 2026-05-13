@@ -82,33 +82,28 @@ export default class PageMainPresenter {
       return;
     }
 
+    const points = this.#tripModel.listPoints;
+
     // При переключении фильтра соответствующий рендер.
     if (filter) {
       /** Список, с которым будет фильтрация. */
-      const points = this.#tripModel.listPoints;
       const filterStatus = this.#filterModel.filter;
       const filteredPoints = FilterPresenter.filterList(filterStatus, points);
 
-      if (filteredPoints.length) {
-        this.#renderEvents();
-        return;
-      }
-
-      this.#renderEmptyMessage({ filterStatus });
+      this.#renderEventsOrEmpty(filteredPoints, { filterStatus });
       return;
     }
 
     // Рендер по умолчанию.
-    if (this.#tripModel.listPoints?.length) {
-      this.#renderEvents();
-      return;
-    }
+    this.#renderEventsOrEmpty(points, { isLoading });
+  }
 
-    if (isLoading) {
-      this.#renderEmptyMessage({ isLoading });
-      return;
+  #renderEventsOrEmpty(points, options = {}) {
+    if (points?.length) {
+      this.#renderEvents();
+    } else {
+      this.#renderEmptyMessage(options);
     }
-    this.#renderEmptyMessage();
   }
 
   /** Очищает элемент tripEvents. */
@@ -153,7 +148,7 @@ export default class PageMainPresenter {
   }
 
   #renderEmptyMessage({ filterStatus = null, isLoading = false } = {}) {
-    // TODO остановился на прокидываении статуса загрузки..
+    // TODO остановился на прокидываении статуса загрузки.
     console.log(isLoading);
 
     this.#tripEventsEmptyView = new TripEventsEmptyView(filterStatus);
