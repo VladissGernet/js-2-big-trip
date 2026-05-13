@@ -35,6 +35,16 @@ export default class NewPointPresenter {
     render(this.#newEventBtn, this.#containerElement);
   }
 
+  /** Отключение кнопки.*/
+  disable() {
+    this.#newEventBtn.element.disabled = true;
+  }
+
+  /** Активация кнопки.*/
+  enable() {
+    this.#newEventBtn.element.disabled = false;
+  }
+
   /**
    * Связывает main страницы с header.
    * @param {Class} pageMainPresenter - Презентер рендера main.
@@ -49,7 +59,7 @@ export default class NewPointPresenter {
     }
     this.#pointFormPresenter.destroy();
     this.#pointFormPresenter = null;
-    this.#newEventBtn.element.disabled = false;
+    this.enable();
   }
 
   #handleBtnClick = () => {
@@ -76,7 +86,7 @@ export default class NewPointPresenter {
     });
 
     // Отключаем возможность нажатия кнопки.
-    this.#newEventBtn.element.disabled = true;
+    this.disable();
 
     // Добавляю форму создания новой точки в самый верх списка.
     if (this.#tripModel.listPoints.length) {

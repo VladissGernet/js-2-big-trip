@@ -1,5 +1,5 @@
 import { FilterView } from '../view/index.js';
-import { render, replace } from '../framework/render.js';
+import { render, replace, remove } from '../framework/render.js';
 import { FilterType, FilterStatus } from '../const.js';
 
 // Библиотека dayjs.
@@ -41,6 +41,18 @@ export default class FilterPresenter {
     this.#renderFilterComponent();
   }
 
+  disable() {
+    this.#filterComponent.controls.forEach(
+      (control) => (control.disabled = true),
+    );
+  }
+
+  enable() {
+    this.#filterComponent.controls.forEach(
+      (control) => (control.disabled = false),
+    );
+  }
+
   resetView() {
     const prevComponent = this.#filterComponent;
     this.#filterComponent = new FilterView(
@@ -48,6 +60,7 @@ export default class FilterPresenter {
       this.#filterChangeHandler,
     );
     replace(this.#filterComponent, prevComponent);
+    remove(prevComponent);
   }
 
   #renderFilterComponent() {
@@ -62,7 +75,8 @@ export default class FilterPresenter {
     this.#filterModel.setFilter(evt.target.value, FilterStatus.CHANGE);
   };
 
-  /** Возвращает отфильтрованный список согласно типу фильтра.
+  /**
+   * Возвращает отфильтрованный список согласно типу фильтра.
    * Публичный для переиспользования.
    */
   static filterList(filterType, points) {

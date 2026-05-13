@@ -6,7 +6,7 @@ export default function createFilterItemTemplate({ name, isChecked }) {
     <div class="trip-filters__filter">
       <input
         id="filter-${lowerStr}"
-        class="trip-filters__filter-input  visually-hidden"
+        class="trip-filters__filter-input visually-hidden"
         type="radio"
         name="trip-filter"
         value="${lowerStr}"

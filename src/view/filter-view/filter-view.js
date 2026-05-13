@@ -22,11 +22,19 @@ export default class FilterView extends AbstractView {
     this.#filters = filters;
     this.#handleFilterChange = onFilterChange;
 
-    // Добавляет обработчик на форму.
     this.element.addEventListener('change', this.#handleFilterChange);
   }
 
   get template() {
     return createFilterTemplate(this.#filters);
+  }
+
+  get controls() {
+    return this.element.querySelectorAll('input[type="radio"]');
+  }
+
+  removeElement() {
+    super.removeElement();
+    this.element.removeEventListener('change', this.#handleFilterChange);
   }
 }

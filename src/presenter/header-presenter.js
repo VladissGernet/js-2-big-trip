@@ -58,7 +58,6 @@ export default class HeaderPresenter {
 
   /** Активирует рендер информации о маршруте. */
   #renderTripInfo() {
-    // TODO, остановился здесь. Таким же способом реализовать блокировку контролов, кнопки и отрисовки сообщения emptyMessage
     if (this.#tripModel.listPoints?.length) {
       const tripInfoPresenter = new TripInfoPresenter(this.#tripModel);
       render(
@@ -81,6 +80,8 @@ export default class HeaderPresenter {
       filterModel: this.#filterModel,
     });
     this.#filterPresenter.init();
+    // Отключаем на время первой загрузки.
+    this.#filterPresenter.disable();
   }
 
   #renderNewEventBtn() {
@@ -91,11 +92,15 @@ export default class HeaderPresenter {
       filterPresenter: this.#filterPresenter,
     });
     this.newPointPresenter.init();
+    // Отключаем на время первой загрузки.
+    this.newPointPresenter.disable();
   }
 
   #handleLoadStatus = () => {
+    // После успешной закгрузки данных с сервера.
     this.#renderTripInfo();
-    // После загрузки удалить из наблюдателя.
     this.#tripModel.removeObserver(this.#handleLoadStatus);
+    this.newPointPresenter.enable();
+    this.#filterPresenter.enable();
   };
 }
