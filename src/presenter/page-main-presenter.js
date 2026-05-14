@@ -38,6 +38,7 @@ export default class PageMainPresenter {
     this.#newPointPresenter = newPointPresenter;
 
     this.#filterModel.addObserver(this.#handleFilterStatus);
+    this.#tripModel.addObserver(this.#handleLoadStatus);
   }
 
   get tripEventsView() {
@@ -169,5 +170,10 @@ export default class PageMainPresenter {
 
     // Очищаем элемент для нового рендера.
     this.renderEventsSection({ filter });
+  };
+
+  #handleLoadStatus = () => {
+    this.renderEventsSection();
+    this.#tripModel.removeObserver(this.#handleLoadStatus);
   };
 }
