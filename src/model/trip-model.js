@@ -120,7 +120,6 @@ export default class TripModel extends Observable {
       // Уведомляю для реднера tripInfo в Header.
       this._notify(LoadStatus.RESOLVED);
     } catch (error) {
-      // todo , проверить , может еще чего с error нужно сделать.
       this._notify(LoadStatus.REJECTED);
     }
   }

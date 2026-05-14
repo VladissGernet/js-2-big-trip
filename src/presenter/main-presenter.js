@@ -30,19 +30,6 @@ export default class MainPresenter {
     this.#connectPageMainPresenter();
 
     this.#tripModel.init();
-    /*
-    TODO.
-    0. Изначально init страницы с пустым списком .length или флагом для:
-      - Empty message со словом Loading, возможно попробовать через
-      pageMainPresenter.renderEventsSection()
-
-    1. Загружаем данные this.#tripModel.init();
-      1.1. Если успех, то:
-        - Далее pageMainPresenter.renderEventsSection() должен все отрисовать.
-      1.2. Если ошибка, то поменять сообщение в emptyMessage на соответствующее ошибке,
-      глянуть в ТЗ как.
-
-    */
   }
 
   #initHeader() {
