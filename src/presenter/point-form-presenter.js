@@ -181,6 +181,7 @@ export default class PointFormPresenter {
     currentState,
     pointData = null,
   }) {
+    // TODO, возвомжно это попробовать зарефакторить, убарть formData, и кинуть в utils, как унивирсальный адаптер для сервера.
     const pointId = pointData === null ? '' : pointData.id;
     const isFavorite = pointData === null ? false : pointData.isFavorite;
 

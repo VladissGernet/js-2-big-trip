@@ -19,4 +19,9 @@ export default class PointsApiService extends ApiService {
       ApiService.parseResponse,
     );
   }
+
+  updatePoint(updatedData) {
+    // TODO, подготовить адаптер данных для отправки на сервер.
+    console.log(updatedData);
+  }
 }
