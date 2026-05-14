@@ -4,7 +4,9 @@ import dayjs from 'dayjs';
 
 const DEFAULT_SORT = 'date';
 // Server
-const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
+// const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
+// TODO, намерено делаю ошибку
+const END_POINT = 'https://24.objects.htmlacademy.pro/big-tri';
 const AUTHORIZATION = 'Basic dXNlckBwYXNzd29yZA==';
 
 // Формирование Trip Info.
@@ -37,9 +39,14 @@ const PointsURLs = {
   OFFERS: 'offers',
 };
 
+const LoadStatus = {
+  RESOLVED: 'resolved',
+  REJECTED: 'rejected',
+};
+
 // Конфигурационные массивы с дефолтными данными для UI.
 
-/** Состояние кнопок филтров по умолчанию. */
+/** Состояние кнопок фильтров по умолчанию. */
 const TRIP_FILTERS = [
   { name: 'Everything', isChecked: true },
   { name: 'Future', isChecked: false },
@@ -115,4 +122,5 @@ export {
   END_POINT,
   AUTHORIZATION,
   PointsURLs,
+  LoadStatus,
 };

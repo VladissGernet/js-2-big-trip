@@ -7,7 +7,12 @@ import {
 import SortPresenter from './sort-presenter.js';
 import ListPresenter from './list-presenter.js';
 import FilterPresenter from './filter-presenter.js';
-import { FilterStatus, NO_EVENTS_MESSAGES, FilterType } from '../const.js';
+import {
+  FilterStatus,
+  NO_EVENTS_MESSAGES,
+  FilterType,
+  LoadStatus,
+} from '../const.js';
 
 /** Конфигурация презентера списка.
  * @typedef {Object} PresenterConfig
@@ -172,8 +177,13 @@ export default class PageMainPresenter {
     this.renderEventsSection({ filter });
   };
 
-  #handleLoadStatus = () => {
-    this.renderEventsSection();
+  #handleLoadStatus = (status) => {
+    if (status === LoadStatus.RESOLVED) {
+      this.renderEventsSection();
+    }
+    // TODO остановилсяз здесь, нужно прокинуть данные в
+    // this.renderEventsSection();
+    // чтобы был рендер ошибки загрузки
     this.#tripModel.removeObserver(this.#handleLoadStatus);
   };
 }

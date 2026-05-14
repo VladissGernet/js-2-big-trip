@@ -2,7 +2,7 @@ import { HeaderView, TripMainView, TripControlsView } from '../view/index.js';
 import NewPointPresenter from './new-point-presenter.js';
 import FilterPresenter from './filter-presenter.js';
 import TripInfoPresenter from './trip-info-presenter.js';
-import { TRIP_FILTERS } from '../const.js';
+import { TRIP_FILTERS, LoadStatus } from '../const.js';
 import { render, RenderPosition } from '../framework/render.js';
 
 /** Конфиг принимаемый презентором
@@ -96,11 +96,13 @@ export default class HeaderPresenter {
     this.newPointPresenter.disable();
   }
 
-  #handleLoadStatus = () => {
-    // После успешной закгрузки данных с сервера.
-    this.#renderTripInfo();
+  #handleLoadStatus = (status) => {
+    if (status === LoadStatus.RESOLVED) {
+      // После успешной закгрузки данных с сервера.
+      this.#renderTripInfo();
+      this.newPointPresenter.enable();
+      this.#filterPresenter.enable();
+    }
     this.#tripModel.removeObserver(this.#handleLoadStatus);
-    this.newPointPresenter.enable();
-    this.#filterPresenter.enable();
   };
 }

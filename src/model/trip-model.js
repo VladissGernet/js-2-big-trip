@@ -2,7 +2,7 @@ import Observable from '../framework/observable.js';
 // TODO Рассмотреть удаление nanoid обязательно через 'npm uninstall'. Обязательно проверить нужно присвоение id новым точкам.
 import { nanoid } from 'nanoid';
 import { replaceSnakeToCamel } from '../utils/replace-snake-to-camel.js';
-import { SORT_CONFIG, DEFAULT_SORT } from '../const.js';
+import { SORT_CONFIG, DEFAULT_SORT, LoadStatus } from '../const.js';
 
 export default class TripModel extends Observable {
   #pointsApiService = null;
@@ -90,33 +90,39 @@ export default class TripModel extends Observable {
   }
 
   async init() {
-    // Получаю данные с сервера
-    const [serverPoints, serverDestinations, serverOffers] = await Promise.all([
-      this.#pointsApiService.points,
-      this.#pointsApiService.destinations,
-      this.#pointsApiService.offers,
-    ]);
+    try {
+      // Получаю данные с сервера
+      const [serverPoints, serverDestinations, serverOffers] =
+        await Promise.all([
+          this.#pointsApiService.points,
+          this.#pointsApiService.destinations,
+          this.#pointsApiService.offers,
+        ]);
 
-    const {
-      cities,
-      destinationsById,
-      offersByType,
-      defaultTypeOffer,
-      listPoints,
-    } = TripModel.#adaptToClient(
-      serverPoints,
-      serverDestinations,
-      serverOffers,
-    );
+      const {
+        cities,
+        destinationsById,
+        offersByType,
+        defaultTypeOffer,
+        listPoints,
+      } = TripModel.#adaptToClient(
+        serverPoints,
+        serverDestinations,
+        serverOffers,
+      );
 
-    this.#points = listPoints;
-    this.#destinations = destinationsById;
-    this.#offers = offersByType;
-    this.#defaultTypeOffer = defaultTypeOffer;
-    this.#cities = cities;
+      this.#points = listPoints;
+      this.#destinations = destinationsById;
+      this.#offers = offersByType;
+      this.#defaultTypeOffer = defaultTypeOffer;
+      this.#cities = cities;
 
-    // Уведомляю для реднера tripInfo в Header.
-    this._notify();
+      // Уведомляю для реднера tripInfo в Header.
+      this._notify(LoadStatus.RESOLVED);
+    } catch (error) {
+      // todo , проверить , может еще чего с error нужно сделать.
+      this._notify(LoadStatus.REJECTED);
+    }
   }
 
   static #adaptToClient(serverPoints, serverDestinations, serverOffers) {
