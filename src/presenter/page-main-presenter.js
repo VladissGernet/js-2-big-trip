@@ -7,7 +7,7 @@ import {
 import SortPresenter from './sort-presenter.js';
 import ListPresenter from './list-presenter.js';
 import FilterPresenter from './filter-presenter.js';
-import { FilterStatus } from '../const.js';
+import { FilterStatus, NO_EVENTS_MESSAGES, FilterType } from '../const.js';
 
 /** Конфигурация презентера списка.
  * @typedef {Object} PresenterConfig
@@ -148,11 +148,15 @@ export default class PageMainPresenter {
   }
 
   #renderEmptyMessage({ filterStatus = null, isLoading = false } = {}) {
-    // TODO остановился на прокидываении статуса загрузки.
-    console.log(isLoading);
-
-    this.#tripEventsEmptyView = new TripEventsEmptyView(filterStatus);
+    const result = this.#getEmptyMessage({ filterStatus, isLoading });
+    this.#tripEventsEmptyView = new TripEventsEmptyView(result);
     render(this.#tripEventsEmptyView, this.#tripEventsView.element);
+  }
+
+  #getEmptyMessage({ filterStatus = null, isLoading = false }) {
+    return isLoading
+      ? NO_EVENTS_MESSAGES.LOADING
+      : NO_EVENTS_MESSAGES[filterStatus || FilterType.EVERYTHING];
   }
 
   #handleFilterStatus = (filter, status) => {

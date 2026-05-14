@@ -1,22 +1,15 @@
 import { html } from '../../utils/index.js';
 import AbstractView from './../../framework/view/abstract-view.js';
-import { NO_EVENTS_MESSAGES } from '../../const.js';
-
-function createTripEventsEmptyTemplate(value) {
-  return html`<p class="trip-events__msg">
-    ${value ? NO_EVENTS_MESSAGES[value] : NO_EVENTS_MESSAGES['everything']}
-  </p>`;
-}
 
 export default class TripEventsEmptyView extends AbstractView {
-  #value = null;
+  #message = null;
 
-  constructor(value) {
+  constructor(message) {
     super();
-    this.#value = value;
+    this.#message = message;
   }
 
   get template() {
-    return createTripEventsEmptyTemplate(this.#value);
+    return html`<p class="trip-events__msg">${this.#message}</p>`;
   }
 }

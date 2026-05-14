@@ -58,12 +58,13 @@ const TRIP_SORTS = [
 
 // Словари.
 
-/** Набор сообщений в зависимости от значения фильтра. */
+/** Набор сообщений для рендера сообщения о пустом списке. */
 const NO_EVENTS_MESSAGES = {
   [FilterType.EVERYTHING]: 'Click New Event to create your first point',
   [FilterType.PAST]: 'There are no past events now',
   [FilterType.PRESENT]: 'There are no present events now',
   [FilterType.FUTURE]: 'There are no future events now',
+  LOADING: 'Loading...',
 };
 
 const SORT_CONFIG = {

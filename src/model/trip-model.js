@@ -90,7 +90,6 @@ export default class TripModel extends Observable {
   }
 
   async init() {
-    // TODO , перестал работать tripInfoView
     // Получаю данные с сервера
     const [serverPoints, serverDestinations, serverOffers] = await Promise.all([
       this.#pointsApiService.points,
