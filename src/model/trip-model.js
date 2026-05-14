@@ -44,13 +44,14 @@ export default class TripModel extends Observable {
   }
 
   /** Обновляет данные выбранной точки */
-  updatePoint(pointId, updatedData) {
+  async updatePoint(pointId, updatedData) {
     // TODO
     // Сначала нужно сделать изменение на сервере, дождаться с помощью try/catch и await и только потом
     // отобразить на клиенте в разметке, иначе отработать ошибку в catch.
     const index = this.listPoints.findIndex((item) => item.id === pointId);
     if (index === -1) {
-      return;
+      // prettier-ignore
+      throw new Error('Can\'t update unexisting task');
     }
     let selectedPoint = this.listPoints[index];
     selectedPoint = { ...this.listPoints[index], ...updatedData };
@@ -58,6 +59,8 @@ export default class TripModel extends Observable {
     this.#notifyAboutListChange();
 
     // Возвращаем выбранную точку.
+    // TODO, остановился здесь возвращает промис, а не результат, из-за чего появляется ошибка
+    // Возможно надо удалить async и вызвать его внутри функции updatePoint
     return selectedPoint;
   }
 
