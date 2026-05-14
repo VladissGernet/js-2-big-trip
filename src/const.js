@@ -4,9 +4,7 @@ import dayjs from 'dayjs';
 
 const DEFAULT_SORT = 'date';
 // Server
-// const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
-// TODO, намерено делаю ошибку
-const END_POINT = 'https://24.objects.htmlacademy.pro/big-tri';
+const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
 const AUTHORIZATION = 'Basic dXNlckBwYXNzd29yZA==';
 
 // Формирование Trip Info.
@@ -42,6 +40,7 @@ const PointsURLs = {
 const LoadStatus = {
   RESOLVED: 'resolved',
   REJECTED: 'rejected',
+  LOADING: 'loading',
 };
 
 // Конфигурационные массивы с дефолтными данными для UI.
@@ -71,7 +70,8 @@ const NO_EVENTS_MESSAGES = {
   [FilterType.PAST]: 'There are no past events now',
   [FilterType.PRESENT]: 'There are no present events now',
   [FilterType.FUTURE]: 'There are no future events now',
-  LOADING: 'Loading...',
+  [LoadStatus.LOADING]: 'Loading...',
+  [LoadStatus.REJECTED]: 'Failed to load latest route information',
 };
 
 const SORT_CONFIG = {

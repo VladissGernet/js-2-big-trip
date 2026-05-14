@@ -67,11 +67,7 @@ export default class PageMainPresenter {
     this.#listPresenter.init(sortedList);
   }
 
-  renderEventsSection({
-    filter = null,
-    isNoPoints = false,
-    isLoading = false,
-  } = {}) {
+  renderEventsSection({ filter = null, isNoPoints = false, loadStatus } = {}) {
     // Если фильтр отсутствует, то рендер по-умолчанию с фильтром 'everything' согласно ТЗ.
     if (this.#tripEventsView) {
       this.#destroyTripEventsView();
@@ -101,7 +97,7 @@ export default class PageMainPresenter {
     }
 
     // Рендер по умолчанию.
-    this.#renderEventsOrEmpty(points, { isLoading });
+    this.#renderEventsOrEmpty(points, { loadStatus });
   }
 
   #renderEventsOrEmpty(points, options = {}) {
@@ -131,7 +127,7 @@ export default class PageMainPresenter {
   /** Рендер до загрузки данных. */
   #renderMain() {
     render(this.#mainView, this.#container);
-    this.renderEventsSection({ isLoading: true });
+    this.renderEventsSection({ loadStatus: LoadStatus.LOADING });
   }
 
   #renderEvents() {
@@ -153,16 +149,18 @@ export default class PageMainPresenter {
     };
   }
 
-  #renderEmptyMessage({ filterStatus = null, isLoading = false } = {}) {
-    const result = this.#getEmptyMessage({ filterStatus, isLoading });
+  #renderEmptyMessage({ filterStatus, loadStatus } = {}) {
+    const result = this.#getEmptyMessage({ filterStatus, loadStatus });
     this.#tripEventsEmptyView = new TripEventsEmptyView(result);
     render(this.#tripEventsEmptyView, this.#tripEventsView.element);
   }
 
-  #getEmptyMessage({ filterStatus = null, isLoading = false }) {
-    return isLoading
-      ? NO_EVENTS_MESSAGES.LOADING
-      : NO_EVENTS_MESSAGES[filterStatus || FilterType.EVERYTHING];
+  #getEmptyMessage({ filterStatus = null, loadStatus = null }) {
+    if (loadStatus) {
+      return NO_EVENTS_MESSAGES[loadStatus];
+    }
+
+    return NO_EVENTS_MESSAGES[filterStatus || FilterType.EVERYTHING];
   }
 
   #handleFilterStatus = (filter, status) => {
@@ -180,10 +178,9 @@ export default class PageMainPresenter {
   #handleLoadStatus = (status) => {
     if (status === LoadStatus.RESOLVED) {
       this.renderEventsSection();
+    } else {
+      this.renderEventsSection({ loadStatus: LoadStatus.REJECTED });
     }
-    // TODO остановилсяз здесь, нужно прокинуть данные в
-    // this.renderEventsSection();
-    // чтобы был рендер ошибки загрузки
     this.#tripModel.removeObserver(this.#handleLoadStatus);
   };
 }
