@@ -22,6 +22,6 @@ export default class PointsApiService extends ApiService {
 
   updatePoint(updatedData) {
     // TODO, подготовить адаптер данных для отправки на сервер.
-    console.log(updatedData);
+    // console.log(updatedData);
   }
 }

@@ -1,9 +1,6 @@
 import { ListPointFormView } from '../view/index.js';
 import { remove } from '../framework/render.js';
-import {
-  transformDestinationNameToId,
-  createViewPointData,
-} from '../utils/index.js';
+import { createViewPointData } from '../utils/index.js';
 
 /** Конфигурация презентера формы путевой точки.
  * @typedef {Object} PointFormConfig
@@ -185,20 +182,8 @@ export default class PointFormPresenter {
     const pointId = pointData === null ? '' : pointData.id;
     const isFavorite = pointData === null ? false : pointData.isFavorite;
 
-    let data = {};
-
-    // Получаем базовую стоимость.
-    const price = Number(formData.get('event-price'));
-
-    // Преобразовывает название пункта назначения в соответствующий ему id.
-    const destinationName = formData.get('event-destination');
-    const destination = transformDestinationNameToId(
-      destinationName,
-      tripModel.destinationsById,
-    );
-
     // Получаем тип для массива предложений.
-    const type = formData.get('event-type');
+    const type = currentState.listPoint.type;
 
     // Получаем массив выбранных предложений (offers), которые также нужно
     // преобразовать в id.
@@ -216,17 +201,15 @@ export default class PointFormPresenter {
       offersTitleToId.get(offer.toLowerCase()),
     );
 
-    data = {
+    return {
       id: pointId,
-      basePrice: price,
+      basePrice: currentState.listPoint.basePrice,
       dateFrom: currentState.listPoint.dateFrom,
       dateTo: currentState.listPoint.dateTo,
-      destination,
+      destination: currentState.listPoint.destination,
       isFavorite,
       offers: new Set(selectedIdOffers),
       type,
     };
-
-    return data;
   }
 }
