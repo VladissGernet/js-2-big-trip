@@ -171,7 +171,7 @@ export default class PointFormPresenter {
     this.#pageMainPresenter.renderEventsSection();
   };
 
-  /** Подготавливает данные для отправки. */
+  /** Подготавливает данные для обновления на клиенте. */
   static #preparePointData({
     formData,
     tripModel,

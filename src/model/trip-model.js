@@ -57,8 +57,6 @@ export default class TripModel extends Observable {
       this.listPoints[index] = selectedPoint;
       this.#pointsApiService.updatePoint(selectedPoint);
 
-      this.#notifyAboutListChange();
-
       // Возвращаем выбранную точку.
       return selectedPoint;
     } catch (error) {
@@ -132,6 +130,8 @@ export default class TripModel extends Observable {
   }
 
   static #adaptToClient(serverPoints, serverDestinations, serverOffers) {
+    console.log(serverPoints[0]);
+
     const listPoints = replaceSnakeToCamel(serverPoints).map(
       ({ offers, ...rest }) => ({
         ...rest,
