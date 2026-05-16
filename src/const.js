@@ -37,6 +37,10 @@ const PointsURLs = {
   OFFERS: 'offers',
 };
 
+const Method = {
+  PUT: 'PUT',
+};
+
 const LoadStatus = {
   RESOLVED: 'resolved',
   REJECTED: 'rejected',
@@ -123,4 +127,5 @@ export {
   AUTHORIZATION,
   PointsURLs,
   LoadStatus,
+  Method,
 };

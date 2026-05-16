@@ -1,5 +1,6 @@
 import ApiService from './framework/api-service.js';
-import { PointsURLs } from './const.js';
+import { PointsURLs, Method } from './const.js';
+import { adaptDataToServer } from './utils/index.js';
 
 export default class PointsApiService extends ApiService {
   get points() {
@@ -20,20 +21,15 @@ export default class PointsApiService extends ApiService {
     );
   }
 
-  updatePoint(updatedData) {
-    // TODO, остановился здесь, подготовить адаптер данных для отправки на сервер.
+  async updatePoint(updatedData) {
+    const response = await this._load({
+      url: `points/${updatedData.id}`,
+      method: Method.PUT,
+      body: JSON.stringify(adaptDataToServer(updatedData)),
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+    });
 
-    const adaptToServer = (data) => {
-      const serverData = {};
-      for (const [key, value] of Object.entries(data)) {
-        const snakeCaseKey = key
-          .replace(/([a-z])([A-Z])/g, '$1_$2')
-          .toLowerCase();
-        serverData[snakeCaseKey] = value;
-      }
-      serverData.offers = Array.from(serverData.offers);
-      return serverData;
-    };
-    console.log(adaptToServer(updatedData));
+    const parsedResponse = await ApiService.parseResponse(response);
+    return parsedResponse;
   }
 }

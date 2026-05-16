@@ -1,3 +1,4 @@
+export { adaptDataToServer } from './adapt-data-to-server.js';
 export { calcFinalPrice } from './calc-final-price.js';
 export { calcTimeBetween } from './calc-time-between.js';
 export { createViewPointData } from './create-view-point-data.js';
