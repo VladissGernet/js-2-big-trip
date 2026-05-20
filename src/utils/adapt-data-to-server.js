@@ -1,4 +1,5 @@
 const adaptDataToServer = (data) => {
+  data.basePrice = Number(data.basePrice);
   const serverData = {};
   for (const [key, value] of Object.entries(data)) {
     const snakeCaseKey = key.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase();

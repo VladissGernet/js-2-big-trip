@@ -1,6 +1,4 @@
 import Observable from '../framework/observable.js';
-// TODO Рассмотреть удаление nanoid обязательно через 'npm uninstall'. Обязательно проверить нужно присвоение id новым точкам.
-import { nanoid } from 'nanoid';
 import { replaceSnakeToCamel } from '../utils/replace-snake-to-camel.js';
 import { SORT_CONFIG, DEFAULT_SORT, LoadStatus } from '../const.js';
 
@@ -49,7 +47,7 @@ export default class TripModel extends Observable {
       const index = this.listPoints.findIndex((item) => item.id === pointId);
       if (index === -1) {
         // prettier-ignore
-        throw new Error('Can\'t update unexisting task');
+        throw new Error('Can\'t update unexisting point');
       }
 
       let selectedPoint = this.listPoints[index];
@@ -59,7 +57,7 @@ export default class TripModel extends Observable {
       return selectedPoint;
     } catch (error) {
       // prettier-ignore
-      throw new Error('Can\'t update unexisting task');
+      throw new Error('Can\'t update unexisting point');
       // TODO добавить шейк при block request
     }
   }
@@ -73,19 +71,20 @@ export default class TripModel extends Observable {
     this.#notifyAboutListChange();
   }
 
-  addPoint(data) {
-    // TODO
-    // Сначала нужно сделать изменение на сервере, дождаться с помощью try/catch и await и только потом
-    // отобразить на клиенте в разметке, иначе отработать ошибку в catch.
+  async addPoint(data) {
+    // TODO, исправить
+    // валидацию даты додумать (узнать в ТЗ) и исправить, серверу не нравится
+    // валидацию цены додумать (узнать в ТЗ).
+    try {
+      const result = await this.#pointsApiService.addPoint(data);
 
-    // Есть пример в демо проекте async addTask
-
-    // Генерируем новый ID.
-    // TODO удалить nanoid после настройки данных с сервера
-    data.id = nanoid();
-    this.listPoints.push(data);
-    this.listPoints.sort(SORT_CONFIG[DEFAULT_SORT]);
-    this.#notifyAboutListChange();
+      this.listPoints.push(result);
+      this.listPoints.sort(SORT_CONFIG[DEFAULT_SORT]);
+      this.#notifyAboutListChange();
+    } catch (err) {
+      // prettier-ignore
+      throw new Error('Can\'t update unexisting point');
+    }
   }
 
   #notifyAboutListChange() {
@@ -122,7 +121,7 @@ export default class TripModel extends Observable {
 
       // Уведомляю для реднера tripInfo в Header.
       this._notify(LoadStatus.RESOLVED);
-    } catch (error) {
+    } catch (err) {
       this._notify(LoadStatus.REJECTED);
     }
   }

@@ -1,6 +1,5 @@
 import { createListPointFormTemplate } from './list-form-templates.js';
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
-import { remove } from '../../framework/render.js';
 import { InputDateStage, DateStateStage } from '../../const.js';
 import {
   transformOfferTypeData,

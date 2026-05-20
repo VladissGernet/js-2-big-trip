@@ -39,6 +39,7 @@ const PointsURLs = {
 
 const Method = {
   PUT: 'PUT',
+  POST: 'POST',
 };
 
 const LoadStatus = {

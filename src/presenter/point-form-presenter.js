@@ -152,23 +152,36 @@ export default class PointFormPresenter {
   };
 
   /** Добавление\сохранение данных формы. */
-  #handleFormSubmit = (evt) => {
-    const currentState = this.#pointFormComponent._state;
-    const formData = new FormData(evt.target);
-    const newData = PointFormPresenter.#preparePointData({
-      formData,
-      tripModel: this.#tripModel,
-      currentState,
-      pointData: this.#pointData,
-    });
-    if (this.#isEditForm) {
-      this.#tripModel.updatePoint(currentState.listPoint.id, newData);
-      this.destroy();
-    } else {
-      this.#tripModel.addPoint(newData);
-      this.#newPointPresenter.destroy();
+  #handleFormSubmit = async (evt) => {
+    // TODO, остановился здесь на решении проблем обновления \ добавления
+    evt.preventDefault();
+    try {
+      const currentState = this.#pointFormComponent._state;
+      const formData = new FormData(evt.target);
+      const newData = PointFormPresenter.#preparePointData({
+        formData,
+        tripModel: this.#tripModel,
+        currentState,
+        pointData: this.#pointData,
+      });
+      if (this.#isEditForm) {
+        // TODO, исправить на
+        // await this.#tripModel.updatePoint(currentState.listPoint.id, newData);
+        this.#tripModel.updatePoint(currentState.listPoint.id, newData);
+        this.destroy();
+      } else {
+        // Обязательно удаляем поле id для отправки на сервер, который сам присвоит это поле.
+
+        delete newData.id;
+
+        // await this.#tripModel.addPoint(newData);
+        // this.#newPointPresenter.destroy();
+      }
+      this.#pageMainPresenter.renderEventsSection();
+    } catch (err) {
+      // prettier-ignore
+      throw new Error('Can\'t submit current request');
     }
-    this.#pageMainPresenter.renderEventsSection();
   };
 
   /** Подготавливает данные для обновления на клиенте. */
@@ -184,6 +197,17 @@ export default class PointFormPresenter {
 
     // Получаем тип для массива предложений.
     const type = currentState.listPoint.type;
+
+    const basePrice = formData.get('event-price');
+
+    const newDestinationName = formData.get('event-destination');
+    let newDestinationId = '';
+    for (const [id, { name }] of tripModel.destinationsById) {
+      if (newDestinationName === name) {
+        newDestinationId = id;
+        break;
+      }
+    }
 
     // Получаем массив выбранных предложений (offers), которые также нужно
     // преобразовать в id.
@@ -203,10 +227,10 @@ export default class PointFormPresenter {
 
     return {
       id: pointId,
-      basePrice: currentState.listPoint.basePrice,
+      basePrice: basePrice,
       dateFrom: currentState.listPoint.dateFrom,
       dateTo: currentState.listPoint.dateTo,
-      destination: currentState.listPoint.destination,
+      destination: newDestinationId,
       isFavorite,
       offers: new Set(selectedIdOffers),
       type,
