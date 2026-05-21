@@ -153,33 +153,25 @@ export default class PointFormPresenter {
 
   /** Добавление\сохранение данных формы. */
   #handleFormSubmit = async (evt) => {
-    // TODO, остановился здесь на решении проблем обновления \ добавления
     evt.preventDefault();
-    try {
-      const currentState = this.#pointFormComponent._state;
-      const formData = new FormData(evt.target);
-      const newData = PointFormPresenter.#preparePointData({
-        formData,
-        tripModel: this.#tripModel,
-        currentState,
-        pointData: this.#pointData,
-      });
-      if (this.#isEditForm) {
-        // TODO, исправить на
-        // await this.#tripModel.updatePoint(currentState.listPoint.id, newData);
-        this.#tripModel.updatePoint(currentState.listPoint.id, newData);
-        this.destroy();
-      } else {
-        // Обязательно удаляем поле id для отправки на сервер, который сам присвоит это поле.
-        delete newData.id;
-        await this.#tripModel.addPoint(newData);
-        this.#newPointPresenter.destroy();
-      }
-      this.#pageMainPresenter.renderEventsSection();
-    } catch (err) {
-      // prettier-ignore
-      throw new Error(err);
+    const currentState = this.#pointFormComponent._state;
+    const formData = new FormData(evt.target);
+    const newData = PointFormPresenter.#preparePointData({
+      formData,
+      tripModel: this.#tripModel,
+      currentState,
+      pointData: this.#pointData,
+    });
+    if (this.#isEditForm) {
+      await this.#tripModel.updatePoint(currentState.listPoint.id, newData);
+      this.destroy();
+    } else {
+      // Обязательно удаляем поле id для отправки на сервер, который сам присвоит это поле.
+      delete newData.id;
+      await this.#tripModel.addPoint(newData);
+      this.#newPointPresenter.destroy();
     }
+    this.#pageMainPresenter.renderEventsSection();
   };
 
   /** Подготавливает данные для обновления на клиенте. */
@@ -189,15 +181,12 @@ export default class PointFormPresenter {
     currentState,
     pointData = null,
   }) {
-    // TODO, возвомжно это попробовать зарефакторить, убарть formData, и кинуть в utils, как унивирсальный адаптер для сервера.
     const pointId = pointData === null ? '' : pointData.id;
     const isFavorite = pointData === null ? false : pointData.isFavorite;
 
     // Получаем тип для массива предложений.
     const type = currentState.listPoint.type;
-
-    const basePrice = formData.get('event-price');
-
+    const basePrice = Number(formData.get('event-price'));
     const newDestinationName = formData.get('event-destination');
     let newDestinationId = '';
     for (const [id, { name }] of tripModel.destinationsById) {

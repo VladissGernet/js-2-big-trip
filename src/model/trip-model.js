@@ -42,7 +42,7 @@ export default class TripModel extends Observable {
   }
 
   /** Обновляет данные выбранной точки */
-  updatePoint(pointId, updatedData) {
+  async updatePoint(pointId, updatedData) {
     try {
       const index = this.listPoints.findIndex((item) => item.id === pointId);
       if (index === -1) {
@@ -52,12 +52,13 @@ export default class TripModel extends Observable {
 
       let selectedPoint = this.listPoints[index];
       selectedPoint = { ...this.listPoints[index], ...updatedData };
+      await this.#pointsApiService.updatePoint(selectedPoint);
+      // Обновление в локальных данных.
       this.listPoints[index] = selectedPoint;
-      this.#pointsApiService.updatePoint(selectedPoint);
       return selectedPoint;
     } catch (error) {
       // prettier-ignore
-      throw new Error('Can\'t update unexisting point');
+      throw new Error('Can\'t update current point');
       // TODO добавить шейк при block request
     }
   }

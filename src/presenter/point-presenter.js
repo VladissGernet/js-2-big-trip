@@ -157,10 +157,10 @@ export default class PointPresenter {
   };
 
   /** Обработчик добавления в избранное. */
-  #favoriteClickHandler = () => {
+  #favoriteClickHandler = async () => {
     const selectedPointId = this.#pointData.id;
     // Обновляем данные.
-    this.#pointData = this.#tripModel.updatePoint(selectedPointId, {
+    this.#pointData = await this.#tripModel.updatePoint(selectedPointId, {
       isFavorite: !this.#pointData.isFavorite,
     });
 
