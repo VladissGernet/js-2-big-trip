@@ -41,6 +41,12 @@ export default class TripModel extends Observable {
     return this.#points;
   }
 
+  /*
+  TODO
+    При попытке пользователя сохранить новую точку маршрута или удалить/изменить существующую реализуйте следующие шаги:
+    Включите блокировку интерфейса и показ лоадера.
+  */
+
   /** Обновляет данные выбранной точки */
   async updatePoint(pointId, updatedData) {
     try {
@@ -121,7 +127,7 @@ export default class TripModel extends Observable {
       this.#defaultTypeOffer = defaultTypeOffer;
       this.#cities = cities;
 
-      // Уведомляю для реднера tripInfo в Header.
+      // Уведомляю для рендера tripInfo в Header.
       this._notify(LoadStatus.RESOLVED);
     } catch (err) {
       this._notify(LoadStatus.REJECTED);

@@ -106,6 +106,16 @@ const SORT_TYPES = {
   'sort-price': 'price',
 };
 
+const DELETE_BUTTON_STATUS = {
+  DELETE: 'Delete',
+  DELETING: 'Deleting...',
+};
+
+const SAVE_BUTTON_STATUS = {
+  SAVE: 'Save',
+  SAVING: 'Saving...',
+};
+
 const TRIP_INFO_TITLE = {
   TWO_POINTS: 2,
   MAX_VISIBLE_POINTS: 3, // сколько точек показывать явно
@@ -134,4 +144,6 @@ export {
   Method,
   DEFAULT_BASE_PRICE,
   DEFAULT_MINUTES_ADDITION,
+  DELETE_BUTTON_STATUS,
+  SAVE_BUTTON_STATUS,
 };

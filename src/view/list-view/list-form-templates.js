@@ -32,14 +32,14 @@ const createOffersTemplate = (offers) => {
 };
 
 const createPicturesListTemplate = (dataList) => {
-  const creatPictrueTemplate = ({ src, description }) => html`
+  const createPictureTemplate = ({ src, description }) => html`
     <img class="event__photo" src=${src} alt=${description} />
   `;
 
   return dataList?.length > 0
     ? html`<div class="event__photos-container">
         <div class="event__photos-tape">
-          ${dataList.map(creatPictrueTemplate).join('')}
+          ${dataList.map(createPictureTemplate).join('')}
         </div>
       </div>`
     : '';

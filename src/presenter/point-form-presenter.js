@@ -100,22 +100,30 @@ export default class PointFormPresenter {
 
   /** Удаляет существующую точку из списка. */
   async #removePoint() {
-    // Удаление из данных модели.
-    const selectedPointId = this.#pointData.id;
-    await this.#tripModel.removePoint(selectedPointId);
+    try {
+      this.#pointFormComponent.disableDeleteBtn();
 
-    // Очищаем презентер точки.
-    this.#pointPresenter.clear();
-    this.#pointPresenter = null;
+      const selectedPointId = this.#pointData.id;
+      await this.#tripModel.removePoint(selectedPointId);
 
-    // Удаление из коллекции Map презентеров точек.
-    this.#removeFromPointPresenters(selectedPointId);
+      // Очищаем презентер точки.
+      this.#pointPresenter.clear();
+      this.#pointPresenter = null;
 
-    this.destroy();
+      // Удаление из коллекции Map презентеров точек.
+      this.#removeFromPointPresenters(selectedPointId);
 
-    // Если эта была последняя точка, то показываем сообщение о пустом списке.
-    if (!this.#tripModel.listPoints.length) {
-      this.#pageMainPresenter.renderEventsSection({ isNoPoints: true });
+      this.destroy();
+
+      // Если эта была последняя точка, то показываем сообщение о пустом списке.
+      if (!this.#tripModel.listPoints.length) {
+        this.#pageMainPresenter.renderEventsSection({ isNoPoints: true });
+      }
+    } catch (error) {
+      this.#pointFormComponent.enableDeleteBtn();
+      this.#pointFormComponent.shake();
+      // prettier-ignore
+      throw new Error('Can\'t remove point');
     }
   }
 
@@ -154,24 +162,32 @@ export default class PointFormPresenter {
   /** Добавление\сохранение данных формы. */
   #handleFormSubmit = async (evt) => {
     evt.preventDefault();
-    const currentState = this.#pointFormComponent._state;
-    const formData = new FormData(evt.target);
-    const newData = PointFormPresenter.#preparePointData({
-      formData,
-      tripModel: this.#tripModel,
-      currentState,
-      pointData: this.#pointData,
-    });
-    if (this.#isEditForm) {
-      await this.#tripModel.updatePoint(currentState.listPoint.id, newData);
-      this.destroy();
-    } else {
-      // Обязательно удаляем поле id для отправки на сервер, который сам присвоит это поле.
-      delete newData.id;
-      await this.#tripModel.addPoint(newData);
-      this.#newPointPresenter.destroy();
+    try {
+      this.#pointFormComponent.disableSaveBtn();
+      const currentState = this.#pointFormComponent._state;
+      const formData = new FormData(evt.target);
+      const newData = PointFormPresenter.#preparePointData({
+        formData,
+        tripModel: this.#tripModel,
+        currentState,
+        pointData: this.#pointData,
+      });
+      if (this.#isEditForm) {
+        await this.#tripModel.updatePoint(currentState.listPoint.id, newData);
+        this.destroy();
+      } else {
+        // Обязательно удаляем поле id для отправки на сервер, который сам присвоит это поле.
+        delete newData.id;
+        await this.#tripModel.addPoint(newData);
+        this.#newPointPresenter.destroy();
+      }
+      this.#pageMainPresenter.renderEventsSection();
+    } catch (error) {
+      this.#pointFormComponent.enableSaveBtn();
+      this.#pointFormComponent.shake();
+      // prettier-ignore
+      throw new Error('Can\'t update or add point');
     }
-    this.#pageMainPresenter.renderEventsSection();
   };
 
   /** Подготавливает данные для обновления на клиенте. */

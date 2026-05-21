@@ -4,6 +4,8 @@ import {
   InputDateStage,
   DateStateStage,
   DEFAULT_MINUTES_ADDITION,
+  DELETE_BUTTON_STATUS,
+  SAVE_BUTTON_STATUS,
 } from '../../const.js';
 import {
   transformOfferTypeData,
@@ -73,6 +75,30 @@ export default class ListPointFormView extends AbstractStatefulView {
     this.#destroyInputDate();
   }
 
+  disableDeleteBtn() {
+    const btn = this.element.querySelector('.event__reset-btn');
+    btn.disabled = true;
+    btn.textContent = DELETE_BUTTON_STATUS.DELETING;
+  }
+
+  enableDeleteBtn() {
+    const btn = this.element.querySelector('.event__reset-btn');
+    btn.disabled = false;
+    btn.textContent = DELETE_BUTTON_STATUS.DELETE;
+  }
+
+  disableSaveBtn() {
+    const btn = this.element.querySelector('.event__save-btn');
+    btn.disabled = true;
+    btn.textContent = SAVE_BUTTON_STATUS.SAVING;
+  }
+
+  enableSaveBtn() {
+    const btn = this.element.querySelector('.event__save-btn');
+    btn.disabled = false;
+    btn.textContent = SAVE_BUTTON_STATUS.SAVE;
+  }
+
   #addEventListeners() {
     this.element
       .querySelector('.event__reset-btn')
@@ -129,7 +155,7 @@ export default class ListPointFormView extends AbstractStatefulView {
     }
   }
 
-  /** Иницилизирует выбор дат "from" и "to" библиотекой flatpickr. */
+  /** Инициализирует выбор дат "from" и "to" библиотекой flatpickr. */
   #initInputDate() {
     this.#inputDateFrom = ListPointFormView.#createFlatpickr(
       this.element.querySelector('#event-start-time-1'),
@@ -151,7 +177,7 @@ export default class ListPointFormView extends AbstractStatefulView {
     // После создания ставим обработчики на input.
     this.#inputDateFrom.set(
       'onChange',
-      ListPointFormView.#createInputDateChangeHadler(
+      ListPointFormView.#createInputDateChangeHandler(
         this,
         InputDateStage.MINDATE,
         this.#inputDateTo,
@@ -159,7 +185,7 @@ export default class ListPointFormView extends AbstractStatefulView {
     );
     this.#inputDateTo.set(
       'onChange',
-      ListPointFormView.#createInputDateChangeHadler(
+      ListPointFormView.#createInputDateChangeHandler(
         this,
         InputDateStage.MAXDATE,
         this.#inputDateFrom,
@@ -229,7 +255,7 @@ export default class ListPointFormView extends AbstractStatefulView {
       formatDate: (date) => dayjs(date).format('DD/MM/YY HH:mm'),
       ...dateLimit,
 
-      // Для исправления отсутсвия id на элементах ввода от flatpickr.
+      // Для исправления отсутствия id на элементах ввода от flatpickr.
       // Chrome DevTools Lighthouse оставляет предупреждения.
       onReady(_, __, instance) {
         const monthSelect = instance.calendarContainer.querySelector(
@@ -254,7 +280,7 @@ export default class ListPointFormView extends AbstractStatefulView {
     });
   }
 
-  static #createInputDateChangeHadler(context, dateStage, otherInput) {
+  static #createInputDateChangeHandler(context, dateStage, otherInput) {
     return (selectedDates) => {
       const ISODate = selectedDates[0].toISOString();
 
