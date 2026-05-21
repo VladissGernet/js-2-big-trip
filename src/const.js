@@ -2,6 +2,8 @@ import dayjs from 'dayjs';
 
 // Константы
 
+const DEFAULT_BASE_PRICE = 1;
+const DEFAULT_MINUTES_ADDITION = 1;
 const DEFAULT_SORT = 'date';
 // Server
 const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
@@ -130,4 +132,6 @@ export {
   PointsURLs,
   LoadStatus,
   Method,
+  DEFAULT_BASE_PRICE,
+  DEFAULT_MINUTES_ADDITION,
 };

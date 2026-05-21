@@ -1,6 +1,10 @@
 import { createListPointFormTemplate } from './list-form-templates.js';
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
-import { InputDateStage, DateStateStage } from '../../const.js';
+import {
+  InputDateStage,
+  DateStateStage,
+  DEFAULT_MINUTES_ADDITION,
+} from '../../const.js';
 import {
   transformOfferTypeData,
   findDestinationByName,
@@ -133,10 +137,15 @@ export default class ListPointFormView extends AbstractStatefulView {
       { maxDate: this._state.listPoint.dateTo },
     );
 
+    // Для валидации добавляем разницу в минуту.
+    const minDateTo = new Date(this._state.listPoint.dateFrom);
+    minDateTo.setMinutes(minDateTo.getMinutes() + DEFAULT_MINUTES_ADDITION);
+    minDateTo.toISOString();
+
     this.#inputDateTo = ListPointFormView.#createFlatpickr(
       this.element.querySelector('#event-end-time-1'),
       this._state.listPoint.dateTo,
-      { minDate: this._state.listPoint.dateFrom },
+      { minDate: minDateTo },
     );
 
     // После создания ставим обработчики на input.

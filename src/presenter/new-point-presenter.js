@@ -1,7 +1,12 @@
 import { BtnView } from '../view/index.js';
 import PointFormPresenter from './point-form-presenter.js';
 import { render, RenderPosition } from '../framework/render.js';
-import { FilterType, FilterStatus } from '../const.js';
+import {
+  FilterType,
+  FilterStatus,
+  DEFAULT_BASE_PRICE,
+  DEFAULT_MINUTES_ADDITION,
+} from '../const.js';
 
 /** Конфиг презентера обработчика событий на кнопку создания нового события.
  * @typedef {Object} PresenterConfig - Параметры для создания обработчика
@@ -117,11 +122,15 @@ export default class NewPointPresenter {
 
   /** Данные создания формы по умолчанию */
   static #createDefaultPointDataConfig(type, destinationId) {
-    const today = new Date().toISOString();
+    // Дефолтные значения с разницой 1 минута (для серверной валидации).
+    const dateFrom = new Date();
+    const dateTo = new Date();
+    dateTo.setMinutes(dateTo.getMinutes() + DEFAULT_MINUTES_ADDITION);
+
     return {
-      basePrice: '',
-      dateFrom: today,
-      dateTo: today,
+      basePrice: DEFAULT_BASE_PRICE,
+      dateFrom: dateFrom.toISOString(),
+      dateTo: dateTo.toISOString(),
       destination: destinationId,
       isFavorite: false,
       offers: new Map(),
