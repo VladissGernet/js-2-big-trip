@@ -76,8 +76,6 @@ export default class TripModel extends Observable {
   }
 
   async addPoint(data) {
-    // TODO, исправить
-    // валидацию цены додумать (узнать в ТЗ).
     try {
       const result = await this.#pointsApiService.addPoint(data);
       data.id = result.id;

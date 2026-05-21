@@ -181,9 +181,11 @@ const createListPointFormTemplate = ({
             <input
               class="event__input event__input--price"
               id="event-price-1"
-              type="text"
+              type="number"
               name="event-price"
-              value="${listPoint?.basePrice || ''}"
+              value="${listPoint?.basePrice || 1}"
+              min="1"
+              step="1"
             />
           </div>
 
