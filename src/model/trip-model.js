@@ -88,7 +88,7 @@ export default class TripModel extends Observable {
       this.#notifyAboutListChange();
     } catch (err) {
       // prettier-ignore
-      throw new Error('Can\'t add unexisting point');
+      throw new Error('Can\'t add current point, validation error');
     }
   }
 

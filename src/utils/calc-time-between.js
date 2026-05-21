@@ -4,11 +4,9 @@ import duration from 'dayjs/plugin/duration.js';
 dayjs.extend(duration);
 
 const calcTimeBetween = (from, to) => {
-  const start = dayjs(from);
-  const end = dayjs(to);
+  const diffMinutes = Math.ceil(to.diff(from, 'minutes', true));
 
-  const diffMillis = end.diff(start, 'minutes');
-  const durationBetween = dayjs.duration(diffMillis, 'minutes');
+  const durationBetween = dayjs.duration(diffMinutes, 'minutes');
 
   let result = `${durationBetween.format('mm')}M`;
 
