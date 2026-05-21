@@ -40,6 +40,7 @@ const PointsURLs = {
 const Method = {
   PUT: 'PUT',
   POST: 'POST',
+  DELETE: 'DELETE',
 };
 
 const LoadStatus = {

@@ -56,20 +56,23 @@ export default class TripModel extends Observable {
       // Обновление в локальных данных.
       this.listPoints[index] = selectedPoint;
       return selectedPoint;
-    } catch (error) {
+    } catch (err) {
       // prettier-ignore
       throw new Error('Can\'t update current point');
       // TODO добавить шейк при block request
     }
   }
 
-  removePoint(pointId) {
-    // TODO
-    // Сначала нужно сделать изменение на сервере, дождаться с помощью try/catch и await и только потом
-    // отобразить на клиенте в разметке, иначе отработать ошибку в catch.
-    const index = this.listPoints.findIndex((item) => item.id === pointId);
-    this.listPoints.splice(index, 1);
-    this.#notifyAboutListChange();
+  async removePoint(pointId) {
+    try {
+      await this.#pointsApiService.removePoint(pointId);
+      const index = this.listPoints.findIndex((item) => item.id === pointId);
+      this.listPoints.splice(index, 1);
+      this.#notifyAboutListChange();
+    } catch (err) {
+      // prettier-ignore
+      throw new Error('Can\'t remove current point');
+    }
   }
 
   async addPoint(data) {

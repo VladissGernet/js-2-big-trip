@@ -22,15 +22,12 @@ export default class PointsApiService extends ApiService {
   }
 
   async updatePoint(updatedData) {
-    const response = await this._load({
+    await this._load({
       url: `points/${updatedData.id}`,
       method: Method.PUT,
       body: JSON.stringify(adaptDataToServer(updatedData)),
       headers: new Headers({ 'Content-Type': 'application/json' }),
     });
-
-    const parsedResponse = await ApiService.parseResponse(response);
-    return parsedResponse;
   }
 
   async addPoint(data) {
@@ -41,7 +38,13 @@ export default class PointsApiService extends ApiService {
       headers: new Headers({ 'Content-Type': 'application/json' }),
     });
     const parseResponse = await ApiService.parseResponse(response);
-
     return parseResponse;
+  }
+
+  async removePoint(pointId) {
+    await this._load({
+      url: `points/${pointId}`,
+      method: Method.DELETE,
+    });
   }
 }

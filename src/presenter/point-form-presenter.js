@@ -99,14 +99,14 @@ export default class PointFormPresenter {
   };
 
   /** Удаляет существующую точку из списка. */
-  #removePoint() {
+  async #removePoint() {
+    // Удаление из данных модели.
+    const selectedPointId = this.#pointData.id;
+    await this.#tripModel.removePoint(selectedPointId);
+
     // Очищаем презентер точки.
     this.#pointPresenter.clear();
     this.#pointPresenter = null;
-
-    // Удаление из данных модели.
-    const selectedPointId = this.#pointData.id;
-    this.#tripModel.removePoint(selectedPointId);
 
     // Удаление из коллекции Map презентеров точек.
     this.#removeFromPointPresenters(selectedPointId);
@@ -120,9 +120,9 @@ export default class PointFormPresenter {
   }
 
   /** Удаление текущей Point из списка или закрытие создания новой точки. */
-  #handleResetClick = () => {
+  #handleResetClick = async () => {
     if (this.#isEditForm) {
-      this.#removePoint();
+      await this.#removePoint();
       return;
     }
     this.#newPointPresenter.destroy();
