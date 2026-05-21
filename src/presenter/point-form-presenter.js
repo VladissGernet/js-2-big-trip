@@ -171,16 +171,14 @@ export default class PointFormPresenter {
         this.destroy();
       } else {
         // Обязательно удаляем поле id для отправки на сервер, который сам присвоит это поле.
-
         delete newData.id;
-
-        // await this.#tripModel.addPoint(newData);
-        // this.#newPointPresenter.destroy();
+        await this.#tripModel.addPoint(newData);
+        this.#newPointPresenter.destroy();
       }
       this.#pageMainPresenter.renderEventsSection();
     } catch (err) {
       // prettier-ignore
-      throw new Error('Can\'t submit current request');
+      throw new Error(err);
     }
   };
 

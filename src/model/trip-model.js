@@ -1,5 +1,5 @@
 import Observable from '../framework/observable.js';
-import { replaceSnakeToCamel } from '../utils/replace-snake-to-camel.js';
+import { replaceSnakeToCamel, transformListPoint } from '../utils/index.js';
 import { SORT_CONFIG, DEFAULT_SORT, LoadStatus } from '../const.js';
 
 export default class TripModel extends Observable {
@@ -77,13 +77,14 @@ export default class TripModel extends Observable {
     // валидацию цены додумать (узнать в ТЗ).
     try {
       const result = await this.#pointsApiService.addPoint(data);
+      data.id = result.id;
 
-      this.listPoints.push(result);
+      this.listPoints.push(data);
       this.listPoints.sort(SORT_CONFIG[DEFAULT_SORT]);
       this.#notifyAboutListChange();
     } catch (err) {
       // prettier-ignore
-      throw new Error('Can\'t update unexisting point');
+      throw new Error('Can\'t add unexisting point');
     }
   }
 
@@ -127,12 +128,8 @@ export default class TripModel extends Observable {
   }
 
   static #adaptToClient(serverPoints, serverDestinations, serverOffers) {
-    const listPoints = replaceSnakeToCamel(serverPoints).map(
-      ({ offers, ...rest }) => ({
-        ...rest,
-        offers: new Set(offers),
-      }),
-    );
+    const listPoints =
+      replaceSnakeToCamel(serverPoints).map(transformListPoint);
     const cities = serverDestinations.map((dest) => dest.name);
     const destinationsById = serverDestinations.reduce(
       (result, { id, ...rest }) => result.set(id, rest),

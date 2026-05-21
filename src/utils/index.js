@@ -6,4 +6,5 @@ export { findDestinationByIndex } from './find-destination-by-index.js';
 export { findDestinationByName } from './find-destination-by-name.js';
 export { html } from './html.js';
 export { replaceSnakeToCamel } from './replace-snake-to-camel.js';
+export { transformListPoint } from './transform-list-point.js';
 export { transformOfferTypeData } from './transform-offer-type-data.js';
