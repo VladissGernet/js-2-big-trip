@@ -100,6 +100,11 @@ const DateStateStage = {
   maxDate: 'dateTo',
 };
 
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
+
 const SORT_TYPES = {
   'sort-day': 'date',
   'sort-time': 'time',
@@ -146,4 +151,5 @@ export {
   DEFAULT_MINUTES_ADDITION,
   DELETE_BUTTON_STATUS,
   SAVE_BUTTON_STATUS,
+  TimeLimit,
 };
