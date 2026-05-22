@@ -62,6 +62,7 @@ export default class TripModel extends Observable {
       await this.#pointsApiService.updatePoint(selectedPoint);
       // Обновление в локальных данных.
       this.listPoints[index] = selectedPoint;
+      this._notify();
       this.#uiBlocker.unblock();
       return selectedPoint;
     } catch (err) {
@@ -77,7 +78,7 @@ export default class TripModel extends Observable {
       await this.#pointsApiService.removePoint(pointId);
       const index = this.listPoints.findIndex((item) => item.id === pointId);
       this.listPoints.splice(index, 1);
-      this.#notifyAboutListChange();
+      this._notify();
       this.#uiBlocker.unblock();
     } catch (err) {
       this.#uiBlocker.unblock();
@@ -94,17 +95,13 @@ export default class TripModel extends Observable {
 
       this.listPoints.push(data);
       this.listPoints.sort(SORT_CONFIG[DEFAULT_SORT]);
-      this.#notifyAboutListChange();
+      this._notify();
       this.#uiBlocker.unblock();
     } catch (err) {
       this.#uiBlocker.unblock();
       // prettier-ignore
       throw new Error('Can\'t add current point, validation error');
     }
-  }
-
-  #notifyAboutListChange() {
-    this._notify();
   }
 
   async init() {

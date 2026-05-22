@@ -61,6 +61,11 @@ export default class FilterPresenter {
 
   #renderFilterComponent() {
     this.#filterComponent = new FilterView(this.#filterChangeHandler);
+    this.#filterComponent.controls.forEach((control) => {
+      // TODO, остановился здесь на прокидывании enabledFilterTypes из filter model
+      console.log(control.value);
+    });
+
     render(this.#filterComponent, this.#container);
   }
 

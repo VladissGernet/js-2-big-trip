@@ -178,7 +178,7 @@ export default class PageMainPresenter {
   #handleLoadStatus = (status) => {
     if (status === LoadStatus.RESOLVED) {
       this.renderEventsSection();
-    } else {
+    } else if (status === LoadStatus.REJECTED) {
       this.renderEventsSection({ loadStatus: LoadStatus.REJECTED });
     }
     this.#tripModel.removeObserver(this.#handleLoadStatus);
