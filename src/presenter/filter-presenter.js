@@ -75,11 +75,16 @@ export default class FilterPresenter {
     this.#filterModel.setFilter(FilterStatus.CHANGE, evt.target.value);
   };
 
-  #handleFilterStatus = (status) => {
+  #handleFilterStatus = (status, isEmptyList) => {
     if (status !== FILTER_UPDATE_STATUS) {
       return;
     }
-    this.#enable();
+
+    if (isEmptyList) {
+      this.disable();
+    } else {
+      this.#enable();
+    }
   };
 
   /**

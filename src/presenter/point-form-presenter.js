@@ -131,6 +131,10 @@ export default class PointFormPresenter {
   #handleResetClick = async () => {
     if (this.#isEditForm) {
       await this.#removePoint();
+      // Обязательно для показа сообщения, в случае пустого списка.
+      this.#pageMainPresenter.renderEventsSection({
+        filter: this.#filterModel.filter,
+      });
       return;
     }
     this.#newPointPresenter.destroy();
@@ -181,7 +185,10 @@ export default class PointFormPresenter {
         await this.#tripModel.addPoint(newData);
         this.#newPointPresenter.destroy();
       }
-      this.#pageMainPresenter.renderEventsSection();
+      // Обязательно для показа сообщения, в случае пустого списка.
+      this.#pageMainPresenter.renderEventsSection({
+        filter: this.#filterModel.filter,
+      });
     } catch (error) {
       this.#pointFormComponent.enableSaveBtn();
       this.#pointFormComponent.shake();

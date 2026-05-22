@@ -67,7 +67,12 @@ export default class PageMainPresenter {
     this.#listPresenter.init(sortedList);
   }
 
-  renderEventsSection({ filter = null, isNoPoints = false, loadStatus } = {}) {
+  renderEventsSection({
+    filter = null,
+    isNoPoints = false,
+    loadStatus,
+    isNewPoint,
+  } = {}) {
     // Если фильтр отсутствует, то рендер по-умолчанию с фильтром 'everything' согласно ТЗ.
     if (this.#tripEventsView) {
       this.#destroyTripEventsView();
@@ -77,10 +82,16 @@ export default class PageMainPresenter {
     render(this.#tripEventsView, this.#mainView.container);
 
     // Рендер без сообщения о пустом списке при пустом списке для создания новой первой точки и без
-    // сортировки.
+    // сортировки, либо рендер при создании новой точки при пустом списке.
     if (isNoPoints) {
       this.#listPresenter = new ListPresenter(this.#createCommonConfig());
       this.#listPresenter.init();
+
+      if (!isNewPoint) {
+        this.#renderEmptyMessage();
+        return;
+      }
+
       return;
     }
 

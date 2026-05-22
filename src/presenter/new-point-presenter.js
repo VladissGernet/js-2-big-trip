@@ -111,6 +111,7 @@ export default class NewPointPresenter {
     this.#pageMainPresenter.renderEventsSection({
       filter: FilterType.EVERYTHING,
       isNoPoints: true,
+      isNewPoint: true,
     });
 
     render(

@@ -35,11 +35,14 @@ export default class FilterModel extends Observable {
     }
 
     const points = this.#tripModel.listPoints;
-    if (!points.length) {
+    const isEmptyList = !points.length;
+
+    if (isEmptyList) {
       this.enabledFilterTypes[FilterType.EVERYTHING] = false;
       this.enabledFilterTypes[FilterType.FUTURE] = false;
       this.enabledFilterTypes[FilterType.PRESENT] = false;
       this.enabledFilterTypes[FilterType.PAST] = false;
+      this._notify(FILTER_UPDATE_STATUS, isEmptyList);
       return;
     }
     this.enabledFilterTypes[FilterType.EVERYTHING] = true;
@@ -57,6 +60,6 @@ export default class FilterModel extends Observable {
     this.enabledFilterTypes[FilterType.PRESENT] = presentStatus;
     this.enabledFilterTypes[FilterType.PAST] = pastStatus;
 
-    this._notify(FILTER_UPDATE_STATUS);
+    this._notify(FILTER_UPDATE_STATUS, isEmptyList);
   };
 }
