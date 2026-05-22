@@ -102,7 +102,6 @@ export default class PointFormPresenter {
   async #removePoint() {
     try {
       this.#pointFormComponent.disableDeleteBtn();
-
       const selectedPointId = this.#pointData.id;
       await this.#tripModel.removePoint(selectedPointId);
 
@@ -119,7 +118,7 @@ export default class PointFormPresenter {
       if (!this.#tripModel.listPoints.length) {
         this.#pageMainPresenter.renderEventsSection({ isNoPoints: true });
       }
-    } catch (error) {
+    } catch (err) {
       this.#pointFormComponent.enableDeleteBtn();
       this.#pointFormComponent.shake();
       // prettier-ignore

@@ -1,7 +1,12 @@
 import { TripInfoView } from '../view/index.js';
-import { TRIP_INFO_TITLE } from '../const.js';
+import { TRIP_INFO_TITLE, LoadStatus } from '../const.js';
 import dayjs from 'dayjs';
-import { remove, replace } from '../framework/render.js';
+import {
+  render,
+  remove,
+  replace,
+  RenderPosition,
+} from '../framework/render.js';
 import { calcFinalPrice, findDestinationByIndex } from '../utils/index.js';
 import {
   FIRST_DESTINATION,
@@ -10,34 +15,52 @@ import {
 } from '../const.js';
 
 export default class TripInfoPresenter {
-  #tripModel;
+  #tripModel = null;
   #tripInfoView = null;
+  #mainElement = null;
 
   /** @param {TripModel} tripModel Модель данных поездки */
-  constructor(tripModel) {
+  constructor(tripModel, mainElement) {
     this.#tripModel = tripModel;
+    this.#mainElement = mainElement;
 
     this.#tripModel.addObserver(this.#handleListStatus);
   }
 
   init() {
+    if (!this.#tripModel.listPoints?.length) {
+      return;
+    }
     const tripInfoData = TripInfoPresenter.#createTripInfoData(this.#tripModel);
     this.#tripInfoView = new TripInfoView(tripInfoData);
-    return this.#tripInfoView;
+    render(this.#tripInfoView, this.#mainElement, RenderPosition.AFTERBEGIN);
   }
 
   /** Обновляет информацию о всем маршруте. */
-  #handleListStatus = () => {
-    if (!this.#tripModel.listPoints.length) {
-      remove(this.#tripInfoView);
+  #handleListStatus = (status) => {
+    // Убираю повторный рендер после загрузки данных,
+    if (status === LoadStatus.RESOLVED) {
       return;
     }
 
-    const tripInfoData = TripInfoPresenter.#createTripInfoData(this.#tripModel);
-    const newTripInfoView = new TripInfoView(tripInfoData);
-    replace(newTripInfoView, this.#tripInfoView);
+    const isPoints = !!this.#tripModel.length;
+
+    // Обновление существующего tripInfoView.
+    if (this.#tripInfoView && isPoints) {
+      const tripInfoData = TripInfoPresenter.#createTripInfoData(
+        this.#tripModel,
+      );
+      const newTripInfoView = new TripInfoView(tripInfoData);
+      replace(newTripInfoView, this.#tripInfoView);
+      remove(this.#tripInfoView);
+      this.#tripInfoView = newTripInfoView;
+      return;
+    }
+
+    // Создания первой точки в пустом списке.
     remove(this.#tripInfoView);
-    this.#tripInfoView = newTripInfoView;
+    this.#tripInfoView = null;
+    this.init();
   };
 
   static #createTripInfoData(tripModel) {
@@ -62,20 +85,20 @@ export default class TripInfoPresenter {
     const isSameMonthDay = firstPointDateFrom.date() === lastPointDateTo.date();
 
     if (isSameYear && isSameMonth && isSameMonthDay) {
-      // Если маршут умещается в один день.
+      // Если маршрут умещается в один день.
       tripInfoData.datesResult = lastPointDateTo.format('D MMM');
     } else if (isSameYear && isSameMonth) {
-      // Если маршурт умещается в один месяц.
+      // Если маршрут умещается в один месяц.
       tripInfoData.datesResult = `${firstPointDateFrom.format('D')}&nbsp;—&nbsp;${lastPointDateTo.format('D MMM')}`;
     } else if (isSameYear) {
-      // Если маршурт умещается в один год.
+      // Если маршрут умещается в один год.
       tripInfoData.datesResult = `${firstPointDateFrom.format('D MMM')}&nbsp;—&nbsp;${lastPointDateTo.format('D MMM')}`;
     } else {
       // Иначе полная дата
       tripInfoData.datesResult = `${firstPointDateFrom.format('D MMM YYYY')}&nbsp;—&nbsp;${lastPointDateTo.format('D MMM YYYY')}`;
     }
 
-    // Подсчет конечной цены на основе выбранных офферов.
+    // Подсчет конечной цены на основе выбранных offers.
     tripInfoData.totalPrice = tripModel.listPoints.reduce(
       (acc, { basePrice, offers, type }) =>
         acc +
@@ -90,7 +113,7 @@ export default class TripInfoPresenter {
         tripModel.destinationsById,
       ).name;
 
-    // Формирование загаловка
+    // Формирование заголовка
     tripInfoData.title = getDestination(FIRST_DESTINATION);
     if (listLength > MAX_VISIBLE_POINTS) {
       // Если точек больше 3-х.

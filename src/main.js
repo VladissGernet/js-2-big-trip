@@ -4,8 +4,6 @@ import FilterModel from './model/filter-model.js';
 import PointsApiService from './points-api-service.js';
 import { END_POINT, AUTHORIZATION } from './const.js';
 
-// TODO
-// Если при пустом списке добавить точку, то подсчета маршурта не будет.
 const tripModel = new TripModel({
   pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION),
 });

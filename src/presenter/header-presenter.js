@@ -3,7 +3,7 @@ import NewPointPresenter from './new-point-presenter.js';
 import FilterPresenter from './filter-presenter.js';
 import TripInfoPresenter from './trip-info-presenter.js';
 import { LoadStatus } from '../const.js';
-import { render, RenderPosition } from '../framework/render.js';
+import { render } from '../framework/render.js';
 
 /** Конфиг принимаемый презентором
  * @typedef {Object} PresenterConfig
@@ -56,18 +56,6 @@ export default class HeaderPresenter {
     this.#renderNewEventBtn();
   }
 
-  /** Активирует рендер информации о маршруте. */
-  #renderTripInfo() {
-    if (this.#tripModel.listPoints?.length) {
-      const tripInfoPresenter = new TripInfoPresenter(this.#tripModel);
-      render(
-        tripInfoPresenter.init(),
-        this.#tripMain.element,
-        RenderPosition.AFTERBEGIN,
-      );
-    }
-  }
-
   #renderTripControls() {
     render(this.#tripControls, this.#tripMain.element);
     this.#renderFilters();
@@ -97,8 +85,12 @@ export default class HeaderPresenter {
 
   #handleLoadStatus = (status) => {
     if (status === LoadStatus.RESOLVED) {
-      // После успешной закгрузки данных с сервера.
-      this.#renderTripInfo();
+      // После успешной загрузки данных с сервера.
+      const tripInfoPresenter = new TripInfoPresenter(
+        this.#tripModel,
+        this.#tripMain.element,
+      );
+      tripInfoPresenter.init();
       this.newPointPresenter.enable();
     }
     this.#tripModel.removeObserver(this.#handleLoadStatus);

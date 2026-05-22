@@ -54,7 +54,7 @@ export default class TripModel extends Observable {
       const index = this.listPoints.findIndex((item) => item.id === pointId);
       if (index === -1) {
         // prettier-ignore
-        throw new Error('Can\'t update unexisting point');
+        throw new Error('Can\'t update nonexistent point');
       }
 
       let selectedPoint = this.listPoints[index];
