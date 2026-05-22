@@ -25,15 +25,13 @@ dayjs.extend(isSameOrAfter);
 /** Презентер фильтров. Отвечает за рендеринг компонента фильтров. */
 export default class FilterPresenter {
   #container = null;
-  #filters = null;
   #filterModel = null;
 
   #filterComponent = null;
 
   /** @param {PresenterConfig} config */
-  constructor({ container, filters, filterModel }) {
+  constructor({ container, filterModel }) {
     this.#container = container;
-    this.#filters = filters;
     this.#filterModel = filterModel;
   }
 
@@ -48,6 +46,7 @@ export default class FilterPresenter {
   }
 
   enable() {
+    // TODO, продумать логику обновления в случае пустого элемента, кроме everything
     this.#filterComponent.controls.forEach(
       (control) => (control.disabled = false),
     );
@@ -55,19 +54,13 @@ export default class FilterPresenter {
 
   resetView() {
     const prevComponent = this.#filterComponent;
-    this.#filterComponent = new FilterView(
-      this.#filters,
-      this.#filterChangeHandler,
-    );
+    this.#filterComponent = new FilterView(this.#filterChangeHandler);
     replace(this.#filterComponent, prevComponent);
     remove(prevComponent);
   }
 
   #renderFilterComponent() {
-    this.#filterComponent = new FilterView(
-      this.#filters,
-      this.#filterChangeHandler,
-    );
+    this.#filterComponent = new FilterView(this.#filterChangeHandler);
     render(this.#filterComponent, this.#container);
   }
 

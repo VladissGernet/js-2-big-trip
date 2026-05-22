@@ -2,7 +2,7 @@ import { HeaderView, TripMainView, TripControlsView } from '../view/index.js';
 import NewPointPresenter from './new-point-presenter.js';
 import FilterPresenter from './filter-presenter.js';
 import TripInfoPresenter from './trip-info-presenter.js';
-import { TRIP_FILTERS, LoadStatus } from '../const.js';
+import { LoadStatus } from '../const.js';
 import { render, RenderPosition } from '../framework/render.js';
 
 /** Конфиг принимаемый презентором
@@ -76,7 +76,6 @@ export default class HeaderPresenter {
   #renderFilters() {
     this.#filterPresenter = new FilterPresenter({
       container: this.#tripControls.filtersContainer,
-      filters: TRIP_FILTERS,
       filterModel: this.#filterModel,
     });
     this.#filterPresenter.init();

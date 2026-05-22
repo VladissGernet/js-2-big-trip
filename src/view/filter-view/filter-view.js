@@ -1,10 +1,10 @@
 import { html } from '../../utils/index.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 import createFilterItemTemplate from './filter-item.js';
+import { TRIP_FILTERS } from '../../const.js';
 
-function createFilterTemplate(filters) {
-  const formItems = filters.map(createFilterItemTemplate);
-
+function createFilterTemplate() {
+  const formItems = TRIP_FILTERS.map(createFilterItemTemplate);
   return html`
     <form class="trip-filters" action="#" method="get">
       ${formItems.join('')}
@@ -14,19 +14,16 @@ function createFilterTemplate(filters) {
 }
 
 export default class FilterView extends AbstractView {
-  #filters = null;
   #handleFilterChange = null;
 
-  constructor(filters, onFilterChange) {
+  constructor(onFilterChange) {
     super();
-    this.#filters = filters;
     this.#handleFilterChange = onFilterChange;
-
     this.element.addEventListener('change', this.#handleFilterChange);
   }
 
   get template() {
-    return createFilterTemplate(this.#filters);
+    return createFilterTemplate();
   }
 
   get controls() {

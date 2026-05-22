@@ -4,6 +4,8 @@ import FilterModel from './model/filter-model.js';
 import PointsApiService from './points-api-service.js';
 import { END_POINT, AUTHORIZATION } from './const.js';
 
+// TODO
+// При удалении всех точек определенного фильра, то emptymessage не появляется
 const tripModel = new TripModel({
   pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION),
 });
