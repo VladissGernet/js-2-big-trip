@@ -3,8 +3,6 @@ import Observable from '../framework/observable.js';
 import { replaceSnakeToCamel, transformListPoint } from '../utils/index.js';
 import { SORT_CONFIG, DEFAULT_SORT, LoadStatus, TimeLimit } from '../const.js';
 
-// TODO, остановился на добавлении uiBlocker, нужно перемести в presenter.
-
 export default class TripModel extends Observable {
   #pointsApiService = null;
 
