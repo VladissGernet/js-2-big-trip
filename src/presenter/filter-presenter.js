@@ -1,6 +1,6 @@
 import { FilterView } from '../view/index.js';
-import { render, replace, remove } from '../framework/render.js';
-import { FilterType, FilterStatus } from '../const.js';
+import { render } from '../framework/render.js';
+import { FilterType, FilterStatus, FILTER_UPDATE_STATUS } from '../const.js';
 
 // Библиотека dayjs.
 import dayjs from 'dayjs';
@@ -12,7 +12,7 @@ dayjs.extend(isSameOrAfter);
 /** Конфигурация презентера списка.
  * @typedef {Object} PresenterConfig
  * @property {HTMLElement} container - Контейнер для рендера
- * @property {FilterData} filters - Данные отрисовки филтров
+ * @property {FilterData} filters - Данные отрисовки фильтров
  * @property {Class} filterModel - Модель фильтра с наблюдателем.
  */
 
@@ -33,6 +33,8 @@ export default class FilterPresenter {
   constructor({ container, filterModel }) {
     this.#container = container;
     this.#filterModel = filterModel;
+
+    this.#filterModel.addObserver(this.#handleFilterStatus);
   }
 
   init() {
@@ -45,37 +47,44 @@ export default class FilterPresenter {
     );
   }
 
-  enable() {
-    // TODO, продумать логику обновления в случае пустого элемента, кроме everything
-    this.#filterComponent.controls.forEach(
-      (control) => (control.disabled = false),
-    );
+  setDefaultControl() {
+    for (const control of this.#filterComponent.controls) {
+      if (control.value === FilterType.EVERYTHING) {
+        control.checked = true;
+        return;
+      }
+    }
   }
 
-  resetView() {
-    const prevComponent = this.#filterComponent;
-    this.#filterComponent = new FilterView(this.#filterChangeHandler);
-    replace(this.#filterComponent, prevComponent);
-    remove(prevComponent);
+  /** Активирует только необходимые controls. */
+  #enable() {
+    for (const control of this.#filterComponent.controls) {
+      if (!this.#filterModel.enabledFilterTypes[FilterType.EVERYTHING]) {
+        return;
+      }
+      control.disabled = !this.#filterModel.enabledFilterTypes[control.value];
+    }
   }
 
   #renderFilterComponent() {
     this.#filterComponent = new FilterView(this.#filterChangeHandler);
-    this.#filterComponent.controls.forEach((control) => {
-      // TODO, остановился здесь на прокидывании enabledFilterTypes из filter model
-      console.log(control.value);
-    });
-
     render(this.#filterComponent, this.#container);
   }
 
   #filterChangeHandler = (evt) => {
-    this.#filterModel.setFilter(evt.target.value, FilterStatus.CHANGE);
+    this.#filterModel.setFilter(FilterStatus.CHANGE, evt.target.value);
+  };
+
+  #handleFilterStatus = (status) => {
+    if (status !== FILTER_UPDATE_STATUS) {
+      return;
+    }
+    this.#enable();
   };
 
   /**
    * Возвращает отфильтрованный список согласно типу фильтра.
-   * Публичный для переиспользования.
+   * Публичный для повторного использования.
    */
   static filterList(filterType, points) {
     /** Сегодняшняя дата */

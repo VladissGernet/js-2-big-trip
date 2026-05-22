@@ -100,7 +100,6 @@ export default class HeaderPresenter {
       // После успешной закгрузки данных с сервера.
       this.#renderTripInfo();
       this.newPointPresenter.enable();
-      this.#filterPresenter.enable();
     }
     this.#tripModel.removeObserver(this.#handleLoadStatus);
   };

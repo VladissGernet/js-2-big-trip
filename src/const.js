@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 
 // Константы
 
+const FILTER_UPDATE_STATUS = 'update';
 const DEFAULT_BASE_PRICE = 1;
 const DEFAULT_MINUTES_ADDITION = 1;
 const DEFAULT_SORT = 'date';
@@ -152,4 +153,5 @@ export {
   DELETE_BUTTON_STATUS,
   SAVE_BUTTON_STATUS,
   TimeLimit,
+  FILTER_UPDATE_STATUS,
 };

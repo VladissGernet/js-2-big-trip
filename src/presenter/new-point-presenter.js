@@ -69,10 +69,10 @@ export default class NewPointPresenter {
 
   #handleBtnClick = () => {
     // Сбрасываем значение в модели.
-    this.#filterModel.setFilter(FilterType.EVERYTHING, FilterStatus.DEFAULT);
+    this.#filterModel.setFilter(FilterStatus.DEFAULT, FilterType.EVERYTHING);
 
-    // Сбрасываем фильтр в header (Перерисовываем DOM элемент).
-    this.#filterPresenter.resetView();
+    // Сбрасываем фильтр в header на изначальный.
+    this.#filterPresenter.setDefaultControl();
 
     // Первый попавшийся город.
     const defaultCity = this.#tripModel.destinationsById.keys().next().value;
@@ -122,7 +122,7 @@ export default class NewPointPresenter {
 
   /** Данные создания формы по умолчанию */
   static #createDefaultPointDataConfig(type, destinationId) {
-    // Дефолтные значения с разницой 1 минута (для серверной валидации).
+    // Дефолтные значения с разницей 1 минута (для серверной валидации).
     const dateFrom = new Date();
     const dateTo = new Date();
     dateTo.setMinutes(dateTo.getMinutes() + DEFAULT_MINUTES_ADDITION);
