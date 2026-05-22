@@ -1,4 +1,4 @@
-import uiBlocker from '../framework/ui-blocker/ui-blocker.js';
+import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import Observable from '../framework/observable.js';
 import { replaceSnakeToCamel, transformListPoint } from '../utils/index.js';
 import { SORT_CONFIG, DEFAULT_SORT, LoadStatus, TimeLimit } from '../const.js';
@@ -13,6 +13,11 @@ export default class TripModel extends Observable {
   #offers = null;
   #defaultTypeOffer = null;
   #cities = null;
+
+  #uiBlocker = new UiBlocker({
+    lowerLimit: TimeLimit.LOWER_LIMIT,
+    upperLimit: TimeLimit.UPPER_LIMIT,
+  });
 
   constructor({ pointsApiService }) {
     super();
@@ -44,14 +49,9 @@ export default class TripModel extends Observable {
     return this.#points;
   }
 
-  /*
-  TODO
-    При попытке пользователя сохранить новую точку маршрута или удалить/изменить существующую реализуйте следующие шаги:
-    Включите блокировку интерфейса и показ лоадера.
-  */
-
   /** Обновляет данные выбранной точки */
   async updatePoint(pointId, updatedData) {
+    this.#uiBlocker.block();
     try {
       const index = this.listPoints.findIndex((item) => item.id === pointId);
       if (index === -1) {
@@ -64,26 +64,32 @@ export default class TripModel extends Observable {
       await this.#pointsApiService.updatePoint(selectedPoint);
       // Обновление в локальных данных.
       this.listPoints[index] = selectedPoint;
+      this.#uiBlocker.unblock();
       return selectedPoint;
     } catch (err) {
+      this.#uiBlocker.unblock();
       // prettier-ignore
       throw new Error('Can\'t update current point');
     }
   }
 
   async removePoint(pointId) {
+    this.#uiBlocker.block();
     try {
       await this.#pointsApiService.removePoint(pointId);
       const index = this.listPoints.findIndex((item) => item.id === pointId);
       this.listPoints.splice(index, 1);
       this.#notifyAboutListChange();
+      this.#uiBlocker.unblock();
     } catch (err) {
+      this.#uiBlocker.unblock();
       // prettier-ignore
       throw new Error('Can\'t remove current point');
     }
   }
 
   async addPoint(data) {
+    this.#uiBlocker.block();
     try {
       const result = await this.#pointsApiService.addPoint(data);
       data.id = result.id;
@@ -91,7 +97,9 @@ export default class TripModel extends Observable {
       this.listPoints.push(data);
       this.listPoints.sort(SORT_CONFIG[DEFAULT_SORT]);
       this.#notifyAboutListChange();
+      this.#uiBlocker.unblock();
     } catch (err) {
+      this.#uiBlocker.unblock();
       // prettier-ignore
       throw new Error('Can\'t add current point, validation error');
     }
@@ -102,6 +110,7 @@ export default class TripModel extends Observable {
   }
 
   async init() {
+    this.#uiBlocker.block();
     try {
       // Получаю данные с сервера
       const [serverPoints, serverDestinations, serverOffers] =
@@ -134,6 +143,7 @@ export default class TripModel extends Observable {
     } catch (err) {
       this._notify(LoadStatus.REJECTED);
     }
+    this.#uiBlocker.unblock();
   }
 
   static #adaptToClient(serverPoints, serverDestinations, serverOffers) {
