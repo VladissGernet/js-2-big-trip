@@ -68,7 +68,6 @@ export default class TripModel extends Observable {
     } catch (err) {
       // prettier-ignore
       throw new Error('Can\'t update current point');
-      // TODO добавить шейк при block request
     }
   }
 

@@ -159,16 +159,22 @@ export default class PointPresenter {
   /** Обработчик добавления в избранное. */
   #favoriteClickHandler = async () => {
     const selectedPointId = this.#pointData.id;
-    // Обновляем данные.
-    this.#pointData = await this.#tripModel.updatePoint(selectedPointId, {
-      isFavorite: !this.#pointData.isFavorite,
-    });
+    try {
+      // Обновляем данные.
+      this.#pointData = await this.#tripModel.updatePoint(selectedPointId, {
+        isFavorite: !this.#pointData.isFavorite,
+      });
 
-    // Перерисовываем точку на странице.
-    const prevPointComponent = this.#pointComponent;
-    this.#createPointComponent();
-    replace(this.#pointComponent, prevPointComponent);
-    // Удаляем старую точку с обработчиками.
-    remove(prevPointComponent);
+      // Перерисовываем точку на странице.
+      const prevPointComponent = this.#pointComponent;
+      this.#createPointComponent();
+      replace(this.#pointComponent, prevPointComponent);
+      // Удаляем старую точку с обработчиками.
+      remove(prevPointComponent);
+    } catch (error) {
+      this.#pointComponent.shake();
+      // prettier-ignore
+      throw new Error('Can\'t update current point');
+    }
   };
 }
