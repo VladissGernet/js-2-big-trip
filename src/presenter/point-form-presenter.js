@@ -146,6 +146,8 @@ export default class PointFormPresenter {
 
   /** Закрытие по нажатию ESC. */
   #handleEscKeyDown = (evt) => {
+    // TODO, остановился здесь на решении проблеммы закрытия формы на ESC, так как
+    // не редерится сообщение о пустом списке. Разобраться с флагоами isNoPoints.
     if (evt.key !== 'Escape') {
       return;
     }
