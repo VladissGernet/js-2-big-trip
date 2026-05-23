@@ -85,7 +85,7 @@ const NO_EVENTS_MESSAGES = {
 
 const SORT_CONFIG = {
   price: ({ basePrice: priceA }, { basePrice: priceB }) => priceB - priceA,
-  date: (a, b) => dayjs(a.dateTo).diff(dayjs(b.dateTo)),
+  date: (a, b) => dayjs(a.dateFrom).diff(dayjs(b.dateFrom)),
   time: (
     { dateFrom: dateFromA, dateTo: dateToA },
     { dateFrom: dateFromB, dateTo: dateToB },
