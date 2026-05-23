@@ -35,6 +35,7 @@ function createPointTemplate({
 }) {
   // Оставляю тут, Prettier неверно отспупы ставит.
   const isFavoriteItem = isFavorite ? 'event__favorite-btn--active' : '';
+  const encodedType = he.decode(type);
 
   return html`
     <li class="trip-events__item">
@@ -47,11 +48,12 @@ function createPointTemplate({
             class="event__type-icon"
             width="42"
             height="42"
-            src="img/icons/${he.encode(type)}.png"
+            src="img/icons/${encodedType}.png"
             alt="Event type icon"
           />
         </div>
         <h3 class="event__title">
+          ${encodedType}
           ${destinationData ? he.encode(destinationData?.name) : ''}
         </h3>
         <div class="event__schedule">
