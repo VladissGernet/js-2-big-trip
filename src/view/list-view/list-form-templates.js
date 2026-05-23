@@ -95,6 +95,18 @@ const createTypeList = (offers, iconType) => {
   `;
 };
 
+const createEventDetails = (offerData, destinationData) => {
+  const offersTemplate = createOffersTemplate(offerData);
+  const destinationTemplate = createDestinationSectionTemplate(destinationData);
+  const isEmptyDetails = !offersTemplate && !destinationTemplate;
+
+  return isEmptyDetails
+    ? ''
+    : html`<section class="event__details">
+        ${offersTemplate}${destinationTemplate}
+      </section>`;
+};
+
 const createDatalist = (cities) =>
   html`<datalist id="destination-list-1">
     ${cities.map((city) => `<option value="${city}"></option>`).join('')}
@@ -197,10 +209,7 @@ const createListPointFormTemplate = ({
           </button>
           ${closeEditFormBtn(isEditForm)}
         </header>
-        <section class="event__details">
-          ${createOffersTemplate(offerData)}
-          ${createDestinationSectionTemplate(destinationData)}
-        </section>
+        ${createEventDetails(offerData, destinationData)}
       </form>
     </li>
   `;
