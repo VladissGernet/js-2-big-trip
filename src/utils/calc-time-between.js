@@ -18,6 +18,7 @@ const calcTimeBetween = (from, to) => {
     result = `${durationBetween.format('DD')}D ${result}`;
   }
 
+  // TODO, исправить подсчет. Убрать года и просто считать дни.
   if (durationBetween.years() >= 1) {
     result = `${durationBetween.format('YY')}Y ${result}`;
   }

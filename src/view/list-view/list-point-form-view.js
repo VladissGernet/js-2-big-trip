@@ -157,8 +157,10 @@ export default class ListPointFormView extends AbstractStatefulView {
 
   /** Инициализирует выбор дат "from" и "to" библиотекой flatpickr. */
   #initInputDate() {
+    // TODO, flatpicker создает таккие элементы, которые создержут строку "event-start-time", напрмиер
+    // id="flatpickr-month-event-start-time", нужно заменить на другое.
     this.#inputDateFrom = ListPointFormView.#createFlatpickr(
-      this.element.querySelector('#event-start-time-1'),
+      this.element.querySelector('#event-start-time'),
       this._state.listPoint.dateFrom,
       { maxDate: this._state.listPoint.dateTo },
     );

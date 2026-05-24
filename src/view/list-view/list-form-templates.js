@@ -66,6 +66,8 @@ const closeEditFormBtn = (isEditForm) =>
 
 const createTypeList = (offers, iconType) => {
   let listItems = '';
+  // TODO, первый элементом должен быть почему-то flight. "expected 'taxi' to include 'flight'"
+  // в ".event__type-output"
 
   for (const offerName of offers) {
     listItems += html`<div class="event__type-item">
@@ -168,10 +170,10 @@ const createListPointFormTemplate = ({
           </div>
 
           <div class="event__field-group event__field-group--time">
-            <label class="visually-hidden" for="event-start-time-1">From</label>
+            <label class="visually-hidden" for="event-start-time">From</label>
             <input
               class="event__input event__input--time"
-              id="event-start-time-1"
+              id="event-start-time"
               type="text"
               name="event-start-time"
             />
