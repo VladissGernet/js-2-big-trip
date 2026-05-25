@@ -110,7 +110,7 @@ export default class NewPointPresenter {
     // Если общий список точек пустой, рендер только формы создания новой точки.
     this.#pageMainPresenter.renderEventsSection({
       filter: FilterType.EVERYTHING,
-      isNoPoints: true,
+      isRenderNewPointForm: true,
       isNewPoint: true,
     });
 

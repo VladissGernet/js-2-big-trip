@@ -116,7 +116,10 @@ export default class PointFormPresenter {
 
       // Если эта была последняя точка, то показываем сообщение о пустом списке.
       if (!this.#tripModel.listPoints.length) {
-        this.#pageMainPresenter.renderEventsSection({ isNoPoints: true });
+        // TODO, возможно это неверное поведение и if (!isNewPoint) { тут как раз лишний
+        this.#pageMainPresenter.renderEventsSection({
+          isRenderNewPointForm: true,
+        });
       }
     } catch (err) {
       this.#pointFormComponent.enableDeleteBtn();
@@ -147,7 +150,7 @@ export default class PointFormPresenter {
   /** Закрытие по нажатию ESC. */
   #handleEscKeyDown = (evt) => {
     // TODO, остановился здесь на решении проблеммы закрытия формы на ESC, так как
-    // не редерится сообщение о пустом списке. Разобраться с флагоами isNoPoints.
+    // не редерится сообщение о пустом списке. Разобраться с флагоами isRenderNewPointForm.
     if (evt.key !== 'Escape') {
       return;
     }

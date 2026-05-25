@@ -69,7 +69,7 @@ export default class PageMainPresenter {
 
   renderEventsSection({
     filter = null,
-    isNoPoints = false,
+    isRenderNewPointForm = false,
     loadStatus,
     isNewPoint,
   } = {}) {
@@ -114,12 +114,12 @@ export default class PageMainPresenter {
     this.#renderTripEvents();
     // Рендер без сообщения о пустом списке при пустом списке для создания новой первой точки и без
     // сортировки, либо рендер при создании новой точки при пустом списке.
-    if (isNoPoints) {
-      // TODO, еще раз разобраться зачем этот isNoPoints нужен и назвать его понятнее.
+    if (isRenderNewPointForm) {
       this.#listPresenter = new ListPresenter(this.#createCommonConfig());
       this.#listPresenter.init();
 
       if (!isNewPoint) {
+        // TODO, всяпомнить для чего этот флаг
         this.#renderEmptyMessage();
         return;
       }
