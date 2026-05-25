@@ -100,11 +100,11 @@ export default class PointFormPresenter {
 
   /** Удаляет существующую точку из списка. */
   async #removePoint() {
-    try {
-      this.#pointFormComponent.disableDeleteBtn();
-      const selectedPointId = this.#pointData.id;
-      await this.#tripModel.removePoint(selectedPointId);
+    this.#pointFormComponent.disableDeleteBtn();
+    const selectedPointId = this.#pointData.id;
 
+    try {
+      await this.#tripModel.removePoint(selectedPointId);
       // Очищаем презентер точки.
       this.#pointPresenter.clear();
       this.#pointPresenter = null;
@@ -167,16 +167,17 @@ export default class PointFormPresenter {
   /** Добавление\сохранение данных формы. */
   #handleFormSubmit = async (evt) => {
     evt.preventDefault();
+    this.#pointFormComponent.disableSaveBtn();
+    const currentState = this.#pointFormComponent._state;
+    const formData = new FormData(evt.target);
+    const newData = PointFormPresenter.#preparePointData({
+      formData,
+      tripModel: this.#tripModel,
+      currentState,
+      pointData: this.#pointData,
+    });
+
     try {
-      this.#pointFormComponent.disableSaveBtn();
-      const currentState = this.#pointFormComponent._state;
-      const formData = new FormData(evt.target);
-      const newData = PointFormPresenter.#preparePointData({
-        formData,
-        tripModel: this.#tripModel,
-        currentState,
-        pointData: this.#pointData,
-      });
       if (this.#isEditForm) {
         await this.#tripModel.updatePoint(currentState.listPoint.id, newData);
         this.destroy();
@@ -186,7 +187,6 @@ export default class PointFormPresenter {
         await this.#tripModel.addPoint(newData);
         this.#newPointPresenter.destroy();
       }
-      // Обязательно для показа сообщения, в случае пустого списка.
       this.#pageMainPresenter.renderEventsSection({
         filter: this.#filterModel.filter,
       });

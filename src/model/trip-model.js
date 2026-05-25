@@ -50,15 +50,15 @@ export default class TripModel extends Observable {
   /** Обновляет данные выбранной точки */
   async updatePoint(pointId, updatedData) {
     this.#uiBlocker.block();
-    try {
-      const index = this.listPoints.findIndex((item) => item.id === pointId);
-      if (index === -1) {
-        // prettier-ignore
-        throw new Error('Can\'t update nonexistent point');
-      }
+    const index = this.listPoints.findIndex((item) => item.id === pointId);
+    if (index === -1) {
+      // prettier-ignore
+      throw new Error('Can\'t update nonexistent point');
+    }
+    let selectedPoint = this.listPoints[index];
+    selectedPoint = { ...this.listPoints[index], ...updatedData };
 
-      let selectedPoint = this.listPoints[index];
-      selectedPoint = { ...this.listPoints[index], ...updatedData };
+    try {
       await this.#pointsApiService.updatePoint(selectedPoint);
       // Обновление в локальных данных.
       this.listPoints[index] = selectedPoint;
