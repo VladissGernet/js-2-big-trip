@@ -73,17 +73,35 @@ export default class PageMainPresenter {
     loadStatus,
     isNewPoint,
   } = {}) {
-    // Если фильтр отсутствует, то рендер по-умолчанию с фильтром 'everything' согласно ТЗ.
-    if (this.#tripEventsView) {
-      this.#destroyTripEventsView();
-    }
+    /*
+      Сценарии отработки:
+        1.Первая загрузка данных;
+          1.1. Успешная загрузка данных:
+            1.1.2. Если есть 1 или более точек.
+            1.1.3. Точек нет, пустое сообщение.
+          1.2. Ошибка при загрузке данных.
 
-    this.#tripEventsView = new TripEventsView();
-    render(this.#tripEventsView, this.#mainView.container);
+        2. Удаление точки.
+          2.1. Удаление очередной точки, т.е. не последней в списке.
+          2.2. Удаление последней в списке точки. Рендер сообщения об отсутствии точек, отключение
+          соответствующего фильтра.
+        3. Редактирование существующей точки.
+        4. Добавление точки.
+          4.1. Создание формы.
+            4.1.1. При наличии точек.
+            4.1.2. При отсутствии точек.
+              4.1.2.1. Отмена создания формы при отсутствии точек (ошибка из автотеста на ESC.).
+        5. Смена фильтра "Everything", "Future", "Present", "Past".
+        6. Смена сортировки "Day", "Time", "Price" при разных фильтрах
+    */
+    this.#renderTripEvents();
+
+    // TODO, при удалении последней точки например на фильтре FUTURE, emptymessage стандартный, а не соответсвующий.
 
     // Рендер без сообщения о пустом списке при пустом списке для создания новой первой точки и без
     // сортировки, либо рендер при создании новой точки при пустом списке.
     if (isNoPoints) {
+      // Срабатывает на 2.2.
       this.#listPresenter = new ListPresenter(this.#createCommonConfig());
       this.#listPresenter.init();
 
@@ -100,15 +118,23 @@ export default class PageMainPresenter {
     // При переключении фильтра соответствующий рендер.
     if (filter) {
       /** Список, с которым будет фильтрация. */
-      const filterStatus = this.#filterModel.filter;
-      const filteredPoints = FilterPresenter.filterList(filterStatus, points);
-
-      this.#renderEventsOrEmpty(filteredPoints, { filterStatus });
+      const filteredPoints = FilterPresenter.filterList(filter, points);
+      this.#renderEventsOrEmpty(filteredPoints, { filter });
       return;
     }
 
     // Рендер по умолчанию.
     this.#renderEventsOrEmpty(points, { loadStatus });
+  }
+
+  #renderTripEvents() {
+    // Если фильтр отсутствует, то рендер по-умолчанию с фильтром 'everything' согласно ТЗ.
+    if (this.#tripEventsView) {
+      this.#destroyTripEventsView();
+    }
+
+    this.#tripEventsView = new TripEventsView();
+    render(this.#tripEventsView, this.#mainView.container);
   }
 
   #renderEventsOrEmpty(points, options = {}) {
@@ -160,18 +186,17 @@ export default class PageMainPresenter {
     };
   }
 
-  #renderEmptyMessage({ filterStatus, loadStatus } = {}) {
-    const result = this.#getEmptyMessage({ filterStatus, loadStatus });
+  #renderEmptyMessage({ filter, loadStatus } = {}) {
+    const result = this.#getEmptyMessage({ filter, loadStatus });
     this.#tripEventsEmptyView = new TripEventsEmptyView(result);
     render(this.#tripEventsEmptyView, this.#tripEventsView.element);
   }
 
-  #getEmptyMessage({ filterStatus = null, loadStatus = null }) {
+  #getEmptyMessage({ filter = null, loadStatus = null }) {
     if (loadStatus) {
       return NO_EVENTS_MESSAGES[loadStatus];
     }
-
-    return NO_EVENTS_MESSAGES[filterStatus || FilterType.EVERYTHING];
+    return NO_EVENTS_MESSAGES[filter || FilterType.EVERYTHING];
   }
 
   #handleFilterStatus = (filter, status) => {
