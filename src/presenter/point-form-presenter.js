@@ -116,7 +116,6 @@ export default class PointFormPresenter {
 
       // Если эта была последняя точка, то показываем сообщение о пустом списке.
       if (!this.#tripModel.listPoints.length) {
-        // TODO, возможно это неверное поведение и if (!isNewPoint) { тут как раз лишний
         this.#pageMainPresenter.renderEventsSection({
           isRenderNewPointForm: true,
         });

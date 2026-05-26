@@ -67,13 +67,7 @@ export default class NewPointPresenter {
     this.enable();
   }
 
-  #handleBtnClick = () => {
-    // Сбрасываем значение в модели.
-    this.#filterModel.setFilter(FilterStatus.DEFAULT, FilterType.EVERYTHING);
-
-    // Сбрасываем фильтр в header на изначальный.
-    this.#filterPresenter.setDefaultControl();
-
+  #createPointFormPresenter() {
     // Первый попавшийся город.
     const defaultCity = this.#tripModel.destinationsById.keys().next().value;
 
@@ -89,17 +83,18 @@ export default class NewPointPresenter {
       newPointPresenter: this,
       pageMainPresenter: this.#pageMainPresenter,
     });
+  }
 
-    // Отключаем возможность нажатия кнопки.
-    this.disable();
-
+  #renderForm() {
     // Добавляю форму создания новой точки в самый верх списка.
     if (this.#tripModel.listPoints.length) {
-      // Перерисовываем список, чтобы выполнить условие ТЗ (сделать переключение на вкладку
-      // фильтрова "everything").
-      this.#pageMainPresenter.renderEventsSection({
-        filter: FilterType.EVERYTHING,
-      });
+      // Есть фильтр по умолчанию, не заново редер не нужен.
+      if (this.#filterModel.filter !== FilterType.EVERYTHING) {
+        this.#pageMainPresenter.renderEventsSection({
+          filter: FilterType.EVERYTHING,
+        });
+      }
+
       render(
         this.#pointFormPresenter.component,
         this.#pageMainPresenter.listView.element,
@@ -107,18 +102,32 @@ export default class NewPointPresenter {
       );
       return;
     }
+
     // Если общий список точек пустой, рендер только формы создания новой точки.
     this.#pageMainPresenter.renderEventsSection({
       filter: FilterType.EVERYTHING,
       isRenderNewPointForm: true,
-      isNewPoint: true,
     });
-
     render(
       this.#pointFormPresenter.component,
       this.#pageMainPresenter.listView.element,
       RenderPosition.AFTERBEGIN,
     );
+  }
+
+  #handleBtnClick = () => {
+    // Сбрасываем значение в модели.
+    this.#filterModel.setFilter(FilterStatus.DEFAULT, FilterType.EVERYTHING);
+
+    // Сбрасываем фильтр в header на изначальный.
+    this.#filterPresenter.setDefaultControl();
+
+    this.#createPointFormPresenter();
+
+    // Отключаем возможность нажатия кнопки.
+    this.disable();
+
+    this.#renderForm();
   };
 
   /** Данные создания формы по умолчанию */

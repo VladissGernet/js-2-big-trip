@@ -71,7 +71,6 @@ export default class PageMainPresenter {
     filter = null,
     isRenderNewPointForm = false,
     loadStatus,
-    isNewPoint,
   } = {}) {
     /*
       Сценарии отработки:
@@ -112,18 +111,10 @@ export default class PageMainPresenter {
           6.6. Обычное переключение сортировки.
     */
     this.#renderTripEvents();
-    // Рендер без сообщения о пустом списке при пустом списке для создания новой первой точки и без
-    // сортировки, либо рендер при создании новой точки при пустом списке.
+    // Рендер при создании новой точки.
     if (isRenderNewPointForm) {
       this.#listPresenter = new ListPresenter(this.#createCommonConfig());
       this.#listPresenter.init();
-
-      if (!isNewPoint) {
-        // TODO, всяпомнить для чего этот флаг
-        this.#renderEmptyMessage();
-        return;
-      }
-
       return;
     }
 
