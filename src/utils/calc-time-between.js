@@ -5,25 +5,24 @@ dayjs.extend(duration);
 
 const calcTimeBetween = (from, to) => {
   const diffMinutes = Math.ceil(to.diff(from, 'minutes', true));
-
   const durationBetween = dayjs.duration(diffMinutes, 'minutes');
 
-  let result = `${durationBetween.format('mm')}M`;
+  // Всё время в днях (включая то, что было бы годами)
+  const totalDays = Math.floor(durationBetween.asDays());
+  const remainingHours = durationBetween.hours();
+  const remainingMinutes = durationBetween.minutes();
 
-  if (durationBetween.hours() >= 0) {
-    result = `${durationBetween.format('HH')}H ${result}`;
+  let result = `${remainingMinutes}M`;
+
+  if (remainingHours > 0 || totalDays > 0) {
+    result = `${remainingHours}H ${result}`;
   }
 
-  if (durationBetween.days() >= 1) {
-    result = `${durationBetween.format('DD')}D ${result}`;
+  if (totalDays > 0) {
+    result = `${totalDays}D ${result}`;
   }
 
-  // TODO, исправить подсчет. Убрать года и просто считать дни.
-  if (durationBetween.years() >= 1) {
-    result = `${durationBetween.format('YY')}Y ${result}`;
-  }
-
-  return result;
+  return result.trim();
 };
 
 export { calcTimeBetween };
