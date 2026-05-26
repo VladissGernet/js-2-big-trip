@@ -32,6 +32,10 @@ export default class SortPresenter {
     this.#newPointPresenter = newPointPresenter;
   }
 
+  get isDefaultValue() {
+    return this.#component.isDefaultValue;
+  }
+
   init() {
     this.#renderSort();
   }

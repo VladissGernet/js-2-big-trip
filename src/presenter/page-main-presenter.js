@@ -46,6 +46,10 @@ export default class PageMainPresenter {
     this.#tripModel.addObserver(this.#handleLoadStatus);
   }
 
+  get isDefaultSortValue() {
+    return this.#sortPresenter.isDefaultValue;
+  }
+
   get tripEventsView() {
     return this.#tripEventsView;
   }

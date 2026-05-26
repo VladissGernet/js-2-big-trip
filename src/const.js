@@ -6,6 +6,8 @@ const FILTER_UPDATE_STATUS = 'update';
 const DEFAULT_BASE_PRICE = 1;
 const DEFAULT_MINUTES_ADDITION = 1;
 const DEFAULT_SORT = 'date';
+const DEFAULT_SORT_VALUE = 'sort-day';
+
 // Server
 const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
 const AUTHORIZATION = 'Basic dXNlckBwYXNzd29yZA==';
@@ -160,4 +162,5 @@ export {
   TimeLimit,
   FILTER_UPDATE_STATUS,
   FlatpickerId,
+  DEFAULT_SORT_VALUE,
 };

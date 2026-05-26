@@ -1,7 +1,7 @@
 import { html } from '../../utils/index.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 import createSortItemTemplate from './sort-item.js';
-import { TRIP_SORTS } from '../../const.js';
+import { TRIP_SORTS, DEFAULT_SORT_VALUE } from '../../const.js';
 
 function createSortTemplate(sorts) {
   const formItems = sorts.map(createSortItemTemplate);
@@ -27,6 +27,12 @@ export default class SortView extends AbstractView {
 
   get template() {
     return createSortTemplate(TRIP_SORTS);
+  }
+
+  get isDefaultValue() {
+    // prettier-ignore
+    const checkedValue = this.element.querySelector('input[name=\'trip-filter\']:checked').value;
+    return checkedValue === DEFAULT_SORT_VALUE;
   }
 
   removeElement() {

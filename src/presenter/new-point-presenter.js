@@ -88,8 +88,12 @@ export default class NewPointPresenter {
   #renderForm() {
     // Добавляю форму создания новой точки в самый верх списка.
     if (this.#tripModel.listPoints.length) {
-      // Есть фильтр по умолчанию, не заново рендер не нужен.
-      if (this.#filterModel.filter !== FilterType.EVERYTHING) {
+      const isNotDefaultSortValue = !this.#pageMainPresenter.isDefaultSortValue;
+      // Есть фильтр или сортировка по умолчанию, то заново рендер не нужен.
+      if (
+        this.#filterModel.filter !== FilterType.EVERYTHING ||
+        isNotDefaultSortValue
+      ) {
         this.#pageMainPresenter.renderEventsSection({
           filter: FilterType.EVERYTHING,
         });
