@@ -128,8 +128,20 @@ export default class PointFormPresenter {
     }
   }
 
+  /** Закрывает форму, не удаляет точку. */
+  #closeForm() {
+    this.#newPointPresenter.destroy();
+    this.#newPointPresenter = null;
+
+    const isListPointsEmpty = Boolean(!this.#tripModel.listPoints.length);
+    if (isListPointsEmpty) {
+      this.#pageMainPresenter.renderEventsSection();
+    }
+  }
+
   /** Удаление текущей Point из списка или закрытие создания новой точки. */
   #handleResetClick = async () => {
+    // Если форма редактирования, то удаление точки.
     if (this.#isEditForm) {
       await this.#removePoint();
       // Обязательно для показа сообщения, в случае пустого списка.
@@ -138,7 +150,9 @@ export default class PointFormPresenter {
       });
       return;
     }
-    this.#newPointPresenter.destroy();
+
+    // Закрытие формы при отмене создания новой точки.
+    this.#closeForm();
   };
 
   #handlePriceChange = (evt) => {
@@ -148,22 +162,19 @@ export default class PointFormPresenter {
 
   /** Закрытие по нажатию ESC. */
   #handleEscKeyDown = (evt) => {
-    // TODO, остановился здесь на решении проблеммы закрытия формы на ESC, так как
-    // не редерится сообщение о пустом списке. Разобраться с флагоами isRenderNewPointForm.
     if (evt.key !== 'Escape') {
       return;
     }
     evt.preventDefault();
-    document.removeEventListener('keydown', this.#handleEscKeyDown);
 
-    if (!this.#isEditForm) {
-      // Если форма создания новой точки, то просто все убираем.
-      this.#newPointPresenter.destroy();
+    // Если форма редактирования точки, то закрываем форму.
+    if (this.#isEditForm) {
+      this.#pointPresenter.fullReplaceFormToPoint();
       return;
     }
 
-    // Если форма редактирования точки, то закрываем форму.
-    this.#pointPresenter.fullReplaceFormToPoint();
+    // Если форма создания точки.
+    this.#closeForm();
   };
 
   /** Добавление\сохранение данных формы. */
