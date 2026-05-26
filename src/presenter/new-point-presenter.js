@@ -4,7 +4,6 @@ import { render, RenderPosition } from '../framework/render.js';
 import {
   FilterType,
   FilterStatus,
-  DEFAULT_BASE_PRICE,
   DEFAULT_MINUTES_ADDITION,
 } from '../const.js';
 
@@ -138,7 +137,6 @@ export default class NewPointPresenter {
     dateTo.setMinutes(dateTo.getMinutes() + DEFAULT_MINUTES_ADDITION);
 
     return {
-      basePrice: DEFAULT_BASE_PRICE,
       dateFrom: dateFrom.toISOString(),
       dateTo: dateTo.toISOString(),
       isFavorite: false,

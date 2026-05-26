@@ -81,7 +81,6 @@ export default class PointFormPresenter {
         onRolldownClick: this.#handleRolldownClick,
         onFormSubmit: this.#handleFormSubmit,
         onResetClick: this.#handleResetClick,
-        onPriceChange: this.#handlePriceChange,
       });
     }
     return this.#pointFormComponent;
@@ -153,11 +152,6 @@ export default class PointFormPresenter {
 
     // Закрытие формы при отмене создания новой точки.
     this.#closeForm();
-  };
-
-  #handlePriceChange = (evt) => {
-    const value = evt.target.value.replace(/[\D]/g, '');
-    evt.target.value = value;
   };
 
   /** Закрытие по нажатию ESC. */

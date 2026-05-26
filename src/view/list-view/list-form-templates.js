@@ -158,8 +158,6 @@ const createListPointFormTemplate = ({
             >
               ${listPoint.type}
             </label>
-            // TODO, добавить валидацию, чтобы нельзя было отправить пустое
-            поле.
             <input
               class="event__input event__input--destination"
               id="event-destination-1"
@@ -167,6 +165,7 @@ const createListPointFormTemplate = ({
               name="event-destination"
               value="${destinationData?.name || ''}"
               list="destination-list-1"
+              required
             />
             ${createDatalist(tripModel.cities)}
           </div>
@@ -199,9 +198,10 @@ const createListPointFormTemplate = ({
               id="event-price-1"
               type="number"
               name="event-price"
-              value="${listPoint?.basePrice || 1}"
+              value="${listPoint?.basePrice || ''}"
               min="1"
               step="1"
+              required
             />
           </div>
 

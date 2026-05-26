@@ -26,7 +26,6 @@ export default class ListPointFormView extends AbstractStatefulView {
   #handleRolldownClick = null;
   #handleResetClick = null;
   #handleSubmitForm = null;
-  #handlePriceChange = null;
 
   #inputDateFrom = null;
   #inputDateTo = null;
@@ -38,7 +37,6 @@ export default class ListPointFormView extends AbstractStatefulView {
     onRolldownClick,
     onResetClick,
     onFormSubmit,
-    onPriceChange,
   }) {
     super();
     this.#isEditForm = isEditForm;
@@ -46,7 +44,6 @@ export default class ListPointFormView extends AbstractStatefulView {
     this.#handleRolldownClick = onRolldownClick;
     this.#handleResetClick = onResetClick;
     this.#handleSubmitForm = onFormSubmit;
-    this.#handlePriceChange = onPriceChange;
 
     // Для удобства передачи данных точек упаковываю всё в this._state.
     this._setState(viewPointData);
@@ -119,7 +116,7 @@ export default class ListPointFormView extends AbstractStatefulView {
 
     this.element
       .querySelector('.event__input.event__input--price')
-      .addEventListener('change', this.#handlePriceChange);
+      .addEventListener('input', this.#handlePriceChange);
 
     if (this.#handleRolldownClick) {
       this.element
@@ -147,13 +144,18 @@ export default class ListPointFormView extends AbstractStatefulView {
 
     this.element
       .querySelector('.event__input.event__input--price')
-      .removeEventListener('change', this.#handlePriceChange);
+      .removeEventListener('input', this.#handlePriceChange);
 
     if (this.#handleRolldownClick) {
       this.element
         .querySelector('.event__rollup-btn')
         .removeEventListener('click', this.#rolldownClickHandler);
     }
+  }
+
+  #handlePriceChange(evt) {
+    const value = evt.target.value.replace(/[\D]/g, '');
+    evt.target.value = value;
   }
 
   /** Инициализирует выбор дат "from" и "to" библиотекой flatpickr. */

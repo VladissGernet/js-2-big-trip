@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 // Константы
 
 const FILTER_UPDATE_STATUS = 'update';
-const DEFAULT_BASE_PRICE = 1;
 const DEFAULT_MINUTES_ADDITION = 1;
 const DEFAULT_SORT = 'date';
 const DEFAULT_SORT_VALUE = 'sort-day';
@@ -155,7 +154,6 @@ export {
   PointsURLs,
   LoadStatus,
   Method,
-  DEFAULT_BASE_PRICE,
   DEFAULT_MINUTES_ADDITION,
   DELETE_BUTTON_STATUS,
   SAVE_BUTTON_STATUS,
