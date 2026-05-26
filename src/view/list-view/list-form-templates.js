@@ -158,6 +158,8 @@ const createListPointFormTemplate = ({
             >
               ${listPoint.type}
             </label>
+            // TODO, добавить валидацию, чтобы нельзя было отправить пустое
+            поле.
             <input
               class="event__input event__input--destination"
               id="event-destination-1"

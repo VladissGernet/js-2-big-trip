@@ -68,16 +68,12 @@ export default class NewPointPresenter {
   }
 
   #createPointFormPresenter() {
-    // Первый попавшийся город.
-    const defaultCity = this.#tripModel.destinationsById.keys().next().value;
-
     // Создаем презентер формы для отрисовки view.
     this.#pointFormPresenter = new PointFormPresenter({
       tripModel: this.#tripModel,
       filterModel: this.#filterModel,
       pointData: NewPointPresenter.#createDefaultPointDataConfig(
         this.#tripModel.defaultTypeOffer,
-        defaultCity,
       ),
       isEditForm: false,
       newPointPresenter: this,
@@ -135,7 +131,7 @@ export default class NewPointPresenter {
   };
 
   /** Данные создания формы по умолчанию */
-  static #createDefaultPointDataConfig(type, destinationId) {
+  static #createDefaultPointDataConfig(type) {
     // Дефолтные значения с разницей 1 минута (для серверной валидации).
     const dateFrom = new Date();
     const dateTo = new Date();
@@ -145,7 +141,6 @@ export default class NewPointPresenter {
       basePrice: DEFAULT_BASE_PRICE,
       dateFrom: dateFrom.toISOString(),
       dateTo: dateTo.toISOString(),
-      destination: destinationId,
       isFavorite: false,
       offers: new Map(),
       type,
