@@ -160,20 +160,25 @@ export default class ListPointFormView extends AbstractStatefulView {
 
   /** Инициализирует выбор дат "from" и "to" библиотекой flatpickr. */
   #initInputDate() {
+    const initialDateFrom = this._state.listPoint.dateFrom || null;
+    const initialDateTo = this._state.listPoint.dateTo || null;
+
     this.#inputDateFrom = ListPointFormView.#createFlatpickr(
       this.element.querySelector('#event-start-time'),
-      this._state.listPoint.dateFrom,
-      { maxDate: this._state.listPoint.dateTo },
+      initialDateFrom,
+      { maxDate: initialDateTo },
     );
 
     // Для валидации добавляем разницу в минуту.
-    const minDateTo = new Date(this._state.listPoint.dateFrom);
-    minDateTo.setMinutes(minDateTo.getMinutes() + DEFAULT_MINUTES_ADDITION);
-    minDateTo.toISOString();
+    let minDateTo = null;
+    if (initialDateFrom) {
+      minDateTo = new Date(initialDateFrom);
+      minDateTo.setMinutes(minDateTo.getMinutes() + DEFAULT_MINUTES_ADDITION);
+    }
 
     this.#inputDateTo = ListPointFormView.#createFlatpickr(
       this.element.querySelector('#event-end-time'),
-      this._state.listPoint.dateTo,
+      initialDateTo,
       { minDate: minDateTo },
     );
 
@@ -247,7 +252,6 @@ export default class ListPointFormView extends AbstractStatefulView {
   };
 
   static #createFlatpickr(element, defaultDate, dateLimit) {
-    // Для устранения ошибки линтера из-за snake_case в библиотеке.
     const time24hr = 'time_24hr';
 
     return flatpickr(element, {
@@ -257,7 +261,6 @@ export default class ListPointFormView extends AbstractStatefulView {
       [time24hr]: true, // 24-часовой формат (16:00 вместо 4:00 PM)
       formatDate: (date) => dayjs(date).format('DD/MM/YY HH:mm'),
       ...dateLimit,
-
       // Для исправления отсутствия id на элементах ввода от flatpickr.
       // Chrome DevTools Lighthouse оставляет предупреждения.
       onReady(_, __, instance) {

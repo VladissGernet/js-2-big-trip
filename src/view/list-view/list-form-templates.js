@@ -198,7 +198,7 @@ const createListPointFormTemplate = ({
               id="event-price-1"
               type="number"
               name="event-price"
-              value="${listPoint?.basePrice || ''}"
+              value="${listPoint?.basePrice || 0}"
               min="1"
               step="1"
               required
