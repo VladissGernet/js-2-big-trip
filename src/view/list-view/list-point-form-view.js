@@ -6,6 +6,7 @@ import {
   DEFAULT_MINUTES_ADDITION,
   DELETE_BUTTON_STATUS,
   SAVE_BUTTON_STATUS,
+  FlatpickerId,
 } from '../../const.js';
 import {
   transformOfferTypeData,
@@ -171,7 +172,7 @@ export default class ListPointFormView extends AbstractStatefulView {
     minDateTo.toISOString();
 
     this.#inputDateTo = ListPointFormView.#createFlatpickr(
-      this.element.querySelector('#event-end-time-1'),
+      this.element.querySelector('#event-end-time'),
       this._state.listPoint.dateTo,
       { minDate: minDateTo },
     );
@@ -263,21 +264,23 @@ export default class ListPointFormView extends AbstractStatefulView {
         const monthSelect = instance.calendarContainer.querySelector(
           '.flatpickr-monthDropdown-months',
         );
-        monthSelect.id = `flatpickr-month-${element.id}`;
+        const id = FlatpickerId[element.id];
+
+        monthSelect.id = `flatpickr-month-${id}`;
 
         const yearInput =
           instance.calendarContainer.querySelector('.numInput.cur-year');
-        yearInput.id = `flatpickr-year-${element.id}`;
+        yearInput.id = `flatpickr-year-${id}`;
 
         const hourInput = instance.calendarContainer.querySelector(
           '.numInput.flatpickr-hour',
         );
-        hourInput.id = `flatpickr-hour-${element.id}`;
+        hourInput.id = `flatpickr-hour-${id}`;
 
         const minuteInput = instance.calendarContainer.querySelector(
           '.numInput.flatpickr-minute',
         );
-        minuteInput.id = `flatpickr-minute-${element.id}`;
+        minuteInput.id = `flatpickr-minute-${id}`;
       },
     });
   }

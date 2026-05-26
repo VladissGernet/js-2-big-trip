@@ -178,10 +178,10 @@ const createListPointFormTemplate = ({
               name="event-start-time"
             />
             &mdash;
-            <label class="visually-hidden" for="event-end-time-1">To</label>
+            <label class="visually-hidden" for="event-end-time">To</label>
             <input
               class="event__input event__input--time"
-              id="event-end-time-1"
+              id="event-end-time"
               type="text"
               name="event-end-time"
             />

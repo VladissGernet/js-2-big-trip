@@ -112,6 +112,11 @@ const SORT_TYPES = {
   'sort-price': 'price',
 };
 
+const FlatpickerId = {
+  'event-start-time': 'date-from',
+  'event-end-time': 'date-to',
+};
+
 const DELETE_BUTTON_STATUS = {
   DELETE: 'Delete',
   DELETING: 'Deleting...',
@@ -154,4 +159,5 @@ export {
   SAVE_BUTTON_STATUS,
   TimeLimit,
   FILTER_UPDATE_STATUS,
+  FlatpickerId,
 };
