@@ -86,7 +86,11 @@ export default class PointPresenter {
   clear() {
     remove(this.#pointComponent);
     this.#pointComponent = null;
-    this.#pointFormPresenter = null;
+
+    if (this.#pointFormPresenter) {
+      this.#pointFormPresenter.destroy();
+      this.#pointFormPresenter = null;
+    }
   }
 
   #renderPoint() {
