@@ -7,19 +7,23 @@ const calcTimeBetween = (from, to) => {
   const diffMinutes = Math.ceil(to.diff(from, 'minutes', true));
   const durationBetween = dayjs.duration(diffMinutes, 'minutes');
 
-  // Всё время в днях (включая то, что было бы годами)
   const totalDays = Math.floor(durationBetween.asDays());
   const remainingHours = durationBetween.hours();
   const remainingMinutes = durationBetween.minutes();
 
-  let result = `${remainingMinutes}M`;
+  // Форматируем все числа как 2 цифры
+  const mm = remainingMinutes.toString().padStart(2, '0');
+  const HH = remainingHours.toString().padStart(2, '0');
+  const DD = totalDays.toString().padStart(2, '0');
+
+  let result = `${mm}M`;
 
   if (remainingHours > 0 || totalDays > 0) {
-    result = `${remainingHours}H ${result}`;
+    result = `${HH}H ${result}`;
   }
 
   if (totalDays > 0) {
-    result = `${totalDays}D ${result}`;
+    result = `${DD}D ${result}`;
   }
 
   return result.trim();
