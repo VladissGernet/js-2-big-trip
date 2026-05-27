@@ -311,6 +311,45 @@ export default class ListPointFormView extends AbstractStatefulView {
       },
     });
   }
+  /*
+      // TODO
+      // Остановился здесь, если другой инпут пустой , то ставим ему mindate\maxdate - 1 минута/+1 минута
+
+  static #createInputDateChangeHandler(context, dateStage, otherInput) {
+    return (selectedDates) => {
+      const currentDate = selectedDates[0];
+      const isOtherInputEmpty = !otherInput.element.value;
+      if (isOtherInputEmpty) {
+        if (dateStage === InputDateStage.MINDATE) {
+          console.log('min');
+        }
+        if (dateStage === InputDateStage.MAXDATE) {
+          console.log('MAXDATE');
+        }
+      } else {
+        otherInput.set(dateStage, currentDate.toISOString());
+      }
+
+
+      // console.log(DEFAULT_MINUTES_ADDITION);
+
+      // minDateTo.setMinutes(minDateTo.getMinutes() + DEFAULT_MINUTES_ADDITION);
+
+      // console.log(selectedDates[0].getMinutes());
+
+      // Взаимодействие с противостоящим вводом даты для синхронизации данных.
+      otherInput.set(dateStage, ISODate);
+
+      // Обновление данных точки.
+      const newListPointState = {
+        ...context._state.listPoint,
+        [DateStateStage[dateStage]]: ISODate,
+      };
+      context._setState({
+        listPoint: newListPointState,
+      });
+    };
+  } */
 
   static #createInputDateChangeHandler(context, dateStage, otherInput) {
     return (selectedDates) => {
