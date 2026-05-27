@@ -125,6 +125,10 @@ const createListPointFormTemplate = ({
     offerData = null,
   } = viewPointData;
 
+  // TODO, вернуть required в
+  // event__input event__input--price
+  // event__input event__input--destination и min="1"
+
   return html`
     <li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
@@ -165,7 +169,6 @@ const createListPointFormTemplate = ({
               name="event-destination"
               value="${destinationData?.name || ''}"
               list="destination-list-1"
-              required
             />
             ${createDatalist(tripModel.cities)}
           </div>
@@ -199,9 +202,7 @@ const createListPointFormTemplate = ({
               type="number"
               name="event-price"
               value="${listPoint?.basePrice || 0}"
-              min="1"
               step="1"
-              required
             />
           </div>
 

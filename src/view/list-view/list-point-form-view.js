@@ -11,6 +11,8 @@ import {
 import {
   transformOfferTypeData,
   findDestinationByName,
+  setValidity,
+  removeValidity,
 } from '../../utils/index.js';
 
 // Библиотека dayjs.
@@ -154,12 +156,15 @@ export default class ListPointFormView extends AbstractStatefulView {
   }
 
   #handlePriceChange(evt) {
+    // todo, replace не отрабатывает и можно написать 00001.
     const value = evt.target.value.replace(/[\D]/g, '');
     evt.target.value = value;
   }
 
   /** Инициализирует выбор дат "from" и "to" библиотекой flatpickr. */
   #initInputDate() {
+    // TODO, при нажатии backspace выходит ошибка.
+    // Также вторая дата должна иметь плюс одна минута.
     const initialDateFrom = this._state.listPoint.dateFrom || null;
     const initialDateTo = this._state.listPoint.dateTo || null;
 
@@ -218,7 +223,25 @@ export default class ListPointFormView extends AbstractStatefulView {
 
   #submitFormHandler = (evt) => {
     evt.preventDefault();
-    this.#handleSubmitForm(evt);
+    const form = evt.target;
+    // TODO, добавить разницу в одну минуту
+
+    const startTimeInput = form.querySelector('#event-start-time');
+    const endTimeInput = form.querySelector('#event-end-time');
+
+    // Временно убираем readonly для валидации
+    setValidity(startTimeInput);
+    setValidity(endTimeInput);
+
+    // Запускаем валидацию
+    const isValid = form.reportValidity();
+
+    removeValidity(startTimeInput);
+    removeValidity(endTimeInput);
+
+    if (isValid) {
+      this.#handleSubmitForm(evt);
+    }
   };
 
   #changeTypeHandler = (evt) => {
@@ -230,6 +253,7 @@ export default class ListPointFormView extends AbstractStatefulView {
   };
 
   #changeDestinationHandler = (evt) => {
+    // TODO, при смени города теряется все текущее заполнение
     let prevDestinationCity = this._state.destinationData?.name;
     if (!prevDestinationCity) {
       prevDestinationCity = '';

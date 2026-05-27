@@ -5,6 +5,8 @@ export { createViewPointData } from './create-view-point-data.js';
 export { findDestinationByIndex } from './find-destination-by-index.js';
 export { findDestinationByName } from './find-destination-by-name.js';
 export { html } from './html.js';
+export { removeValidity } from './remove-validity.js';
 export { replaceSnakeToCamel } from './replace-snake-to-camel.js';
+export { setValidity } from './set-validity.js';
 export { transformListPoint } from './transform-list-point.js';
 export { transformOfferTypeData } from './transform-offer-type-data.js';
