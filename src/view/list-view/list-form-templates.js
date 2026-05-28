@@ -1,4 +1,5 @@
 import { html } from '../../utils/index.js';
+import { DEFAULT_BASE_PRICE } from '../../const.js';
 
 const createOfferTemplate = ({ title, price, isSelected }) => {
   const id = title.toLowerCase() + price;
@@ -125,10 +126,6 @@ const createListPointFormTemplate = ({
     offerData = null,
   } = viewPointData;
 
-  // TODO, вернуть required в
-  // event__input event__input--price
-  // event__input event__input--destination и min="1"
-
   return html`
     <li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
@@ -169,6 +166,7 @@ const createListPointFormTemplate = ({
               name="event-destination"
               value="${destinationData?.name || ''}"
               list="destination-list-1"
+              required
             />
             ${createDatalist(tripModel.cities)}
           </div>
@@ -192,17 +190,18 @@ const createListPointFormTemplate = ({
           </div>
 
           <div class="event__field-group event__field-group--price">
-            <label class="event__label" for="event-price-1">
+            <label class="event__label" for="event-price">
               <span class="visually-hidden">Price</span>
               &euro;
             </label>
             <input
               class="event__input event__input--price"
-              id="event-price-1"
-              type="number"
+              id="event-price"
+              type="text"
+              inputmode="numeric"
               name="event-price"
-              value="${listPoint?.basePrice || 0}"
-              step="1"
+              value="${listPoint?.basePrice || DEFAULT_BASE_PRICE}"
+              required
             />
           </div>
 

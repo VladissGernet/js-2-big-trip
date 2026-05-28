@@ -6,6 +6,7 @@ const FILTER_UPDATE_STATUS = 'update';
 const DEFAULT_MINUTES_ADDITION = 1;
 const DEFAULT_SORT = 'date';
 const DEFAULT_SORT_VALUE = 'sort-day';
+const DEFAULT_BASE_PRICE = 0;
 
 // Server
 const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
@@ -113,7 +114,7 @@ const SORT_TYPES = {
   'sort-price': 'price',
 };
 
-const FlatpickerId = {
+const FlatpickrId = {
   'event-start-time': 'date-from',
   'event-end-time': 'date-to',
 };
@@ -159,6 +160,7 @@ export {
   SAVE_BUTTON_STATUS,
   TimeLimit,
   FILTER_UPDATE_STATUS,
-  FlatpickerId,
+  FlatpickrId,
   DEFAULT_SORT_VALUE,
+  DEFAULT_BASE_PRICE,
 };

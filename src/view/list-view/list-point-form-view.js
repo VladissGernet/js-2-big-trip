@@ -6,7 +6,7 @@ import {
   DEFAULT_MINUTES_ADDITION,
   DELETE_BUTTON_STATUS,
   SAVE_BUTTON_STATUS,
-  FlatpickerId,
+  FlatpickrId,
 } from '../../const.js';
 import {
   transformOfferTypeData,
@@ -155,11 +155,11 @@ export default class ListPointFormView extends AbstractStatefulView {
     }
   }
 
-  #handlePriceChange(evt) {
-    // todo, replace не отрабатывает и можно написать 00001.
+  #handlePriceChange = (evt) => {
     const value = evt.target.value.replace(/[\D]/g, '');
-    evt.target.value = value;
-  }
+    evt.target.value = Number(value);
+    evt.target.setCustomValidity('');
+  };
 
   /** Инициализирует выбор дат "from" и "to" библиотекой flatpickr. */
   #initInputDate() {
@@ -225,18 +225,31 @@ export default class ListPointFormView extends AbstractStatefulView {
 
     const startTimeInput = form.querySelector('#event-start-time');
     const endTimeInput = form.querySelector('#event-end-time');
+    const priceInput = form.querySelector('#event-price');
 
+    // Валидация дат.
     // Временно убираем readonly для валидации
     setValidity(startTimeInput);
     setValidity(endTimeInput);
 
-    // Запускаем валидацию
-    const isValid = form.reportValidity();
+    // Запускаем валидацию для дат.
+    let isFormValid = form.reportValidity();
 
     removeValidity(startTimeInput);
     removeValidity(endTimeInput);
 
-    if (isValid) {
+    if (!isFormValid) {
+      return;
+    }
+
+    // Валидация цены: больше нуля
+    if (Number(priceInput.value) <= 0) {
+      priceInput.setCustomValidity('The price must be more than zero.');
+    }
+    // Запускаем валидацию для Цены.
+    isFormValid = form.reportValidity();
+
+    if (isFormValid) {
       this.#handleSubmitForm(evt);
     }
   };
@@ -250,7 +263,7 @@ export default class ListPointFormView extends AbstractStatefulView {
   };
 
   #changeDestinationHandler = (evt) => {
-    // TODO, при смени города теряется все текущее заполнение
+    // TODO, при смени города теряется все текущие offers
     let prevDestinationCity = this._state.destinationData?.name;
     if (!prevDestinationCity) {
       prevDestinationCity = '';
@@ -288,7 +301,7 @@ export default class ListPointFormView extends AbstractStatefulView {
         const monthSelect = instance.calendarContainer.querySelector(
           '.flatpickr-monthDropdown-months',
         );
-        const id = FlatpickerId[element.id];
+        const id = FlatpickrId[element.id];
         monthSelect.id = `flatpickr-month-${id}`;
         const yearInput =
           instance.calendarContainer.querySelector('.numInput.cur-year');
