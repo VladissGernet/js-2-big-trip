@@ -67,9 +67,6 @@ const closeEditFormBtn = (isEditForm) =>
 
 const createTypeList = (offers, iconType) => {
   let listItems = '';
-  // TODO, первый элементом должен быть почему-то flight. "expected 'taxi' to include 'flight'"
-  // в ".event__type-output"
-
   for (const offerName of offers) {
     listItems += html`<div class="event__type-item">
       <input

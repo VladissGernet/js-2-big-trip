@@ -280,7 +280,6 @@ export default class ListPointFormView extends AbstractStatefulView {
   };
 
   #changeDestinationHandler = (evt) => {
-    // TODO, при смени города теряется все текущие offers
     let prevDestinationCity = this._state.destinationData?.name;
     if (!prevDestinationCity) {
       prevDestinationCity = '';

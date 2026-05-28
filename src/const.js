@@ -7,6 +7,7 @@ const DEFAULT_MINUTES_ADDITION = 1;
 const DEFAULT_SORT = 'date';
 const DEFAULT_SORT_VALUE = 'sort-day';
 const DEFAULT_BASE_PRICE = 0;
+const DEFAULT_TYPE_OFFER = 'flight';
 
 // Server
 const END_POINT = 'https://24.objects.htmlacademy.pro/big-trip';
@@ -163,4 +164,5 @@ export {
   FlatpickrId,
   DEFAULT_SORT_VALUE,
   DEFAULT_BASE_PRICE,
+  DEFAULT_TYPE_OFFER,
 };

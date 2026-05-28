@@ -9,7 +9,6 @@ export default class TripModel extends Observable {
   #points = null;
   #destinations = null;
   #offers = null;
-  #defaultTypeOffer = null;
   #cities = null;
 
   #uiBlocker = new UiBlocker({
@@ -35,11 +34,6 @@ export default class TripModel extends Observable {
   /** @returns {Map<string, Map<string, Object>}  Назначения по типу для быстрого поиска. */
   get offersByType() {
     return this.#offers;
-  }
-
-  /** Для отрисовки формы создания новой точки. По умолчанию, выбирается самый первый из полученных данных. */
-  get defaultTypeOffer() {
-    return this.#defaultTypeOffer;
   }
 
   /** @returns {Array<Object>} Список путевых точек */
@@ -115,22 +109,16 @@ export default class TripModel extends Observable {
           this.#pointsApiService.offers,
         ]);
 
-      const {
-        cities,
-        destinationsById,
-        offersByType,
-        defaultTypeOffer,
-        listPoints,
-      } = TripModel.#adaptToClient(
-        serverPoints,
-        serverDestinations,
-        serverOffers,
-      );
+      const { cities, destinationsById, offersByType, listPoints } =
+        TripModel.#adaptToClient(
+          serverPoints,
+          serverDestinations,
+          serverOffers,
+        );
 
       this.#points = listPoints;
       this.#destinations = destinationsById;
       this.#offers = offersByType;
-      this.#defaultTypeOffer = defaultTypeOffer;
       this.#cities = cities;
 
       // Уведомляю для рендера tripInfo в Header.
@@ -156,14 +144,12 @@ export default class TripModel extends Observable {
       );
       return result.set(type, offersMap);
     }, new Map());
-    const defaultTypeOffer = serverOffers[0].type;
 
     return {
       listPoints,
       cities,
       destinationsById,
       offersByType,
-      defaultTypeOffer,
     };
   }
 }
