@@ -64,9 +64,6 @@ export default class PointFormPresenter {
 
     // Добавление обработчика закрытия по Esc.
     document.addEventListener('keydown', this.#handleEscKeyDown);
-
-    // CallBack на событие смены фильтра для очистки формы и её обработчика нажатия на Esc.
-    this.#filterModel.addObserver(this.destroy);
   }
 
   get component() {

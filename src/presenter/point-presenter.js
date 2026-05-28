@@ -10,7 +10,7 @@ import { createViewPointData } from '../utils/index.js';
  * @property {Class} filterModel - Модель фильтра с наблюдателем.
  * @property {Class} pageMainPresenter - Презентер страницы Main.
  * @property {Class} newPointPresenter - Презентер кнопки создания нового события.
- * @property {function(): void} resetListView - Функция‑callback, сбрасывающая список
+ * @property {function(): void} closeListForms - Функция‑callback, сбрасывающая список
  * @property {function(): void} removeFromPointPresenters - Функция‑callback, удаляющая
  * из коллекции Map в listPresenter.
  */
@@ -39,7 +39,7 @@ export default class PointPresenter {
   #filterModel = null;
   #pageMainPresenter = null;
   #newPointPresenter = null;
-  #resetListView = null;
+  #closeListForms = null;
   #removeFromPointPresenters = null;
 
   #pointFormPresenter = null;
@@ -55,7 +55,7 @@ export default class PointPresenter {
     filterModel,
     pageMainPresenter,
     newPointPresenter,
-    resetListView,
+    closeListForms,
     removeFromPointPresenters,
   }) {
     this.#pointData = pointData;
@@ -63,7 +63,7 @@ export default class PointPresenter {
     this.#filterModel = filterModel;
     this.#pageMainPresenter = pageMainPresenter;
     this.#newPointPresenter = newPointPresenter;
-    this.#resetListView = resetListView;
+    this.#closeListForms = closeListForms;
     this.#removeFromPointPresenters = removeFromPointPresenters;
   }
 
@@ -120,7 +120,7 @@ export default class PointPresenter {
     this.#createPointFormPresenter();
 
     // Закрывает все открытые формы чтобы на странице была только одна открытая форма.
-    this.#resetListView();
+    this.#closeListForms();
 
     this.#isEditing = true;
 

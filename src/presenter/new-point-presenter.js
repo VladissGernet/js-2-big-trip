@@ -111,15 +111,13 @@ export default class NewPointPresenter {
   }
 
   #handleBtnClick = () => {
-    // TODO Остановился здесь, Нажатие на кнопку «New Event» закрывает открытую форму редактирования точки маршрута
-    // Пробпада точка маршрута, если сначала открыть редактирование, потом New Event.
-
     // Сбрасываем значение в модели.
     this.#filterModel.setFilter(FilterStatus.DEFAULT, FilterType.EVERYTHING);
 
     // Сбрасываем фильтр в header на изначальный.
     this.#filterPresenter.setDefaultControl();
 
+    this.#pageMainPresenter.closeListForms();
     this.#createPointFormPresenter();
 
     // Отключаем возможность нажатия кнопки.

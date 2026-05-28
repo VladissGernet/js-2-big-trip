@@ -79,12 +79,11 @@ export default class FilterPresenter {
     if (status !== FILTER_UPDATE_STATUS) {
       return;
     }
-
     if (isEmptyList) {
       this.disable();
-    } else {
-      this.#enable();
+      return;
     }
+    this.#enable();
   };
 
   /**

@@ -125,6 +125,7 @@ const createListPointFormTemplate = ({
     destinationData = null,
     offerData = null,
   } = viewPointData;
+  // TODO, при смене города опять цена возвращается на изначальное значение
 
   return html`
     <li class="trip-events__item">

@@ -62,10 +62,16 @@ export default class PageMainPresenter {
     this.#renderMain();
   }
 
+  /** Закрывает все открытые формы редактирования. */
+  closeListForms = () => {
+    if (this.#tripModel.listPoints.length) {
+      this.#listPresenter.closeListForms();
+    }
+  };
+
   /** Рендер только listView без удаления сортировки. */
   resetListView(sortedList) {
-    // Закрывает открытые формы редактирования\создания точки.
-    this.#listPresenter.resetListView();
+    this.closeListForms();
     // Удаляет список точек.
     this.#listPresenter.destroy();
     // Создает новый список точек с новыми данными sortedList.

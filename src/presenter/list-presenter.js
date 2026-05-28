@@ -59,7 +59,7 @@ export default class ListPresenter {
   }
 
   /** Перерисовывает список */
-  resetListView = () => {
+  closeListForms = () => {
     // Нужен контекст для callback редактировании точки и публичный метод.
     this.#pointPresenters.forEach((presenter) =>
       presenter.fullReplaceFormToPoint(),
@@ -105,7 +105,7 @@ export default class ListPresenter {
       tripModel: this.#tripModel,
       filterModel: this.#filterModel,
       newPointPresenter: this.#newPointPresenter,
-      resetListView: this.resetListView,
+      closeListForms: this.closeListForms,
       removeFromPointPresenters: this.#removeFromPointPresenters,
     });
     pointPresenter.init();
