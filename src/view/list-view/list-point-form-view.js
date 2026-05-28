@@ -156,9 +156,26 @@ export default class ListPointFormView extends AbstractStatefulView {
   }
 
   #handlePriceChange = (evt) => {
-    const value = evt.target.value.replace(/[\D]/g, '');
-    evt.target.value = Number(value);
+    const value = Number(evt.target.value.replace(/[\D]/g, ''));
+    evt.target.value = value;
     evt.target.setCustomValidity('');
+    // Обновляем состояние
+    const newListPointState = structuredClone(this._state.listPoint);
+    newListPointState.basePrice = value;
+    if (value > 0) {
+      this._setState({
+        listPoint: {
+          ...newListPointState,
+          basePrice: value,
+        },
+      });
+      return;
+    }
+
+    delete newListPointState.basePrice;
+    this._setState({
+      listPoint: newListPointState,
+    });
   };
 
   /** Инициализирует выбор дат "from" и "to" библиотекой flatpickr. */
