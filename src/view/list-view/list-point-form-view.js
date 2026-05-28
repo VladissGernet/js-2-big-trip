@@ -163,8 +163,6 @@ export default class ListPointFormView extends AbstractStatefulView {
 
   /** Инициализирует выбор дат "from" и "to" библиотекой flatpickr. */
   #initInputDate() {
-    // TODO, при нажатии backspace выходит ошибка.
-    // Также вторая дата должна иметь плюс одна минута.
     const initialDateFrom = this._state.listPoint.dateFrom || null;
     const initialDateTo = this._state.listPoint.dateTo || null;
 
@@ -224,7 +222,6 @@ export default class ListPointFormView extends AbstractStatefulView {
   #submitFormHandler = (evt) => {
     evt.preventDefault();
     const form = evt.target;
-    // TODO, добавить разницу в одну минуту
 
     const startTimeInput = form.querySelector('#event-start-time');
     const endTimeInput = form.querySelector('#event-end-time');
@@ -309,9 +306,18 @@ export default class ListPointFormView extends AbstractStatefulView {
   }
 
   static #createInputDateChangeHandler(context, dateStage, otherInput) {
+    const isMinDateStage = dateStage === InputDateStage.MINDATE;
     return (selectedDates) => {
+      if (!selectedDates.length) {
+        // Если очистили поле ввода даты, то очищаем ограничения.
+        otherInput.set(
+          isMinDateStage ? InputDateStage.MINDATE : InputDateStage.MAXDATE,
+          null,
+        );
+        return;
+      }
+
       const currentISODate = selectedDates[0].toISOString();
-      const isMinDateStage = dateStage === InputDateStage.MINDATE;
 
       // Вычисляем другую дату (плюс / минус 1 минута)
       const otherDate = new Date(currentISODate);
