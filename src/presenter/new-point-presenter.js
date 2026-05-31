@@ -117,6 +117,7 @@ export default class NewPointPresenter {
     this.#filterPresenter.setDefaultControl();
 
     this.#pageMainPresenter.closeListForms();
+    this.#pageMainPresenter.resetListView();
     this.#createPointFormPresenter();
 
     // Отключаем возможность нажатия кнопки.
