@@ -1,17 +1,16 @@
 import AbstractView from '../../framework/view/abstract-view.js';
 import { html } from '../../utils/index.js';
-import he from 'he';
 
 function createTripInfoTemplate(tripInfoData) {
   return html` <section class="trip-main__trip-info trip-info">
     <div class="trip-info__main">
-      <h1 class="trip-info__title">${he.encode(tripInfoData.title)}</h1>
+      <h1 class="trip-info__title">${tripInfoData.title}</h1>
       <p class="trip-info__dates">${tripInfoData.datesResult}</p>
     </div>
 
     <p class="trip-info__cost">
       Total: €&nbsp;<span class="trip-info__cost-value"
-        >${he.encode(String(tripInfoData.totalPrice))}</span
+        >${String(tripInfoData.totalPrice)}</span
       >
     </p>
   </section>`;

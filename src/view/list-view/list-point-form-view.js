@@ -14,6 +14,7 @@ import {
   setValidity,
   removeValidity,
 } from '../../utils/index.js';
+import he from 'he';
 
 // Библиотека dayjs.
 import dayjs from 'dayjs';
@@ -156,7 +157,8 @@ export default class ListPointFormView extends AbstractStatefulView {
   }
 
   #handlePriceChange = (evt) => {
-    const value = Number(evt.target.value.replace(/[\D]/g, ''));
+    const value = Number(he.encode(evt.target.value.replace(/[\D]/g, '')));
+
     evt.target.value = value;
     evt.target.setCustomValidity('');
     // Обновляем состояние
@@ -272,9 +274,11 @@ export default class ListPointFormView extends AbstractStatefulView {
   };
 
   #changeTypeHandler = (evt) => {
-    const typeOffers = this.#tripModel.offersByType.get(evt.target.value);
+    const value = he.encode(evt.target.value);
+    const typeOffers = this.#tripModel.offersByType.get(value);
+
     this.updateElement({
-      listPoint: { ...this._state.listPoint, type: evt.target.value },
+      listPoint: { ...this._state.listPoint, type: value },
       offerData: transformOfferTypeData({ allOffers: typeOffers }),
     });
   };
@@ -284,9 +288,10 @@ export default class ListPointFormView extends AbstractStatefulView {
     if (!prevDestinationCity) {
       prevDestinationCity = '';
     }
+    const newValue = he.encode(evt.target.value);
 
     const newDestinationCityData = findDestinationByName(
-      evt.target.value,
+      newValue,
       this.#tripModel.destinationsById,
     );
 

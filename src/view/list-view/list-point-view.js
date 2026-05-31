@@ -1,6 +1,5 @@
 import AbstractView from '../../framework/view/abstract-view.js';
 import dayjs from 'dayjs';
-import he from 'he';
 import { calcTimeBetween, html } from '../../utils/index.js';
 
 function createPointOffersTemplate(offerData) {
@@ -35,8 +34,7 @@ function createPointTemplate({
 }) {
   // Оставляю тут, Prettier неверно отспупы ставит.
   const isFavoriteItem = isFavorite ? 'event__favorite-btn--active' : '';
-  const encodedType = he.decode(type);
-  const title = `${encodedType} ${destinationData ? he.encode(destinationData?.name) : ''}`;
+  const title = `${type} ${destinationData ? destinationData?.name : ''}`;
 
   return html`
     <li class="trip-events__item">
@@ -49,7 +47,7 @@ function createPointTemplate({
             class="event__type-icon"
             width="42"
             height="42"
-            src="img/icons/${encodedType}.png"
+            src="img/icons/${type}.png"
             alt="Event type icon"
           />
         </div>
@@ -68,7 +66,7 @@ function createPointTemplate({
         </div>
         <p class="event__price">
           &euro;&nbsp;<span class="event__price-value"
-            >${he.encode(String(basePrice))}</span
+            >${String(basePrice)}</span
           >
         </p>
         <h4 class="visually-hidden">Offers:</h4>
