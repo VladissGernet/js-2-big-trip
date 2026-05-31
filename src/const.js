@@ -105,7 +105,7 @@ const DateStateStage = {
 };
 
 const TimeLimit = {
-  LOWER_LIMIT: 350,
+  LOWER_LIMIT: 10,
   UPPER_LIMIT: 1000,
 };
 
