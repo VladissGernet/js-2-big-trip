@@ -70,12 +70,12 @@ export default class PageMainPresenter {
   };
 
   /** Рендер только listView без удаления сортировки. */
-  resetListView(sortedList) {
+  resetListView(sortedPoints) {
     this.closeListForms();
     // Удаляет список точек.
     this.#listPresenter.destroy();
-    // Создает новый список точек с новыми данными sortedList.
-    this.#listPresenter.init(sortedList);
+    // Создает новый список точек с новыми данными sortedPoints.
+    this.#listPresenter.init(sortedPoints);
   }
 
   /** Полный новый рендер trip-events. */

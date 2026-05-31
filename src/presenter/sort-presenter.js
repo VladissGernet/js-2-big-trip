@@ -55,9 +55,9 @@ export default class SortPresenter {
       this.#filterModel.filter,
       this.#tripModel.listPoints,
     );
-    const sortedList = filteredList.sort(
+    const sortedPoints = filteredList.sort(
       SORT_CONFIG[SORT_TYPES[evt.target.value]],
     );
-    this.#pageMainPresenter.resetListView(sortedList);
+    this.#pageMainPresenter.resetListView(sortedPoints);
   };
 }

@@ -41,8 +41,8 @@ export default class ListPresenter {
     return this.#listView;
   }
 
-  init(sortedList = null) {
-    this.#renderList(sortedList);
+  init(sortedPoints = null) {
+    this.#renderList(sortedPoints);
   }
 
   /** Полная очистка списка и коллекции презентеров. */
@@ -69,7 +69,7 @@ export default class ListPresenter {
   /** Удаляет презентер точки из списка по id */
   #removeFromPointPresenters = (id) => this.#pointPresenters.delete(id);
 
-  #renderList(sortedList = null) {
+  #renderList(sortedPoints = null) {
     if (this.#listView) {
       this.destroy();
     }
@@ -78,7 +78,7 @@ export default class ListPresenter {
     const tripEventsElement = this.#pageMainPresenter.tripEventsView.element;
 
     // Проверяет получение отсортированного списка, иначе берём данные из модели.
-    if (!sortedList) {
+    if (!sortedPoints) {
       /** Значение для выделения нужных дат */
       const currentFilter = this.#filterModel.filter;
       const filteredList = FilterPresenter.filterList(
@@ -94,7 +94,7 @@ export default class ListPresenter {
       return;
     }
 
-    sortedList.forEach((point) => this.#createPoint(point));
+    sortedPoints.forEach((point) => this.#createPoint(point));
     render(this.#listView, tripEventsElement);
   }
 
