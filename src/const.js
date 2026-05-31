@@ -55,6 +55,17 @@ const LoadStatus = {
   LOADING: 'loading',
 };
 
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
+
+const TRIP_INFO_TITLE = {
+  TWO_POINTS: 2,
+  MAX_VISIBLE_POINTS: 3, // сколько точек показывать явно
+  PLACEHOLDER: '...', // символ для "свернутой" части маршрута
+};
+
 // Конфигурационные массивы с дефолтными данными для UI.
 
 /** Состояние кнопок фильтров по умолчанию. */
@@ -104,11 +115,6 @@ const DateStateStage = {
   maxDate: 'dateTo',
 };
 
-const TimeLimit = {
-  LOWER_LIMIT: 350,
-  UPPER_LIMIT: 1000,
-};
-
 const SORT_TYPES = {
   'sort-day': 'date',
   'sort-time': 'time',
@@ -128,12 +134,6 @@ const DELETE_BUTTON_STATUS = {
 const SAVE_BUTTON_STATUS = {
   SAVE: 'Save',
   SAVING: 'Saving...',
-};
-
-const TRIP_INFO_TITLE = {
-  TWO_POINTS: 2,
-  MAX_VISIBLE_POINTS: 3, // сколько точек показывать явно
-  PLACEHOLDER: '...', // символ для "свернутой" части маршрута
 };
 
 export {
