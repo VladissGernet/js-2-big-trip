@@ -42,22 +42,20 @@ export default class FilterPresenter {
   }
 
   setDefaultControl() {
-    for (const control of this.#filterComponent.controls) {
+    this.#filterComponent.controls.forEach((control) => {
       if (control.value === FilterType.EVERYTHING) {
         control.checked = true;
-        return;
       }
-    }
+    });
   }
 
   /** Активирует только необходимые controls. */
   #enable() {
-    for (const control of this.#filterComponent.controls) {
-      if (!this.#filterModel.enabledFilterTypes[FilterType.EVERYTHING]) {
-        return;
+    this.#filterComponent.controls.forEach((control) => {
+      if (this.#filterModel.enabledFilterTypes[FilterType.EVERYTHING]) {
+        control.disabled = !this.#filterModel.enabledFilterTypes[control.value];
       }
-      control.disabled = !this.#filterModel.enabledFilterTypes[control.value];
-    }
+    });
   }
 
   #renderFilterComponent() {

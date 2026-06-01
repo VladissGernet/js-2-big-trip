@@ -47,7 +47,7 @@ export default class PageMainPresenter {
   }
 
   get isDefaultSortValue() {
-    return this.#sortPresenter.isDefaultValue;
+    return this.#sortPresenter ? this.#sortPresenter.isDefaultValue : false;
   }
 
   get tripEventsView() {
@@ -64,7 +64,7 @@ export default class PageMainPresenter {
 
   /** Закрывает все открытые формы редактирования. */
   closeListForms = () => {
-    if (this.#tripModel.listPoints.length) {
+    if (this.#tripModel.listPoints.length && this.#listPresenter) {
       this.#listPresenter.closeListForms();
     }
   };
