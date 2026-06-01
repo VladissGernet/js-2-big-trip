@@ -45,7 +45,7 @@ export default class PointPresenter {
   #pointFormPresenter = null;
   #pointComponent = null;
 
-  // Режим текущй точки.
+  // Статус текущей точки.
   #isEditing = false;
 
   /** @param {PointConfig} config - Конфигурация презентера */
@@ -111,10 +111,6 @@ export default class PointPresenter {
     });
   }
 
-  /**
-   *  Метод сброса представления в презентере маршрута для отображения точки маршрута
-   *  вместо формы редактирования.
-   */
   #replacePointToForm() {
     this.#newPointPresenter.destroy();
     this.#createPointFormPresenter();
@@ -136,7 +132,7 @@ export default class PointPresenter {
       pointData: this.#pointData,
       pointPresenter: this,
       pageMainPresenter: this.#pageMainPresenter,
-      onRolldownClick: this.#handleCloseRolldownClick,
+      onRolldownClick: this.#closeRolldownClickHandler,
       removeFromPointPresenters: this.#removeFromPointPresenters,
     });
   }
@@ -156,7 +152,7 @@ export default class PointPresenter {
   };
 
   /** Закрытие по нажатию Rollup в форме. */
-  #handleCloseRolldownClick = () => {
+  #closeRolldownClickHandler = () => {
     this.#replaceFormToPoint();
   };
 

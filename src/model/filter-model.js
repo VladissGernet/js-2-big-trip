@@ -16,8 +16,7 @@ export default class FilterModel extends Observable {
   constructor(tripModel) {
     super();
     this.#tripModel = tripModel;
-
-    this.#tripModel.addObserver(this.#handlePointsStatus);
+    this.#tripModel.addObserver(this.#pointsStatusHandler);
   }
 
   get filter() {
@@ -29,7 +28,7 @@ export default class FilterModel extends Observable {
     this._notify(filter, status);
   }
 
-  #handlePointsStatus = (status) => {
+  #pointsStatusHandler = (status) => {
     if (status === LoadStatus.REJECTED) {
       return;
     }

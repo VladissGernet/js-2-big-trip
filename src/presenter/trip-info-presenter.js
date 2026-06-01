@@ -16,15 +16,15 @@ import {
 
 export default class TripInfoPresenter {
   #tripModel = null;
-  #tripInfoView = null;
   #mainElement = null;
 
-  /** @param {TripModel} tripModel Модель данных поездки */
+  #tripInfoView = null;
+
   constructor(tripModel, mainElement) {
     this.#tripModel = tripModel;
     this.#mainElement = mainElement;
 
-    this.#tripModel.addObserver(this.#handleListStatus);
+    this.#tripModel.addObserver(this.#listStatusHandler);
   }
 
   init() {
@@ -37,7 +37,7 @@ export default class TripInfoPresenter {
   }
 
   /** Обновляет информацию о всем маршруте. */
-  #handleListStatus = (status) => {
+  #listStatusHandler = (status) => {
     // Убираю повторный рендер после загрузки данных,
     if (status === LoadStatus.RESOLVED) {
       return;
@@ -57,7 +57,7 @@ export default class TripInfoPresenter {
       return;
     }
 
-    // Создания первой точки в пустом списке.
+    // Создание первой точки в пустом списке.
     remove(this.#tripInfoView);
     this.#tripInfoView = null;
     this.init();

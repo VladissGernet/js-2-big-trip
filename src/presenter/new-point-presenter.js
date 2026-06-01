@@ -31,7 +31,7 @@ export default class NewPointPresenter {
 
   init() {
     // Добавляем обработчик клика на кнопку создания нового события в Header.
-    this.#newEventBtn = new BtnView(this.#handleBtnClick);
+    this.#newEventBtn = new BtnView(this.#btnClickHandler);
     render(this.#newEventBtn, this.#containerElement);
   }
 
@@ -53,6 +53,7 @@ export default class NewPointPresenter {
     this.#pageMainPresenter = pageMainPresenter;
   }
 
+  /** Удаление формы создания точки. */
   destroy() {
     if (!this.#pointFormPresenter) {
       return;
@@ -63,7 +64,6 @@ export default class NewPointPresenter {
   }
 
   #createPointFormPresenter() {
-    // Создаем презентер формы для отрисовки view.
     this.#pointFormPresenter = new PointFormPresenter({
       tripModel: this.#tripModel,
       filterModel: this.#filterModel,
@@ -109,7 +109,7 @@ export default class NewPointPresenter {
     );
   }
 
-  #handleBtnClick = () => {
+  #btnClickHandler = () => {
     // Сбрасываем значение в модели.
     this.#filterModel.setFilter(FilterStatus.DEFAULT, FilterType.EVERYTHING);
 

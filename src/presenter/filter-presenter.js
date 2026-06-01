@@ -12,14 +12,7 @@ dayjs.extend(isSameOrAfter);
 /** Конфигурация презентера списка.
  * @typedef {Object} PresenterConfig
  * @property {HTMLElement} container - Контейнер для рендера
- * @property {FilterData} filters - Данные отрисовки фильтров
  * @property {Class} filterModel - Модель фильтра с наблюдателем.
- */
-
-/** Модель элемента фильтра для планировщика поездок.
- * @typedef {Object} FilterData
- * @property {string} name - Название фильтра ('Everything', 'Future', 'Past').
- * @property {boolean} isChecked - Статус активности фильтра (Boolean).
  */
 
 /** Презентер фильтров. Отвечает за рендеринг компонента фильтров. */
@@ -34,13 +27,14 @@ export default class FilterPresenter {
     this.#container = container;
     this.#filterModel = filterModel;
 
-    this.#filterModel.addObserver(this.#handleFilterStatus);
+    this.#filterModel.addObserver(this.#filterStatusHandler);
   }
 
   init() {
     this.#renderFilterComponent();
   }
 
+  /** Отключает все кнопки фильтров. */
   disable() {
     this.#filterComponent.controls.forEach(
       (control) => (control.disabled = true),
@@ -75,7 +69,7 @@ export default class FilterPresenter {
     this.#filterModel.setFilter(FilterStatus.CHANGE, evt.target.value);
   };
 
-  #handleFilterStatus = (status, isEmptyList) => {
+  #filterStatusHandler = (status, isEmptyList) => {
     if (status !== FILTER_UPDATE_STATUS) {
       return;
     }

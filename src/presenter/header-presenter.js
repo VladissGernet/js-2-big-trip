@@ -33,7 +33,7 @@ export default class HeaderPresenter {
     this.#tripModel = tripModel;
     this.#filterModel = filterModel;
 
-    this.#tripModel.addObserver(this.#handleLoadStatus);
+    this.#tripModel.addObserver(this.#loadStatusHandler);
   }
 
   init() {
@@ -83,7 +83,7 @@ export default class HeaderPresenter {
     this.newPointPresenter.disable();
   }
 
-  #handleLoadStatus = (status) => {
+  #loadStatusHandler = (status) => {
     if (status === LoadStatus.RESOLVED) {
       // После успешной загрузки данных с сервера.
       const tripInfoPresenter = new TripInfoPresenter(
@@ -93,6 +93,6 @@ export default class HeaderPresenter {
       tripInfoPresenter.init();
       this.newPointPresenter.enable();
     }
-    this.#tripModel.removeObserver(this.#handleLoadStatus);
+    this.#tripModel.removeObserver(this.#loadStatusHandler);
   };
 }

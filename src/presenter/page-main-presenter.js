@@ -42,8 +42,8 @@ export default class PageMainPresenter {
     this.#filterModel = filterModel;
     this.#newPointPresenter = newPointPresenter;
 
-    this.#filterModel.addObserver(this.#handleFilterStatus);
-    this.#tripModel.addObserver(this.#handleLoadStatus);
+    this.#filterModel.addObserver(this.#filterStatusHandler);
+    this.#tripModel.addObserver(this.#loadStatusHandler);
   }
 
   get isDefaultSortValue() {
@@ -72,10 +72,13 @@ export default class PageMainPresenter {
   /** Рендер только listView без удаления сортировки. */
   resetListView(sortedPoints) {
     this.closeListForms();
-    // Удаляет список точек.
-    this.#listPresenter.destroy();
-    // Создает новый список точек с новыми данными sortedPoints.
-    this.#listPresenter.init(sortedPoints);
+
+    if (this.#listPresenter) {
+      // Удаляет список точек.
+      this.#listPresenter.destroy();
+      // Создает новый список точек с новыми данными sortedPoints.
+      this.#listPresenter.init(sortedPoints);
+    }
   }
 
   /** Полный новый рендер trip-events. */
@@ -177,7 +180,7 @@ export default class PageMainPresenter {
     return NO_EVENTS_MESSAGES[filter || FilterType.EVERYTHING];
   }
 
-  #handleFilterStatus = (filter, status) => {
+  #filterStatusHandler = (filter, status) => {
     if (status !== FilterStatus.CHANGE) {
       return;
     }
@@ -189,12 +192,12 @@ export default class PageMainPresenter {
     this.renderEventsSection({ filter });
   };
 
-  #handleLoadStatus = (status) => {
+  #loadStatusHandler = (status) => {
     if (status === LoadStatus.RESOLVED) {
       this.renderEventsSection();
     } else if (status === LoadStatus.REJECTED) {
       this.renderEventsSection({ loadStatus: LoadStatus.REJECTED });
     }
-    this.#tripModel.removeObserver(this.#handleLoadStatus);
+    this.#tripModel.removeObserver(this.#loadStatusHandler);
   };
 }

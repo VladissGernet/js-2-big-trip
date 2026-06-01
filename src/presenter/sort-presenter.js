@@ -11,12 +11,13 @@ import FilterPresenter from './filter-presenter.js';
  * @property {Class} newPointPresenter - Презентер кнопки создания нового события.
  */
 
-/** Презентер сортировки. Отвечает за рендеринг компонента сортирвки списка событйи. */
+/** Презентер сортировки. Отвечает за рендеринг компонента сортировки списка событий. */
 export default class SortPresenter {
   #tripModel = null;
   #filterModel = null;
   #pageMainPresenter = null;
   #newPointPresenter = null;
+
   #component = null;
 
   /** @param {PresenterConfig} */
@@ -40,16 +41,17 @@ export default class SortPresenter {
     this.#renderSort();
   }
 
+  /** Удаляет из разметки компонент SortView. */
   destroy() {
     remove(this.#component);
   }
 
   #renderSort() {
-    this.#component = new SortView(this.#handleChange);
+    this.#component = new SortView(this.#changeHandler);
     render(this.#component, this.#pageMainPresenter.tripEventsView.element);
   }
 
-  #handleChange = (evt) => {
+  #changeHandler = (evt) => {
     this.#newPointPresenter.destroy();
     const filteredList = FilterPresenter.filterList(
       this.#filterModel.filter,

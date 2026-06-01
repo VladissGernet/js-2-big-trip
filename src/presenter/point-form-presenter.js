@@ -28,7 +28,7 @@ export default class PointFormPresenter {
   // Данные существующей точки.
   #pointData = null;
   #pointPresenter = null;
-  #handleRolldownClick = null;
+  #rolldownClickHandler = null;
   #removeFromPointPresenters = null;
   // Данные новой точки.
   #newPointPresenter = null;
@@ -44,8 +44,8 @@ export default class PointFormPresenter {
     pageMainPresenter,
     newPointPresenter,
     isEditForm,
-    onRolldownClick,
     removeFromPointPresenters,
+    onRolldownClick,
   }) {
     // Общие данные.
     this.#tripModel = tripModel;
@@ -56,14 +56,14 @@ export default class PointFormPresenter {
     this.#pointData = pointData;
     this.#pointPresenter = pointPresenter;
     this.#pageMainPresenter = pageMainPresenter;
-    this.#handleRolldownClick = onRolldownClick;
     this.#removeFromPointPresenters = removeFromPointPresenters;
+    this.#rolldownClickHandler = onRolldownClick;
 
     // Данные новой точки.
     this.#newPointPresenter = newPointPresenter;
 
     // Добавление обработчика закрытия по Esc.
-    document.addEventListener('keydown', this.#handleEscKeyDown);
+    document.addEventListener('keydown', this.#escKeyDownHandler);
   }
 
   get component() {
@@ -75,9 +75,9 @@ export default class PointFormPresenter {
         }),
         isEditForm: this.#isEditForm,
         tripModel: this.#tripModel,
-        onRolldownClick: this.#handleRolldownClick,
-        onFormSubmit: this.#handleFormSubmit,
-        onResetClick: this.#handleResetClick,
+        onRolldownClick: this.#rolldownClickHandler,
+        onFormSubmit: this.#formSubmitHandler,
+        onResetClick: this.#resetClickHandler,
       });
     }
     return this.#pointFormComponent;
@@ -89,7 +89,7 @@ export default class PointFormPresenter {
    */
   destroy = () => {
     this.#filterModel.removeObserver(this.destroy);
-    document.removeEventListener('keydown', this.#handleEscKeyDown);
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
     remove(this.#pointFormComponent);
     this.#pointFormComponent = null;
   };
@@ -136,7 +136,7 @@ export default class PointFormPresenter {
   }
 
   /** Удаление текущей Point из списка или закрытие создания новой точки. */
-  #handleResetClick = async () => {
+  #resetClickHandler = async () => {
     // Если форма редактирования, то удаление точки.
     if (this.#isEditForm) {
       await this.#removePoint();
@@ -152,7 +152,7 @@ export default class PointFormPresenter {
   };
 
   /** Закрытие по нажатию ESC. */
-  #handleEscKeyDown = (evt) => {
+  #escKeyDownHandler = (evt) => {
     if (evt.key !== 'Escape') {
       return;
     }
@@ -169,7 +169,7 @@ export default class PointFormPresenter {
   };
 
   /** Добавление\сохранение данных формы. */
-  #handleFormSubmit = async (evt) => {
+  #formSubmitHandler = async (evt) => {
     evt.preventDefault();
     this.#pointFormComponent.disableSaveBtn();
     const currentState = this.#pointFormComponent._state;
