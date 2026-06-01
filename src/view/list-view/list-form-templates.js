@@ -66,24 +66,25 @@ const closeEditFormBtn = (isEditForm) =>
     : '';
 
 const createTypeList = (offers, iconType) => {
-  let listItems = '';
-  for (const offerName of offers) {
-    listItems += html`<div class="event__type-item">
-      <input
-        id="event-type-${offerName}-1"
-        class="event__type-input visually-hidden"
-        type="radio"
-        name="event-type"
-        value="${offerName}"
-        ${iconType === offerName ? 'checked' : ''}
-      />
-      <label
-        class="event__type-label event__type-label--${offerName}"
-        for="event-type-${offerName}-1"
-        >${offerName[0].toUpperCase() + offerName.slice(1)}</label
-      >
-    </div>`;
-  }
+  const listItems = Array.from(offers.keys()).reduce(
+    (htmlResult, offerName) =>
+      (htmlResult += html`<div class="event__type-item">
+        <input
+          id="event-type-${offerName}-1"
+          class="event__type-input visually-hidden"
+          type="radio"
+          name="event-type"
+          value="${offerName}"
+          ${iconType === offerName ? 'checked' : ''}
+        />
+        <label
+          class="event__type-label event__type-label--${offerName}"
+          for="event-type-${offerName}-1"
+          >${offerName[0].toUpperCase() + offerName.slice(1)}</label
+        >
+      </div>`),
+    '',
+  );
 
   return html`
     <div class="event__type-list">
@@ -146,7 +147,7 @@ const createListPointFormTemplate = ({
               id="event-type-toggle-1"
               type="checkbox"
             />
-            ${createTypeList(tripModel.offersByType.keys(), listPoint.type)}
+            ${createTypeList(tripModel.offersByType, listPoint.type)}
           </div>
 
           <div class="event__field-group event__field-group--destination">
