@@ -4,12 +4,7 @@
  * @param {Map<string, {name: string}>} destinations - Коллекция destination.
  * @returns {{name: string}|undefined} Найденный destination или undefined.
  */
-const findDestinationByName = (name, destinations) => {
-  for (const destination of destinations.values()) {
-    if (destination.name === name) {
-      return destination;
-    }
-  }
-};
+const findDestinationByName = (name, destinations) =>
+  destinations.values().find((destination) => destination.name === name);
 
 export { findDestinationByName };
