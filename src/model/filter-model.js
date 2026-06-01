@@ -47,18 +47,20 @@ export default class FilterModel extends Observable {
     }
     this.enabledFilterTypes[FilterType.EVERYTHING] = true;
 
-    const futureStatus = !!FilterPresenter.filterList(FilterType.FUTURE, points)
-      .length;
-    const presentStatus = !!FilterPresenter.filterList(
+    const ifFutureStatus = !!FilterPresenter.filterList(
+      FilterType.FUTURE,
+      points,
+    ).length;
+    const isPresentStatus = !!FilterPresenter.filterList(
       FilterType.PRESENT,
       points,
     ).length;
-    const pastStatus = !!FilterPresenter.filterList(FilterType.PAST, points)
+    const isPastStatus = !!FilterPresenter.filterList(FilterType.PAST, points)
       .length;
 
-    this.enabledFilterTypes[FilterType.FUTURE] = futureStatus;
-    this.enabledFilterTypes[FilterType.PRESENT] = presentStatus;
-    this.enabledFilterTypes[FilterType.PAST] = pastStatus;
+    this.enabledFilterTypes[FilterType.FUTURE] = ifFutureStatus;
+    this.enabledFilterTypes[FilterType.PRESENT] = isPresentStatus;
+    this.enabledFilterTypes[FilterType.PAST] = isPastStatus;
 
     this._notify(FILTER_UPDATE_STATUS, isEmptyList);
   };
