@@ -156,30 +156,6 @@ export default class ListPointFormView extends AbstractStatefulView {
     }
   }
 
-  #handlePriceChange = (evt) => {
-    const value = Number(he.encode(evt.target.value.replace(/[\D]/g, '')));
-
-    evt.target.value = value;
-    evt.target.setCustomValidity('');
-    // Обновляем состояние
-    const newListPointState = structuredClone(this._state.listPoint);
-    newListPointState.basePrice = value;
-    if (value > 0) {
-      this._setState({
-        listPoint: {
-          ...newListPointState,
-          basePrice: value,
-        },
-      });
-      return;
-    }
-
-    delete newListPointState.basePrice;
-    this._setState({
-      listPoint: newListPointState,
-    });
-  };
-
   /** Инициализирует выбор дат "from" и "to" библиотекой flatpickr. */
   #initInputDate() {
     const initialDateFrom = this._state.listPoint.dateFrom || null;
@@ -227,6 +203,30 @@ export default class ListPointFormView extends AbstractStatefulView {
     this.#inputDateFrom.destroy();
     this.#inputDateTo.destroy();
   }
+
+  #handlePriceChange = (evt) => {
+    const value = Number(he.encode(evt.target.value.replace(/[\D]/g, '')));
+
+    evt.target.value = value;
+    evt.target.setCustomValidity('');
+    // Обновляем состояние
+    const newListPointState = structuredClone(this._state.listPoint);
+    newListPointState.basePrice = value;
+    if (value > 0) {
+      this._setState({
+        listPoint: {
+          ...newListPointState,
+          basePrice: value,
+        },
+      });
+      return;
+    }
+
+    delete newListPointState.basePrice;
+    this._setState({
+      listPoint: newListPointState,
+    });
+  };
 
   #rolldownClickHandler = (evt) => {
     evt.preventDefault();
