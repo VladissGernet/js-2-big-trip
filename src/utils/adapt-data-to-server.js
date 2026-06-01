@@ -1,10 +1,16 @@
 const adaptDataToServer = (data) => {
-  const serverData = {};
-  for (const [key, value] of Object.entries(data)) {
-    const snakeCaseKey = key.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase();
-    serverData[snakeCaseKey] = value;
-  }
+  const serverData = Object.entries(data).reduce(
+    (adaptedData, [key, value]) => {
+      const snakeCaseKey = key
+        .replace(/([a-z])([A-Z])/g, '$1_$2')
+        .toLowerCase();
+      adaptedData[snakeCaseKey] = value;
+      return adaptedData;
+    },
+    {},
+  );
   serverData.offers = Array.from(serverData.offers);
+
   return serverData;
 };
 
