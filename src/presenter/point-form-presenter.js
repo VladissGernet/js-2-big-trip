@@ -230,9 +230,12 @@ export default class PointFormPresenter {
 
     // Создаём обратный Map для быстрого поиска по title (один раз O(n))
     const offersTitleToId = new Map();
-    for (const [id, { title }] of allOffers) {
-      offersTitleToId.set(title.toLowerCase(), id);
-    }
+    allOffers
+      .entries()
+      .forEach(([id, { title }]) =>
+        offersTitleToId.set(title.toLowerCase(), id),
+      );
+
     // Массив из выбранных значений.
     const selectedIdOffers = selectedOffers.map((offer) =>
       offersTitleToId.get(offer.toLowerCase()),
