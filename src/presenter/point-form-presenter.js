@@ -215,14 +215,12 @@ export default class PointFormPresenter {
     // Получаем тип для массива предложений.
     const type = currentState.listPoint.type;
     const basePrice = Number(formData.get('event-price'));
+
     const newDestinationName = formData.get('event-destination');
-    let newDestinationId = '';
-    for (const [id, { name }] of tripModel.destinationsById) {
-      if (newDestinationName === name) {
-        newDestinationId = id;
-        break;
-      }
-    }
+    const iterator = tripModel.destinationsById.entries();
+    const newDestinationId = iterator.find(
+      (destination) => newDestinationName === destination[1].name,
+    )[0];
 
     // Получаем массив выбранных предложений (offers), которые также нужно
     // преобразовать в id.
