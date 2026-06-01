@@ -37,12 +37,12 @@ export default class NewPointPresenter {
 
   /** Отключение кнопки.*/
   disable() {
-    this.#newEventBtn.element.disabled = true;
+    this.#newEventBtn.disable();
   }
 
   /** Активация кнопки.*/
   enable() {
-    this.#newEventBtn.element.disabled = false;
+    this.#newEventBtn.enable();
   }
 
   /**
