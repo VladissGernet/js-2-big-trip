@@ -44,25 +44,27 @@ export default class TripModel extends Observable {
   /** Обновляет данные выбранной точки */
   async updatePoint(pointId, updatedData) {
     this.#uiBlocker.block();
-    const index = this.listPoints.findIndex((item) => item.id === pointId);
-    if (index === -1) {
-      // prettier-ignore
-      throw new Error('Can\'t update nonexistent point');
-    }
-    let selectedPoint = this.listPoints[index];
-    selectedPoint = { ...this.listPoints[index], ...updatedData };
 
     try {
+      const index = this.listPoints.findIndex((item) => item.id === pointId);
+      if (index === -1) {
+        // prettier-ignore
+        throw new Error('Can\'t update nonexistent point');
+      }
+      let selectedPoint = this.listPoints[index];
+      selectedPoint = { ...this.listPoints[index], ...updatedData };
+
       await this.#pointsApiService.updatePoint(selectedPoint);
       // Обновление в локальных данных.
       this.listPoints[index] = selectedPoint;
       this._notify();
-      this.#uiBlocker.unblock();
+
       return selectedPoint;
     } catch (err) {
-      this.#uiBlocker.unblock();
       // prettier-ignore
       throw new Error('Can\'t update current point');
+    } finally {
+      this.#uiBlocker.unblock();
     }
   }
 
@@ -73,11 +75,11 @@ export default class TripModel extends Observable {
       const index = this.listPoints.findIndex((item) => item.id === pointId);
       this.listPoints.splice(index, 1);
       this._notify();
-      this.#uiBlocker.unblock();
     } catch (err) {
-      this.#uiBlocker.unblock();
       // prettier-ignore
       throw new Error('Can\'t remove current point');
+    } finally {
+      this.#uiBlocker.unblock();
     }
   }
 
@@ -90,11 +92,11 @@ export default class TripModel extends Observable {
       this.listPoints.push(data);
       this.listPoints.sort(SORT_CONFIG[DEFAULT_SORT]);
       this._notify();
-      this.#uiBlocker.unblock();
     } catch (err) {
-      this.#uiBlocker.unblock();
       // prettier-ignore
       throw new Error('Can\'t add current point, validation error');
+    } finally {
+      this.#uiBlocker.unblock();
     }
   }
 
@@ -125,8 +127,9 @@ export default class TripModel extends Observable {
       this._notify(LoadStatus.RESOLVED);
     } catch (err) {
       this._notify(LoadStatus.REJECTED);
+    } finally {
+      this.#uiBlocker.unblock();
     }
-    this.#uiBlocker.unblock();
   }
 
   static #adaptToClient(serverPoints, serverDestinations, serverOffers) {
