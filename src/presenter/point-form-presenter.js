@@ -94,10 +94,15 @@ export default class PointFormPresenter {
     this.#pointFormComponent = null;
   };
 
-  /** Удаляет существующую точку из списка. */
+  /**
+   * Удаляет существующую точку из списка.
+   * @returns {boolean} `true`, если точка успешно удалена, `false` при ошибке.
+   */
   async #removePoint() {
     this.#pointFormComponent.disableDeleteBtn();
     const selectedPointId = this.#pointData.id;
+    // По-умолчанию состояние удаления точки false.
+    let isRemoved = false;
 
     try {
       await this.#tripModel.removePoint(selectedPointId);
@@ -116,12 +121,17 @@ export default class PointFormPresenter {
           isRenderNewPointForm: true,
         });
       }
+      // Возвращаем состояние успешного удаления.
+      isRemoved = true;
     } catch (err) {
       this.#pointFormComponent.enableDeleteBtn();
       this.#pointFormComponent.shake();
-      // prettier-ignore
-      throw new Error('Can\'t remove point');
+
+      // Выполняю замечание по критерию для защиты добавляя console.error.
+      // 'throw new Error' ломает код презентера при выключенной сети.
+      console.error(err); // eslint-disable-line no-console
     }
+    return isRemoved;
   }
 
   /** Закрывает форму, не удаляет точку. */
@@ -139,7 +149,11 @@ export default class PointFormPresenter {
   #resetClickHandler = async () => {
     // Если форма редактирования, то удаление точки.
     if (this.#isEditForm) {
-      await this.#removePoint();
+      const isRemoved = await this.#removePoint();
+      if (!isRemoved) {
+        return;
+      }
+
       // Обязательно для показа сообщения, в случае пустого списка.
       this.#pageMainPresenter.renderEventsSection({
         filter: this.#filterModel.filter,
@@ -194,11 +208,13 @@ export default class PointFormPresenter {
       this.#pageMainPresenter.renderEventsSection({
         filter: this.#filterModel.filter,
       });
-    } catch (error) {
+    } catch (err) {
       this.#pointFormComponent.enableSaveBtn();
       this.#pointFormComponent.shake();
-      // prettier-ignore
-      throw new Error('Can\'t update or add point');
+
+      // Выполняю замечание по критерию для защиты добавляя console.error.
+      // 'throw new Error' ломает код презентера при выключенной сети.
+      console.error(err); // eslint-disable-line no-console
     }
   };
 

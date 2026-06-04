@@ -171,10 +171,12 @@ export default class PointPresenter {
       replace(this.#pointComponent, prevPointComponent);
       // Удаляем старую точку с обработчиками.
       remove(prevPointComponent);
-    } catch (error) {
+    } catch (err) {
       this.#pointComponent.shake();
-      // prettier-ignore
-      throw new Error('Can\'t update current point');
+
+      // Выполняю замечание по критерию для защиты добавляя console.error.
+      // 'throw new Error' ломает код презентера при выключенной сети.
+      console.error(err); // eslint-disable-line no-console
     }
   };
 }
